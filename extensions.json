@@ -1,2 +1,4 @@
-
+[
     "extensions.message_commands",
+    "extensions.slash_commands"
+]
