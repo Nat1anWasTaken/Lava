@@ -1,0 +1,5 @@
+[
+    "cogs.events",
+    "cogs.commands",
+    "cogs.owner"
+]
