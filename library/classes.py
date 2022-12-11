@@ -144,9 +144,7 @@ class SpotifySource(Source):
                 },
                 requester=0
             )
-
-        else:
-            return None
+        return None
 
     def load_playlist(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
         """
@@ -183,9 +181,7 @@ class SpotifySource(Source):
                 )
 
             return tracks, playlist_info
-
-        else:
-            return [], None
+        return [], None
 
     def load_album(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
         """
@@ -222,9 +218,7 @@ class SpotifySource(Source):
                 )
 
             return tracks, playlist_info
-
-        else:
-            return [], None
+        return [], None
 
     def get_track_id_from_url(self, url: str) -> Union[str, None]:
         """
@@ -238,9 +232,7 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
-
-        else:
-            return None
+        return None
 
     def get_playlist_id_from_url(self, url: str) -> Union[str, None]:
         """
@@ -254,9 +246,7 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
-
-        else:
-            return None
+        return None
 
     def get_album_id_from_url(self, url: str) -> Union[str, None]:
         """
@@ -270,6 +260,4 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
-
-        else:
-            return None
+        return None
