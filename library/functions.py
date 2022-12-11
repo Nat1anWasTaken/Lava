@@ -18,12 +18,14 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     :param interaction: The interaction that triggered the command.
     :param should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
     """
-    player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
+    player = interaction.bot.lavalink.player_manager.create(
+        interaction.author.guild.id)
 
     if not interaction.author.voice or not interaction.author.voice.channel:
         raise UserNotInVoice('Please join a voice channel first')
 
-    v_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
+    v_client = get(interaction.bot.voice_clients,
+                   guild=interaction.author.guild)
 
     if not v_client:
         if not should_connect:
@@ -34,7 +36,8 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
         if not permissions.connect or not permissions.speak:  # Check user limit too?
-            raise MissingVoicePermissions('Connect and Speak permissions is required in order to play music')
+            raise MissingVoicePermissions(
+                'Connect and Speak permissions is required in order to play music')
 
         player.store('channel', interaction.channel.id)
 
@@ -62,13 +65,15 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     await asyncio.sleep(delay)
 
     # noinspection PyTypeChecker
-    channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(int(player.fetch('channel')))
+    channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(
+        int(player.fetch('channel')))
 
     try:
         message: Message = await channel.fetch_message(int(player.fetch('message')))
     except (TypeError, NotFound):  # Message not found
         if not new_message:
-            raise ValueError("No message found or provided to update the display with")
+            raise ValueError(
+                "No message found or provided to update the display with")
 
     if new_message:
         try:
@@ -88,22 +93,26 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
     embed = Embed()
 
     if player.is_playing and player.is_playing:
-        embed.set_author(name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
+        embed.set_author(
+            name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
 
         embed.colour = Colour.green()
 
     elif player.is_connected and player.is_playing and player.paused:
-        embed.set_author(name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
+        embed.set_author(
+            name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
 
         embed.colour = Colour.orange()
 
     elif not player.is_connected:
-        embed.set_author(name='已斷線', icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp")
+        embed.set_author(
+            name='已斷線', icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp")
 
         embed.colour = Colour.red()
 
     elif not player.queue and not player.is_playing:
-        embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
+        embed.set_author(
+            name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
 
         embed.colour = Colour.red()
 
@@ -118,8 +127,10 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
         embed.description = "`Placeholder / Progress Bar`"
 
         embed.add_field(name="👤 作者", value=player.current.author, inline=True)
-        embed.add_field(name="👥 點播者", value=f"<@{player.current.requester}>", inline=True)
-        embed.add_field(name="🔁 重複播放模式", value=loop_mode_text[player.loop], inline=True)
+        embed.add_field(
+            name="👥 點播者", value=f"<@{player.current.requester}>", inline=True)
+        embed.add_field(name="🔁 重複播放模式",
+                        value=loop_mode_text[player.loop], inline=True)
 
         embed.add_field(
             name="📃 播放序列",
@@ -132,10 +143,12 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
         )
         embed.add_field(
             name="⚙️ 已啟用效果器",
-            value=', '.join([key.capitalize() for key in player.filters]) or "無",
+            value=', '.join([key.capitalize()
+                            for key in player.filters]) or "無",
             inline=True
         )
-        embed.add_field(name="🔀 雖機播放", value="開" if player.shuffle else "關", inline=True)
+        embed.add_field(
+            name="🔀 雖機播放", value="開" if player.shuffle else "關", inline=True)
 
     else:
         embed.title = "未在播放歌曲"

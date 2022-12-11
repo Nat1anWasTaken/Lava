@@ -56,7 +56,8 @@ class LavalinkVoiceClient(VoiceClient):
         Handles the disconnect.
         Cleans up running player and leaves the voice client.
         """
-        player: DefaultPlayer = self.lavalink.player_manager.get(self.channel.guild.id)
+        player: DefaultPlayer = self.lavalink.player_manager.get(
+            self.channel.guild.id)
 
         # no need to disconnect if we are not connected
         if not force and not player.is_connected:
@@ -78,17 +79,21 @@ class SpotifyAudioTrack(DeferredAudioTrack):
     # This makes the DeferredAudioTrack highly efficient, particularly in cases
     # where large playlists are loaded.
 
-    async def load(self, client):  # Load our 'actual' playback track using the metadata from this one.
+    # Load our 'actual' playback track using the metadata from this one.
+    async def load(self, client):
         result: LoadResult = await client.get_tracks(
             f'ytsearch:{self.title} {self.author}'
         )  # Search for our track on YouTube.
 
-        if result.load_type != LoadType.SEARCH or not result.tracks:  # We're expecting a 'SEARCH' due to our 'ytsearch' prefix above.
+        # We're expecting a 'SEARCH' due to our 'ytsearch' prefix above.
+        if result.load_type != LoadType.SEARCH or not result.tracks:
             raise LoadError
 
-        first_track = result.tracks[0]  # Grab the first track from the results.
+        # Grab the first track from the results.
+        first_track = result.tracks[0]
         base64 = first_track.track  # Extract the base64 string from the track.
-        self.track = base64  # We'll store this for later, as it allows us to save making network requests
+        # We'll store this for later, as it allows us to save making network requests
+        self.track = base64
         # if this track is re-used (e.g. repeat).
 
         return base64
@@ -96,7 +101,8 @@ class SpotifyAudioTrack(DeferredAudioTrack):
 
 class SpotifySource(Source):
     def __init__(self, spotify: Spotify):
-        super().__init__(name='spotify')  # Initialising our custom source with the name 'custom'.
+        # Initialising our custom source with the name 'custom'.
+        super().__init__(name='spotify')
 
         self.spotify = spotify
 
@@ -232,7 +238,8 @@ class SpotifySource(Source):
         :param url: Spotify track url
         :return: Track id, None if not a track url
         """
-        track_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/track\/(\w+)')
+        track_url_rx = re.compile(
+            r'https?:\/\/open\.spotify\.com\/track\/(\w+)')
 
         match = track_url_rx.match(url)
 
@@ -248,7 +255,8 @@ class SpotifySource(Source):
         :param url: Spotify playlist url
         :return: Playlist id, None if not a playlist url
         """
-        playlist_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/playlist\/(\w+)')
+        playlist_url_rx = re.compile(
+            r'https?:\/\/open\.spotify\.com\/playlist\/(\w+)')
 
         match = playlist_url_rx.match(url)
 
@@ -264,7 +272,8 @@ class SpotifySource(Source):
         :param url: Spotify album url
         :return: Album id, None if not a album url
         """
-        album_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/album\/(\w+)')
+        album_url_rx = re.compile(
+            r'https?:\/\/open\.spotify\.com\/album\/(\w+)')
 
         match = album_url_rx.match(url)
 

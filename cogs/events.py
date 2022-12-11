@@ -37,7 +37,8 @@ class Events(Cog):
             player: DefaultPlayer = event.player
 
             # noinspection PyTypeChecker
-            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
+            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(
+                int(player.fetch("channel")))
 
             # noinspection PyTypeChecker
             message: Message = await channel.fetch_message(int(player.fetch("message")))
@@ -82,7 +83,8 @@ class Events(Cog):
 
         elif isinstance(error.original, UserInDifferentChannel):
             await interaction.response.send_message(
-                embed=ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
+                embed=ErrorEmbed(
+                    "指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
             )
 
         else:
@@ -97,7 +99,8 @@ class Events(Cog):
     async def on_voice_state_update(self, member, before, after):
         if before.channel is not None and after.channel is None:  # This means the user left the voice channel
             if member.id == self.bot.user.id:
-                player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+                player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+                    member.guild.id)
 
                 try:
                     await update_display(self.bot, player)

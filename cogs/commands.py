@@ -46,7 +46,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=True)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         player.store("channel", interaction.channel.id)
 
@@ -64,17 +65,20 @@ class Commands(Cog):
 
         match results.load_type:
             case LoadType.TRACK:
-                player.add(requester=interaction.author.id, track=results.tracks[0], index=index)
+                player.add(requester=interaction.author.id,
+                           track=results.tracks[0], index=index)
 
                 await interaction.edit_original_response(
-                    embed=SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
+                    embed=SuccessEmbed(
+                        f"已加入播放序列", f"{results.tracks[0].title}")
                 )
 
             case LoadType.PLAYLIST:
                 # TODO: Ask user if they want to add the whole playlist or just some tracks
 
                 for iter_index, track in enumerate(results.tracks):
-                    player.add(requester=interaction.author.id, track=track, index=index or 0 + iter_index)
+                    player.add(requester=interaction.author.id,
+                               track=track, index=index or 0 + iter_index)
 
                 await interaction.edit_original_response(
                     embed=SuccessEmbed(
@@ -117,7 +121,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         if not player.is_playing:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有正在播放的歌曲"))
@@ -147,7 +152,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         if not player.is_playing:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有正在播放的歌曲"))
@@ -165,7 +171,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         if not player.paused:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有暫停的歌曲"))
@@ -185,7 +192,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         await player.stop()
 
@@ -213,7 +221,8 @@ class Commands(Cog):
     async def repeat(self, interaction: ApplicationCommandInteraction, mode: str):
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         player.set_loop(int(mode.split("/")[1]))
 
@@ -225,7 +234,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         await player.set_shuffle(not player.shuffle)
 
@@ -243,7 +253,8 @@ class Commands(Cog):
             result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
 
             for track in result.tracks:
-                choices.append(OptionChoice(name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri))
+                choices.append(OptionChoice(
+                    name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri))
 
             return choices
 
@@ -348,20 +359,23 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id)
 
         if not kwargs:
             await player.remove_filter(filter_name)
 
             await interaction.edit_original_response(
-                embed=SuccessEmbed(f"已移除 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
+                embed=SuccessEmbed(
+                    f"已移除 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
             )
 
             await update_display(self.bot, player, await interaction.original_response(), delay=5)
 
             return
 
-        audio_filter = player.get_filter(filter_name) or allowed_filters[filter_name]()
+        audio_filter = player.get_filter(
+            filter_name) or allowed_filters[filter_name]()
 
         try:
             audio_filter.update(**kwargs)
@@ -372,7 +386,8 @@ class Commands(Cog):
         await player.set_filter(audio_filter)
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(f"已設置 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
+            embed=SuccessEmbed(
+                f"已設置 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
         )
 
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
