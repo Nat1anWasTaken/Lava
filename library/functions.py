@@ -6,7 +6,7 @@ from core.classes import Bot
 from library.classes import LavalinkVoiceClient
 
 
-async def ensure_voice(self, bot: Bot, member: Member, channel: TextChannel,
+async def ensure_voice(bot: Bot, member: Member, channel: TextChannel,
                        should_connect: bool = True) -> LavalinkVoiceClient:
     """
     This check ensures that the bot and command author are in the same voice channel.
@@ -14,7 +14,7 @@ async def ensure_voice(self, bot: Bot, member: Member, channel: TextChannel,
     :member: The member to check for.
     :should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
     """
-    player = self.bot.lavalink.player_manager.create(member.guild.id)
+    player = bot.lavalink.player_manager.create(member.guild.id)
     # Create returns a player if one exists, otherwise creates.
     # This line is important because it ensures that a player always exists for a guild.
 
