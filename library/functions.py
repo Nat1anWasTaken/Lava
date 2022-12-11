@@ -1,6 +1,7 @@
+import asyncio
 from typing import Union
 
-from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour
 from disnake.abc import GuildChannel
 from disnake.utils import get
 from lavalink import DefaultPlayer
@@ -47,7 +48,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
             )
 
 
-async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None):
+async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0):
     """
     Update the display of the current song.
 
@@ -56,7 +57,10 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     :param bot: The bot instance.
     :param player: The player instance.
     :param new_message: The new message to update the display with, None to use the old message.
+    :param delay: The delay in seconds before updating the display.
     """
+    await asyncio.sleep(delay)
+
     # noinspection PyTypeChecker
     channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(int(player.fetch('channel')))
 
@@ -64,11 +68,11 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         message: Message = await channel.fetch_message(int(player.fetch('message')))
     except (TypeError, NotFound):  # Message not found
         if not new_message:
-            raise NotFound('Message not found, no message to update with.')
+            raise ValueError("No message found or provided to update the display with")
 
     if new_message:
         try:
-            await message.delete(delay=5)
+            await message.delete()
         except (AttributeError, UnboundLocalError):
             pass
 
@@ -81,8 +85,59 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 
 def generate_display_embed(player: DefaultPlayer) -> Embed:
     # TODO: Complete this embed
-    embed = Embed(title='正在播放', colour=0x1ED760, description=player.current.title)
+    embed = Embed()
 
-    embed.add_field(name='點播者', value=f"<@{player.current.requester}>")
+    if player.is_playing and player.is_playing:
+        embed.set_author(name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
+
+        embed.colour = Colour.green()
+
+    elif player.is_connected and player.is_playing and player.paused:
+        embed.set_author(name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
+
+        embed.colour = Colour.orange()
+
+    elif not player.is_connected:
+        embed.set_author(name='已斷線', icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp")
+
+        embed.colour = Colour.red()
+
+    elif not player.queue and not player.is_playing:
+        embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
+
+        embed.colour = Colour.red()
+
+    loop_mode_text = {
+        0: "關閉",
+        1: "單曲循環",
+        2: "整個佇列循環"
+    }
+
+    if player.current:
+        embed.title = player.current.title
+        embed.description = "`Placeholder / Progress Bar`"
+
+        embed.add_field(name="👤 作者", value=player.current.author, inline=True)
+        embed.add_field(name="👥 點播者", value=f"<@{player.current.requester}>", inline=True)
+        embed.add_field(name="🔁 重複播放模式", value=loop_mode_text[player.loop], inline=True)
+
+        embed.add_field(
+            name="📃 播放序列",
+            value=('\n'.join(
+                [
+                    f"**[{index + 1}]** {track.title}"
+                    for index, track in enumerate(player.queue[:5])
+                ]) + ("\n還有更多..." if len(player.queue) > 5 else "")) or "空",
+            inline=True
+        )
+        embed.add_field(
+            name="⚙️ 已啟用效果器",
+            value=', '.join([key.capitalize() for key in player.filters]) or "無",
+            inline=True
+        )
+        embed.add_field(name="🔀 雖機播放", value="開" if player.shuffle else "關", inline=True)
+
+    else:
+        embed.title = "未在播放歌曲"
 
     return embed
