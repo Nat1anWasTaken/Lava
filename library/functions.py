@@ -1,48 +1,88 @@
-from disnake import Member, TextChannel
-from disnake.ext.commands import CommandError
+from typing import Union
+
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound
+from disnake.abc import GuildChannel
 from disnake.utils import get
+from lavalink import DefaultPlayer
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
+from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 
 
-async def ensure_voice(bot: Bot, member: Member, channel: TextChannel,
-                       should_connect: bool = True) -> LavalinkVoiceClient:
+async def ensure_voice(interaction: Interaction, should_connect: bool) -> LavalinkVoiceClient:
     """
     This check ensures that the bot and command author are in the same voice channel.
 
-    :member: The member to check for.
-    :should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
+    :param interaction: The interaction that triggered the command.
+    :param should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
     """
-    player = bot.lavalink.player_manager.create(member.guild.id)
-    # Create returns a player if one exists, otherwise creates.
-    # This line is important because it ensures that a player always exists for a guild.
+    player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
 
-    # Most people might consider this a waste of resources for guilds that aren't playing, but this is
-    # the easiest and simplest way of ensuring players are created.
+    if not interaction.author.voice or not interaction.author.voice.channel:
+        raise UserNotInVoice('Please join a voice channel first')
 
-    if not member.voice or not member.voice.channel:
-        # Our cog_command_error handler catches this and sends it to the voice channel.
-        # Exceptions allow us to "short-circuit" command invocation via checks so the
-        # execution state of the command goes no further.
-        raise CommandError('請先加入一個語音頻道')
-
-    v_client = get(bot.voice_clients, guild=member.guild)
+    v_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
 
     if not v_client:
         if not should_connect:
-            raise CommandError('機器人沒有連接到一個語音頻道')
+            raise BotNotInVoice('Bot is not in a voice channel.')
 
-        permissions = member.voice.channel.permissions_for(member.guild.get_member(bot.user.id))
+        permissions = interaction.author.voice.channel.permissions_for(
+            interaction.author.guild.get_member(interaction.bot.user.id)
+        )
 
         if not permissions.connect or not permissions.speak:  # Check user limit too?
-            raise CommandError('我需要 `連接` 和 `說話` 權限')
+            raise MissingVoicePermissions('Connect and Speak permissions is required in order to play music')
 
-        player.store('channel', channel.id)
+        player.store('channel', interaction.channel.id)
 
         # noinspection PyTypeChecker
-        return await member.voice.channel.connect(cls=LavalinkVoiceClient)
+        return await interaction.author.voice.channel.connect(cls=LavalinkVoiceClient)
 
     else:
-        if v_client.channel.id != member.voice.channel.id:
-            raise CommandError(f'你必須要和我在同一個語音頻道 (<#{v_client.channel.id}>)裡面')
+        if v_client.channel.id != interaction.author.voice.channel.id:
+            raise UserInDifferentChannel(
+                v_client.channel, "User must be in the same voice channel as the bot"
+            )
+
+
+async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None):
+    """
+    Update the display of the current song.
+
+    Note: If new message is provided, Old message will be deleted after 5 seconds
+
+    :param bot: The bot instance.
+    :param player: The player instance.
+    :param new_message: The new message to update the display with, None to use the old message.
+    """
+    # noinspection PyTypeChecker
+    channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(int(player.fetch('channel')))
+
+    try:
+        message: Message = await channel.fetch_message(int(player.fetch('message')))
+    except (TypeError, NotFound):  # Message not found
+        if not new_message:
+            raise NotFound('Message not found, no message to update with.')
+
+    if new_message:
+        try:
+            await message.delete(delay=5)
+        except (AttributeError, UnboundLocalError):
+            pass
+
+        message = new_message
+
+    await message.edit(embed=generate_display_embed(player))
+
+    player.store('message', message.id)
+
+
+def generate_display_embed(player: DefaultPlayer) -> Embed:
+    # TODO: Complete this embed
+    embed = Embed(title='正在播放', colour=0x1ED760, description=player.current.title)
+
+    embed.add_field(name='點播者', value=f"<@{player.current.requester}>")
+
+    return embed
