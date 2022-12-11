@@ -95,16 +95,19 @@ class Events(Cog):
 
     @commands.Cog.listener(name="on_voice_state_update")
     async def on_voice_state_update(self, member, before, after):
-        if before.channel is not None and after.channel is None:  # This means the user left the voice channel
-            if member.id == self.bot.user.id:
-                player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+        if (
+            before.channel is not None
+            and after.channel is None
+            and member.id == self.bot.user.id
+        ):
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
 
-                try:
-                    await update_display(self.bot, player)
-                except ValueError:  # There's no message to update
-                    pass
+            try:
+                await update_display(self.bot, player)
+            except ValueError:  # There's no message to update
+                pass
 
-                self.bot.lavalink.player_manager.remove(member.guild.id)
+            self.bot.lavalink.player_manager.remove(member.guild.id)
 
 
 def setup(bot):
