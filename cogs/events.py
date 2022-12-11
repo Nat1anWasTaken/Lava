@@ -1,17 +1,14 @@
-import logging
 from typing import Union
 
 import lavalink
-from disnake import TextChannel, Thread, Message, VoiceProtocol
+from disnake import TextChannel, Thread, Message, Embed, InteractionResponded, ApplicationCommandInteraction
 from disnake.abc import GuildChannel
 from disnake.ext import commands
-from disnake.ext.commands import Cog
-from disnake.utils import get
+from disnake.ext.commands import Cog, CommandInvokeError
 from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent, TrackEndEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
-from library.classes import LavalinkVoiceClient
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from library.functions import update_display
 
@@ -65,7 +62,9 @@ class Events(Cog):
             pass
 
     @commands.Cog.listener(name="on_slash_command_error")
-    async def on_slash_command_error(self, interaction, error):
+    async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
+        embed: Embed = Embed()
+
         if isinstance(error.original, MissingVoicePermissions):
             await interaction.response.send_message(
                 embed=ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
@@ -88,6 +87,11 @@ class Events(Cog):
 
         else:
             raise error.original
+
+        try:
+            await interaction.response.send_message(embed=embed)
+        except InteractionResponded:
+            await interaction.edit_original_response(embed=embed)
 
     @commands.Cog.listener(name="on_voice_state_update")
     async def on_voice_state_update(self, member, before, after):
