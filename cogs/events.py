@@ -7,7 +7,7 @@ from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.utils import get
-from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent
+from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent, TrackEndEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
@@ -59,6 +59,10 @@ class Events(Cog):
                 await update_display(self.bot, player)
             except ValueError:
                 pass
+
+        elif isinstance(event, TrackEndEvent):
+            # TODO: Handle auto plays
+            pass
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction, error):
