@@ -1,4 +1,4 @@
-disnake
-lavalink
-pynacl
-spotipy
+disnake>=2.7
+lavalink>=4.0
+pynacl>=1.5
+spotipy>=2.22
