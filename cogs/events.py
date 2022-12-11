@@ -1,10 +1,20 @@
+from typing import Union
+
 import lavalink
+from disnake import TextChannel, Thread, Message, NotFound
+from disnake.abc import GuildChannel
+from disnake.ext import commands
 from disnake.ext.commands import Cog
-from lavalink import QueueEndEvent
+from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent
+
+from core.classes import Bot
+from core.embeds import ErrorEmbed
+from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
+from library.functions import update_display
 
 
 class Events(Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
         lavalink.add_event_hook(self.track_hook)
@@ -17,6 +27,55 @@ class Events(Cog):
             guild_id = event.player.guild_id
             guild = self.bot.get_guild(guild_id)
             await guild.voice_client.disconnect(force=True)
+
+        elif isinstance(event, TrackLoadFailedEvent):
+            player: DefaultPlayer = event.player
+
+            # noinspection PyTypeChecker
+            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
+
+            # noinspection PyTypeChecker
+            message: Message = await channel.fetch_message(int(player.fetch("message")))
+
+            await channel.send(
+                embed=ErrorEmbed(f"無法播放歌曲: {event.track.data['title']}"),
+                reference=message
+            )
+
+            player.store("message", message.id)
+
+        elif isinstance(event, TrackStartEvent):
+            player: DefaultPlayer = event.player
+
+            try:
+                await update_display(self.bot, player)
+            except NotFound:
+                pass
+
+    @commands.Cog.listener(name="on_slash_command_error")
+    async def on_slash_command_error(self, interaction, error):
+        if isinstance(error.original, MissingVoicePermissions):
+            await interaction.response.send_message(
+                embed=ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
+            )
+
+        elif isinstance(error.original, BotNotInVoice):
+            await interaction.response.send_message(
+                embed=ErrorEmbed("指令錯誤", "我沒有連接到一個語音頻道")
+            )
+
+        elif isinstance(error.original, UserNotInVoice):
+            await interaction.response.send_message(
+                embed=ErrorEmbed("指令錯誤", "你沒有連接到一個語音頻道")
+            )
+
+        elif isinstance(error.original, UserInDifferentChannel):
+            await interaction.response.send_message(
+                embed=ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
+            )
+
+        else:
+            raise error.original
 
 
 def setup(bot):
