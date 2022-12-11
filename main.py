@@ -6,8 +6,10 @@ from os import getenv
 from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
 from lavalink import Client
+from spotipy import Spotify, SpotifyClientCredentials
 
 from core.classes import Bot
+from library.classes import SpotifySource
 
 logging.basicConfig(level=logging.INFO)
 
@@ -32,6 +34,9 @@ async def setup_bot(bot: Bot) -> Bot:
 
     load_lavalink_nodes(bot)
 
+    if getenv("SPOTIFY_CLIENT_ID") and getenv("SPOTIFY_CLIENT_SECRET"):
+        initial_spotify_source(bot)
+
     return bot
 
 
@@ -47,6 +52,28 @@ def load_lavalink_nodes(bot: Bot) -> Bot:
 
     for node in config['nodes']:
         bot.lavalink.add_node(**node)
+
+    return bot
+
+
+def initial_spotify_source(bot: Bot) -> Bot:
+    """
+    Initialize the spotify source then register it to the bot
+
+    Note: bot.assign_lavalink_client() must be called before this function
+    :param bot: The bot to register the spotify source to
+    :return: The bot
+    """
+    credentials = SpotifyClientCredentials(
+        client_id=getenv("SPOTIFY_CLIENT_ID"),
+        client_secret=getenv("SPOTIFY_CLIENT_SECRET")
+    )
+
+    spotify = Spotify(auth_manager=credentials)
+
+    spotify_source = SpotifySource(spotify)
+
+    bot.lavalink.register_source(spotify_source)
 
     return bot
 
