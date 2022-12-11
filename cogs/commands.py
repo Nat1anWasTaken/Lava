@@ -1,9 +1,9 @@
 from disnake.ext.commands import Cog
 
 
-class SlashCommands(Cog):
+class Commands(Cog):
     pass
 
 
 def setup(bot):
-    bot.add_cog(SlashCommands(bot))
+    bot.add_cog(Commands(bot))
