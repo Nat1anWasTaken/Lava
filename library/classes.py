@@ -220,7 +220,8 @@ class SpotifySource(Source):
             return tracks, playlist_info
         return [], None
 
-    def get_track_id_from_url(self, url: str) -> Union[str, None]:
+    @staticmethod
+    def get_track_id_from_url(url: str) -> Union[str, None]:
         """
         Get track id from url
         :param url: Spotify track url
@@ -234,7 +235,8 @@ class SpotifySource(Source):
             return match.group(1)
         return None
 
-    def get_playlist_id_from_url(self, url: str) -> Union[str, None]:
+    @staticmethod
+    def get_playlist_id_from_url(url: str) -> Union[str, None]:
         """
         Get playlist id from url
         :param url: Spotify playlist url
@@ -248,7 +250,8 @@ class SpotifySource(Source):
             return match.group(1)
         return None
 
-    def get_album_id_from_url(self, url: str) -> Union[str, None]:
+    @staticmethod
+    def get_album_id_from_url(url: str) -> Union[str, None]:
         """
         Get album id from url
         :param url: Spotify album url
