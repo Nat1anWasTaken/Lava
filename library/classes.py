@@ -1,6 +1,4 @@
-import abc
-
-from disnake import VoiceClient
+from disnake import VoiceClient, abc
 
 from core.classes import Bot
 
@@ -16,6 +14,7 @@ class LavalinkVoiceClient(VoiceClient):
     def __init__(self, bot: Bot, channel: abc.Connectable):
         self.bot = bot
         self.channel = channel
+        self.lavalink = bot.lavalink
 
         super().__init__(bot, channel)
 
@@ -26,7 +25,7 @@ class LavalinkVoiceClient(VoiceClient):
             't': 'VOICE_SERVER_UPDATE',
             'd': data
         }
-        await self.lavalink.voice_update_handler(lavalink_data)
+        await self.bot.lavalink.voice_update_handler(lavalink_data)
 
     async def on_voice_state_update(self, data):
         # the data needs to be transformed before being handed down to
