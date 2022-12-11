@@ -18,3 +18,7 @@ class UserInDifferentChannel(Exception):
         self.voice = voice
 
         super().__init__(*args)
+
+
+class LoadError(Exception):
+    pass
