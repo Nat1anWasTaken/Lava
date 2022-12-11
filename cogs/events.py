@@ -1,14 +1,17 @@
+import logging
 from typing import Union
 
 import lavalink
-from disnake import TextChannel, Thread, Message, NotFound
+from disnake import TextChannel, Thread, Message, VoiceProtocol
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog
+from disnake.utils import get
 from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
+from library.classes import LavalinkVoiceClient
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from library.functions import update_display
 
@@ -25,8 +28,13 @@ class Events(Cog):
             # it indicates that there are no tracks left in the player's queue.
             # To save on resources, we can tell the bot to disconnect from the voice channel.
             guild_id = event.player.guild_id
+
             guild = self.bot.get_guild(guild_id)
-            await guild.voice_client.disconnect(force=True)
+
+            try:
+                await guild.voice_client.disconnect(force=True)
+            except AttributeError:
+                pass
 
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
@@ -49,7 +57,7 @@ class Events(Cog):
 
             try:
                 await update_display(self.bot, player)
-            except NotFound:
+            except ValueError:
                 pass
 
     @commands.Cog.listener(name="on_slash_command_error")
@@ -76,6 +84,19 @@ class Events(Cog):
 
         else:
             raise error.original
+
+    @commands.Cog.listener(name="on_voice_state_update")
+    async def on_voice_state_update(self, member, before, after):
+        if before.channel is not None and after.channel is None:  # This means the user left the voice channel
+            if member.id == self.bot.user.id:
+                player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+
+                try:
+                    await update_display(self.bot, player)
+                except ValueError:  # There's no message to update
+                    pass
+
+                self.bot.lavalink.player_manager.remove(member.guild.id)
 
 
 def setup(bot):
