@@ -1,12 +1,12 @@
 from typing import Union
 
 import lavalink
-from disnake import TextChannel, Thread, Message, Embed, InteractionResponded, ApplicationCommandInteraction
+from disnake import TextChannel, Thread, Message, InteractionResponded, ApplicationCommandInteraction, \
+    MessageInteraction
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackEndEvent, \
-    PlayerUpdateEvent
+from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
@@ -60,27 +60,17 @@ class Events(Cog):
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
-        embed: Embed = Embed()
-
         if isinstance(error.original, MissingVoicePermissions):
-            await interaction.response.send_message(
-                embed=ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
-            )
+            embed = ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
 
         elif isinstance(error.original, BotNotInVoice):
-            await interaction.response.send_message(
-                embed=ErrorEmbed("指令錯誤", "我沒有連接到一個語音頻道")
-            )
+            embed = ErrorEmbed("指令錯誤", "我沒有連接到一個語音頻道")
 
         elif isinstance(error.original, UserNotInVoice):
-            await interaction.response.send_message(
-                embed=ErrorEmbed("指令錯誤", "你沒有連接到一個語音頻道")
-            )
+            embed = ErrorEmbed("指令錯誤", "你沒有連接到一個語音頻道")
 
         elif isinstance(error.original, UserInDifferentChannel):
-            await interaction.response.send_message(
-                embed=ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
-            )
+            embed = ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
 
         else:
             raise error.original
