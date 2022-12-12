@@ -4,7 +4,6 @@ import logging
 from os import getenv
 
 from disnake import Intents
-from disnake.ext.commands import CommandSyncFlags
 from lavalink import Client
 from spotipy import Spotify, SpotifyClientCredentials
 
@@ -18,8 +17,7 @@ def main():
     loop = asyncio.new_event_loop()
 
     bot = Bot(
-        command_prefix=getenv("PREFIX", "l!"), intents=Intents.all(),
-        command_sync_flags=CommandSyncFlags.all(), loop=loop
+        command_prefix=getenv("PREFIX", "l!"), intents=Intents.all(), loop=loop
     )
 
     loop.create_task(setup_bot(bot))
