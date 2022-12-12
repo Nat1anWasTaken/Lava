@@ -189,7 +189,10 @@ class Commands(Cog):
 
         await player.stop()
 
-        self.bot.lavalink.player_manager.remove(interaction.guild.id)
+        try:
+            await interaction.guild.voice_client.disconnect(force=True)
+        except AttributeError:
+            pass
 
         await update_display(self.bot, player, await interaction.original_response())
 
