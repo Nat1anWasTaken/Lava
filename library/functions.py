@@ -1,10 +1,11 @@
 import asyncio
+from os import getenv
 from typing import Union
 
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour
 from disnake.abc import GuildChannel
 from disnake.utils import get
-from lavalink import DefaultPlayer
+from lavalink import DefaultPlayer, parse_time
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
@@ -113,7 +114,9 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
 
     if player.current:
         embed.title = player.current.title
-        embed.description = "`Placeholder / Progress Bar`"
+        embed.description = f"`{format_time(player.position)}`" \
+                            f" {generate_progress_bar(player.current.duration, player.position)} " \
+                            f"`{format_time(player.current.duration)}`"
 
         embed.add_field(name="👤 作者", value=player.current.author, inline=True)
         embed.add_field(name="👥 點播者", value=f"<@{player.current.requester}>", inline=True)
@@ -125,7 +128,8 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
                 [
                     f"**[{index + 1}]** {track.title}"
                     for index, track in enumerate(player.queue[:5])
-                ]) + ("\n還有更多..." if len(player.queue) > 5 else "")) or "空",
+                ]
+            ) + ("\n還有更多..." if len(player.queue) > 5 else "")) or "空",
             inline=True
         )
         embed.add_field(
@@ -139,3 +143,39 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
         embed.title = "未在播放歌曲"
 
     return embed
+
+
+def format_time(time: Union[float, int]) -> str:
+    """
+    Formats the time into DD:HH:MM:SS
+    :param time: Time in milliseconds
+    :return: Formatted time
+    """
+    days, hours, minutes, seconds = parse_time(round(time))
+
+    days, hours, minutes, seconds = map(round, (days, hours, minutes, seconds))
+
+    return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+
+
+def generate_progress_bar(duration: Union[float, int], position: Union[float, int]):
+    """
+    Generate a progress bar.
+
+    :param duration: The duration of the song.
+    :param position: The current position of the song.
+    :return: The progress bar.
+    """
+    duration = round(duration / 1000)
+    position = round(position / 1000)
+
+    if duration == 0:
+        duration += 1
+
+    percentage = position / duration
+
+    return f"{getenv('PROGRESS_START_POINT', 'ST|')}" \
+           f"{getenv('PROGRESS_START_FILL', 'SF|') * round(percentage * 10)}" \
+           f"{getenv('PROGRESS_MID_POINT', 'MP|') if percentage != 1 else getenv('PROGRESS_START_FILL', 'SF|')}" \
+           f"{getenv('PROGRESS_END_FILL', 'EF|') * round((1 - percentage) * 10)}" \
+           f"{getenv('PROGRESS_END', 'ED|') if percentage != 1 else getenv('PROGRESS_END_POINT', 'EP')}"

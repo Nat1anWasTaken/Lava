@@ -5,7 +5,8 @@ from disnake import TextChannel, Thread, Message, Embed, InteractionResponded, A
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackStartEvent, TrackEndEvent
+from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, TrackEndEvent, \
+    PlayerUpdateEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
@@ -20,7 +21,15 @@ class Events(Cog):
         lavalink.add_event_hook(self.track_hook)
 
     async def track_hook(self, event):
-        if isinstance(event, QueueEndEvent):
+        if isinstance(event, PlayerUpdateEvent):
+            player: DefaultPlayer = event.player
+
+            try:
+                await update_display(self.bot, player)
+            except ValueError:
+                pass
+
+        elif isinstance(event, QueueEndEvent):
             # When this track_hook receives a "QueueEndEvent" from lavalink.py
             # it indicates that there are no tracks left in the player's queue.
             # To save on resources, we can tell the bot to disconnect from the voice channel.
@@ -47,19 +56,7 @@ class Events(Cog):
                 reference=message
             )
 
-            player.store("message", message.id)
-
-        elif isinstance(event, TrackStartEvent):
-            player: DefaultPlayer = event.player
-
-            try:
-                await update_display(self.bot, player)
-            except ValueError:
-                pass
-
-        elif isinstance(event, TrackEndEvent):
-            # TODO: Handle auto plays
-            pass
+            await update_display(self.bot, player, message)
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
@@ -96,18 +93,20 @@ class Events(Cog):
     @commands.Cog.listener(name="on_voice_state_update")
     async def on_voice_state_update(self, member, before, after):
         if (
-            before.channel is not None
-            and after.channel is None
-            and member.id == self.bot.user.id
+                before.channel is not None
+                and after.channel is None
+                and member.id == self.bot.user.id
         ):
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+
+            await player.stop()
 
             try:
                 await update_display(self.bot, player)
             except ValueError:  # There's no message to update
                 pass
 
-            self.bot.lavalink.player_manager.remove(member.guild.id)
+            await player.destroy()
 
 
 def setup(bot):
