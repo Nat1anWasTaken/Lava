@@ -1,9 +1,9 @@
 import asyncio
-from os import getenv
 from typing import Union
 
-from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
 from disnake.abc import GuildChannel
+from disnake.ui import Button, ActionRow
 from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time
 
@@ -77,21 +77,89 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 
         message = new_message
 
-    await message.edit(embed=generate_display_embed(player))
+    if not player.is_connected:
+        components = []
+
+    elif not player.queue and not player.current:
+        components = []
+
+    else:
+        components = [
+            ActionRow(
+                Button(
+                    style=ButtonStyle.green if player.shuffle else ButtonStyle.grey,
+                    emoji=bot.get_icon('control.shuffle', "🔀"),
+                    custom_id="control.shuffle"
+                ),
+                Button(
+                    style=ButtonStyle.blurple,
+                    emoji=bot.get_icon('control.previous', "⏮️"),
+                    custom_id="control.previous"
+                ),
+                Button(
+                    style=ButtonStyle.green,
+                    emoji=bot.get_icon('control.pause', "⏸️"),
+                    custom_id="control.pause"
+                ) if not player.paused else Button(
+                    style=ButtonStyle.red,
+                    emoji=bot.get_icon('control.resume', "▶️"),
+                    custom_id="control.resume"
+                ),
+                Button(
+                    style=ButtonStyle.blurple,
+                    emoji=bot.get_icon('control.next', "⏭️"),
+                    custom_id="control.next"
+                ),
+                Button(
+                    style=[ButtonStyle.grey, ButtonStyle.green, ButtonStyle.blurple][player.loop],
+                    emoji=bot.get_icon('control.repeat', "🔁"),
+                    custom_id="control.repeat"
+                )
+            ),
+            ActionRow(
+                Button(
+                    style=ButtonStyle.grey,
+                    emoji=bot.get_icon('empty', "⬛"),
+                    custom_id="control.empty.1"
+                ),
+                Button(
+                    style=ButtonStyle.blurple,
+                    emoji=bot.get_icon('control.rewind', "⏪"),
+                    custom_id="control.rewind"
+                ),
+                Button(
+                    style=ButtonStyle.red,
+                    emoji=bot.get_icon('control.stop', "⏹️"),
+                    custom_id="control.stop"
+                ),
+                Button(
+                    style=ButtonStyle.blurple,
+                    emoji=bot.get_icon('control.forward', "⏩"),
+                    custom_id="control.forward"
+                ),
+                Button(
+                    style=ButtonStyle.grey,
+                    emoji=bot.get_icon('empty', "⬛"),
+                    custom_id="control.empty.2"
+                )
+            )
+        ]
+
+    await message.edit(embed=generate_display_embed(bot, player), components=components)
 
     player.store('message', message.id)
 
 
-def generate_display_embed(player: DefaultPlayer) -> Embed:
+def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
     # TODO: Complete this embed
     embed = Embed()
 
-    if player.is_playing and player.is_playing:
+    if player.is_playing:
         embed.set_author(name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
 
         embed.colour = Colour.green()
 
-    elif player.is_connected and player.is_playing and player.paused:
+    elif player.paused:
         embed.set_author(name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
 
         embed.colour = Colour.orange()
@@ -101,7 +169,7 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
 
         embed.colour = Colour.red()
 
-    elif not player.queue and not player.is_playing:
+    elif not player.queue and not player.current:
         embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
 
         embed.colour = Colour.red()
@@ -115,7 +183,7 @@ def generate_display_embed(player: DefaultPlayer) -> Embed:
     if player.current:
         embed.title = player.current.title
         embed.description = f"`{format_time(player.position)}`" \
-                            f" {generate_progress_bar(player.current.duration, player.position)} " \
+                            f" {generate_progress_bar(bot, player.current.duration, player.position)} " \
                             f"`{format_time(player.current.duration)}`"
 
         embed.add_field(name="👤 作者", value=player.current.author, inline=True)
@@ -158,10 +226,11 @@ def format_time(time: Union[float, int]) -> str:
     return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
 
 
-def generate_progress_bar(duration: Union[float, int], position: Union[float, int]):
+def generate_progress_bar(bot: Bot, duration: Union[float, int], position: Union[float, int]):
     """
     Generate a progress bar.
 
+    :param bot: The bot instance.
     :param duration: The duration of the song.
     :param position: The current position of the song.
     :return: The progress bar.
@@ -174,8 +243,8 @@ def generate_progress_bar(duration: Union[float, int], position: Union[float, in
 
     percentage = position / duration
 
-    return f"{getenv('PROGRESS_START_POINT', 'ST|')}" \
-           f"{getenv('PROGRESS_START_FILL', 'SF|') * round(percentage * 10)}" \
-           f"{getenv('PROGRESS_MID_POINT', 'MP|') if percentage != 1 else getenv('PROGRESS_START_FILL', 'SF|')}" \
-           f"{getenv('PROGRESS_END_FILL', 'EF|') * round((1 - percentage) * 10)}" \
-           f"{getenv('PROGRESS_END', 'ED|') if percentage != 1 else getenv('PROGRESS_END_POINT', 'EP')}"
+    return f"{bot.get_icon('progress.start_point', 'ST|')}" \
+           f"{bot.get_icon('progress.start_fill', 'SF|') * round(percentage * 10)}" \
+           f"{bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else bot.get_icon('progress.start_fill', 'SF|')}" \
+           f"{bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
+           f"{bot.get_icon('progress.end', 'ED|') if percentage != 1 else bot.get_icon('progress.end_point', 'EP')}"

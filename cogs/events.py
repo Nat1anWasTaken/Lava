@@ -96,7 +96,50 @@ class Events(Cog):
             except ValueError:  # There's no message to update
                 pass
 
-            await player.destroy()
+    @commands.Cog.listener(name="on_message_interaction")
+    async def on_message_interaction(self, interaction: MessageInteraction):
+        if interaction.data.custom_id.startswith("control"):
+            if interaction.data.custom_id.startswith("control.empty"):
+                await interaction.response.edit_message()
+
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)
+
+            await interaction.response.edit_message()
+
+            match interaction.data.custom_id:
+                case "control.resume":
+                    await player.set_pause(False)
+
+                case "control.pause":
+                    await player.set_pause(True)
+
+                case "control.stop":
+                    await player.stop()
+
+                    try:
+                        await interaction.guild.voice_client.disconnect(force=True)
+                    except AttributeError:
+                        pass
+
+                case "control.previous":
+                    await player.seek(0)
+
+                case "control.next":
+                    await player.skip()
+
+                case "control.shuffle":
+                    player.set_shuffle(not player.shuffle)
+
+                case "control.repeat":
+                    player.set_loop(player.loop + 1 if player.loop < 2 else 0)
+
+                case "control.rewind":
+                    await player.seek(round(player.position) - 10000)
+
+                case "control.forward":
+                    await player.seek(round(player.position) + 10000)
+
+            await update_display(self.bot, player)
 
 
 def setup(bot):
