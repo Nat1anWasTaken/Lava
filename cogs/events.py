@@ -101,7 +101,7 @@ class Events(Cog):
         if interaction.data.custom_id.startswith("control"):
             if interaction.data.custom_id.startswith("control.empty"):
                 await interaction.response.edit_message()
-                
+
                 return
 
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)
