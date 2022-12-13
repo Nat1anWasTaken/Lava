@@ -78,7 +78,7 @@ class SpotifyAudioTrack(DeferredAudioTrack):
     # This makes the DeferredAudioTrack highly efficient, particularly in cases
     # where large playlists are loaded.
 
-    async def load(self, client):  # Load our 'actual' playback track using the metadata from this one.
+    async def load(self, client):  # skipcq: PYL-W0201
         result: LoadResult = await client.get_tracks(
             f'ytsearch:{self.title} {self.author}'
         )  # Search for our track on YouTube.
