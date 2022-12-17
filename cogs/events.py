@@ -11,7 +11,7 @@ from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, PlayerU
 from core.classes import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display
+from library.functions import update_display, ensure_voice
 
 
 class Events(Cog):
@@ -105,6 +105,11 @@ class Events(Cog):
             if interaction.data.custom_id.startswith("control.empty"):
                 await interaction.response.edit_message()
 
+                return
+
+            try:
+                await ensure_voice(interaction, should_connect=False)
+            except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):
                 return
 
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)
