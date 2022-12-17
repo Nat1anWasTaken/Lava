@@ -23,7 +23,6 @@ class Commands(Cog):
         self.bot = bot
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="nowplaying",
         description="顯示目前正在播放的歌曲"
     )
@@ -37,7 +36,6 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response())
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="play",
         description="播放一首歌曲",
         options=[
@@ -110,7 +108,6 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="skip",
         description="跳過當前播放的歌曲",
         options=[
@@ -155,7 +152,6 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="pause",
         description="暫停當前播放的歌曲"
     )
@@ -174,7 +170,6 @@ class Commands(Cog):
         await interaction.edit_original_response(embed=SuccessEmbed("已暫停歌曲"))
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="resume",
         description="恢復當前播放的歌曲"
     )
@@ -195,7 +190,6 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="stop",
         description="停止播放並清空播放序列"
     )
@@ -216,7 +210,6 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response())
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="repeat",
         description="更改重複播放模式",
         options=[
@@ -242,7 +235,7 @@ class Commands(Cog):
 
         await interaction.response.send_message(embed=SuccessEmbed(f"成功將重複播放模式更改為: {mode.split('/')[0]}"))
 
-    @commands.slash_command(guild_ids=[975244147730546758], name="shuffle", description="切換隨機播放模式")
+    @commands.slash_command(name="shuffle", description="切換隨機播放模式")
     async def shuffle(self, interaction: ApplicationCommandInteraction):
         await interaction.response.defer()
 
@@ -273,7 +266,6 @@ class Commands(Cog):
         return []
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="timescale", description="修改歌曲的速度、音調",
         options=[
             Option(
@@ -300,7 +292,6 @@ class Commands(Cog):
         await self.update_filter(interaction, "timescale", **kwargs)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="tremolo", description="為歌曲增加一個「顫抖」的效果",
         options=[
             Option(
@@ -321,7 +312,6 @@ class Commands(Cog):
         await self.update_filter(interaction, "tremolo", **kwargs)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="vibrato", description="為歌曲增加一個「震動」的效果",
         options=[
             Option(
@@ -342,7 +332,6 @@ class Commands(Cog):
         await self.update_filter(interaction, "vibrato", **kwargs)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="rotation", description="8D 環繞效果",
         options=[
             Option(
@@ -357,7 +346,6 @@ class Commands(Cog):
         await self.update_filter(interaction, "rotation", **kwargs)
 
     @commands.slash_command(
-        guild_ids=[975244147730546758],
         name="lowpass", description="低音增強 (削弱高音)",
         options=[
             Option(
