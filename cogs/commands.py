@@ -245,7 +245,7 @@ class Commands(Cog):
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
 
-        await player.set_shuffle(not player.shuffle)
+        player.set_shuffle(not player.shuffle)
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(f"已{'開啟' if player.shuffle else '關閉'}隨機播放模式")
