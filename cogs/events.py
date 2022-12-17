@@ -18,6 +18,9 @@ class Events(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
+    async def cog_load(self):
+        await self.bot.wait_until_ready()
+
         lavalink.add_event_hook(self.track_hook)
 
     async def track_hook(self, event):

@@ -28,11 +28,11 @@ def main():
 
 
 async def setup_bot(bot: Bot) -> Bot:
-    await bot.wait_until_ready()
+    load_extensions(bot)
 
     bot.load_icons("icons.json")
 
-    load_extensions(bot)
+    await bot.wait_until_ready()
 
     load_lavalink_nodes(bot)
 
