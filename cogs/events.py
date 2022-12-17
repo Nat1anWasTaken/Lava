@@ -114,8 +114,6 @@ class Events(Cog):
 
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)
 
-            await interaction.response.edit_message()
-
             match interaction.data.custom_id:
                 case "control.resume":
                     await player.set_pause(False)
@@ -149,7 +147,7 @@ class Events(Cog):
                 case "control.forward":
                     await player.seek(round(player.position) + 10000)
 
-            await update_display(self.bot, player)
+            await update_display(self.bot, player, interaction=interaction)
 
 
 def setup(bot):

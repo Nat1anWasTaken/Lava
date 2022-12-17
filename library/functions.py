@@ -47,7 +47,8 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
 
-async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0):
+async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
+                         interaction: Interaction = None) -> None:
     """
     Update the display of the current song.
 
@@ -57,6 +58,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     :param player: The player instance.
     :param new_message: The new message to update the display with, None to use the old message.
     :param delay: The delay in seconds before updating the display.
+    :param interaction: The interaction to be responded to.
     """
     await asyncio.sleep(delay)
 
@@ -145,7 +147,10 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
             )
         ]
 
-    await message.edit(embed=generate_display_embed(bot, player), components=components)
+    if interaction:
+        await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
+    else:
+        await message.edit(embed=generate_display_embed(bot, player), components=components)
 
     player.store('message', message.id)
 
