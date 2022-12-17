@@ -41,7 +41,7 @@ class Events(Cog):
             guild = self.bot.get_guild(guild_id)
 
             try:
-                await guild.voice_client.disconnect(force=True)
+                await guild.voice_client.disconnect(force=False)
             except AttributeError:
                 pass
 
@@ -122,7 +122,7 @@ class Events(Cog):
                     await player.stop()
 
                     try:
-                        await interaction.guild.voice_client.disconnect(force=True)
+                        await interaction.guild.voice_client.disconnect(force=False)
                     except AttributeError:
                         pass
 
