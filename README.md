@@ -4,7 +4,7 @@
 ## 特色
 * 效果器 ( Timescale, Rotation, Vibrato... )
 * 支援超多音樂平台 ( YouTube, SoundCloud, Spotify... )
-* 簡單易用的播放器 UI
+* 簡單易用的播放器 UI <br>
 ![播放器 UI](/img/player.gif)
 
 ## 如何架設
