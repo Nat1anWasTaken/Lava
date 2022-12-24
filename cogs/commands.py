@@ -77,7 +77,7 @@ class Commands(Cog):
 
         match results.load_type:
             case LoadType.TRACK:
-                player.add(requester=interaction.author.id, track=results.tracks[0], index=index - 1)
+                player.add(requester=interaction.author.id, track=results.tracks[0], index=index - 1 if index else None)
 
                 await interaction.edit_original_response(
                     embed=SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
@@ -89,7 +89,7 @@ class Commands(Cog):
                 for iter_index, track in enumerate(results.tracks):
                     player.add(
                         requester=interaction.author.id, track=track,
-                        index=((index or len(player.queue) - 1) + iter_index) - 1
+                        index=index or len(player.queue) - 1 + iter_index
                     )
 
                 await interaction.edit_original_response(
