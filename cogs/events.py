@@ -27,13 +27,8 @@ class Events(Cog):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
-            if event.player.fetch("autoplay") and len(event.player.queue) <= 1:
-                try:
-                    recommendations = await get_recommended_tracks(self.bot, event.player, event.player.current, 10)
-
-                except LoadError:
-                    toggle_autoplay(event.player)
-                    return
+            if event.player.fetch("autoplay") and len(event.player.queue) <= 10:
+                recommendations = await get_recommended_tracks(self.bot, event.player, event.player.queue[:-10], 10)
 
                 for track in recommendations:
                     event.player.add(requester=0, track=track)

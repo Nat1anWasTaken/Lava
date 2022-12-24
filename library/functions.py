@@ -9,7 +9,7 @@ from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
-from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel, LoadError
+from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.sources.track import SpotifyAudioTrack
 
 
@@ -63,36 +63,40 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
 
 async def get_recommended_tracks(bot: Bot,
                                  player: DefaultPlayer,
-                                 track: DeferredAudioTrack,
+                                 tracks: list[DeferredAudioTrack],
                                  amount: int = 10) -> list[SpotifyAudioTrack]:
     """
     Get recommended tracks from the given track.
 
     :param bot: The bot instance.
     :param player: The player instance.
-    :param track: The track to get recommended tracks from.
+    :param tracks: The seed tracks to get recommended tracks from.
     :param amount: The amount of recommended tracks to get.
     """
-    track_id = track.identifier
+    seed_ids = []
 
-    if not isinstance(track, SpotifyAudioTrack):
-        try:
-            result = bot.spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
-            track_id = result["tracks"]["items"][0]["id"]
+    for track in tracks:
+        if not isinstance(track, SpotifyAudioTrack):
+            try:
+                result = bot.spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
 
-        except IndexError:
-            raise LoadError("No tracks found on Spotify.")
+                seed_ids.append(result["tracks"]["items"][0]["id"])
 
-    recommendations = bot.spotify.recommendations(seed_tracks=[track_id], limit=amount)
+            except IndexError:
+                continue
 
-    tracks = []
+        seed_ids.append(track.identifier)
+
+    recommendations = bot.spotify.recommendations(seed_tracks=seed_ids, limit=amount)
+
+    output = []
 
     for track in recommendations["tracks"]:
         load_result: LoadResult = await player.node.get_tracks(track['external_urls']['spotify'], check_local=True)
 
-        tracks.append(load_result.tracks[0])
+        output.append(load_result.tracks[0])
 
-    return tracks
+    return output
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
