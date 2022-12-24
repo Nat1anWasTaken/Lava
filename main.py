@@ -73,12 +73,9 @@ def initial_spotify_source(bot: Bot) -> Bot:
         open_browser=False
     )
 
-    print(f"偵測到 Spotify 支援已啟用，請前往 {credentials.get_authorize_url()} 授權，並輸入授權後網站將你導向的網址")
-    url = input("網址：")
-
-    credentials.parse_response_code(url)
-
     spotify = Spotify(auth_manager=credentials)
+
+    spotify.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])  # This is made to trigger the auth flow
 
     spotify_source = SpotifySource(spotify)
 
