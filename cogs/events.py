@@ -6,12 +6,12 @@ from disnake import TextChannel, Thread, Message, InteractionResponded, Applicat
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import QueueEndEvent, TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent
+from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
-from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice
+from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel, LoadError
+from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
 
 
 class Events(Cog):
@@ -27,18 +27,21 @@ class Events(Cog):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
+            if event.player.fetch("autoplay") and len(event.player.queue) <= 1:
+                try:
+                    recommendations = await get_recommended_tracks(self.bot, event.player, event.player.current, 10)
+
+                except LoadError:
+                    toggle_autoplay(event.player)
+                    return
+
+                for track in recommendations:
+                    event.player.add(requester=0, track=track)
+
             try:
                 await update_display(self.bot, player)
             except ValueError:
                 pass
-
-        elif isinstance(event, QueueEndEvent):
-            # When this track_hook receives a "QueueEndEvent" from lavalink.py
-            # it indicates that there are no tracks left in the player's queue.
-            # To save on resources, we can tell the bot to disconnect from the voice channel.
-            guild_id = event.player.guild_id
-
-            guild = self.bot.get_guild(guild_id)
 
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
@@ -136,6 +139,9 @@ class Events(Cog):
 
                 case "control.forward":
                     await player.seek(round(player.position) + 10000)
+
+                case "control.autoplay":
+                    toggle_autoplay(player)
 
             await update_display(self.bot, player, interaction=interaction)
 

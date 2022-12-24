@@ -3,6 +3,7 @@ import json
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
+from spotipy import Spotify
 
 
 class Bot(OriginalBot):
@@ -10,6 +11,8 @@ class Bot(OriginalBot):
         super().__init__(**kwargs)
 
         self.lavalink: Client = MISSING
+        self.spotify: Spotify = MISSING
+
         self.icons: dict = MISSING
 
     def assign_lavalink_client(self, client: Client):
@@ -18,6 +21,13 @@ class Bot(OriginalBot):
         This must be called before any other Lavalink-related code is executed.
         """
         self.lavalink: Client = client
+
+    def assign_spotify_client(self, spotify: Spotify):
+        """
+        Assigns a Spotify client to the bot.
+        This must be called before any other Spotify-related code is executed.
+        """
+        self.spotify: Spotify = spotify
 
     def load_icons(self, file_path: str):
         """

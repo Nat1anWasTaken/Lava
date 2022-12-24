@@ -6,10 +6,10 @@ from os import getenv
 from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
 from lavalink import Client
-from spotipy import Spotify, SpotifyClientCredentials
+from spotipy import Spotify, SpotifyOAuth
 
 from core.classes import Bot
-from library.classes import SpotifySource
+from library.sources.source import SpotifySource
 
 logging.basicConfig(level=logging.INFO)
 
@@ -66,9 +66,10 @@ def initial_spotify_source(bot: Bot) -> Bot:
     :param bot: The bot to register the spotify source to
     :return: The bot
     """
-    credentials = SpotifyClientCredentials(
+    credentials = SpotifyOAuth(
         client_id=getenv("SPOTIFY_CLIENT_ID"),
-        client_secret=getenv("SPOTIFY_CLIENT_SECRET")
+        client_secret=getenv("SPOTIFY_CLIENT_SECRET"),
+        redirect_uri=getenv("SPOTIFY_REDIRECT_URI")
     )
 
     spotify = Spotify(auth_manager=credentials)
@@ -76,6 +77,8 @@ def initial_spotify_source(bot: Bot) -> Bot:
     spotify_source = SpotifySource(spotify)
 
     bot.lavalink.register_source(spotify_source)
+
+    bot.assign_spotify_client(spotify)
 
     return bot
 

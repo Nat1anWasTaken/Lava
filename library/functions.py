@@ -5,11 +5,12 @@ from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, 
 from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
-from lavalink import DefaultPlayer, parse_time
+from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
-from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
+from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel, LoadError
+from library.sources.track import SpotifyAudioTrack
 
 
 async def ensure_voice(interaction: Interaction, should_connect: bool) -> LavalinkVoiceClient:
@@ -47,6 +48,53 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
 
+def toggle_autoplay(player: DefaultPlayer) -> None:
+    """
+    Toggle autoplay for the player.
+
+    :param player: The player instance.
+    """
+
+    if player.fetch("autoplay"):
+        player.delete("autoplay")
+    else:
+        player.store("autoplay", "1")
+
+
+async def get_recommended_tracks(bot: Bot,
+                                 player: DefaultPlayer,
+                                 track: DeferredAudioTrack,
+                                 amount: int = 10) -> list[SpotifyAudioTrack]:
+    """
+    Get recommended tracks from the given track.
+
+    :param bot: The bot instance.
+    :param player: The player instance.
+    :param track: The track to get recommended tracks from.
+    :param amount: The amount of recommended tracks to get.
+    """
+    track_id = track.identifier
+
+    if not isinstance(track, SpotifyAudioTrack):
+        try:
+            result = bot.spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
+            track_id = result["tracks"]["items"][0]["id"]
+
+        except IndexError:
+            raise LoadError("No tracks found on Spotify.")
+
+    recommendations = bot.spotify.recommendations(seed_tracks=[track_id], limit=amount)
+
+    tracks = []
+
+    for track in recommendations["tracks"]:
+        load_result: LoadResult = await player.node.get_tracks(track['external_urls']['spotify'], check_local=True)
+
+        tracks.append(load_result.tracks[0])
+
+    return tracks
+
+
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
                          interaction: Interaction = None) -> None:
     """
@@ -79,10 +127,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 
         message = new_message
 
-    if not player.is_connected:
-        components = []
-
-    elif not player.queue and not player.current:
+    if not player.is_connected or not player.current:
         components = []
 
     else:
@@ -120,9 +165,9 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
             ),
             ActionRow(
                 Button(
-                    style=ButtonStyle.grey,
-                    emoji=bot.get_icon('empty', "⬛"),
-                    custom_id="control.empty.1"
+                    style=ButtonStyle.green if player.fetch("autoplay") else ButtonStyle.grey,
+                    emoji=bot.get_icon('control.autoplay', "🔥"),
+                    custom_id="control.autoplay"
                 ),
                 Button(
                     style=ButtonStyle.blurple,
@@ -142,7 +187,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
                 Button(
                     style=ButtonStyle.grey,
                     emoji=bot.get_icon('empty', "⬛"),
-                    custom_id="control.empty.2"
+                    custom_id="control.empty"
                 )
             )
         ]
@@ -174,7 +219,7 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
 
         embed.colour = Colour.red()
 
-    elif not player.queue and not player.current:
+    elif not player.current:
         embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
 
         embed.colour = Colour.red()
@@ -192,7 +237,10 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
                             f"`{format_time(player.current.duration)}`"
 
         embed.add_field(name="👤 作者", value=player.current.author, inline=True)
-        embed.add_field(name="👥 點播者", value=f"<@{player.current.requester}>", inline=True)
+        embed.add_field(
+            name="👥 點播者", value="自動播放" if not player.current.requester else f"<@{player.current.requester}>",
+            inline=True
+        )  # Requester will be 0 if the song is added by autoplay
         embed.add_field(name="🔁 重複播放模式", value=loop_mode_text[player.loop], inline=True)
 
         embed.add_field(
@@ -210,7 +258,7 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
             value=', '.join([key.capitalize() for key in player.filters]) or "無",
             inline=True
         )
-        embed.add_field(name="🔀 雖機播放", value="開" if player.shuffle else "關", inline=True)
+        embed.add_field(name="🔀 隨機播放", value="開" if player.shuffle else "關", inline=True)
 
     else:
         embed.title = "未在播放歌曲"
