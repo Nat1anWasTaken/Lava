@@ -10,7 +10,7 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
-from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel, LoadError
+from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
 
 
@@ -28,7 +28,9 @@ class Events(Cog):
             player: DefaultPlayer = event.player
 
             if event.player.fetch("autoplay") and len(event.player.queue) <= 10:
-                recommendations = await get_recommended_tracks(self.bot, event.player, event.player.queue[:-10], 10)
+                recommendations = await get_recommended_tracks(
+                    self.bot, event.player, ([event.player.current] + event.player.queue)[-10:], 20
+                )
 
                 for track in recommendations:
                     event.player.add(requester=0, track=track)

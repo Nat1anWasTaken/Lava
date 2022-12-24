@@ -73,21 +73,23 @@ async def get_recommended_tracks(bot: Bot,
     :param tracks: The seed tracks to get recommended tracks from.
     :param amount: The amount of recommended tracks to get.
     """
-    seed_ids = []
+    seed_tracks = []
 
     for track in tracks:
         if not isinstance(track, SpotifyAudioTrack):
             try:
                 result = bot.spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
 
-                seed_ids.append(result["tracks"]["items"][0]["id"])
+                seed_tracks.append(result["tracks"]["items"][0]["id"])
 
             except IndexError:
                 continue
 
-        seed_ids.append(track.identifier)
+            continue
 
-    recommendations = bot.spotify.recommendations(seed_tracks=seed_ids, limit=amount)
+        seed_tracks.append(track.identifier)
+
+    recommendations = bot.spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
 
     output = []
 
