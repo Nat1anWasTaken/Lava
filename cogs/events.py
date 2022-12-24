@@ -87,7 +87,7 @@ class Events(Cog):
         ):
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
 
-            await player.stop()
+            await player.destroy()
 
             try:
                 await update_display(self.bot, player)
