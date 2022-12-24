@@ -69,7 +69,8 @@ def initial_spotify_source(bot: Bot) -> Bot:
     credentials = SpotifyOAuth(
         client_id=getenv("SPOTIFY_CLIENT_ID"),
         client_secret=getenv("SPOTIFY_CLIENT_SECRET"),
-        redirect_uri=getenv("SPOTIFY_REDIRECT_URI")
+        redirect_uri=getenv("SPOTIFY_REDIRECT_URI"),
+        open_browser=False
     )
 
     spotify = Spotify(auth_manager=credentials)
