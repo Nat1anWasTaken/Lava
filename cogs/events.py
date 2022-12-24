@@ -40,11 +40,6 @@ class Events(Cog):
 
             guild = self.bot.get_guild(guild_id)
 
-            try:
-                await guild.voice_client.disconnect(force=False)
-            except AttributeError:
-                pass
-
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
 
@@ -123,11 +118,6 @@ class Events(Cog):
 
                 case "control.stop":
                     await player.stop()
-
-                    try:
-                        await interaction.guild.voice_client.disconnect(force=False)
-                    except AttributeError:
-                        pass
 
                 case "control.previous":
                     await player.seek(0)

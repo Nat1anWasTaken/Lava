@@ -73,8 +73,6 @@ class Commands(Cog):
         results: LoadResult = await player.node.get_tracks(query, check_local=True)
 
         if not results or not results.tracks:
-            await interaction.guild.voice_client.disconnect(force=False)
-
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有找到任何歌曲"))
 
         match results.load_type:
@@ -203,11 +201,6 @@ class Commands(Cog):
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
 
         await player.stop()
-
-        try:
-            await interaction.guild.voice_client.disconnect(force=False)
-        except AttributeError:
-            pass
 
         await update_display(self.bot, player, await interaction.original_response())
 
