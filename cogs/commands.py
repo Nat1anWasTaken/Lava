@@ -155,6 +155,51 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
 
     @commands.slash_command(
+        name="remove",
+        description="移除歌曲",
+        options=[
+            Option(
+                name="target",
+                description="要移除的歌曲編號",
+                type=OptionType.integer,
+                required=True
+            )
+        ]
+    )
+    async def remove(self, interaction: ApplicationCommandInteraction, target: int):
+        await interaction.response.defer()
+
+        await ensure_voice(interaction, should_connect=False)
+
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+        if len(player.queue) < target or target < 1:
+            return await interaction.edit_original_response(embed=ErrorEmbed("無效的歌曲編號"))
+
+        player.queue.pop(target - 1)
+
+        await interaction.edit_original_response(embed=SuccessEmbed("已移除歌曲"))
+
+        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+
+    @commands.slash_command(
+        name="clean",
+        description="清除播放序列"
+    )
+    async def clean(self, interaction: ApplicationCommandInteraction):
+        await interaction.response.defer()
+
+        await ensure_voice(interaction, should_connect=False)
+
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+        player.queue.clear()
+
+        await interaction.edit_original_response(embed=SuccessEmbed("已清除播放序列"))
+
+        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+
+    @commands.slash_command(
         name="pause",
         description="暫停當前播放的歌曲"
     )
