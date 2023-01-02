@@ -249,6 +249,7 @@ class Commands(Cog):
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
 
         await player.stop()
+        player.queue.clear()
 
         await update_display(self.bot, player, await interaction.original_response())
 

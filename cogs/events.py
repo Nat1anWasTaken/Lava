@@ -88,6 +88,7 @@ class Events(Cog):
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
 
             await player.stop()
+            player.queue.clear()
 
             try:
                 await update_display(self.bot, player)
@@ -118,6 +119,7 @@ class Events(Cog):
 
                 case "control.stop":
                     await player.stop()
+                    player.queue.clear()
 
                 case "control.previous":
                     await player.seek(0)

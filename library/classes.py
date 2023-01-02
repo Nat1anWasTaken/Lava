@@ -37,6 +37,9 @@ class LavalinkVoiceClient(VoiceClient):
         }
         await self.lavalink.voice_update_handler(lavalink_data)
 
+        if not data['channel_id']:
+            self.cleanup()
+
     async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,
                       self_mute: bool = False) -> None:
         """
@@ -67,5 +70,3 @@ class LavalinkVoiceClient(VoiceClient):
         player.channel_id = None
 
         self.cleanup()
-
-
