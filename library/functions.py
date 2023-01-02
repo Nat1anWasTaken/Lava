@@ -42,6 +42,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
 
         # noinspection PyTypeChecker
         return await interaction.author.voice.channel.connect(cls=LavalinkVoiceClient)
+
     if v_client.channel.id != interaction.author.voice.channel.id:
         raise UserInDifferentChannel(
             v_client.channel, "User must be in the same voice channel as the bot"
