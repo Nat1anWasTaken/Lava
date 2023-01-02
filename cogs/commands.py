@@ -281,7 +281,7 @@ class Commands(Cog):
             )
 
         paginator = Paginator(
-            timeout=180,
+            timeout=60,
             previous_button=Button(style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.previous', '⏪')),
             next_button=Button(style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.next', '⏩')),
             trash_button=Button(style=ButtonStyle.red, emoji=self.bot.get_icon('control.stop', '⏹️')),
