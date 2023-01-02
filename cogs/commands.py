@@ -1,13 +1,15 @@
 import re
 
-from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice
+from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle
 from disnake.ext import commands
 from disnake.ext.commands import Cog
+from disnake.ui import Button
+from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation
 
 from core.classes import Bot
-from core.embeds import ErrorEmbed, SuccessEmbed
-from library.functions import ensure_voice, update_display
+from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed
+from library.functions import ensure_voice, update_display, split_list
 
 allowed_filters = {
     "timescale": Timescale,
@@ -252,6 +254,42 @@ class Commands(Cog):
         player.queue.clear()
 
         await update_display(self.bot, player, await interaction.original_response())
+
+    @commands.slash_command(
+        name="queue",
+        description="顯示播放序列"
+    )
+    async def queue(self, interaction: ApplicationCommandInteraction):
+        player = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+        if not player or not player.queue:
+            return await interaction.response.send_message(embed=ErrorEmbed("播放序列是空的!"))
+
+        pages: list[InfoEmbed] = []
+
+        for iteration, songs_in_page in enumerate(split_list(player.queue, 10)):
+            pages.append(
+                InfoEmbed(
+                    title="播放序列",
+                    description='\n'.join(
+                        [
+                            f"**[{index + 1 + (10 * iteration)}]** {track.title}"
+                            for index, track in enumerate(songs_in_page)
+                        ]
+                    )
+                )
+            )
+
+        paginator = Paginator(
+            timeout=180,
+            previous_button=Button(style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.previous', '⏪')),
+            next_button=Button(style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.next', '⏩')),
+            trash_button=Button(style=ButtonStyle.red, emoji=self.bot.get_icon('control.stop', '⏹️')),
+            page_counter_style=ButtonStyle.green,
+            interaction_check_message=ErrorEmbed("沒事戳這顆幹嘛？")
+        )
+
+        await paginator.start(interaction, pages)
 
     @commands.slash_command(
         name="repeat",

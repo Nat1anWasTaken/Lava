@@ -1,5 +1,5 @@
 import asyncio
-from typing import Union
+from typing import Union, Iterable
 
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
 from disnake.abc import GuildChannel
@@ -11,6 +11,24 @@ from core.classes import Bot
 from library.classes import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.sources.track import SpotifyAudioTrack
+
+
+def split_list(input_list, chunk_size) -> Iterable[list]:
+    length = len(input_list)
+
+    if length < chunk_size:
+        yield input_list
+
+        return
+
+    num_sublists = length // chunk_size
+
+    for i in range(num_sublists):
+        index_range = range(i * chunk_size, (i + 1) * chunk_size)
+        sublist = [input_list[j] for j in index_range]
+        yield sublist
+
+    return
 
 
 async def ensure_voice(interaction: Interaction, should_connect: bool) -> LavalinkVoiceClient:
