@@ -1,0 +1,3 @@
+[submodule "disnake-ext-paginator"]
+	path = disnake-ext-paginator
+	url = https://github.com/Snipy7374/disnake-ext-paginator.git
