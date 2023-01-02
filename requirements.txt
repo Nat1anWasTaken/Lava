@@ -2,3 +2,4 @@ disnake>=2.7
 lavalink>=4.0
 pynacl>=1.5
 spotipy>=2.22
+git+https://github.com/Snipy7374/disnake-ext-paginator.git
