@@ -256,6 +256,24 @@ class Commands(Cog):
         await update_display(self.bot, player, await interaction.original_response())
 
     @commands.slash_command(
+        name="disconnect",
+        description="斷開與語音頻道的連接"
+    )
+    async def disconnect(self, interaction: ApplicationCommandInteraction):
+        await interaction.response.defer()
+
+        await ensure_voice(interaction, should_connect=False)
+
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+        await player.stop()
+        player.queue.clear()
+
+        await interaction.guild.voice_client.disconnect(force=False)
+
+        await update_display(self.bot, player, await interaction.original_response())
+
+    @commands.slash_command(
         name="queue",
         description="顯示播放序列"
     )
