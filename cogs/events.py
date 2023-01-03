@@ -6,7 +6,7 @@ from disnake import TextChannel, Thread, Message, InteractionResponded, Applicat
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent
+from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed
@@ -34,6 +34,14 @@ class Events(Cog):
 
                 for track in recommendations:
                     event.player.add(requester=0, track=track)
+
+            try:
+                await update_display(self.bot, player)
+            except ValueError:
+                pass
+
+        elif isinstance(event, TrackEndEvent):
+            player: DefaultPlayer = event.player
 
             try:
                 await update_display(self.bot, player)
