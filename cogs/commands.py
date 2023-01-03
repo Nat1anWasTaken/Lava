@@ -291,7 +291,8 @@ class Commands(Cog):
                     title="播放序列",
                     description='\n'.join(
                         [
-                            f"**[{index + 1 + (10 * iteration)}]** {track.title}"
+                            f"**[{index + 1 + (iteration * 10)}]** {track.title}"
+                            f" {self.bot.get_icon('control.autoplay', '🔥') if not track.requester else ''}"
                             for index, track in enumerate(songs_in_page)
                         ]
                     )
