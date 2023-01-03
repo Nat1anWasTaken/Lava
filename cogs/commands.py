@@ -77,9 +77,13 @@ class Commands(Cog):
         if not results or not results.tracks:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有找到任何歌曲"))
 
+        # Find the index song should be (In front of any autoplay songs)
+        if not index:
+            index = sum(1 for t in player.queue if t.requester)
+
         match results.load_type:
             case LoadType.TRACK:
-                player.add(requester=interaction.author.id, track=results.tracks[0], index=index - 1 if index else None)
+                player.add(requester=interaction.author.id, track=results.tracks[0], index=index)
 
                 await interaction.edit_original_response(
                     embed=SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
@@ -91,7 +95,7 @@ class Commands(Cog):
                 for iter_index, track in enumerate(results.tracks):
                     player.add(
                         requester=interaction.author.id, track=track,
-                        index=index or len(player.queue) - 1 + iter_index
+                        index=index + iter_index
                     )
 
                 await interaction.edit_original_response(
