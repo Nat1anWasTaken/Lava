@@ -5,11 +5,11 @@ from os import getenv
 
 from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
-from lavalink import Client
 from spotipy import Spotify, SpotifyOAuth
 
 from core.classes import Bot
-from library.sources.source import SpotifySource
+from lavalink import Client
+from library.sources.source import SpotifySource, YTDLSource
 
 logging.basicConfig(level=logging.INFO)
 
@@ -38,6 +38,8 @@ async def setup_bot(bot: Bot) -> Bot:
 
     if getenv("SPOTIFY_CLIENT_ID") and getenv("SPOTIFY_CLIENT_SECRET"):
         initial_spotify_source(bot)
+
+    initial_other_sources(bot)
 
     return bot
 
@@ -82,6 +84,19 @@ def initial_spotify_source(bot: Bot) -> Bot:
     bot.lavalink.register_source(spotify_source)
 
     bot.assign_spotify_client(spotify)
+
+    return bot
+
+
+def initial_other_sources(bot: Bot) -> Bot:
+    """
+    Initialize the other sources then register them to the bot
+
+    Note: bot.assign_lavalink_client() must be called before this function
+    :param bot: The bot to register the other sources to
+    :return: The bot
+    """
+    bot.lavalink.register_source(YTDLSource())
 
     return bot
 

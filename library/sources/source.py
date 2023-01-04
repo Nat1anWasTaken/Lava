@@ -1,10 +1,43 @@
 import re
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
 from spotipy import Spotify
+from youtube_dl import YoutubeDL
 
 from library.sources.track import SpotifyAudioTrack
+
+
+class YTDLSource(Source):
+    def __init__(self):
+        super().__init__(name='ytdl')
+
+        self.ytdl = YoutubeDL()
+
+    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        if 'youtube' in query or 'youtu.be' in query:  # Lavalink node will handle that, so skip
+            return None
+
+        url_info = self.ytdl.extract_info(query, download=False)
+
+        if 'entries' in url_info:
+            url_info = url_info['entries'][0]
+
+        try:
+            track = (await client.get_tracks(url_info['formats'][-1]['url'])).tracks[0]
+        except IndexError:
+            return None
+
+        match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
+
+        track.title = url_info['title']
+        track.author = f"來自 [{match.group(1)}]({match.group(0)}) 的未知作者"
+
+        return LoadResult(
+            load_type=LoadType.TRACK,
+            tracks=[track],
+            playlist_info=PlaylistInfo.none()
+        )
 
 
 class SpotifySource(Source):
