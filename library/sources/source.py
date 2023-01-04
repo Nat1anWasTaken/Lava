@@ -4,7 +4,7 @@ from typing import Union, Tuple, Optional
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
 from spotipy import Spotify
 from youtube_dl import YoutubeDL
-from youtube_dl.utils import UnsupportedError
+from youtube_dl.utils import UnsupportedError, DownloadError
 
 from library.sources.track import SpotifyAudioTrack
 
@@ -25,7 +25,7 @@ class YTDLSource(Source):
             if 'entries' in url_info:
                 url_info = url_info['entries'][0]
 
-        except UnsupportedError:
+        except (UnsupportedError, DownloadError):
             return None
 
         try:
