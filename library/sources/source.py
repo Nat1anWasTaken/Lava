@@ -4,6 +4,7 @@ from typing import Union, Tuple, Optional
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
 from spotipy import Spotify
 from youtube_dl import YoutubeDL
+from youtube_dl.utils import UnsupportedError
 
 from library.sources.track import SpotifyAudioTrack
 
@@ -18,13 +19,18 @@ class YTDLSource(Source):
         if 'youtube' in query or 'youtu.be' in query:  # Lavalink node will handle that, so skip
             return None
 
-        url_info = self.ytdl.extract_info(query, download=False)
+        try:
+            url_info = self.ytdl.extract_info(query, download=False)
 
-        if 'entries' in url_info:
-            url_info = url_info['entries'][0]
+            if 'entries' in url_info:
+                url_info = url_info['entries'][0]
+
+        except UnsupportedError:
+            return None
 
         try:
             track = (await client.get_tracks(url_info['formats'][-1]['url'])).tracks[0]
+
         except IndexError:
             return None
 
