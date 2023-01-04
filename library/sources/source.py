@@ -17,17 +17,17 @@ class SpotifySource(Source):
         track = self.load_track(query)
 
         if track:
-            return LoadResult(LoadType.TRACK, [track], playlist_info=PlaylistInfo.none())
+            return LoadResult(LoadType.TRACK, [track], PlaylistInfo.none())
 
         playlist, playlist_info = self.load_playlist(query)
 
         if playlist:
-            return LoadResult(LoadType.PLAYLIST, playlist, playlist_info=playlist_info)
+            return LoadResult(LoadType.PLAYLIST, playlist, playlist_info)
 
         album, playlist_info = self.load_album(query)
 
         if album:
-            return LoadResult(LoadType.PLAYLIST, album, playlist_info=playlist_info)
+            return LoadResult(LoadType.PLAYLIST, album, playlist_info)
 
         return None
 
