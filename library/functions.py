@@ -284,6 +284,8 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
         )
         embed.add_field(name="🔀 隨機播放", value="開" if player.shuffle else "關", inline=True)
 
+        embed.set_footer(text="如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區")
+
     else:
         embed.title = "未在播放歌曲"
 
