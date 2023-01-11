@@ -70,6 +70,11 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
 
     if player.fetch("autoplay"):
         player.delete("autoplay")
+
+        for item in player.queue:  # Remove songs added by autoplay
+            if not item.requester:
+                player.queue.remove(item)
+
     else:
         player.store("autoplay", "1")
 
