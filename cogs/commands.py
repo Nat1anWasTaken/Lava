@@ -85,17 +85,17 @@ class Commands(Cog):
             case LoadType.TRACK:
                 player.add(requester=interaction.author.id, track=results.tracks[0], index=index)
 
+                # noinspection PyTypeChecker
                 await interaction.edit_original_response(
-                    embeds=[
-                        SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}"),
+                    embeds=[SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")] + [
                         InfoEmbed(
                             title="提醒",
                             description=f"偵測到 {', '.join(key.capitalize() for key, value in player.filters)} 效果器正在運作中，\n"
                                         f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
                                         f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
                                         f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
-                        ) if player.filters else None
-                    ]
+                        )
+                    ] if player.filters else []
                 )
 
             case LoadType.PLAYLIST:
@@ -107,24 +107,27 @@ class Commands(Cog):
                         index=index + iter_index
                     )
 
+                # noinspection PyTypeChecker
                 await interaction.edit_original_response(
                     embeds=[
-                        SuccessEmbed(
-                            title=f"已將 {results.playlist_info.name} 中的 {len(results.tracks)} 首歌曲加入播放序列",
-                            description='\n'.join(
-                                [
-                                    f"**[{index + 1}]** {track.title}"
-                                    for index, track in enumerate(results.tracks[:10])
-                                ]
-                            ) + "..." if len(results.tracks) > 10 else ""
-                        ),
-                        InfoEmbed(
-                            title="提醒",
-                            description=f"偵測到 {', '.join(key.capitalize() for key, value in player.filters)} 效果器正在運作中，\n"
-                                        f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
-                                        f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
-                                        f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
-                        ) if player.filters else None]
+                               SuccessEmbed(
+                                   title=f"已將 {results.playlist_info.name} 中的 {len(results.tracks)} 首歌曲加入播放序列",
+                                   description='\n'.join(
+                                       [
+                                           f"**[{index + 1}]** {track.title}"
+                                           for index, track in enumerate(results.tracks[:10])
+                                       ]
+                                   ) + "..." if len(results.tracks) > 10 else ""
+                               )
+                           ] + [
+                               InfoEmbed(
+                                   title="提醒",
+                                   description=f"偵測到 {', '.join(key.capitalize() for key, value in player.filters)} 效果器正在運作中，\n"
+                                               f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
+                                               f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
+                                               f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
+                               )
+                           ] if player.filters else []
                 )
 
         # If the player isn't already playing, start it.
