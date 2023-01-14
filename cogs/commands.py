@@ -92,7 +92,7 @@ class Commands(Cog):
                            ] + ([
                                     InfoEmbed(
                                         title="提醒",
-                                        description=f"偵測到 {', '.join(key.capitalize() for key, value in player.filters)} 效果器正在運作中，\n"
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
                                                     f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
                                                     f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
                                                     f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
@@ -124,7 +124,7 @@ class Commands(Cog):
                            ] + ([
                                     InfoEmbed(
                                         title="提醒",
-                                        description=f"偵測到 {', '.join(key.capitalize() for key, value in player.filters)} 效果器正在運作中，\n"
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
                                                     f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
                                                     f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
                                                     f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
