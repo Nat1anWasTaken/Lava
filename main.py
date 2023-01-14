@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import time
 from os import getenv
 
 from disnake import Intents
@@ -30,7 +31,7 @@ def main():
 async def setup_bot(bot: Bot) -> Bot:
     load_extensions(bot)
 
-    bot.load_icons("icons.json")
+    bot.load_icons("configs/icons.json")
 
     await bot.wait_until_ready()
 
@@ -51,7 +52,7 @@ def load_lavalink_nodes(bot: Bot) -> Bot:
     """
     bot.assign_lavalink_client(Client(bot.user.id))
 
-    with open("lavalink.json", "r") as f:
+    with open("configs/lavalink.json", "r") as f:
         config = json.load(f)
 
     for node in config['nodes']:

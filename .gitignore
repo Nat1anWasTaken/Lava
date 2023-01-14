@@ -160,5 +160,5 @@ cython_debug/
 .idea/
 
 # Config files
-lavalink.json
-icons.json
+configs/lavalink.json
+configs/icons.json
