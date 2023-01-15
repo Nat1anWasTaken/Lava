@@ -140,6 +140,8 @@
 * [Python 3.10+][python]
 * 一個或以上已經建置好的 [Lavalink][lavalink] 節點
 
+<p align="right">(<a href="#readme-top">回到頂部</a>)</p>
+
 
 <!-- USAGE EXAMPLES -->
 ## 用法
