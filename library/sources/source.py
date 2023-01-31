@@ -1,82 +1,99 @@
 import re
+from os import getenv
 from typing import Union, Tuple, Optional
 
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
-from spotipy import Spotify
+from spotipy import Spotify, SpotifyOAuth
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import UnsupportedError, DownloadError
 
 from library.sources.track import SpotifyAudioTrack
 
 
-class YTDLSource(Source):
+class BaseSource:
     def __init__(self):
-        super().__init__(name='ytdl')
+        """
+        Inits the source
+        :raise ValueError if the current state is not ok to use this source
+        """
+        raise NotImplementedError
 
-        self.ytdl = YoutubeDL()
+    def check_query(self, query: str) -> bool:
+        """
+        Check if an url or keyword is supported by this source
+        :return: Whether the query is supported
+        """
+        raise NotImplementedError
 
-    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
-        if 'youtube' in query or 'youtu.be' in query:  # Lavalink node will handle that, so skip
-            return None
+    def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        """
+        A function to load tracks
+        :param client: Lavalink Client
+        :param query: Query to search
+        :return: The load result as LoadResult
+        """
+        raise NotImplementedError
 
-        try:
-            url_info = self.ytdl.extract_info(query, download=False)
 
-            if 'entries' in url_info:
-                url_info = url_info['entries'][0]
+class SpotifySource(BaseSource):
+    def __init__(self):
+        super().__init__()
 
-        except (UnsupportedError, DownloadError):
-            return None
+        spotify_client_id = getenv("SPOTIFY_CLIENT_ID")
+        spotify_client_secret = getenv("SPOTIFY_CLIENT_SECRET")
+        spotify_redirect_uri = getenv("SPOTIFY_REDIRECT_URI")
 
-        try:
-            track = (await client.get_tracks(url_info['formats'][-1]['url'])).tracks[0]
+        if not (spotify_client_id and spotify_client_secret and spotify_redirect_uri):
+            raise ValueError(
+                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing."
+            )
 
-        except IndexError:
-            return None
-
-        match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
-
-        track.title = url_info['title']
-        track.author = f"來自 [{match.group(1)}]({match.group(0)}) 的未知作者"
-
-        return LoadResult(
-            load_type=LoadType.TRACK,
-            tracks=[track],
-            playlist_info=PlaylistInfo.none()
+        credentials = SpotifyOAuth(
+            client_id=getenv("SPOTIFY_CLIENT_ID"),
+            client_secret=getenv("SPOTIFY_CLIENT_SECRET"),
+            redirect_uri=getenv("SPOTIFY_REDIRECT_URI"),
+            open_browser=False
         )
 
+        spotify = Spotify(auth_manager=credentials)
 
-class SpotifySource(Source):
-    def __init__(self, spotify: Spotify):
-        super().__init__(name='spotify')  # Initialising our custom source with the name 'custom'.
+        spotify.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
 
         self.spotify = spotify
 
+    def check_query(self, query: str) -> bool:
+        spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
+
+        if re.match(spotify_url_rx, query):
+            return True
+
+        return False
+
     async def load_item(self, client: Client, query: str):
-        track = self.load_track(query)
+        track = self.__load_track(query)
 
         if track:
             return LoadResult(LoadType.TRACK, [track], PlaylistInfo.none())
 
-        playlist, playlist_info = self.load_playlist(query)
+        playlist, playlist_info = self.__load_playlist(query)
 
         if playlist:
             return LoadResult(LoadType.PLAYLIST, playlist, playlist_info)
 
-        album, playlist_info = self.load_album(query)
+        album, playlist_info = self.__load_album(query)
 
         if album:
             return LoadResult(LoadType.PLAYLIST, album, playlist_info)
 
         return None
 
-    def load_track(self, url: str) -> Union[SpotifyAudioTrack, None]:
+    def __load_track(self, url: str) -> Union[SpotifyAudioTrack, None]:
         """
         Get a track with given url from spotify, None if not found
         :param url: Spotify track url
         :return: SpotifyAudioTrack
         """
-        track_id = self.get_track_id_from_url(url)
+        track_id = self.__get_track_id_from_url(url)
 
         if not track_id:
             return None
@@ -98,13 +115,13 @@ class SpotifySource(Source):
             )
         return None
 
-    def load_playlist(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
+    def __load_playlist(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
         """
         Get tracks in a playlist with given url from spotify, None if not found
         :param url: Spotify playlist url
         :return: list[SpotifyAudioTrack], PlaylistInfo
         """
-        playlist_id = self.get_playlist_id_from_url(url)
+        playlist_id = self.__get_playlist_id_from_url(url)
 
         if not playlist_id:
             return [], None
@@ -135,13 +152,13 @@ class SpotifySource(Source):
             return tracks, playlist_info
         return [], None
 
-    def load_album(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
+    def __load_album(self, url: str) -> Tuple[list[SpotifyAudioTrack], Union[PlaylistInfo, None]]:
         """
-        Get tracks in a album with given url from spotify, None if not found
+        Get tracks on an album with given url from spotify, None if not found
         :param url: Spotify album url
         :return: list[SpotifyAudioTrack], PlaylistInfo
         """
-        album_id = self.get_album_id_from_url(url)
+        album_id = self.__get_album_id_from_url(url)
 
         if not album_id:
             return [], None
@@ -170,10 +187,11 @@ class SpotifySource(Source):
                 )
 
             return tracks, playlist_info
+
         return [], None
 
     @staticmethod
-    def get_track_id_from_url(url: str) -> Union[str, None]:
+    def __get_track_id_from_url(url: str) -> Union[str, None]:
         """
         Get track id from url
         :param url: Spotify track url
@@ -185,10 +203,11 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
+
         return None
 
     @staticmethod
-    def get_playlist_id_from_url(url: str) -> Union[str, None]:
+    def __get_playlist_id_from_url(url: str) -> Union[str, None]:
         """
         Get playlist id from url
         :param url: Spotify playlist url
@@ -200,10 +219,11 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
+
         return None
 
     @staticmethod
-    def get_album_id_from_url(url: str) -> Union[str, None]:
+    def __get_album_id_from_url(url: str) -> Union[str, None]:
         """
         Get album id from url
         :param url: Spotify album url
@@ -215,4 +235,65 @@ class SpotifySource(Source):
 
         if match:
             return match.group(1)
+
         return None
+
+
+class YTDLSource(BaseSource):
+    def __init__(self):
+        super().__init__()
+
+        self.ytdl = YoutubeDL()
+
+    def check_query(self, query: str) -> bool:
+        youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"
+
+        if re.match(youtube_url_rx, query):
+            return False
+
+        return True
+
+    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        try:
+            url_info = self.ytdl.extract_info(query, download=False)
+
+            if 'entries' in url_info:
+                url_info = url_info['entries'][0]
+
+        except (UnsupportedError, DownloadError):
+            return None
+
+        try:
+            track = (await client.get_tracks(url_info['formats'][-1]['url'])).tracks[0]
+
+        except IndexError:
+            return None
+
+        match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
+
+        track.title = url_info['title']
+        track.author = f"來自 [{match.group(1)}]({match.group(0)}) 的未知作者"
+
+        return LoadResult(
+            load_type=LoadType.TRACK,
+            tracks=[track],
+            playlist_info=PlaylistInfo.none()
+        )
+
+
+class SourceManager(Source):
+    def __init__(self):
+        super().__init__(name='LavaSourceManager')
+
+        self.sources: list[BaseSource] = []
+
+    def initial_sources(self):
+        for cls in BaseSource.__subclasses__():
+            self.sources.append(cls())
+
+    def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        for source in self.sources:
+            if not source.check_query(query):
+                continue
+
+            return source.load_item(client, query)

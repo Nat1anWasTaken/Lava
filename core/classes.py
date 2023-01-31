@@ -3,7 +3,6 @@ import json
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
-from spotipy import Spotify
 
 
 class Bot(OriginalBot):
@@ -11,30 +10,33 @@ class Bot(OriginalBot):
         super().__init__(**kwargs)
 
         self.lavalink: Client = MISSING
-        self.spotify: Spotify = MISSING
 
         self.icons: dict = MISSING
 
-    def assign_lavalink_client(self, client: Client):
-        """
-        Assigns a Lavalink client to the bot.
-        This must be called before any other Lavalink-related code is executed.
-        """
-        self.lavalink: Client = client
+    async def on_ready(self):
+        self.__setup_lavalink_client()
+        self.__load_icons()
 
-    def assign_spotify_client(self, spotify: Spotify):
+    def __setup_lavalink_client(self) -> Client:
         """
-        Assigns a Spotify client to the bot.
-        This must be called before any other Spotify-related code is executed.
+        Sets up the lavalink client for the bot
+        :return: Lavalink Client
         """
-        self.spotify: Spotify = spotify
+        client = Client(self.user.id)
 
-    def load_icons(self, file_path: str):
+        with open("configs/lavalink.json", "r") as f:
+            config = json.load(f)
+
+        for node in config['nodes']:
+            client.add_node(**node)
+
+        return client
+
+    def __load_icons(self):
         """
         Load icons from a json file
-        :param file_path: The path to the json file
         """
-        with open(file_path, "r") as f:
+        with open("configs/icons.json", "r") as f:
             self.icons = json.load(f)
 
     def get_icon(self, name: str, default: any) -> any:
