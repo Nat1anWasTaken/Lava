@@ -66,7 +66,7 @@ class Events(Cog):
             message: Message = await channel.fetch_message(int(player.fetch("message")))
 
             await channel.send(
-                embed=ErrorEmbed(f"無法播放歌曲: {event.track.data['title']}"),
+                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}"),
                 reference=message
             )
 
