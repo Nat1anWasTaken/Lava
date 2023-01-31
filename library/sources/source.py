@@ -247,7 +247,9 @@ class YTDLSource(BaseSource):
 
         self.priority = 0
 
-        self.ytdl = YoutubeDL()
+        self.ytdl = YoutubeDL(
+            {"format": "bestaudio"}
+        )
 
     def check_query(self, query: str) -> bool:
         youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"
