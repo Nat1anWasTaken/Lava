@@ -1,23 +1,23 @@
 {
-    "empty": "<:empty:1051781423067058197>",
+    "empty": "⬛",
     "progress": {
-        "start_point": "<:start_point:1051765647606034462>",
-        "start_fill": "<:start_fill:1051765646163202058>",
-        "mid_point": "<:mid_point:1051765644363837442>",
-        "end_fill": "<:end_fill:1051765641545269299>",
-        "end_point": "<:end_point:1051765643172646922>",
-        "end": "<:end:1051765640039497748>"
+        "start_point": "⬜",
+        "start_fill": "⬜",
+        "mid_point": "⬜",
+        "end_fill": "⬛",
+        "end_point": "⬛",
+        "end": "⬛"
     },
     "control": {
-        "rewind": "<:rewind_10:987663342766288936>",
-        "forward": "<:forward_10:987663192979288134>",
-        "pause": "<:pause:987661771609358366>",
-        "resume": "<:play:987643956403781692>",
-        "stop": "<:stop:987645074450034718>",
-        "previous": "<:previous:987652154133213274>",
-        "next": "<:skip:987641543441678416>",
-        "shuffle": "<:shuffle:987653133306064908>",
-        "repeat": "<:loop:987650404764508200>",
-        "autoplay": "<:autoplay:1056145730596769872>"
+        "rewind": "⏪",
+        "forward": "⏩",
+        "pause": "⏸️",
+        "resume": "▶️",
+        "stop": "⏹️",
+        "previous": "⏮️",
+        "next": "⏭️",
+        "shuffle": "🔀",
+        "repeat": "🔁",
+        "autoplay": "🔥"
     }
 }
