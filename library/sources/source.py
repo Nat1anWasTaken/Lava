@@ -305,3 +305,5 @@ class SourceManager(Source):
                 continue
 
             return source.load_item(client, query)
+
+        return None
