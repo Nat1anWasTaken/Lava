@@ -1,7 +1,6 @@
 import asyncio
 import json
 import logging
-import time
 from os import getenv
 
 from disnake import Intents
