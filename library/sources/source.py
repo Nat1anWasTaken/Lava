@@ -25,7 +25,7 @@ class BaseSource:
         """
         raise NotImplementedError
 
-    def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
         """
         A function to load tracks
         :param client: Lavalink Client
@@ -304,6 +304,6 @@ class SourceManager(Source):
             if not source.check_query(query):
                 continue
 
-            return source.load_item(client, query)
+            return await source.load_item(client, query)
 
         return None
