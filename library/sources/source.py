@@ -299,7 +299,7 @@ class SourceManager(Source):
 
         self.sources.sort(key=lambda x: x.priority, reverse=True)
 
-    def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
         for source in self.sources:
             if not source.check_query(query):
                 continue
