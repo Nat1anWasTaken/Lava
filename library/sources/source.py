@@ -108,6 +108,7 @@ class SpotifySource(BaseSource):
                     'identifier': track['id'],
                     'isSeekable': True,
                     'author': ', '.join([artist['name'] for artist in track['artists']]),
+                    'length': track['duration_ms'],
                     'isStream': False,
                     'title': track['name'],
                     'uri': f"https://open.spotify.com/track/{track['id']}"
@@ -141,6 +142,7 @@ class SpotifySource(BaseSource):
                             'identifier': track['track']['id'],
                             'isSeekable': True,
                             'author': ', '.join([artist['name'] for artist in track['track']['artists']]),
+                            'length': track['track']['duration_ms'],
                             'isStream': False,
                             'title': track['track']['name'],
                             'uri': f"https://open.spotify.com/track/{track['track']['id']}"
@@ -177,6 +179,7 @@ class SpotifySource(BaseSource):
                             'identifier': track['id'],
                             'isSeekable': True,
                             'author': ', '.join([artist['name'] for artist in track['artists']]),
+                            'length': track['duration_ms'],
                             'isStream': False,
                             'title': track['name'],
                             'uri': f"https://open.spotify.com/track/{track['id']}"
