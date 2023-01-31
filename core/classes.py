@@ -4,6 +4,8 @@ from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
 
+from library.sources.source import SourceManager
+
 
 class Bot(OriginalBot):
     def __init__(self, **kwargs):
@@ -29,6 +31,8 @@ class Bot(OriginalBot):
 
         for node in config['nodes']:
             self.lavalink.add_node(**node)
+
+        self.lavalink.register_source(SourceManager())
 
     def __load_icons(self):
         """

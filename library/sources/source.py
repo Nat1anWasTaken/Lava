@@ -16,7 +16,6 @@ class BaseSource:
         Inits the source
         :raise ValueError if the current state is not ok to use this source
         """
-        raise NotImplementedError
 
     def check_query(self, query: str) -> bool:
         """
@@ -43,7 +42,7 @@ class SpotifySource(BaseSource):
         spotify_client_secret = getenv("SPOTIFY_CLIENT_SECRET")
         spotify_redirect_uri = getenv("SPOTIFY_REDIRECT_URI")
 
-        if not (spotify_client_id and spotify_client_secret and spotify_redirect_uri):
+        if not (spotify_client_id and spotify_client_secret):
             raise ValueError(
                 "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing."
             )
@@ -286,6 +285,8 @@ class SourceManager(Source):
         super().__init__(name='LavaSourceManager')
 
         self.sources: list[BaseSource] = []
+
+        self.initial_sources()
 
     def initial_sources(self):
         for cls in BaseSource.__subclasses__():
