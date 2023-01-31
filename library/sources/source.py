@@ -48,9 +48,9 @@ class SpotifySource(BaseSource):
             )
 
         credentials = SpotifyOAuth(
-            client_id=getenv("SPOTIFY_CLIENT_ID"),
-            client_secret=getenv("SPOTIFY_CLIENT_SECRET"),
-            redirect_uri=getenv("SPOTIFY_REDIRECT_URI"),
+            client_id=spotify_client_id,
+            client_secret=spotify_client_secret,
+            redirect_uri=spotify_redirect_uri,
             open_browser=False
         )
 
