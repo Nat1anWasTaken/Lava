@@ -16,6 +16,7 @@ class BaseSource:
         Inits the source
         :raise ValueError if the current state is not ok to use this source
         """
+        self.priority: int = 0
 
     def check_query(self, query: str) -> bool:
         """
@@ -37,6 +38,8 @@ class BaseSource:
 class SpotifySource(BaseSource):
     def __init__(self):
         super().__init__()
+
+        self.priority = 5
 
         spotify_client_id = getenv("SPOTIFY_CLIENT_ID")
         spotify_client_secret = getenv("SPOTIFY_CLIENT_SECRET")
@@ -242,6 +245,8 @@ class YTDLSource(BaseSource):
     def __init__(self):
         super().__init__()
 
+        self.priority = 0
+
         self.ytdl = YoutubeDL()
 
     def check_query(self, query: str) -> bool:
@@ -291,6 +296,8 @@ class SourceManager(Source):
     def initial_sources(self):
         for cls in BaseSource.__subclasses__():
             self.sources.append(cls())
+
+        self.sources.sort(key=lambda x: x.priority, reverse=True)
 
     def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
         for source in self.sources:
