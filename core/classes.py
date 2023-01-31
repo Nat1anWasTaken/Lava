@@ -17,20 +17,18 @@ class Bot(OriginalBot):
         self.__setup_lavalink_client()
         self.__load_icons()
 
-    def __setup_lavalink_client(self) -> Client:
+    def __setup_lavalink_client(self):
         """
         Sets up the lavalink client for the bot
         :return: Lavalink Client
         """
-        client = Client(self.user.id)
+        self.lavalink = Client(self.user.id)
 
         with open("configs/lavalink.json", "r") as f:
             config = json.load(f)
 
         for node in config['nodes']:
-            client.add_node(**node)
-
-        return client
+            self.lavalink.add_node(**node)
 
     def __load_icons(self):
         """
