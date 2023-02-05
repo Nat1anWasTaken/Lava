@@ -1,0 +1,2 @@
+class Variables:
+    SPOTIFY_CLIENT = "SPOTIFY_CLIENT_ID"

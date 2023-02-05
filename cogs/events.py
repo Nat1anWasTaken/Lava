@@ -12,6 +12,7 @@ from core.classes import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
+from library.variables import Variables
 
 
 class Events(Cog):
@@ -29,7 +30,7 @@ class Events(Cog):
 
             if event.player.fetch("autoplay") and len(event.player.queue) <= 10:
                 recommendations = await get_recommended_tracks(
-                    self.bot, event.player, ([event.player.current] + event.player.queue)[-10:], 20
+                    Variables.SPOTIFY_CLIENT, event.player, ([event.player.current] + event.player.queue)[-10:], 20
                 )
 
                 for track in recommendations:

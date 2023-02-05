@@ -6,6 +6,7 @@ from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
+from spotipy import Spotify
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
@@ -79,14 +80,14 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
         player.store("autoplay", "1")
 
 
-async def get_recommended_tracks(bot: Bot,
+async def get_recommended_tracks(spotify: Spotify,
                                  player: DefaultPlayer,
                                  tracks: list[DeferredAudioTrack],
                                  amount: int = 10) -> list[SpotifyAudioTrack]:
     """
     Get recommended tracks from the given track.
 
-    :param bot: The bot instance.
+    :param spotify: The spotify instance.
     :param player: The player instance.
     :param tracks: The seed tracks to get recommended tracks from.
     :param amount: The amount of recommended tracks to get.
@@ -96,7 +97,7 @@ async def get_recommended_tracks(bot: Bot,
     for track in tracks:
         if not isinstance(track, SpotifyAudioTrack):
             try:
-                result = bot.spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
+                result = spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
 
                 seed_tracks.append(result["tracks"]["items"][0]["id"])
 
@@ -107,7 +108,7 @@ async def get_recommended_tracks(bot: Bot,
 
         seed_tracks.append(track.identifier)
 
-    recommendations = bot.spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
+    recommendations = spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
 
     output = []
 

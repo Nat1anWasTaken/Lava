@@ -8,6 +8,7 @@ from youtube_dl import YoutubeDL
 from youtube_dl.utils import UnsupportedError, DownloadError
 
 from library.sources.track import SpotifyAudioTrack
+from library.variables import Variables
 
 
 class BaseSource:
@@ -57,11 +58,9 @@ class SpotifySource(BaseSource):
             open_browser=False
         )
 
-        spotify = Spotify(auth_manager=credentials)
+        Variables.SPOTIFY_CLIENT = Spotify(auth_manager=credentials)
 
-        spotify.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
-
-        self.spotify = spotify
+        Variables.SPOTIFY_CLIENT.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
 
     def check_query(self, query: str) -> bool:
         spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
@@ -100,7 +99,7 @@ class SpotifySource(BaseSource):
         if not track_id:
             return None
 
-        track = self.spotify.track(track_id)
+        track = Variables.SPOTIFY_CLIENT.track(track_id)
 
         if track:
             return SpotifyAudioTrack(
@@ -128,7 +127,7 @@ class SpotifySource(BaseSource):
         if not playlist_id:
             return [], None
 
-        playlist = self.spotify.playlist(playlist_id)
+        playlist = Variables.SPOTIFY_CLIENT.playlist(playlist_id)
 
         playlist_info = PlaylistInfo(playlist['name'], -1)
 
@@ -165,7 +164,7 @@ class SpotifySource(BaseSource):
         if not album_id:
             return [], None
 
-        album = self.spotify.album(album_id)
+        album = Variables.SPOTIFY_CLIENT.album(album_id)
 
         playlist_info = PlaylistInfo(album['name'], -1)
 
