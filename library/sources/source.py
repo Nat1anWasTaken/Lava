@@ -1,7 +1,10 @@
+import json
 import re
 from os import getenv
 from typing import Union, Tuple, Optional
 
+import requests
+from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
 from spotipy import Spotify, SpotifyOAuth
 from youtube_dl import YoutubeDL
@@ -239,6 +242,54 @@ class SpotifySource(BaseSource):
             return match.group(1)
 
         return None
+
+
+class BilibiliSource(BaseSource):
+    def __init__(self):
+        super().__init__()
+
+        self.priority = 5
+
+    def check_query(self, query: str) -> bool:
+        return query.startswith('https://www.bilibili.com/video/')
+
+    async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        video_url, audio_url, title = self.get_audio(query)
+
+        track = (await client.get_tracks(audio_url, check_local=False)).tracks[0]
+
+        track.title = title
+        track.author = f'來自 [Bilibili]({query}) 的未知作者'
+
+        return LoadResult(
+            load_type=LoadType.TRACK,
+            tracks=[track],
+            playlist_info=None
+        )
+
+    def get_audio(self, url: str) -> Tuple[str, str]:
+        """
+        Gets audio URL from a Bilibili video URL
+        :param url: Bilibili video URL
+        :return: Tuple of audio URL and video title
+        """
+        video_html = requests.get(url)
+
+        values = video_html.text
+
+        text = BeautifulSoup(values, features='lxml')
+
+        title = text.find('title').contents[0].replace(' ', ',').replace('/', ',')
+
+        items = text.find_all('script')[2]
+
+        items = items.contents[0].replace('window.__playinfo__=', '')
+
+        obj = json.loads(items)
+
+        audio_url = obj["data"]["dash"]["audio"][0]["baseUrl"]
+
+        return audio_url, title
 
 
 class YTDLSource(BaseSource):
