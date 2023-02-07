@@ -12,6 +12,7 @@ from core.classes import Bot
 from library.classes import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.sources.track import SpotifyAudioTrack
+from library.variables import Variables
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
@@ -192,7 +193,8 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
                 Button(
                     style=ButtonStyle.green if player.fetch("autoplay") else ButtonStyle.grey,
                     emoji=bot.get_icon('control.autoplay', "🔥"),
-                    custom_id="control.autoplay"
+                    custom_id="control.autoplay",
+                    disabled=not bool(Variables.SPOTIFY_CLIENT)
                 ),
                 Button(
                     style=ButtonStyle.blurple,
