@@ -48,7 +48,8 @@ class SpotifySource(BaseSource):
 
         if not (spotify_client_id and spotify_client_secret):
             raise ValueError(
-                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing."
+                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing,"
+                "Spotify links and autoplay will be disabled."
             )
 
         credentials = SpotifyOAuth(
