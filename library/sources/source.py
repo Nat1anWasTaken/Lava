@@ -254,7 +254,7 @@ class BilibiliSource(BaseSource):
         return query.startswith('https://www.bilibili.com/video/')
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
-        video_url, audio_url, title = self.get_audio(query)
+        audio_url, title = self.get_audio(query)
 
         track = (await client.get_tracks(audio_url, check_local=False)).tracks[0]
 
