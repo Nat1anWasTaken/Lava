@@ -35,7 +35,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         await update_display(self.bot, player, await interaction.original_response())
 
@@ -64,7 +65,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=True)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         player.store("channel", interaction.channel.id)
 
@@ -90,22 +92,24 @@ class Commands(Cog):
 
         match results.load_type:
             case LoadType.TRACK:
-                player.add(requester=interaction.author.id,
-                           track=results.tracks[0], index=index)
+                player.add(
+                    requester=interaction.author.id,
+                    track=results.tracks[0], index=index
+                )
 
                 # noinspection PyTypeChecker
                 await interaction.edit_original_response(
                     embeds=[
-                        SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
-                    ] + ([
-                        InfoEmbed(
-                            title="提醒",
-                            description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
-                            f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
-                            f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
-                            f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
-                        )
-                    ] if player.filters else [])
+                               SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
+                           ] + ([
+                                    InfoEmbed(
+                                        title="提醒",
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
+                                                    f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
+                                                    f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
+                                                    f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
+                                    )
+                                ] if player.filters else [])
                 )
 
             case LoadType.PLAYLIST:
@@ -120,24 +124,24 @@ class Commands(Cog):
                 # noinspection PyTypeChecker
                 await interaction.edit_original_response(
                     embeds=[
-                        SuccessEmbed(
-                            title=f"已將 {results.playlist_info.name} 中的 {len(results.tracks)} 首歌曲加入播放序列",
-                            description='\n'.join(
-                                [
-                                    f"**[{index + 1}]** {track.title}"
-                                    for index, track in enumerate(results.tracks[:10])
-                                ]
-                            ) + "..." if len(results.tracks) > 10 else ""
-                        )
-                    ] + ([
-                        InfoEmbed(
-                            title="提醒",
-                            description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
-                            f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
-                            f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
-                            f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
-                        )
-                    ] if player.filters else [])
+                               SuccessEmbed(
+                                   title=f"已將 {results.playlist_info.name} 中的 {len(results.tracks)} 首歌曲加入播放序列",
+                                   description='\n'.join(
+                                       [
+                                           f"**[{index + 1}]** {track.title}"
+                                           for index, track in enumerate(results.tracks[:10])
+                                       ]
+                                   ) + "..." if len(results.tracks) > 10 else ""
+                               )
+                           ] + ([
+                                    InfoEmbed(
+                                        title="提醒",
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
+                                                    f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
+                                                    f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
+                                                    f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
+                                    )
+                                ] if player.filters else [])
                 )
 
         # If the player isn't already playing, start it.
@@ -170,7 +174,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         if not player.is_playing:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有正在播放的歌曲"))
@@ -209,7 +214,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         if len(player.queue) < target or target < 1:
             return await interaction.edit_original_response(embed=ErrorEmbed("無效的歌曲編號"))
@@ -230,7 +236,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         player.queue.clear()
 
@@ -248,7 +255,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         if not player.is_playing:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有正在播放的歌曲"))
@@ -267,7 +275,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         if not player.paused:
             return await interaction.edit_original_response(embed=ErrorEmbed("沒有暫停的歌曲"))
@@ -288,7 +297,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         await player.stop()
         player.queue.clear()
@@ -305,7 +315,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         await player.stop()
         player.queue.clear()
@@ -343,11 +354,16 @@ class Commands(Cog):
         paginator = Paginator(
             timeout=60,
             previous_button=Button(
-                style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.previous', '⏪')),
-            next_button=Button(style=ButtonStyle.blurple,
-                               emoji=self.bot.get_icon('control.next', '⏩')),
-            trash_button=Button(style=ButtonStyle.red,
-                                emoji=self.bot.get_icon('control.stop', '⏹️')),
+                style=ButtonStyle.blurple, emoji=self.bot.get_icon('control.previous', '⏪')
+            ),
+            next_button=Button(
+                style=ButtonStyle.blurple,
+                emoji=self.bot.get_icon('control.next', '⏩')
+            ),
+            trash_button=Button(
+                style=ButtonStyle.red,
+                emoji=self.bot.get_icon('control.stop', '⏹️')
+            ),
             page_counter_style=ButtonStyle.green,
             interaction_check_message=ErrorEmbed("沒事戳這顆幹嘛？")
         )
@@ -375,7 +391,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         player.set_loop(int(mode.split("/")[1]))
 
@@ -388,7 +405,8 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
         player.set_shuffle(not player.shuffle)
 
@@ -406,8 +424,11 @@ class Commands(Cog):
             result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
 
             for track in result.tracks:
-                choices.append(OptionChoice(
-                    name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri))
+                choices.append(
+                    OptionChoice(
+                        name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
+                    )
+                )
 
             return choices
 
@@ -510,8 +531,11 @@ class Commands(Cog):
     @commands.slash_command(
         name="bassboost", description="低音增強 (等化器)",
     )
-    async def bassboost(self, interaction: ApplicationCommandInteraction, **kwargs):
-        await self.update_filter(interaction, "bass")
+    async def bassboost(self, interaction: ApplicationCommandInteraction):
+        await self.update_filter(
+            interaction, "bass",
+            bands=[(0, 0.3), (1, 0.2), (2, 0.1)]
+        )
 
     async def update_filter(self, interaction: ApplicationCommandInteraction, filter_name: str, **kwargs):
         await interaction.response.defer()
@@ -519,14 +543,16 @@ class Commands(Cog):
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id)
+            interaction.guild.id
+        )
 
-        if not kwargs and not filter_name == "bass":
+        if not kwargs:
             await player.remove_filter(filter_name)
 
             await interaction.edit_original_response(
                 embed=SuccessEmbed(
-                    f"已移除 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
+                    f"已移除 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果"
+                )
             )
 
             await update_display(self.bot, player, await interaction.original_response(), delay=5)
@@ -534,24 +560,22 @@ class Commands(Cog):
             return
 
         audio_filter = player.get_filter(
-            filter_name) or allowed_filters[filter_name]()
+            filter_name
+        ) or allowed_filters[filter_name]()
 
-        if filter_name == "bass":
-            audio_filter.update(band=0, gain=0.3)
-            audio_filter.update(band=1, gain=0.2)
-            audio_filter.update(band=2, gain=0.1)
-        else:
-            try:
-                audio_filter.update(**kwargs)
-            except ValueError:
-                await interaction.edit_original_response(embed=ErrorEmbed("請輸入有效的參數"))
-                return
+        try:
+            audio_filter.update(**kwargs)
+
+        except ValueError:
+            await interaction.edit_original_response(embed=ErrorEmbed("請輸入有效的參數"))
+            return
 
         await player.set_filter(audio_filter)
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(
-                f"已設置 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果")
+                f"已設置 {allowed_filters[filter_name].__name__} 效果器，可能需要幾秒鐘才能發揮效果"
+            )
         )
 
         await update_display(self.bot, player, await interaction.original_response(), delay=5)
