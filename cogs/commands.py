@@ -532,19 +532,31 @@ class Commands(Cog):
         name="bassboost", description="低音增強 (等化器)",
     )
     async def bassboost(self, interaction: ApplicationCommandInteraction):
-        await self.update_filter(
-            interaction, "bass",
-            bands=[(0, 0.3), (1, 0.2), (2, 0.1)]
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id
         )
 
-    async def update_filter(self, interaction: ApplicationCommandInteraction, filter_name: str, **kwargs):
+        audio_filter = player.get_filter("equalizer")
+
+        if not audio_filter:
+            await self.update_filter(
+                interaction, "equalizer", player=player,
+                bands=[(0, 0.3), (1, 0.2), (2, 0.1)]
+            )
+            return
+
+        await self.update_filter(interaction, "equalizer", player=player)
+
+    async def update_filter(self, interaction: ApplicationCommandInteraction, filter_name: str,
+                            player: DefaultPlayer = None, **kwargs):
         await interaction.response.defer()
 
         await ensure_voice(interaction, should_connect=False)
 
-        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id
-        )
+        if not player:
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+                interaction.guild.id
+            )
 
         if not kwargs:
             await player.remove_filter(filter_name)
