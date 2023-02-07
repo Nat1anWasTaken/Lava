@@ -270,6 +270,8 @@ class BilibiliSource(BaseSource):
     def get_audio(self, url: str) -> Tuple[str, str]:
         """
         Gets audio URL from a Bilibili video URL
+
+        Code referenced from https://www.bilibili.com/read/cv16789932
         :param url: Bilibili video URL
         :return: Tuple of audio URL and video title
         """
