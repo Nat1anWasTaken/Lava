@@ -48,7 +48,8 @@ class SpotifySource(BaseSource):
 
         if not (spotify_client_id and spotify_client_secret):
             raise ValueError(
-                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing."
+                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL enviorment variables is missing,"
+                "Spotify links and autoplay will be disabled."
             )
 
         credentials = SpotifyOAuth(
@@ -254,6 +255,9 @@ class YTDLSource(BaseSource):
         youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"
 
         if re.match(youtube_url_rx, query):
+            return False
+
+        if not query.startswith("http://") or not query.startswith("https://"):
             return False
 
         return True

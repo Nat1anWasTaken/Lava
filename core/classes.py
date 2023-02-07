@@ -14,10 +14,10 @@ class Bot(OriginalBot):
         self.lavalink: Client = MISSING
 
         self.icons: dict = MISSING
+        self.__load_icons()
 
     async def on_ready(self):
         self.__setup_lavalink_client()
-        self.__load_icons()
 
     def __setup_lavalink_client(self):
         """
@@ -38,7 +38,7 @@ class Bot(OriginalBot):
         """
         Load icons from a json file
         """
-        with open("configs/icons.json", "r") as f:
+        with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
 
     def get_icon(self, name: str, default: any) -> any:
