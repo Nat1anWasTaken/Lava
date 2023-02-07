@@ -13,8 +13,8 @@ class Bot(OriginalBot):
 
         self.lavalink: Client = MISSING
 
-        self.icons: dict = MISSING
-        self.__load_icons()
+        with open("configs/icons.json", "r", encoding="utf-8") as f:
+            self.icons = json.load(f)
 
     async def on_ready(self):
         self.__setup_lavalink_client()
@@ -33,13 +33,6 @@ class Bot(OriginalBot):
             self.lavalink.add_node(**node)
 
         self.lavalink.register_source(SourceManager())
-
-    def __load_icons(self):
-        """
-        Load icons from a json file
-        """
-        with open("configs/icons.json", "r", encoding="utf-8") as f:
-            self.icons = json.load(f)
 
     def get_icon(self, name: str, default: any) -> any:
         """
