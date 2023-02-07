@@ -256,6 +256,9 @@ class YTDLSource(BaseSource):
         if re.match(youtube_url_rx, query):
             return False
 
+        if not query.startswith("http://") or not query.startswith("https://"):
+            return False
+
         return True
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:

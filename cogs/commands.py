@@ -75,7 +75,11 @@ class Commands(Cog):
         results: LoadResult = await player.node.get_tracks(query, check_local=True)
 
         if not results or not results.tracks:
-            return await interaction.edit_original_response(embed=ErrorEmbed("沒有找到任何歌曲"))
+            return await interaction.edit_original_response(
+                embed=ErrorEmbed(
+                    "沒有找到任何歌曲", "如果你想要使用關鍵字搜尋，請在輸入關鍵字後等待幾秒，搜尋結果將會自動顯示在上方"
+                )
+            )
 
         # Find the index song should be (In front of any autoplay songs)
         if not index:
