@@ -17,7 +17,7 @@ allowed_filters = {
     "vibrato": Vibrato,
     "lowpass": LowPass,
     "rotation": Rotation,
-    "bass": Equalizer
+    "equalizer": Equalizer
 }
 
 
