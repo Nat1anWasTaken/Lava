@@ -5,7 +5,7 @@ from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.ui import Button
 from disnake_ext_paginator import Paginator
-from lavalink import DefaultPlayer, LoadResult, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
+from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
 
 from core.classes import Bot
 from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed
@@ -90,26 +90,59 @@ class Commands(Cog):
         if not index:
             index = sum(1 for t in player.queue if t.requester)
 
-        for iter_index, track in enumerate(results.tracks):
-            player.add(
-                requester=interaction.author.id, track=track,
-                index=index + iter_index
-            )
+        match results.load_type:
+            case LoadType.TRACK:
+                player.add(
+                    requester=interaction.author.id,
+                    track=results.tracks[0], index=index
+                )
 
-        # noinspection PyTypeChecker
-        await interaction.edit_original_response(
-            embeds=[
-                       SuccessEmbed(f"已加入播放序列", f"{', '.join(track.title for track in results.tracks)}")
-                   ] + ([
-                            InfoEmbed(
-                                title="提醒",
-                                description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
-                                            f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
-                                            f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
-                                            f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
-                            )
-                        ] if player.filters else [])
-        )
+                # noinspection PyTypeChecker
+                await interaction.edit_original_response(
+                    embeds=[
+                               SuccessEmbed(f"已加入播放序列", f"{results.tracks[0].title}")
+                           ] + ([
+                                    InfoEmbed(
+                                        title="提醒",
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
+                                                    f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
+                                                    f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
+                                                    f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
+                                    )
+                                ] if player.filters else [])
+                )
+
+            case LoadType.PLAYLIST:
+                # TODO: Ask user if they want to add the whole playlist or just some tracks
+
+                for iter_index, track in enumerate(results.tracks):
+                    player.add(
+                        requester=interaction.author.id, track=track,
+                        index=index + iter_index
+                    )
+
+                # noinspection PyTypeChecker
+                await interaction.edit_original_response(
+                    embeds=[
+                               SuccessEmbed(
+                                   title=f"已將 {results.playlist_info.name} 中的 {len(results.tracks)} 首歌曲加入播放序列",
+                                   description='\n'.join(
+                                       [
+                                           f"**[{index + 1}]** {track.title}"
+                                           for index, track in enumerate(results.tracks[:10])
+                                       ]
+                                   ) + "..." if len(results.tracks) > 10 else ""
+                               )
+                           ] + ([
+                                    InfoEmbed(
+                                        title="提醒",
+                                        description=f"偵測到 {', '.join(key.capitalize() for key in player.filters)} 效果器正在運作中，\n"
+                                                    f"這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n"
+                                                    f"如果這不是你期望的，可以透過效果器的指令來關閉它們\n"
+                                                    f"指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器"
+                                    )
+                                ] if player.filters else [])
+                )
 
         # If the player isn't already playing, start it.
         if not player.is_playing:

@@ -305,6 +305,7 @@ class YTDLSource(BaseSource):
         )
 
     def check_query(self, query: str) -> bool:
+            return False
         youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"
 
         if re.match(youtube_url_rx, query):
@@ -317,35 +318,28 @@ class YTDLSource(BaseSource):
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
         try:
-            entries = []
-
             url_info = self.ytdl.extract_info(query, download=False)
 
             if 'entries' in url_info:
                 url_info = url_info['entries'][0]
 
-                for entry in url_info["entries"]:
-                    entries.append(entry)
-
-            else:
-                entries.append(url_info)
-
         except (UnsupportedError, DownloadError):
             return None
 
-        results = []
+        try:
+            track = (await client.get_tracks(url_info['formats'][-1]['url'])).tracks[0]
 
-        for entry in entries:
-            track = (await client.get_tracks(entry['formats'][-1]['url'])).tracks[0]
+        except IndexError:
+            return None
 
-            track.title = entry['title']
-            track.author = entry['author'] if 'author' in entry else f'來自 {entry["extractor"]} 的未知作者'
+        match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
 
-            results.append(track)
+        track.title = url_info['title']
+        track.author = f"來自 [{match.group(1)}]({match.group(0)}) 的未知作者"
 
         return LoadResult(
             load_type=LoadType.TRACK,
-            tracks=results,
+            tracks=[track],
             playlist_info=PlaylistInfo.none()
         )
 
