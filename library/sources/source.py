@@ -305,7 +305,6 @@ class YTDLSource(BaseSource):
         )
 
     def check_query(self, query: str) -> bool:
-            return False
         youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"
 
         if re.match(youtube_url_rx, query):
