@@ -60,6 +60,8 @@ class Events(Cog):
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
 
+            await player.skip()
+
             # noinspection PyTypeChecker
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
