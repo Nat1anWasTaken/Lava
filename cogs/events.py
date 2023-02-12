@@ -1,7 +1,7 @@
 from typing import Union
 
 import lavalink
-from disnake import TextChannel, Thread, Message, InteractionResponded, ApplicationCommandInteraction, \
+from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
     MessageInteraction
 from disnake.abc import GuildChannel
 from disnake.ext import commands
@@ -63,12 +63,8 @@ class Events(Cog):
             # noinspection PyTypeChecker
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
-            # noinspection PyTypeChecker
-            message: Message = await channel.fetch_message(int(player.fetch("message")))
-
-            await channel.send(
-                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}"),
-                reference=message
+            message = await channel.send(
+                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}")
             )
 
             await update_display(self.bot, player, message)
