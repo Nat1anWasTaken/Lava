@@ -348,8 +348,6 @@ class Commands(Cog):
 
             await interaction.guild.voice_client.disconnect(force=False)
 
-            await player.destroy()
-
             await ensure_voice(interaction, should_connect=True)
 
             await interaction.edit_original_response(
@@ -360,7 +358,7 @@ class Commands(Cog):
         finally:
             await update_display(
                 bot=self.bot,
-                player=player,
+                player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),
                 new_message=await interaction.original_response(),
                 delay=5
             )
