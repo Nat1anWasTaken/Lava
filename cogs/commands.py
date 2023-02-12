@@ -8,7 +8,8 @@ from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
 
 from core.classes import Bot
-from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed
+from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
+from library.errors import UserInDifferentChannel
 from library.functions import ensure_voice, update_display, split_list
 
 allowed_filters = {
@@ -304,6 +305,62 @@ class Commands(Cog):
         player.queue.clear()
 
         await update_display(self.bot, player, await interaction.original_response())
+
+    @commands.slash_command(
+        name="connect",
+        description="連接至你當前的語音頻道"
+    )
+    async def connect(self, interaction: ApplicationCommandInteraction):
+        await interaction.response.defer()
+
+        try:
+            await ensure_voice(interaction, should_connect=True)
+
+            await interaction.edit_original_response(embed=SuccessEmbed("已連接至語音頻道"))
+
+        except UserInDifferentChannel:
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild.id)
+
+            await interaction.edit_original_response(
+                embed=WarningEmbed("警告", "機器人已經在一個頻道中了，繼續移動將會中斷對方的音樂播放，是否要繼續?"),
+                components=[
+                    Button(label="繼續", style=ButtonStyle.green, custom_id="continue")
+                ]
+            )
+
+            try:
+                await self.bot.wait_for(
+                    "button_click",
+                    check=lambda i: i.custom_id in ["continue"] and i.user.id == interaction.user.id,
+                    timeout=10
+                )
+
+            except TimeoutError:
+                await interaction.edit_original_response(
+                    embed=ErrorEmbed("已取消"),
+                    components=[]
+                )
+
+                return
+
+            await interaction.guild.voice_client.disconnect(force=False)
+
+            await player.destroy()
+
+            await ensure_voice(interaction, should_connect=True)
+
+            await interaction.edit_original_response(
+                embed=SuccessEmbed("已連接至語音頻道"),
+                components=[]
+            )
+
+        finally:
+            await update_display(
+                bot=self.bot,
+                player=player,
+                new_message=await interaction.original_response(),
+                delay=5
+            )
 
     @commands.slash_command(
         name="disconnect",
