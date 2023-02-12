@@ -331,7 +331,7 @@ class Commands(Cog):
             try:
                 await self.bot.wait_for(
                     "button_click",
-                    check=lambda i: i.custom_id in ["continue"] and i.user.id == interaction.user.id,
+                    check=lambda i: i.data.custom_id in ["continue"] and i.user.id == interaction.user.id,
                     timeout=10
                 )
 
