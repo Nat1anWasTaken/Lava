@@ -343,9 +343,10 @@ class Commands(Cog):
 
                 return
 
-            await interaction.guild.voice_client.disconnect(force=False)
+            await player.stop()
+            player.queue.clear()
 
-            await player.destroy()
+            await interaction.guild.voice_client.disconnect(force=False)
 
             await ensure_voice(interaction, should_connect=True)
 
