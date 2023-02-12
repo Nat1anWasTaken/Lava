@@ -134,6 +134,8 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     :param delay: The delay in seconds before updating the display.
     :param interaction: The interaction to be responded to.
     """
+    await asyncio.sleep(delay)
+
     # noinspection PyTypeChecker
     channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(int(player.fetch('channel')))
 
@@ -143,14 +145,10 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         if not new_message:
             raise ValueError("No message found or provided to update the display with")
 
-        player.store('message', new_message.id)
-
-    await asyncio.sleep(delay)
-
     if new_message:
         try:
             await message.delete()
-        except (AttributeError, UnboundLocalError, ):
+        except (AttributeError, UnboundLocalError):
             pass
 
         message = new_message
