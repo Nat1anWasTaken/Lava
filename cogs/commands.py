@@ -348,6 +348,8 @@ class Commands(Cog):
 
             await interaction.guild.voice_client.disconnect(force=False)
 
+            await player.destroy()
+
             await ensure_voice(interaction, should_connect=True)
 
             await interaction.edit_original_response(
