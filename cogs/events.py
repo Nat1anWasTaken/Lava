@@ -64,12 +64,12 @@ class Events(Cog):
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
             message = await channel.send(
-                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}", f"原因 {event.original}")
+                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}", f"原因: `{event.original or 'Unknown'}`")
             )
 
             await player.skip()
 
-            await update_display(self.bot, player, message)
+            await update_display(self.bot, player, message, delay=5)
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
