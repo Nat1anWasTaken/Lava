@@ -111,10 +111,12 @@ class Events(Cog):
                 await update_display(self.bot, player)
             except ValueError:  # There's no message to update
                 pass
+        voice_client = get(self.bot.voice_clients, guild=member.guild)
         if (
                 before.channel is not None
                 and after.channel is None
                 and member.id != self.bot.user.id
+                and len(voice_client.channel.guild.members) == 1
         ):
             await asyncio.sleep(120)
 
@@ -123,7 +125,6 @@ class Events(Cog):
             await player.stop()
             player.queue.clear()
 
-            voice_client = get(self.bot.voice_clients, guild=member.guild)
             await voice_client.disconnect()
 
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
