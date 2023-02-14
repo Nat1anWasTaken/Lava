@@ -1,15 +1,17 @@
 from typing import Union
 
 import lavalink
+import asyncio
 from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
     MessageInteraction
 from disnake.abc import GuildChannel
 from disnake.ext import commands
+from disnake.utils import get
 from disnake.ext.commands import Cog, CommandInvokeError
 from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent
 
 from core.classes import Bot
-from core.embeds import ErrorEmbed
+from core.embeds import ErrorEmbed,InfoEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
 from library.variables import Variables
@@ -108,6 +110,31 @@ class Events(Cog):
             try:
                 await update_display(self.bot, player)
             except ValueError:  # There's no message to update
+                pass
+        if (
+                before.channel is not None
+                and after.channel is None
+                and member.id != self.bot.user.id
+        ):
+            await asyncio.sleep(120)
+
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+
+            await player.stop()
+            player.queue.clear()
+
+            voice_client = get(self.bot.voice_clients, guild=member.guild)
+            await voice_client.disconnect()
+
+            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
+
+            message = await channel.send(
+                embed=InfoEmbed(f"超過兩分鐘已沒人聽歌 我先跑路啦<:Youmu_excited:991667714852667472>"),
+            )
+
+            try: 
+                await update_display(self.bot, player, message)
+            except ValueError: # There's no message to update
                 pass
 
     @commands.Cog.listener(name="on_message_interaction")
