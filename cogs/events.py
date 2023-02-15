@@ -3,7 +3,7 @@ from typing import Union
 import lavalink
 import asyncio
 from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
-    MessageInteraction
+    MessageInteraction,Member
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.utils import get
@@ -17,7 +17,7 @@ from library.functions import update_display, ensure_voice, toggle_autoplay, get
 from library.variables import Variables
 
 
-class Events(Cog):
+class Event(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -96,7 +96,7 @@ class Events(Cog):
             await interaction.edit_original_response(embed=embed)
 
     @commands.Cog.listener(name="on_voice_state_update")
-    async def on_voice_state_update(self, member, before, after):
+    async def on_voice_state_update(self, member:Member, before, after):
         if (
                 before.channel is not None
                 and after.channel is None
@@ -112,20 +112,20 @@ class Events(Cog):
             except ValueError:  # There's no message to update
                 pass
         voice_client = get(self.bot.voice_clients, guild=member.guild)
+        try:
+            voice_channel = get(member.guild.voice_channels,id=voice_client.channel.id)
+            print(voice_client.channel.id)
+        except AttributeError:
+            pass
         if (
                 before.channel is not None
                 and after.channel is None
                 and member.id != self.bot.user.id
-                and len(voice_client.channel.guild.members) == 1
+                and len(voice_channel.members) == 1
         ):
             await asyncio.sleep(120)
 
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
-
-            await player.stop()
-            player.queue.clear()
-
-            await voice_client.disconnect()
 
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
@@ -133,10 +133,16 @@ class Events(Cog):
                 embed=InfoEmbed(f"超過兩分鐘已沒人聽歌 我先跑路啦<:Youmu_excited:991667714852667472>"),
             )
 
+            await voice_client.disconnect()
+
             try: 
                 await update_display(self.bot, player, message)
             except ValueError: # There's no message to update
                 pass
+
+            await player.stop()
+            player.queue.clear()
+
 
     @commands.Cog.listener(name="on_message_interaction")
     async def on_message_interaction(self, interaction: MessageInteraction):
@@ -189,4 +195,4 @@ class Events(Cog):
 
 
 def setup(bot):
-    bot.add_cog(Events(bot))
+    bot.add_cog(Event(bot))
