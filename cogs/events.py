@@ -136,7 +136,7 @@ class Events(Cog):
             await voice_client.disconnect()
 
             try: 
-                await update_display(self.bot, player, message)
+                await update_display(self.bot, player, message,delay=3)
             except ValueError: # There's no message to update
                 pass
 
