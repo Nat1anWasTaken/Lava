@@ -117,31 +117,35 @@ class Events(Cog):
             print(voice_client.channel.id)
         except AttributeError:
             pass
-        if (
-                before.channel is not None
-                and after.channel is None
-                and member.id != self.bot.user.id
-                and len(voice_channel.members) == 1
-        ):
-            await asyncio.sleep(120)
+        
+        try:
+            if (
+                    before.channel is not None
+                    and after.channel is None
+                    and member.id != self.bot.user.id
+                    and len(voice_channel.members) == 1
+            ):
+                await asyncio.sleep(120)
 
-            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
+                player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
 
-            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
+                channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
-            message = await channel.send(
-                embed=InfoEmbed(f"超過兩分鐘已沒人聽歌 我先跑路啦<:Youmu_excited:991667714852667472>"),
-            )
+                message = await channel.send(
+                    embed=InfoEmbed(f"超過兩分鐘已沒人聽歌 我先跑路啦<:Youmu_excited:991667714852667472>"),
+                )
 
-            await voice_client.disconnect()
+                await voice_client.disconnect()
 
-            try: 
-                await update_display(self.bot, player, message,delay=3)
-            except ValueError: # There's no message to update
-                pass
+                try: 
+                    await update_display(self.bot, player, message,delay=3)
+                except ValueError: # There's no message to update
+                    pass
 
-            await player.stop()
-            player.queue.clear()
+                await player.stop()
+                player.queue.clear()
+        except UnboundLocalError:
+            pass
 
 
     @commands.Cog.listener(name="on_message_interaction")
