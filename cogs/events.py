@@ -17,7 +17,7 @@ from library.functions import update_display, ensure_voice, toggle_autoplay, get
 from library.variables import Variables
 
 
-class Event(Cog):
+class Events(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -195,4 +195,4 @@ class Event(Cog):
 
 
 def setup(bot):
-    bot.add_cog(Event(bot))
+    bot.add_cog(Events(bot))
