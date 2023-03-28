@@ -6,4 +6,5 @@ youtube_dl>=2021
 requests
 beautifulsoup4
 youtube-related
+youtube-search
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
