@@ -1,17 +1,18 @@
 import asyncio
+import random
 from typing import Union, Iterable
 
+import youtube_related
+import youtube_search
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
-from disnake.abc import GuildChannel
+from disnake.abc import GuildChannel, MISSING
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
-from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
-from spotipy import Spotify
+from lavalink import DefaultPlayer, parse_time, AudioTrack
 
 from core.classes import Bot
 from library.classes import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
-from library.sources.track import SpotifyAudioTrack
 from library.variables import Variables
 
 
@@ -74,51 +75,40 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
         player.delete("autoplay")
 
         for item in player.queue:  # Remove songs added by autoplay
-            if not item.requester:
+            if item.requester == 0:
                 player.queue.remove(item)
 
     else:
         player.store("autoplay", "1")
 
 
-async def get_recommended_tracks(spotify: Spotify,
-                                 player: DefaultPlayer,
-                                 tracks: list[DeferredAudioTrack],
-                                 amount: int = 10) -> list[SpotifyAudioTrack]:
+async def get_recommended_track(player: DefaultPlayer, track: AudioTrack) -> Union[AudioTrack]:
     """
-    Get recommended tracks from the given track.
+    Get recommended track from the given track.
 
-    :param spotify: The spotify instance.
     :param player: The player instance.
-    :param tracks: The seed tracks to get recommended tracks from.
-    :param amount: The amount of recommended tracks to get.
+    :param track: The seed tracks to get recommended tracks from.
     """
-    seed_tracks = []
+    try:
+        results = await youtube_related.async_fetch(track.uri)
+    except ValueError:  # The track is not a YouTube track
+        search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
 
-    for track in tracks:
-        if not isinstance(track, SpotifyAudioTrack):
-            try:
-                result = spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
+        results = await youtube_related.async_fetch(f"https://youtube.com/watch?v={search_results[0]['id']}")
 
-                seed_tracks.append(result["tracks"]["items"][0]["id"])
+    result: AudioTrack = MISSING
 
-            except IndexError:
-                continue
-
+    for item in results:
+        if item["id"] in [song.identifier for song in player.queue]:
             continue
 
-        seed_tracks.append(track.identifier)
+        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={item['id']}")).tracks[0]
 
-    recommendations = spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
+    if not result:
+        random_picked = random.choice(results)
+        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={random_picked['id']}")).tracks[0]
 
-    output = []
-
-    for track in recommendations["tracks"]:
-        load_result: LoadResult = await player.node.get_tracks(track['external_urls']['spotify'], check_local=True)
-
-        output.append(load_result.tracks[0])
-
-    return output
+    return result
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
