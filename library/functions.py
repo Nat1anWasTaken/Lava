@@ -1,9 +1,11 @@
 import asyncio
+import random
 from typing import Union, Iterable
 
 import youtube_related
+import youtube_search
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
-from disnake.abc import GuildChannel
+from disnake.abc import GuildChannel, MISSING
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, AudioTrack
@@ -80,16 +82,33 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
         player.store("autoplay", "1")
 
 
-async def get_recommended_track(player: DefaultPlayer, track: AudioTrack) -> AudioTrack:
+async def get_recommended_track(player: DefaultPlayer, track: AudioTrack) -> Union[AudioTrack]:
     """
     Get recommended track from the given track.
 
     :param player: The player instance.
     :param track: The seed tracks to get recommended tracks from.
     """
-    results = await youtube_related.async_fetch(track.uri)
+    try:
+        results = await youtube_related.async_fetch(track.uri)
+    except ValueError:  # The track is not a YouTube track
+        search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
 
-    return (await player.node.get_tracks(f"https://youtube.com/watch?v={results[0]['id']}")).tracks[0]
+        results = await youtube_related.async_fetch(f"https://youtube.com/watch?v={search_results[0]['id']}")
+
+    result: AudioTrack = MISSING
+
+    for item in results:
+        if item["id"] in [song.identifier for song in player.queue]:
+            continue
+
+        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={item['id']}")).tracks[0]
+
+    if not result:
+        random_picked = random.choice(results)
+        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={random_picked['id']}")).tracks[0]
+
+    return result
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
