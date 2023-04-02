@@ -476,21 +476,24 @@ class Commands(Cog):
 
     @play.autocomplete("query")
     async def search(self, interaction: ApplicationCommandInteraction, query: str):
-        if query and "https://open.spotify.com/" not in query:
-            choices = []
+        if re.match(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", query):
+            return []
 
-            result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+        if not query:
+            return []
 
-            for track in result.tracks:
-                choices.append(
-                    OptionChoice(
-                        name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
-                    )
+        choices = []
+
+        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+
+        for track in result.tracks:
+            choices.append(
+                OptionChoice(
+                    name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
                 )
+            )
 
-            return choices
-
-        return []
+        return choices
 
     @commands.slash_command(
         name="timescale", description="修改歌曲的速度、音調",
