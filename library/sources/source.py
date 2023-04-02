@@ -240,7 +240,7 @@ class BilibiliSource(BaseSource):
         self.priority = 5
 
     def check_query(self, query: str) -> bool:
-        return query.startswith('https://www.bilibili.com/video/')
+        return query.startswith('https://www.bilibili.com/video/') or query.startswith('https://b23.tv/')
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
         audio_url, title = self.get_audio(query)
