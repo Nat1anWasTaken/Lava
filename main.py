@@ -1,7 +1,8 @@
 import asyncio
 import json
 import logging
-from os import getenv
+import os
+from os import getenv, path
 
 from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
@@ -12,6 +13,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 def main():
+    if path.isfile("./env"):
+        os.environ.update({k: v for k, v in [line.split("=") for line in open("./env").readlines()]})
+
     loop = asyncio.new_event_loop()
 
     bot = Bot(
