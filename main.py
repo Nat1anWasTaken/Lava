@@ -2,10 +2,11 @@ import asyncio
 import json
 import logging
 import os
-from os import getenv, path
+from os import getenv
 
 from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
+from dotenv import load_dotenv
 
 from core.classes import Bot
 
@@ -13,8 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def main():
-    if path.isfile("./env"):
-        os.environ.update({k: v for k, v in [line.split("=") for line in open("./env").readlines()]})
+    load_dotenv()
 
     loop = asyncio.new_event_loop()
 
@@ -25,7 +25,7 @@ def main():
 
     load_extensions(bot)
 
-    bot.run(getenv("TOKEN"))
+    bot.run(os.environ["TOKEN"])
 
 
 def load_extensions(bot: Bot) -> Bot:
