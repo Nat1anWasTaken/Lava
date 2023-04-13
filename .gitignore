@@ -162,3 +162,6 @@ cython_debug/
 # Config files
 configs/lavalink.json
 configs/icons.json
+
+# Personal files
+startup.sh
