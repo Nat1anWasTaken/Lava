@@ -30,7 +30,7 @@ class Events(Cog):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
-            self.logger.info("Received layer update event for guild %s", self.bot.get_guild(player.guild_id))
+            self.logger.info("Received player update event for guild %s", self.bot.get_guild(player.guild_id))
 
             if event.player.fetch("autoplay") and len(event.player.queue) == 0:
                 self.logger.info(
