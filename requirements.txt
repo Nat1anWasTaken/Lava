@@ -3,6 +3,7 @@ lavalink>=4.0
 pynacl>=1.5
 spotipy>=2.22
 youtube_dl>=2021
+colorlog
 requests
 beautifulsoup4
 youtube-related
