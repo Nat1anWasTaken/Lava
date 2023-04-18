@@ -81,8 +81,10 @@
     TOKEN = 你的機器人 Token
     SPOTIFY_CLIENT_ID = Spotify Client ID
     SPOTIFY_CLIENT_SECRET = Spotify Client Secret
+    SPOTIPY_REDIRECT_URI = Redirect URI
     ```
-   > `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` 不是必須的，只有在你想要啟用 Spotify 支援時才需要提供
+   > `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIPY_REDIRECT_URI` 不是必須的，只有在你想要啟用 Spotify 以及 自動播放
+   時才需要提供
 4. 將 `configs/` 中的兩個 `.json` 檔案名稱中的 `.example` 刪除，並填入其中內容
   * `lavalink.json`
       ```json
@@ -135,7 +137,8 @@
 
 ### Spotify 支援
 
-要啟用對 `Spotify` 的支援，你得提供上述的三個環境變數，並在啟動時遵照 [Spotipy Documentation](spotipy-authorization-flow) 中的步驟執行授權
+要啟用對 `Spotify` 以及 `自動播放`
+的支援，你得提供上述的三個環境變數，並在啟動時遵照 [Spotipy Documentation](spotipy-authorization-flow) 中的步驟執行授權
 
 ### 需求
 

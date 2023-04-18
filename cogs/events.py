@@ -12,7 +12,8 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from core.classes import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_track
+from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
+from library.variables import Variables
 
 
 class Events(Cog):
@@ -34,12 +35,15 @@ class Events(Cog):
 
             if event.player.fetch("autoplay") and len(event.player.queue) == 0:
                 self.logger.info(
-                    "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
+                    "Queue is under 10, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
 
-                recommendation = await get_recommended_track(player, player.current)
+                recommendations = await get_recommended_tracks(
+                    Variables.SPOTIFY_CLIENT, event.player, ([event.player.current] + event.player.queue)[-10:], 20
+                )
 
-                event.player.add(requester=0, track=recommendation)
+                for track in recommendations:
+                    event.player.add(requester=0, track=track)
 
             try:
                 await update_display(self.bot, player)

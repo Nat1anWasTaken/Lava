@@ -6,7 +6,5 @@ youtube_dl>=2021
 colorlog
 requests
 beautifulsoup4
-youtube-related
-youtube-search
 python-dotenv
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
