@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 from os import getenv
 from typing import Union, Tuple, Optional
@@ -340,17 +341,32 @@ class SourceManager(Source):
 
         self.initial_sources()
 
+        self.logger = logging.getLogger('lava.sources')
+
     def initial_sources(self):
+        self.logger.info('Initializing sources...')
+
         for cls in BaseSource.__subclasses__():
+            self.logger.debug(f'Initializing {cls.__name__}...')
+
             self.sources.append(cls())
 
         self.sources.sort(key=lambda x: x.priority, reverse=True)
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
+        self.logger.info("Received query: %s, checking in sources...", query)
+
         for source in self.sources:
+            self.logger.debug("Checking source for query %s: %s", query, source.__name__)
+
             if not source.check_query(query):
+                self.logger.debug("Source %s does not match query %, skipping...", source.__name__, query)
+
                 continue
+
+            self.logger.info("Source %s matched query %s, loading...", source.__name__, query)
 
             return await source.load_item(client, query)
 
+        self.logger.info("No sources matched query %s, returning None", query)
         return None

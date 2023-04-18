@@ -154,6 +154,10 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     :param delay: The delay in seconds before updating the display.
     :param interaction: The interaction to be responded to.
     """
+    bot.logger.debug(
+        "Updating display for player in guild %s in a %s seconds delay", bot.get_guild(player.guild_id), delay
+    )
+
     await asyncio.sleep(delay)
 
     # noinspection PyTypeChecker
@@ -167,6 +171,10 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 
     if new_message:
         try:
+            bot.logger.debug(
+                "Deleting old existing display message for player in guild %s", bot.get_guild(player.guild_id)
+            )
+
             await message.delete()
         except (AttributeError, UnboundLocalError):
             pass
@@ -243,6 +251,8 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
     else:
         await message.edit(embed=generate_display_embed(bot, player), components=components)
+
+    bot.logger.debug("Updating player in guild %s display message to %s", bot.get_guild(player.guild_id), message.id)
 
     player.store('message', message.id)
 

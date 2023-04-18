@@ -11,12 +11,14 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from core.classes import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_track
+from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_track, setup_logger
 
 
 class Events(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
+
+        self.logger = setup_logger("lava.events")
 
     async def cog_load(self):
         await self.bot.wait_until_ready()
@@ -27,7 +29,13 @@ class Events(Cog):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
+            self.logger.info("Received layer update event for guild %s", self.bot.get_guild(player.guild_id))
+
             if event.player.fetch("autoplay") and len(event.player.queue) == 0:
+                self.logger.info(
+                    "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
+                )
+
                 recommendation = await get_recommended_track(player, player.current)
 
                 event.player.add(requester=0, track=recommendation)
