@@ -1,6 +1,6 @@
 import json
-import logging
 import re
+from logging import getLogger
 from os import getenv
 from typing import Union, Tuple, Optional
 
@@ -339,9 +339,9 @@ class SourceManager(Source):
 
         self.sources: list[BaseSource] = []
 
-        self.initial_sources()
+        self.logger = getLogger('lava.sources')
 
-        self.logger = logging.getLogger('lava.sources')
+        self.initial_sources()
 
     def initial_sources(self):
         self.logger.info('Initializing sources...')
