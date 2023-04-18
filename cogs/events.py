@@ -1,3 +1,4 @@
+from logging import getLogger
 from typing import Union
 
 import lavalink
@@ -11,14 +12,14 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from core.classes import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_track, setup_logger
+from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_track
 
 
 class Events(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-        self.logger = setup_logger("lava.events")
+        self.logger = getLogger("lava.events")
 
     async def cog_load(self):
         await self.bot.wait_until_ready()
