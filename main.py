@@ -13,18 +13,16 @@ from core.classes import Bot
 
 
 def main():
-    logging.basicConfig(
-        filename="lava.log", level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s"
-    )
+    setup_logging()
 
-    logger = logging.getLogger("lava.main")
+    main_logger = logging.getLogger("lava.main")
 
     load_dotenv()
 
     loop = asyncio.new_event_loop()
 
     bot = Bot(
-        logger=logger,
+        logger=main_logger,
         command_prefix=getenv("PREFIX", "l!"), intents=Intents.all(), loop=loop,
         command_sync_flags=CommandSyncFlags.default()
     )
@@ -40,7 +38,7 @@ def setup_logging():
     :return: None
     """
     formatter = ColoredFormatter(
-        '%(asctime)s %(log_color)s[%(levelname)s] %(message)s',
+        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
         log_colors={
             'DEBUG': 'cyan',
