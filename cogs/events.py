@@ -49,6 +49,8 @@ class Events(Cog):
         elif isinstance(event, TrackEndEvent):
             player: DefaultPlayer = event.player
 
+            self.logger.info("Received track end event for guild %s", self.bot.get_guild(player.guild_id))
+
             try:
                 await update_display(self.bot, player)
             except ValueError:
@@ -57,6 +59,8 @@ class Events(Cog):
         elif isinstance(event, QueueEndEvent):
             player: DefaultPlayer = event.player
 
+            self.logger.info("Received queue end event for guild %s", self.bot.get_guild(player.guild_id))
+
             try:
                 await update_display(self.bot, player)
             except ValueError:
@@ -64,6 +68,8 @@ class Events(Cog):
 
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
+
+            self.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
 
             # noinspection PyTypeChecker
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
