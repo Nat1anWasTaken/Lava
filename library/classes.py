@@ -20,8 +20,6 @@ class LavalinkVoiceClient(VoiceClient):
         super().__init__(bot, channel)
 
     async def on_voice_server_update(self, data):
-        # the data needs to be transformed before being handed down to
-        # voice_update_handler
         lavalink_data = {
             't': 'VOICE_SERVER_UPDATE',
             'd': data
@@ -29,8 +27,6 @@ class LavalinkVoiceClient(VoiceClient):
         await self.bot.lavalink.voice_update_handler(lavalink_data)
 
     async def on_voice_state_update(self, data):
-        # the data needs to be transformed before being handed down to
-        # voice_update_handler
         lavalink_data = {
             't': 'VOICE_STATE_UPDATE',
             'd': data
@@ -46,7 +42,6 @@ class LavalinkVoiceClient(VoiceClient):
         Connect the bot to the voice channel and create a player_manager
         if it doesn't exist yet.
         """
-        # ensure there is a player_manager when creating a new voice_client
         self.lavalink.player_manager.create(guild_id=self.channel.guild.id)
         await self.channel.guild.change_voice_state(channel=self.channel, self_mute=self_mute, self_deaf=self_deaf)
 
@@ -57,16 +52,11 @@ class LavalinkVoiceClient(VoiceClient):
         """
         player: DefaultPlayer = self.lavalink.player_manager.get(self.channel.guild.id)
 
-        # no need to disconnect if we are not connected
         if not force and not player.is_connected:
             return
 
-        # None means disconnect
         await self.channel.guild.change_voice_state(channel=None)
 
-        # update the channel_id of the player to None
-        # this must be done because the on_voice_state_update that would set channel_id
-        # to None doesn't get dispatched after the disconnect
         player.channel_id = None
 
         self.cleanup()
