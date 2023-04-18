@@ -1,9 +1,11 @@
 import asyncio
 import random
+from logging import Logger, getLogger, StreamHandler, INFO
 from typing import Union, Iterable
 
 import youtube_related
 import youtube_search
+from colorlog import ColoredFormatter
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
 from disnake.abc import GuildChannel, MISSING
 from disnake.ui import Button, ActionRow
@@ -14,6 +16,34 @@ from core.classes import Bot
 from library.classes import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.variables import Variables
+
+
+def setup_logger(name: str) -> Logger:
+    """
+    Set up a logger with the given name.
+    :param name: The name of the logger.
+    :return: The logger
+    """
+    logger = getLogger(name)
+
+    formatter = ColoredFormatter(
+        '%(log_color)s[%(levelname)s] %(message)s',
+        log_colors={
+            'DEBUG': 'cyan',
+            'INFO': 'white',
+            'WARNING': 'yellow',
+            'ERROR': 'red',
+            'CRITICAL': 'bold_red',
+        }
+    )
+
+    stream_handler = StreamHandler()
+    stream_handler.setLevel(INFO)
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(stream_handler)
+
+    return logger
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
