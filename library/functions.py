@@ -248,7 +248,6 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 
 
 def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
-    # TODO: Complete this embed
     embed = Embed()
 
     if player.is_playing:
