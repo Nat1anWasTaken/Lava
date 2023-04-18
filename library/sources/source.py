@@ -357,14 +357,14 @@ class SourceManager(Source):
         self.logger.info("Received query: %s, checking in sources...", query)
 
         for source in self.sources:
-            self.logger.debug("Checking source for query %s: %s", query, source.__name__)
+            self.logger.debug("Checking source for query %s: %s", query, source.__class__.__name__)
 
             if not source.check_query(query):
-                self.logger.debug("Source %s does not match query %, skipping...", source.__name__, query)
+                self.logger.debug("Source %s does not match query %, skipping...", source.__class__.__name__, query)
 
                 continue
 
-            self.logger.info("Source %s matched query %s, loading...", source.__name__, query)
+            self.logger.info("Source %s matched query %s, loading...", source.__class__.__name__, query)
 
             return await source.load_item(client, query)
 
