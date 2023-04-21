@@ -7,7 +7,7 @@ from disnake.ui import Button
 from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
 
-from core.classes import Bot
+from core.bot import Bot
 from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
 from library.errors import UserInDifferentChannel
 from library.functions import ensure_voice, update_display, split_list

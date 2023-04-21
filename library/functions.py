@@ -8,7 +8,7 @@ from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 from spotipy import Spotify
 
-from core.classes import Bot
+from core.bot import Bot
 from library.classes import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.sources.track import SpotifyAudioTrack
