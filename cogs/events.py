@@ -11,9 +11,9 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 
 from core.bot import Bot
 from core.embeds import ErrorEmbed
-from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.utils import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
-from library.variables import Variables
+from core.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
+from core.utils import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
+from core.variables import Variables
 
 
 class Events(Cog):

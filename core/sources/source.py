@@ -11,8 +11,8 @@ from spotipy import Spotify, SpotifyOAuth
 from youtube_dl import YoutubeDL
 from youtube_dl.utils import UnsupportedError, DownloadError
 
-from library.sources.track import SpotifyAudioTrack
-from library.variables import Variables
+from core.sources.track import SpotifyAudioTrack
+from core.variables import Variables
 
 
 class BaseSource:
