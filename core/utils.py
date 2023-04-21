@@ -69,7 +69,6 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
 
     :param player: The player instance.
     """
-
     if player.fetch("autoplay"):
         player.delete("autoplay")
 

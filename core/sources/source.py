@@ -268,7 +268,8 @@ class BilibiliSource(BaseSource):
             playlist_info=None
         )
 
-    def get_audio(self, url: str) -> Tuple[str, str]:
+    @staticmethod
+    def get_audio(url: str) -> Tuple[str, str]:
         """
         Gets audio URL from a Bilibili video URL
 
