@@ -12,7 +12,7 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from core.bot import Bot
 from core.embeds import ErrorEmbed
 from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
+from library.utils import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
 from library.variables import Variables
 
 

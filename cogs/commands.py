@@ -10,7 +10,7 @@ from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vi
 from core.bot import Bot
 from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
 from library.errors import UserInDifferentChannel
-from library.functions import ensure_voice, update_display, split_list
+from library.utils import ensure_voice, update_display, split_list
 
 allowed_filters = {
     "timescale": Timescale,

@@ -9,7 +9,7 @@ from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 from spotipy import Spotify
 
 from core.bot import Bot
-from library.classes import LavalinkVoiceClient
+from library.voice_client import LavalinkVoiceClient
 from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from library.sources.track import SpotifyAudioTrack
 from library.variables import Variables
