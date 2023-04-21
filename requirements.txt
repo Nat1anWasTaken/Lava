@@ -1,9 +1,9 @@
-disnake>=2.7
 lavalink>=4.0
 pynacl>=1.5
 spotipy==2.23.0
 requests==2.28.2
 beautifulsoup4==4.12.2
+disnake
 colorlog
 python-dotenv
 yt-dlp
