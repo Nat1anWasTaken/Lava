@@ -8,11 +8,11 @@ import requests
 from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
 from spotipy import Spotify, SpotifyOAuth
-from youtube_dl import YoutubeDL
-from youtube_dl.utils import UnsupportedError, DownloadError
+from yt_dlp import YoutubeDL, DownloadError
+from yt_dlp.utils import UnsupportedError
 
-from library.sources.track import SpotifyAudioTrack
-from library.variables import Variables
+from core.sources.track import SpotifyAudioTrack
+from core.variables import Variables
 
 
 class BaseSource:
@@ -268,7 +268,8 @@ class BilibiliSource(BaseSource):
             playlist_info=None
         )
 
-    def get_audio(self, url: str) -> Tuple[str, str]:
+    @staticmethod
+    def get_audio(url: str) -> Tuple[str, str]:
         """
         Gets audio URL from a Bilibili video URL
 
@@ -301,9 +302,7 @@ class YTDLSource(BaseSource):
 
         self.priority = 0
 
-        self.ytdl = YoutubeDL(
-            {"format": "bestaudio"}
-        )
+        self.ytdl = YoutubeDL()
 
     def check_query(self, query: str) -> bool:
         youtube_url_rx = r"^(https?://(www\.)?(youtube\.com|music\.youtube\.com)/(watch\?v=|playlist\?list=)([a-zA-Z0-9_-]+))"

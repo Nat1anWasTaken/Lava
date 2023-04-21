@@ -8,11 +8,11 @@ from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 from spotipy import Spotify
 
-from core.classes import Bot
-from library.classes import LavalinkVoiceClient
-from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
-from library.sources.track import SpotifyAudioTrack
-from library.variables import Variables
+from core.bot import Bot
+from core.voice_client import LavalinkVoiceClient
+from core.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
+from core.sources.track import SpotifyAudioTrack
+from core.variables import Variables
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
@@ -69,7 +69,6 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
 
     :param player: The player instance.
     """
-
     if player.fetch("autoplay"):
         player.delete("autoplay")
 
