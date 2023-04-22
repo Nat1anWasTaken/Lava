@@ -260,7 +260,7 @@ class BilibiliSource(BaseSource):
         track = (await client.get_tracks(audio_url, check_local=False)).tracks[0]
 
         track.title = title
-        track.author = f'來自 [Bilibili]({query}) 的未知作者'
+        track.author = f'Unknown / [Bilibili]({query})'
 
         return LoadResult(
             load_type=LoadType.TRACK,
@@ -334,7 +334,7 @@ class YTDLSource(BaseSource):
         match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
 
         track.title = url_info['title']
-        track.author = f"來自 [{match.group(1)}]({match.group(0)}) 的未知作者"
+        track.author = f"Unknown / [{match.group(1)}]({match.group(0)})"
 
         return LoadResult(
             load_type=LoadType.TRACK,
