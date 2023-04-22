@@ -1,7 +1,7 @@
 import asyncio
 from typing import Union, Iterable
 
-from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Localized
 from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
@@ -9,10 +9,10 @@ from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 from spotipy import Spotify
 
 from core.bot import Bot
-from core.voice_client import LavalinkVoiceClient
 from core.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
 from core.sources.track import SpotifyAudioTrack
 from core.variables import Variables
+from core.voice_client import LavalinkVoiceClient
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
@@ -240,29 +240,41 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
     embed = Embed()
 
     if player.is_playing:
-        embed.set_author(name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
+        embed.set_author(
+            name=Localized("播放中", key="display.status,playing").string,
+            icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp"
+        )
 
         embed.colour = Colour.green()
 
     elif player.paused:
-        embed.set_author(name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
+        embed.set_author(
+            name=Localized("已暫停", key="display.status.paused").string,
+            icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp"
+        )
 
         embed.colour = Colour.orange()
 
     elif not player.is_connected:
-        embed.set_author(name='已斷線', icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp")
+        embed.set_author(
+            name=Localized("已斷線", key="display.status.disconnected").string,
+            icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp"
+        )
 
         embed.colour = Colour.red()
 
     elif not player.current:
-        embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
+        embed.set_author(
+            name=Localized("已結束", key="display.status.ended").string,
+            icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp"
+        )
 
         embed.colour = Colour.red()
 
     loop_mode_text = {
-        0: "關閉",
-        1: "單曲循環",
-        2: "整個佇列循環"
+        0: Localized('關閉', key='repeat_mode.off').string,
+        1: Localized('單曲', key='repeat_mode.song').string,
+        2: Localized('整個序列', key='repeat_mode.queue').string
     }
 
     if player.current:
@@ -271,34 +283,50 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
                             f" {generate_progress_bar(bot, player.current.duration, player.position)} " \
                             f"`{format_time(player.current.duration)}`"
 
-        embed.add_field(name="👤 作者", value=player.current.author, inline=True)
+        embed.add_field(name=Localized("👤 作者", key="display.author").string, value=player.current.author, inline=True)
         embed.add_field(
-            name="👥 點播者", value="自動播放" if not player.current.requester else f"<@{player.current.requester}>",
+            name=Localized("👥 點播者", key="display.requester").string,
+            value=Localized(
+                "自動播放", key="display.requester.autoplay"
+            ).string if not player.current.requester else f"<@{player.current.requester}>",
             inline=True
         )  # Requester will be 0 if the song is added by autoplay
-        embed.add_field(name="🔁 重複播放模式", value=loop_mode_text[player.loop], inline=True)
+        embed.add_field(
+            name=Localized("🔁 重複播放模式", key="display.repeat_mode").string, value=loop_mode_text[player.loop],
+            inline=True
+        )
 
         embed.add_field(
-            name="📃 播放序列",
+            name=Localized("📃 播放序列", key="display.queue").string,
             value=('\n'.join(
                 [
                     f"**[{index + 1}]** {track.title}"
                     for index, track in enumerate(player.queue[:5])
                 ]
-            ) + ("\n還有更多..." if len(player.queue) > 5 else "")) or "空",
+            ) + (f"\n{Localized('還有更多...', key='display.queue.more').string}" if len(player.queue) > 5 else "")) or
+                  Localized("空", key="empty").string,
             inline=True
         )
         embed.add_field(
-            name="⚙️ 已啟用效果器",
-            value=', '.join([key.capitalize() for key in player.filters]) or "無",
+            name=Localized("⚙️ 已啟用效果器", key="display.filters").string,
+            value=', '.join([key.capitalize() for key in player.filters]) or Localized("無", key="none").string,
             inline=True
         )
-        embed.add_field(name="🔀 隨機播放", value="開" if player.shuffle else "關", inline=True)
+        embed.add_field(
+            name=Localized("🔀 隨機播放", key="display.shuffle").string,
+            value=Localized("開啟", key="display.enable").string
+            if player.shuffle else Localized("關閉", key="display.disable").string,
+            inline=True
+        )
 
-        embed.set_footer(text="如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區")
+        embed.set_footer(
+            text=Localized(
+                "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區", key="display.footer"
+            ).string
+        )
 
     else:
-        embed.title = "未在播放歌曲"
+        embed.title = Localized("沒有正在播放的音樂", key="error.nothing_playing")
 
     return embed
 

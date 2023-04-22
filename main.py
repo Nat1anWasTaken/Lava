@@ -27,6 +27,8 @@ def main():
         command_sync_flags=CommandSyncFlags.default()
     )
 
+    bot.i18n.load("locale/")
+
     load_extensions(bot)
 
     bot.run(os.environ["TOKEN"])

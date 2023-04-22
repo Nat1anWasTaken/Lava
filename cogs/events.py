@@ -3,7 +3,7 @@ from typing import Union
 
 import lavalink
 from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
-    MessageInteraction
+    MessageInteraction, Localized
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
@@ -79,7 +79,10 @@ class Events(Cog):
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
             message = await channel.send(
-                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}", f"原因: `{event.original or 'Unknown'}`")
+                embed=ErrorEmbed(
+                    f"{Localized('無法播放歌曲', key='error.play_failed')}: {event.track['title']}",
+                    f"{Localized('原因', key='reason')}: `{event.original or 'Unknown'}`"
+                )
             )
 
             await player.skip()
@@ -89,16 +92,28 @@ class Events(Cog):
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
         if isinstance(error.original, MissingVoicePermissions):
-            embed = ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
+            embed = ErrorEmbed(
+                Localized('指令錯誤', key='error.command.title'),
+                Localized("我需要 `連接` 和 `說話` 權限才能夠播放音樂", key='error.no_play_perms')
+            )
 
         elif isinstance(error.original, BotNotInVoice):
-            embed = ErrorEmbed("指令錯誤", "我沒有連接到一個語音頻道")
+            embed = ErrorEmbed(
+                Localized('指令錯誤', key='error.command.title'),
+                Localized("我沒有連接到一個語音頻道", key='error.bot_not_in_voice')
+            )
 
         elif isinstance(error.original, UserNotInVoice):
-            embed = ErrorEmbed("指令錯誤", "你沒有連接到一個語音頻道")
+            embed = ErrorEmbed(
+                Localized('指令錯誤', key='error.command.title'),
+                Localized("你沒有連接到一個語音頻道", key='error.user_not_in_voice')
+            )
 
         elif isinstance(error.original, UserInDifferentChannel):
-            embed = ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
+            embed = ErrorEmbed(
+                Localized('指令錯誤', key='error.command.title'),
+                f"{Localized('你必須與我在同一個語音頻道', key='error.must_in_same_voice')} <#{error.original.voice.id}>"
+            )
 
         else:
             raise error.original
