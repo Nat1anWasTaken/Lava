@@ -496,8 +496,8 @@ class Commands(Cog):
                         value=f"{Localized('單曲', key='repeat_mode.song')} 單曲/1"
                     ),
                     OptionChoice(
-                        name=Localized('播放序列', key='repeat_mode.queue'),
-                        value=f"{Localized('播放序列', key='repeat_mode.queue')} 播放序列/2"
+                        name=Localized('整個序列', key='repeat_mode.queue'),
+                        value=f"{Localized('整個序列', key='repeat_mode.queue')} 整個序列/2"
                     )
                 ],
                 required=True
