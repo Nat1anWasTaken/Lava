@@ -64,7 +64,7 @@
     "command.timescale.option.pitch": "Pitch (≥ 0.1)",
     "command.timescale.option.rate": "Rate (≥ 0.1) / For nightcore please set this to 1.25",
     "command.tremolo.name": "tremolo",
-    "command.tremolo.description": "Add a \\\"tremolo\\\" effect to track",
+    "command.tremolo.description": "Add a \"tremolo\" effect to track",
     "command.tremolo.option.frequency": "Frequency (0 < n)",
     "command.tremolo.option.depth": "Depth (0 < n ≤ 1)",
     "command.vibrato.name": "vibrato",
@@ -105,5 +105,5 @@
     "display.shuffle": "🔀 Shuffle",
     "display.enable": "ON",
     "display.disable": "OFF",
-    "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help"
+    "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in channel settings will help"
 }
