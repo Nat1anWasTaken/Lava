@@ -1,6 +1,7 @@
 import json
 from logging import Logger
 
+from disnake import Locale
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
@@ -46,6 +47,16 @@ class Bot(OriginalBot):
         self.logger.info("Done loading lavalink nodes!")
 
         self.lavalink.register_source(SourceManager())
+
+    def get_text(self, key: str, locale: str, default: str = None) -> str:
+        """
+        Gets a text from i18n files by key
+        :param key: The key of the text
+        :param locale: The locale of the text
+        :param default: The default value to return if the text is not found
+        :return: The text
+        """
+        return self.i18n.get(key).get(locale, default)
 
     def get_icon(self, name: str, default: any) -> any:
         """
