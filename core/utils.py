@@ -121,7 +121,7 @@ async def get_recommended_tracks(spotify: Spotify,
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
-                         interaction: Interaction = None, locale: Locale = "zh_TW") -> None:
+                         interaction: Interaction = None, locale: Locale = None) -> None:
     """
     Update the display of the current song.
 
