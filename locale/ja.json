@@ -1,7 +1,7 @@
 {
-    "command.nowplaying.name": "再生中",
+    "command.nowplaying.name": "nowplaying",
     "command.nowplaying.description": "現在再生中の曲を表示",
-    "command.play.name": "再生",
+    "command.play.name": "play",
     "command.play.description": "音楽を再生",
     "command.play.option.query": "曲のタイトルまたは Url(YouTube、YouTube Music、SoundCloud、Spotify をサポート)",
     "command.play.option.index": "要將歌曲放置於當前播放序列的位置",
@@ -9,7 +9,7 @@
     "command.play.error.no_results.description": "キーワード検索を使用する場合は、入力してから数秒待ちください。検索結果が自動的に上部に表示されます。",
     "command.play.filter_warning.title": "提醒",
     "command.play.loaded.title": "已加入播放序列",
-    "command.skip.name": "スキップ",
+    "command.skip.name": "skip",
     "command.skip.description": "現在再生中の曲をスキップする",
     "command.skip.option.target": "要跳到的歌曲編號",
     "command.skip.option.move": "是否移除目標以前的所有歌曲，如果沒有提供 target，這個參數會被忽略",
