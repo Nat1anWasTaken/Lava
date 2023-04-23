@@ -73,6 +73,8 @@ class Events(Cog):
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
 
+            locale: str = str(player.fetch("locale", "zh_TW"))
+
             self.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
 
             # noinspection PyTypeChecker
@@ -80,8 +82,8 @@ class Events(Cog):
 
             message = await channel.send(
                 embed=ErrorEmbed(
-                    f"{Localized('無法播放歌曲', key='error.play_failed')}: {event.track['title']}",
-                    f"{Localized('原因', key='reason')}: `{event.original or 'Unknown'}`"
+                    f"{self.bot.get_text('error.play_failed', locale, '無法播放歌曲')}: {event.track['title']}",
+                    f"{self.bot.get_text('reason', locale, '原因')}: `{event.original or 'Unknown'}`"
                 )
             )
 
@@ -91,28 +93,30 @@ class Events(Cog):
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
+        locale = str(interaction.locale)
+
         if isinstance(error.original, MissingVoicePermissions):
             embed = ErrorEmbed(
-                Localized('指令錯誤', key='error.command.title'),
-                Localized("我需要 `連接` 和 `說話` 權限才能夠播放音樂", key='error.no_play_perms')
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.no_play_perms', locale, "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
             )
 
         elif isinstance(error.original, BotNotInVoice):
             embed = ErrorEmbed(
-                Localized('指令錯誤', key='error.command.title'),
-                Localized("我沒有連接到一個語音頻道", key='error.bot_not_in_voice')
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.bot_not_in_voice', locale, "我沒有連接到一個語音頻道")
             )
 
         elif isinstance(error.original, UserNotInVoice):
             embed = ErrorEmbed(
-                Localized('指令錯誤', key='error.command.title'),
-                Localized("你沒有連接到一個語音頻道", key='error.user_not_in_voice')
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.user_not_in_voice', locale, "你沒有連接到一個語音頻道")
             )
 
         elif isinstance(error.original, UserInDifferentChannel):
             embed = ErrorEmbed(
-                Localized('指令錯誤', key='error.command.title'),
-                f"{Localized('你必須與我在同一個語音頻道', key='error.must_in_same_voice')} <#{error.original.voice.id}>"
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                f"{self.bot.get_text('error.must_in_same_voice', locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>"
             )
 
         else:
