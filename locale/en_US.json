@@ -64,7 +64,7 @@
     "command.timescale.option.pitch": "Pitch (≥ 0.1)",
     "command.timescale.option.rate": "Rate (≥ 0.1) / For nightcore please set this to 1.25",
     "command.tremolo.name": "tremolo",
-    "command.tremolo.description": "為歌曲增加一個「顫抖」的效果",
+    "command.tremolo.description": "Add a \\\"tremolo\\\" effect to track",
     "command.tremolo.option.frequency": "Frequency (0 < n)",
     "command.tremolo.option.depth": "Depth (0 < n ≤ 1)",
     "command.vibrato.name": "vibrato",
