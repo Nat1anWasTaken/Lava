@@ -40,7 +40,7 @@
     "command.connect.error.already_in_channel.continue": "Continue",
     "command.connect.error.already_in_channel.cancel": "Canceled",
     "command.disconnect.name": "disconnect",
-    "command.disconnect.description": "Disconnected",
+    "command.disconnect.description": "Disconnect from channel",
     "command.queue.name": "queue",
     "command.queue.description": "Show current queue",
     "command.queue.error.empty": "The queue is empty",
