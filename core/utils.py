@@ -1,18 +1,18 @@
 import asyncio
 from typing import Union, Iterable
 
-from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale
 from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
 from spotipy import Spotify
 
-from core.classes import Bot
-from library.classes import LavalinkVoiceClient
-from library.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
-from library.sources.track import SpotifyAudioTrack
-from library.variables import Variables
+from core.bot import Bot
+from core.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
+from core.sources.track import SpotifyAudioTrack
+from core.variables import Variables
+from core.voice_client import LavalinkVoiceClient
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
@@ -69,7 +69,6 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
 
     :param player: The player instance.
     """
-
     if player.fetch("autoplay"):
         player.delete("autoplay")
 
@@ -122,7 +121,7 @@ async def get_recommended_tracks(spotify: Spotify,
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
-                         interaction: Interaction = None) -> None:
+                         interaction: Interaction = None, locale: Locale = None) -> None:
     """
     Update the display of the current song.
 
@@ -133,7 +132,14 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     :param new_message: The new message to update the display with, None to use the old message.
     :param delay: The delay in seconds before updating the display.
     :param interaction: The interaction to be responded to.
+    :param locale: The locale to use.
     """
+    if interaction:
+        player.store("locale", interaction.locale)
+
+    if locale:
+        player.store("locale", locale)
+
     bot.logger.debug(
         "Updating display for player in guild %s in a %s seconds delay", bot.get_guild(player.guild_id), delay
     )
@@ -240,30 +246,44 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
 def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
     embed = Embed()
 
+    locale: str = str(player.fetch("locale", "zh_TW"))
+
     if player.is_playing:
-        embed.set_author(name='播放中', icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp")
+        embed.set_author(
+            name=bot.get_text("display.status.playing", locale, "播放中"),
+            icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp"
+        )
 
         embed.colour = Colour.green()
 
     elif player.paused:
-        embed.set_author(name='已暫停', icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp")
+        embed.set_author(
+            name=bot.get_text("display.status.paused", locale, "已暫停"),
+            icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp"
+        )
 
         embed.colour = Colour.orange()
 
     elif not player.is_connected:
-        embed.set_author(name='已斷線', icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp")
+        embed.set_author(
+            name=bot.get_text("display.status.disconnected", locale, "已斷線"),
+            icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp"
+        )
 
         embed.colour = Colour.red()
 
     elif not player.current:
-        embed.set_author(name='已結束', icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp")
+        embed.set_author(
+            name=bot.get_text("display.status.ended", locale, "已結束"),
+            icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp"
+        )
 
         embed.colour = Colour.red()
 
     loop_mode_text = {
-        0: "關閉",
-        1: "單曲循環",
-        2: "整個佇列循環"
+        0: bot.get_text('repeat_mode.off', locale, '關閉'),
+        1: bot.get_text('repeat_mode.song', locale, '單曲'),
+        2: bot.get_text('repeat_mode.queue', locale, '整個序列')
     }
 
     if player.current:
@@ -272,34 +292,50 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
                             f" {generate_progress_bar(bot, player.current.duration, player.position)} " \
                             f"`{format_time(player.current.duration)}`"
 
-        embed.add_field(name="👤 作者", value=player.current.author, inline=True)
+        embed.add_field(name=bot.get_text("display.author", locale, "👤 作者"), value=player.current.author, inline=True)
         embed.add_field(
-            name="👥 點播者", value="自動播放" if not player.current.requester else f"<@{player.current.requester}>",
+            name=bot.get_text("display.requester", locale, "👥 點播者"),
+            value=bot.get_text(
+                "display.requester.autoplay", locale, "自動播放"
+            ) if not player.current.requester else f"<@{player.current.requester}>",
             inline=True
         )  # Requester will be 0 if the song is added by autoplay
-        embed.add_field(name="🔁 重複播放模式", value=loop_mode_text[player.loop], inline=True)
+        embed.add_field(
+            name=bot.get_text("display.repeat_mode", locale, "🔁 重複播放模式"), value=loop_mode_text[player.loop],
+            inline=True
+        )
 
         embed.add_field(
-            name="📃 播放序列",
+            name=bot.get_text("display.queue", locale, "📃 播放序列"),
             value=('\n'.join(
                 [
                     f"**[{index + 1}]** {track.title}"
                     for index, track in enumerate(player.queue[:5])
                 ]
-            ) + ("\n還有更多..." if len(player.queue) > 5 else "")) or "空",
+            ) + (f"\n{bot.get_text('display.queue.more', locale, '還有更多...')}" if len(player.queue) > 5 else "")) or
+                  bot.get_text("empty", locale, "空"),
             inline=True
         )
         embed.add_field(
-            name="⚙️ 已啟用效果器",
-            value=', '.join([key.capitalize() for key in player.filters]) or "無",
+            name=bot.get_text("display.filters", locale, "⚙️ 已啟用效果器"),
+            value=', '.join([key.capitalize() for key in player.filters]) or bot.get_text("none", locale, "無"),
             inline=True
         )
-        embed.add_field(name="🔀 隨機播放", value="開" if player.shuffle else "關", inline=True)
+        embed.add_field(
+            name=bot.get_text("display.shuffle", locale, "🔀 隨機播放"),
+            value=bot.get_text("display.enable", locale, "開啟")
+            if player.shuffle else bot.get_text("display.disable", locale, "關閉"),
+            inline=True
+        )
 
-        embed.set_footer(text="如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區")
+        embed.set_footer(
+            text=bot.get_text(
+                "display.footer", locale, "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
+            )
+        )
 
     else:
-        embed.title = "未在播放歌曲"
+        embed.title = bot.get_text("error.nothing_playing", locale, "沒有正在播放的音樂")
 
     return embed
 

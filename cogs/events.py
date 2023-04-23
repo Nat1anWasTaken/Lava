@@ -9,11 +9,11 @@ from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
 from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent
 
-from core.classes import Bot
+from core.bot import Bot
 from core.embeds import ErrorEmbed
-from library.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from library.functions import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
-from library.variables import Variables
+from core.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
+from core.utils import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
+from core.variables import Variables
 
 
 class Events(Cog):
@@ -73,13 +73,18 @@ class Events(Cog):
         elif isinstance(event, TrackLoadFailedEvent):
             player: DefaultPlayer = event.player
 
+            locale: str = str(player.fetch("locale", "zh_TW"))
+
             self.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
 
             # noinspection PyTypeChecker
             channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
             message = await channel.send(
-                embed=ErrorEmbed(f"無法播放歌曲: {event.track['title']}", f"原因: `{event.original or 'Unknown'}`")
+                embed=ErrorEmbed(
+                    f"{self.bot.get_text('error.play_failed', locale, '無法播放歌曲')}: {event.track['title']}",
+                    f"{self.bot.get_text('reason', locale, '原因')}: `{event.original or 'Unknown'}`"
+                )
             )
 
             await player.skip()
@@ -88,17 +93,31 @@ class Events(Cog):
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
+        locale = str(interaction.locale)
+
         if isinstance(error.original, MissingVoicePermissions):
-            embed = ErrorEmbed("指令錯誤", "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
+            embed = ErrorEmbed(
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.no_play_perms', locale, "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
+            )
 
         elif isinstance(error.original, BotNotInVoice):
-            embed = ErrorEmbed("指令錯誤", "我沒有連接到一個語音頻道")
+            embed = ErrorEmbed(
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.bot_not_in_voice', locale, "我沒有連接到一個語音頻道")
+            )
 
         elif isinstance(error.original, UserNotInVoice):
-            embed = ErrorEmbed("指令錯誤", "你沒有連接到一個語音頻道")
+            embed = ErrorEmbed(
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                self.bot.get_text('error.user_not_in_voice', locale, "你沒有連接到一個語音頻道")
+            )
 
         elif isinstance(error.original, UserInDifferentChannel):
-            embed = ErrorEmbed("指令錯誤", f"你必須與我在同一個語音頻道 <#{error.original.voice.id}>")
+            embed = ErrorEmbed(
+                self.bot.get_text('error.command.title', locale, '指令錯誤'),
+                f"{self.bot.get_text('error.must_in_same_voice', locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>"
+            )
 
         else:
             raise error.original

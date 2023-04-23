@@ -1,7 +1,7 @@
 from disnake import VoiceClient, abc
 from lavalink import DefaultPlayer
 
-from core.classes import Bot
+from core.bot import Bot
 
 
 class LavalinkVoiceClient(VoiceClient):

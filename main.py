@@ -9,15 +9,15 @@ from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
-from core.classes import Bot
+from core.bot import Bot
 
 
 def main():
+    load_dotenv()
+
     setup_logging()
 
     main_logger = logging.getLogger("lava.main")
-
-    load_dotenv()
 
     loop = asyncio.new_event_loop()
 
@@ -26,6 +26,8 @@ def main():
         command_prefix=getenv("PREFIX", "l!"), intents=Intents.all(), loop=loop,
         command_sync_flags=CommandSyncFlags.default()
     )
+
+    bot.i18n.load("locale/")
 
     load_extensions(bot)
 
