@@ -14,7 +14,7 @@ from core.bot import Bot
 
 def main():
     load_dotenv()
-    
+
     setup_logging()
 
     main_logger = logging.getLogger("lava.main")
