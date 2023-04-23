@@ -31,15 +31,13 @@ class Commands(Cog):
         description=Localized("顯示目前正在播放的歌曲", key="command.nowplaying.description")
     )
     async def nowplaying(self, interaction: ApplicationCommandInteraction):
-        await interaction.response.defer()
-
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
             interaction.guild.id
         )
 
-        await update_display(self.bot, player, await interaction.original_response())
+        await update_display(self.bot, player, interaction=interaction)
 
     @commands.slash_command(
         name=Localized("play", key="command.play.name"),
@@ -66,6 +64,8 @@ class Commands(Cog):
     async def play(self, interaction: ApplicationCommandInteraction, query: str, index: int = None):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         await ensure_voice(interaction, should_connect=True)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
@@ -86,10 +86,10 @@ class Commands(Cog):
         if not results or not results.tracks:
             return await interaction.edit_original_response(
                 embed=ErrorEmbed(
-                    Localized("沒有找到任何歌曲", key="command.play.error.no_results.title"),
-                    Localized(
+                    self.bot.get_text("command.play.error.no_results.title", locale, "沒有找到任何歌曲"),
+                    self.bot.get_text(
+                        "command.play.error.no_results.description", locale,
                         "如果你想要使用關鍵字搜尋，請在輸入關鍵字後等待幾秒，搜尋結果將會自動顯示在上方",
-                        key="command.play.error.no_results.description"
                     )
                 )
             )
@@ -100,14 +100,15 @@ class Commands(Cog):
 
         filter_warnings = [
             InfoEmbed(
-                title=Localized("提醒", key="command.play.filter_warning.title"),
+                title=self.bot.get_text("command.play.filter_warning.title", locale, "提醒"),
                 description=str(
-                    Localized(
+                    self.bot.get_text(
+                        'command.play.filter_warning.description', locale,
                         '偵測到 效果器正在運作中，\n'
                         '這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n'
                         '如果這不是你期望的，可以透過效果器的指令來關閉它們\n'
                         '指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器\n\n'
-                        '以下是正在運行的效果器：', key='command.play.filter_warning.description'
+                        '以下是正在運行的效果器：'
                     )
                 ) + ' ' + ', '.join([key.capitalize() for key in player.filters])
             )
@@ -124,7 +125,7 @@ class Commands(Cog):
                 await interaction.edit_original_response(
                     embeds=[
                                SuccessEmbed(
-                                   Localized("已加入播放序列", key="command.play.loaded.title"),
+                                   self.bot.get_text("command.play.loaded.title", locale, "已加入播放序列"),
                                    {results.tracks[0].title}
                                )
                            ] + filter_warnings
@@ -143,7 +144,7 @@ class Commands(Cog):
                 await interaction.edit_original_response(
                     embeds=[
                                SuccessEmbed(
-                                   title=f"{Localized('已加入播放序列', key='command.play.loaded.title')} {len(results.tracks)} / {results.playlist_info.name}",
+                                   title=f"{self.bot.get_text('command.play.loaded.title', locale, '已加入播放序列')} {len(results.tracks)} / {results.playlist_info.name}",
                                    description='\n'.join(
                                        [
                                            f"**[{index + 1}]** {track.title}"
@@ -158,7 +159,9 @@ class Commands(Cog):
         if not player.is_playing:
             await player.play()
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale,
+        )
 
     @commands.slash_command(
         name=Localized("skip", key="command.skip.name"),
@@ -183,6 +186,8 @@ class Commands(Cog):
     async def skip(self, interaction: ApplicationCommandInteraction, target: int = None, move: bool = False):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
@@ -191,13 +196,13 @@ class Commands(Cog):
 
         if not player.is_playing:
             return await interaction.edit_original_response(
-                embed=ErrorEmbed(Localized("沒有正在播放的歌曲", key="error.nothing_playing"))
+                embed=ErrorEmbed(self.bot.get_text("error.nothing_playing", locale, "沒有正在播放的歌曲"))
             )
 
         if target:
             if len(player.queue) < target or target < 1:
                 return await interaction.edit_original_response(
-                    embed=ErrorEmbed(Localized("無效的歌曲編號", key="error.invalid_track_number"))
+                    embed=ErrorEmbed(self.bot.get_text("error.invalid_track_number", locale, "無效的歌曲編號"))
                 )
 
             if move:
@@ -209,10 +214,12 @@ class Commands(Cog):
         await player.skip()
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(Localized("已跳過歌曲", key="command.skip.success"))
+            embed=SuccessEmbed(self.bot.get_text("command.skip.success", locale, "已跳過歌曲"))
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
     @commands.slash_command(
         name=Localized("remove", key="command.remove.name"),
@@ -229,6 +236,8 @@ class Commands(Cog):
     async def remove(self, interaction: ApplicationCommandInteraction, target: int):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
@@ -237,16 +246,18 @@ class Commands(Cog):
 
         if len(player.queue) < target or target < 1:
             return await interaction.edit_original_response(
-                embed=ErrorEmbed(Localized("無效的歌曲編號", key="error.invalid_track_number"))
+                embed=ErrorEmbed(self.bot.get_text("error.invalid_track_number", locale, "無效的歌曲編號"))
             )
 
         player.queue.pop(target - 1)
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(Localized("已移除歌曲", key="command.remove.success"))
+            embed=SuccessEmbed(self.bot.get_text("command.remove.success", locale, "已移除歌曲"))
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
     @commands.slash_command(
         name=Localized("clean", key="command.clean.name"),
@@ -257,6 +268,8 @@ class Commands(Cog):
     async def clean(self, interaction: ApplicationCommandInteraction):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
@@ -266,10 +279,12 @@ class Commands(Cog):
         player.queue.clear()
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(Localized("已清除播放序列", key="command.clean.success"))
+            embed=SuccessEmbed(self.bot.get_text("command.clean.success", locale, "已清除播放序列"))
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
     @commands.slash_command(
         name=Localized("pause", key="command.pause.name"),
@@ -277,6 +292,8 @@ class Commands(Cog):
     )
     async def pause(self, interaction: ApplicationCommandInteraction):
         await interaction.response.defer()
+
+        locale = str(interaction.locale)
 
         await ensure_voice(interaction, should_connect=False)
 
@@ -286,13 +303,13 @@ class Commands(Cog):
 
         if not player.is_playing:
             return await interaction.edit_original_response(
-                embed=ErrorEmbed(Localized("沒有正在播放的歌曲", key="error.nothing_playing"))
+                embed=ErrorEmbed(self.bot.get_text("error.nothing_playing", locale, "沒有正在播放的歌曲"))
             )
 
         await player.set_pause(True)
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(Localized("已暫停歌曲", key="command.pause.success"))
+            embed=SuccessEmbed(self.bot.get_text("command.pause.success", locale, "已暫停歌曲"))
         )
 
     @commands.slash_command(
@@ -302,6 +319,8 @@ class Commands(Cog):
     async def resume(self, interaction: ApplicationCommandInteraction):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
@@ -310,16 +329,18 @@ class Commands(Cog):
 
         if not player.paused:
             return await interaction.edit_original_response(
-                embed=ErrorEmbed(Localized("沒有暫停的歌曲", key="command.pause.error.nothing_paused"))
+                embed=ErrorEmbed(self.bot.get_text("command.pause.error.nothing_paused", locale, "沒有暫停的歌曲"))
             )
 
         await player.set_pause(False)
 
         await interaction.edit_original_response(
-            embed=SuccessEmbed(Localized("已繼續歌曲", key="command.resume.success"))
+            embed=SuccessEmbed(self.bot.get_text("command.resume.success", locale, "已繼續歌曲"))
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
     @commands.slash_command(
         name=Localized("stop", key="command.stop.name"),
@@ -346,11 +367,13 @@ class Commands(Cog):
     async def connect(self, interaction: ApplicationCommandInteraction):
         await interaction.response.defer()
 
+        locale = str(interaction.locale)
+
         try:
             await ensure_voice(interaction, should_connect=True)
 
             await interaction.edit_original_response(
-                embed=SuccessEmbed(Localized("已連接至語音頻道", key="command.connect.success"))
+                embed=SuccessEmbed(self.bot.get_text("command.connect.success", locale, "已連接至語音頻道"))
             )
 
         except UserInDifferentChannel:
@@ -358,15 +381,17 @@ class Commands(Cog):
 
             await interaction.edit_original_response(
                 embed=WarningEmbed(
-                    Localized("警告", key="command.connect.error.already_in_channel.title"),
-                    Localized(
-                        "機器人已經在一個頻道中了，繼續移動將會中斷對方的音樂播放，是否要繼續?",
-                        key="command.connect.error.already_in_channel.description"
+                    self.bot.get_text("command.connect.error.already_in_channel.title", locale, "警告"),
+                    self.bot.get_text(
+                        "command.connect.error.already_in_channel.description", locale,
+                        "機器人已經在一個頻道中了，繼續移動將會中斷對方的音樂播放，是否要繼續?"
                     )
                 ),
                 components=[
                     Button(
-                        label=str(Localized("繼續", key="command.connect.error.already_in_channel.continue")),
+                        label=str(
+                            self.bot.get_text("command.connect.error.already_in_channel.continue", locale, "繼續")
+                        ),
                         style=ButtonStyle.green, custom_id="continue"
                     )
                 ]
@@ -381,7 +406,9 @@ class Commands(Cog):
 
             except TimeoutError:
                 await interaction.edit_original_response(
-                    embed=ErrorEmbed(Localized("已取消", key="command.connect.error.already_in_channel.cancel")),
+                    embed=ErrorEmbed(
+                        self.bot.get_text("command.connect.error.already_in_channel.cancel", locale, "已取消")
+                    ),
                     components=[]
                 )
 
@@ -395,7 +422,7 @@ class Commands(Cog):
             await ensure_voice(interaction, should_connect=True)
 
             await interaction.edit_original_response(
-                embed=SuccessEmbed(Localized("已連接至語音頻道", key="command.connect.success")),
+                embed=SuccessEmbed(self.bot.get_text("command.connect.success", locale, "已連接至語音頻道")),
                 components=[]
             )
 
@@ -404,7 +431,8 @@ class Commands(Cog):
                 bot=self.bot,
                 player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),
                 new_message=await interaction.original_response(),
-                delay=5
+                delay=5,
+                locale=interaction.locale
             )
 
     @commands.slash_command(
@@ -427,7 +455,7 @@ class Commands(Cog):
 
         await interaction.guild.voice_client.disconnect(force=False)
 
-        await update_display(self.bot, player, await interaction.original_response())
+        await update_display(self.bot, player, await interaction.original_response(), locale=interaction.locale)
 
     @commands.slash_command(
         name=Localized("queue", key="command.queue.name"),
@@ -436,9 +464,11 @@ class Commands(Cog):
     async def queue(self, interaction: ApplicationCommandInteraction):
         player = self.bot.lavalink.player_manager.get(interaction.guild.id)
 
+        locale = str(interaction.locale)
+
         if not player or not player.queue:
             return await interaction.response.send_message(
-                embed=ErrorEmbed(Localized("播放序列為空", key="command.queue.error.empty"))
+                embed=ErrorEmbed(self.bot.get_text("command.queue.error.empty", locale, "播放序列為空"))
             )
 
         pages: list[InfoEmbed] = []
@@ -446,7 +476,7 @@ class Commands(Cog):
         for iteration, songs_in_page in enumerate(split_list(player.queue, 10)):
             pages.append(
                 InfoEmbed(
-                    title=Localized("播放序列", key="command.queue.title"),
+                    title=self.bot.get_text("command.queue.title", locale, "播放序列"),
                     description='\n'.join(
                         [
                             f"**[{index + 1 + (iteration * 10)}]** {track.title}"
@@ -472,7 +502,7 @@ class Commands(Cog):
             ),
             page_counter_style=ButtonStyle.green,
             interaction_check_message=ErrorEmbed(
-                Localized("沒事戳這顆幹嘛？", key="command.queue.error.interaction_check_message")
+                self.bot.get_text("command.queue.error.interaction_check_message", locale, "沒事戳這顆幹嘛？")
             )
         )
 
@@ -511,12 +541,18 @@ class Commands(Cog):
             interaction.guild.id
         )
 
+        locale = str(interaction.locale)
+
         player.set_loop(int(mode.split("/")[1]))
 
         await interaction.response.send_message(
             embed=SuccessEmbed(
-                f"{Localized('成功將重複播放模式更改為', key='command.repeat.success')}: {mode.split('/')[0]}"
+                f"{self.bot.get_text('command.repeat.success', locale, '成功將重複播放模式更改為')}: {mode.split('/')[0]}"
             )
+        )
+
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
         )
 
     @commands.slash_command(
@@ -532,15 +568,19 @@ class Commands(Cog):
             interaction.guild.id
         )
 
+        locale = str(interaction.locale)
+
         player.set_shuffle(not player.shuffle)
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(
-                f"{Localized('隨機播放模式', key='command.shuffle.success')}：{Localized('開啟', key='enable') if player.shuffle else Localized('關閉', key='disable')}"
+                f"{self.bot.get_text('command.shuffle.success', locale, '隨機播放模式')}：{self.bot.get_text('enable', locale, '開啟') if player.shuffle else self.bot.get_text('disable', locale, '關閉')}"
             )
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
     @play.autocomplete("query")
     async def search(self, interaction: ApplicationCommandInteraction, query: str):
@@ -688,6 +728,8 @@ class Commands(Cog):
 
         await ensure_voice(interaction, should_connect=False)
 
+        locale = str(interaction.locale)
+
         if not player:
             player: DefaultPlayer = self.bot.lavalink.player_manager.get(
                 interaction.guild.id
@@ -698,7 +740,7 @@ class Commands(Cog):
 
             await interaction.edit_original_response(
                 embed=SuccessEmbed(
-                    f"{Localized('已移除效果器', key='command.filters.removed')}：{allowed_filters[filter_name].__name__}"
+                    f"{self.bot.get_text('command.filters.removed', locale, '已移除效果器')}：{allowed_filters[filter_name].__name__}"
                 )
             )
 
@@ -715,7 +757,7 @@ class Commands(Cog):
 
         except ValueError:
             await interaction.edit_original_response(
-                embed=ErrorEmbed(Localized('請輸入有效的參數', key='command.filters.invalid_params'))
+                embed=ErrorEmbed(self.bot.get_text('command.filters.invalid_params', locale, '請輸入有效的參數'))
             )
             return
 
@@ -723,11 +765,13 @@ class Commands(Cog):
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(
-                f"{Localized('已設置效果器', key='command.filters.set')}：{allowed_filters[filter_name].__name__}"
+                f"{self.bot.get_text('command.filters.set', locale, '已設置效果器')}：{allowed_filters[filter_name].__name__}"
             )
         )
 
-        await update_display(self.bot, player, await interaction.original_response(), delay=5)
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
 
 
 def setup(bot):
