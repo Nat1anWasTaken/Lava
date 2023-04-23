@@ -1,7 +1,6 @@
 import json
 from logging import Logger
 
-from disnake import Locale
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
