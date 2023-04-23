@@ -3,7 +3,7 @@ from typing import Union
 
 import lavalink
 from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
-    MessageInteraction, Localized
+    MessageInteraction
 from disnake.abc import GuildChannel
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
