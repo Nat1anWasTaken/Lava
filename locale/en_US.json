@@ -10,7 +10,7 @@
     "command.play.filter_warning.title": "Warning",
     "command.play.loaded.title": "Added to queue",
     "command.skip.name": "skip",
-    "command.skip.description": "I'm already playing music in a channel! Are you sure to continue even if this will stop their music party which might get you scolded?",
+    "command.skip.description": "Skip current playing song",
     "command.skip.option.target": "要跳到的歌曲編號",
     "command.skip.option.move": "Whether to remove ALL queues before target, if target isn't provided, this parameter will be ignored",
     "error.nothing_playing": "Nothing is playing *sadface*",
