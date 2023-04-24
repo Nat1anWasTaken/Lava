@@ -69,81 +69,19 @@
 
 如果你只是想體驗的話，你可以到 [Yeecord][yeecord] 直接使用裡面的 `Lava#8364`
 
-你也可以透過以下步驟自己架起這台機器人
+或
 
-1. 確保你擁有 [需求](#需求) 裡面的所有東西
-2. 將這個 Repository 複製下來
-    ```shell
-    $ git clone https://github.com/Nat1anWasTaken/Lava.git
-    ```
-3. 設定當前環境中的變數
-    ```env
-    TOKEN = 你的機器人 Token
-    SPOTIFY_CLIENT_ID = Spotify Client ID
-    SPOTIFY_CLIENT_SECRET = Spotify Client Secret
-    SPOTIPY_REDIRECT_URI = Redirect URI
-    ```
-   > `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIPY_REDIRECT_URI` 不是必須的，只有在你想要啟用 Spotify 以及 自動播放
-   時才需要提供
-4. 將 `configs/` 中的兩個 `.json` 檔案名稱中的 `.example` 刪除，並填入其中內容
-  * `lavalink.json`
-      ```json
-      {
-          "nodes": [
-              {
-                  "host": "localhost",
-                  "port": 2333,
-                  "password": "password",
-                  "name": "test",
-                  "region": "us"
-              }
-          ]
-      }
-      ```
-  * `icons.json`
-      ```json
-      {
-          "empty": "<:empty:1051781423067058197>",
-          "progress": {
-              "start_point": "<:start_point:1051765647606034462>",
-              "start_fill": "<:start_fill:1051765646163202058>",
-              "mid_point": "<:mid_point:1051765644363837442>",
-              "end_fill": "<:end_fill:1051765641545269299>",
-              "end_point": "<:end_point:1051765643172646922>",
-              "end": "<:end:1051765640039497748>"
-          },
-          "control": {
-              "rewind": "<:rewind_10:987663342766288936>",
-              "forward": "<:forward_10:987663192979288134>",
-              "pause": "<:pause:987661771609358366>",
-              "resume": "<:play:987643956403781692>",
-              "stop": "<:stop:987645074450034718>",
-              "previous": "<:previous:987652154133213274>",
-              "next": "<:skip:987641543441678416>",
-              "shuffle": "<:shuffle:987653133306064908>",
-              "repeat": "<:loop:987650404764508200>",
-              "autoplay": "<:autoplay:1056145730596769872>"
-          }
-      }
-      ```
-5. 安裝必要的前置項
-    ```shell
-    $ pip install -r requirements.txt
-    ```
-6. 啟動 `main.py`
-    ```shell
-    $ python main.py
-    ```
+你可以到 [這裡][LavaLauncher] 按照教學創建 Lavalink節點 和 Discord機器人
+
 
 ### Spotify 支援
 
 要啟用對 `Spotify` 以及 `自動播放`
-的支援，你得提供上述的三個環境變數，並在啟動時遵照 [Spotipy Documentation](spotipy-authorization-flow) 中的步驟執行授權
+的支援，你得提供上述的三個環境變數，並在第一步中輸入進去
 
 ### 需求
 
 * [Python 3.10+][python]
-* 一個或以上已經建置好的 [Lavalink][lavalink] 節點
 
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
@@ -215,6 +153,8 @@
 [python]: https://python.org
 
 [lavalink]: https://github.com/freyacodes/Lavalink
+
+[LavaLauncher]: https://github.com/Nat1anWasTaken/LavaLauncher
 
 [spotipy-authorization-flow]: https://spotipy.readthedocs.io/en/2.22.0/#authorization-code-flow
 
