@@ -278,7 +278,11 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         ]
 
     if interaction:
-        await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
+        if interaction.original_message():
+            await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
+        else:
+            await interaction.response.send_message(embed=generate_display_embed(bot, player), components=components)
+
     else:
         await message.edit(embed=generate_display_embed(bot, player), components=components)
 
