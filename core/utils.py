@@ -19,7 +19,7 @@ from core.voice_client import LavalinkVoiceClient
 def get_current_branch() -> str:
     """
     Get the current branch of the git repository
-    :return:
+    :return: The current branch
     """
     output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
     return output.strip().decode()
@@ -29,7 +29,7 @@ def get_upstream_url(branch: str) -> Optional[str]:
     """
     Get the upstream url of the branch
     :param branch: The branch to get the upstream url of
-    :return:
+    :return: The upstream url, or None if it doesn't exist
     """
     try:
         output = subprocess.check_output(['git', 'config', '--get', f'branch.{branch}.remote'])
@@ -45,6 +45,7 @@ def get_upstream_url(branch: str) -> Optional[str]:
 def get_commit_hash() -> str:
     """
     Get the commit hash of the current commit.
+    :return: The commit hash
     """
     return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('utf-8').strip()
 
