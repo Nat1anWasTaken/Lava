@@ -1,16 +1,19 @@
 import re
+from os import getpid
 
-from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized
+from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
 from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.ui import Button
 from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
+from psutil import cpu_percent, virtual_memory, Process
 
 from core.bot import Bot
 from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
 from core.errors import UserInDifferentChannel
-from core.utils import ensure_voice, update_display, split_list
+from core.utils import ensure_voice, update_display, split_list, bytes_to_gb, get_commit_hash, get_upstream_url, \
+    get_current_branch
 
 allowed_filters = {
     "timescale": Timescale,
@@ -25,6 +28,68 @@ allowed_filters = {
 class Commands(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
+
+    @commands.slash_command(
+        name=Localized("info", key="command.info.name"),
+        description=Localized("顯示機器人資訊", key="command.info.description")
+    )
+    async def info(self, interaction: ApplicationCommandInteraction):
+        locale = str(interaction.locale)
+
+        embed = Embed(
+            title=self.bot.get_text('command.info.embed.title', locale, '機器人資訊'),
+            color=0x2b2d31
+        )
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.start_time', locale, '啟動時間'),
+            value=f"<t:{round(Process(getpid()).create_time())}:F>",
+            inline=True
+        )
+
+        branch = get_current_branch()
+        upstream_url = get_upstream_url(branch)
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.commit_hash', locale, '版本資訊'),
+            value=f"{get_commit_hash()} on {branch} from {upstream_url}",
+        )
+
+        embed.add_field(name="​", value="​", inline=True)
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.cpu', locale, 'CPU'),
+            value=f"{cpu_percent()}%",
+            inline=True
+        )
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.ram', locale, 'RAM'),
+            value=f"{round(bytes_to_gb(virtual_memory()[3]), 1)} GB / "
+                  f"{round(bytes_to_gb(virtual_memory()[0]), 1)} GB "
+                  f"({virtual_memory()[2]}%)",
+            inline=True
+        )
+
+        embed.add_field(name="​", value="​", inline=True)
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.guilds', locale, '伺服器數量'),
+            value=len(self.bot.guilds),
+            inline=True
+        )
+
+        embed.add_field(
+            name=self.bot.get_text('command.info.embed.players', locale, '播放器數量'),
+            value=len(self.bot.lavalink.player_manager.players),
+            inline=True
+        )
+
+        embed.add_field(name="​", value="​", inline=True)
+
+        await interaction.response.send_message(
+            embed=embed
+        )
 
     @commands.slash_command(
         name=Localized("nowplaying", key="command.nowplaying.name"),

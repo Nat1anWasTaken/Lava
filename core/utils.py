@@ -1,5 +1,6 @@
 import asyncio
-from typing import Union, Iterable
+import subprocess
+from typing import Union, Iterable, Optional
 
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale
 from disnake.abc import GuildChannel
@@ -13,6 +14,49 @@ from core.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, 
 from core.sources.track import SpotifyAudioTrack
 from core.variables import Variables
 from core.voice_client import LavalinkVoiceClient
+
+
+def get_current_branch() -> str:
+    """
+    Get the current branch of the git repository
+    :return: The current branch
+    """
+    output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    return output.strip().decode()
+
+
+def get_upstream_url(branch: str) -> Optional[str]:
+    """
+    Get the upstream url of the branch
+    :param branch: The branch to get the upstream url of
+    :return: The upstream url, or None if it doesn't exist
+    """
+    try:
+        output = subprocess.check_output(['git', 'config', '--get', f'branch.{branch}.remote'])
+    except subprocess.CalledProcessError:
+        return None
+
+    remote_name = output.strip().decode()
+
+    output = subprocess.check_output(['git', 'config', '--get', f'remote.{remote_name}.url'])
+    return output.strip().decode()
+
+
+def get_commit_hash() -> str:
+    """
+    Get the commit hash of the current commit.
+    :return: The commit hash
+    """
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('utf-8').strip()
+
+
+def bytes_to_gb(bytes_: int) -> float:
+    """
+    Convert bytes to gigabytes.
+
+    :param bytes_: The number of bytes.
+    """
+    return bytes_ / 1024 ** 3
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
