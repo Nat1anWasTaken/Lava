@@ -1,4 +1,13 @@
 {
+    "command.info.name": "info",
+    "command.info.description": "顯示機器人的資訊",
+    "command.info.embed.title": "機器人資訊",
+    "command.info.embed.start_time": "啟動時間",
+    "command.info.embed.commit_hash": "版本資訊",
+    "command.info.embed.cpu": "CPU",
+    "command.info.embed.ram": "RAM",
+    "command.info.embed.guilds": "伺服器數量",
+    "command.info.embed.players": "播放器數量",
     "command.nowplaying.name": "nowplaying",
     "command.nowplaying.description": "現在再生中の曲を表示",
     "command.play.name": "play",
