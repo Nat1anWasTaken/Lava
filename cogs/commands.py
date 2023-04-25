@@ -145,8 +145,10 @@ class Commands(Cog):
         if not url_rx.match(query):
             query = f'ytsearch:{query}'
 
-        # Get the results for the query from Lavalink.
-        results: LoadResult = await player.node.get_tracks(query, check_local=True)
+        results: LoadResult = await player.node.get_tracks(query, check_local=False)
+
+        if not results or not results.tracks:
+            results = await player.node.get_tracks(f'{query}', check_local=True)
 
         if not results or not results.tracks:
             return await interaction.edit_original_response(
