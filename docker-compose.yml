@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  lava:
+    build: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - "./configs:/configs"
+    ports:
+      - "8080:8080"
+    networks:
+      - lava
+
+  lavalink:
+    image: fredboat/lavalink
+    hostname: lavalink
+    restart: always
+    volumes:
+      - "./configs/application.yml:/opt/Lavalink/application.yml:r"
+    networks:
+      - lava
+
+networks:
+  lava:
