@@ -27,7 +27,10 @@
     <a href="#About Project"><strong>Read more »</strong></a>
     <br />
     <br />
-    <a href="https://discord.gg/acgmcity">試用</a>
+    <a href="README.md">中文</a>
+    ·
+    <br />
+    <a href="https://discord.gg/acgmcity">Try it out(Chinese server)</a>
     ·
     <a href="https://github.com/Nat1anWasTaken/Lava/issues">Bug report</a>
     ·
