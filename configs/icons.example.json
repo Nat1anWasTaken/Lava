@@ -1,0 +1,23 @@
+{
+    "empty": "⬛",
+    "progress": {
+        "start_point": "⬜",
+        "start_fill": "⬜",
+        "mid_point": "⬜",
+        "end_fill": "⬛",
+        "end_point": "⬛",
+        "end": "⬛"
+    },
+    "control": {
+        "rewind": "⏪",
+        "forward": "⏩",
+        "pause": "⏸️",
+        "resume": "▶️",
+        "stop": "⏹️",
+        "previous": "⏮️",
+        "next": "⏭️",
+        "shuffle": "🔀",
+        "repeat": "🔁",
+        "autoplay": "🔥"
+    }
+}
