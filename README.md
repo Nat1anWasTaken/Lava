@@ -69,19 +69,35 @@
 
 如果你只是想體驗的話，你可以到 [Yeecord][yeecord] 直接使用裡面的 `Lava#8364`
 
-或
+### 一鍵架設
 
-你可以到 [這裡][LavaLauncher] 按照教學創建 Lavalink節點 和 Discord機器人
+你可以透過 [LavaLauncher][LavaLauncher] 這個一鍵式腳本，你可以在裡面按照教學一步一步創建 Lavalink 節點 和 Discord 機器人
 
+### Docker
 
-### Spotify 支援
+確保 Docker 已經安裝在你的電腦或伺服器上，接著：
 
-要啟用對 `Spotify` 以及 `自動播放`
-的支援，你得提供上述的三個環境變數，並在第一步中輸入進去
+1. Clone 這個 Repository
+```bash
+git clone https://github.com/Nat1anWasTaken/Lava.git
+```
 
-### 需求
+2. cd 到專案目錄
+```bash
+cd Lava
+```
 
-* [Python 3.10+][python]
+3. 將 `.env.example` 重新命名為 `.env`
+```bash
+mv .env.example .env
+```
+填入 `.env` 的內容
+
+4. 啟動
+```bash
+docker-compose up
+```
+
 
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
