@@ -1,10 +1,10 @@
 import re
 from os import getpid
 
-from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
+from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed, SelectOption, MessageInteraction
 from disnake.ext import commands
 from disnake.ext.commands import Cog
-from disnake.ui import Button
+from disnake.ui import Button, StringSelect
 from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
 from psutil import cpu_percent, virtual_memory, Process
@@ -145,8 +145,10 @@ class Commands(Cog):
         if not url_rx.match(query):
             query = f'ytsearch:{query}'
 
-        # Get the results for the query from Lavalink.
-        results: LoadResult = await player.node.get_tracks(query, check_local=True)
+        results: LoadResult = await player.node.get_tracks(query, check_local=False)
+
+        if not results or not results.tracks:
+            results = await player.node.get_tracks(f'{query}', check_local=True)
 
         if not results or not results.tracks:
             return await interaction.edit_original_response(
@@ -159,10 +161,6 @@ class Commands(Cog):
                 )
             )
         
-        if results.load_type == LoadType.SEARCH:
-            pass
-            
-
         # Find the index song should be (In front of any autoplay songs)
         if not index:
             index = sum(1 for t in player.queue if t.requester)
@@ -223,6 +221,55 @@ class Commands(Cog):
                                )
                            ] + filter_warnings
                 )
+            case LoadType.SEARCH:
+                options = []
+                result = await self.bot.lavalink.get_tracks(f"{query}")
+
+                for track in result.tracks:
+                    options.append(
+                        SelectOption(
+                            label=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
+                        )
+                    )
+                components = [
+                    StringSelect(
+                        placeholder=f"{self.bot.get_text('command.play.select_menu.placeholder', locale, '選擇一首歌曲')}",
+                        min_values=1,
+                        max_values=1,
+                        custom_id=f"track_selection_{interaction.id}",
+                        options=options
+                    )
+                ]
+                await interaction.edit_original_response(
+                embed = WarningEmbed(
+                    title=f"{self.bot.get_text('command.play.select_warning.title', locale, '您似乎沒有選到任何一首歌曲')}"
+                    ,description=f"{self.bot.get_text('command.play.select_warning.description', locale, '不過不要緊，你還可以透過底下的選單來選擇一首音樂')}"
+                    ),
+                components=components)
+
+                select_interaction: MessageInteraction = await self.bot.wait_for(
+                    "dropdown",
+                    timeout=None,
+                    check=lambda i: i.author == interaction.author and i.data.custom_id == f"track_selection_{interaction.id}"
+                )
+
+                re_results = await player.node.get_tracks(f'{select_interaction.data.values[0]}', check_local=True)
+                print(re_results.tracks[0])
+
+                player.add(
+                    requester=interaction.author.id,
+                    track=re_results.tracks[0], index=index
+                )
+
+                    # noinspection PyTypeChecker
+                await interaction.edit_original_response(
+                    embeds=[
+                                SuccessEmbed(
+                                    self.bot.get_text("command.play.loaded.title", locale, "已加入播放序列"),
+                                    {re_results.tracks[0].title}
+                                )
+                            ] + filter_warnings,
+                components=None)
 
         # If the player isn't already playing, start it.
         if not player.is_playing:
@@ -669,7 +716,6 @@ class Commands(Cog):
                     name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
                 )
             )
-
         return choices
 
     @commands.slash_command(
