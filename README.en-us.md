@@ -59,7 +59,7 @@
 
 ## Screenshots
 
-![player][player-screenshot]
+![player][player-screenshot-en]
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
@@ -160,4 +160,4 @@ This project is licensed under MIT License, check `LICENSE.txt` for more informa
 
 <!-- IMAGES -->
 
-[player-screenshot]: img/player.png
+[player-screenshot-en]: img/player-en.png
