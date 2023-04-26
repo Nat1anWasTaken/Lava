@@ -303,7 +303,7 @@ class YTDLSource(BaseSource):
         self.priority = 0
 
         self.ytdl = YoutubeDL(
-            "format": "bestaudio"
+            {"format": "bestaudio"}
         )
 
     def check_query(self, query: str) -> bool:
