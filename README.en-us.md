@@ -118,7 +118,7 @@ If you find any issues, you're more then welcome to mention it in [Issues][issue
 
 ## License
 
-This project in licensed under MIT License, check `LICENSE.txt` for more information
+This project is licensed under MIT License, check `LICENSE.txt` for more information
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
