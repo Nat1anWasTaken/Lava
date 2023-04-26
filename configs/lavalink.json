@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "host": "localhost",
+            "host": "lavalink",
             "port": 2333,
             "password": "",
             "name": "test",
