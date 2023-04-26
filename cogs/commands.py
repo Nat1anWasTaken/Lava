@@ -158,6 +158,10 @@ class Commands(Cog):
                     )
                 )
             )
+        
+        if results.load_type == LoadType.SEARCH:
+            pass
+            
 
         # Find the index song should be (In front of any autoplay songs)
         if not index:
