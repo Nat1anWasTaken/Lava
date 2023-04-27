@@ -27,6 +27,9 @@
     <a href="#關於專案"><strong>閱讀更多 »</strong></a>
     <br />
     <br />
+    <a href="README.en-us.md">English</a>
+    ·
+    <br />
     <a href="https://discord.gg/acgmcity">試用</a>
     ·
     <a href="https://github.com/Nat1anWasTaken/Lava/issues">回報問題</a>
