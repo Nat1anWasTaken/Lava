@@ -145,12 +145,19 @@ class Commands(Cog):
         if not url_rx.match(query):
             query = f'ytsearch:{query}'
 
-        results: LoadResult = await player.node.get_tracks(query, check_local=False)
+        results: LoadResult = await player.node.get_tracks(query)
 
+        # Check locals
         if not results or not results.tracks:
-            results = await player.node.get_tracks(f'{query}', check_local=True)
+            for source in self.sources:
+                result = await source.load_item(self, query)
 
-        if not results or not results.tracks:
+                if result:
+                    results = result
+
+                    break
+
+        if not results or not results.tracks:  # If nothing was found
             return await interaction.edit_original_response(
                 embed=ErrorEmbed(
                     self.bot.get_text("command.play.error.no_results.title", locale, "沒有找到任何歌曲"),
