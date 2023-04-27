@@ -225,7 +225,7 @@ class Commands(Cog):
             case LoadType.SEARCH:
                 options = []
 
-                for track in result.tracks:
+                for track in results.tracks:
                     options.append(
                         SelectOption(
                             label=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
