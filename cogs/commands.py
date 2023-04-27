@@ -143,13 +143,8 @@ class Commands(Cog):
 
         # Check locals
         if not results or not results.tracks:
-            for source in self.bot.lavalink.sources:
-                result = await source.load_item(self.bot.lavalink, query)
-
-                if result:
-                    results = result
-
-                    break
+            self.bot.logger.info("No results found with lavalink for query %s, checking local sources", query)
+            results: LoadResult = await player.node.get_tracks(query, check_local=True)
 
         if not results or not results.tracks:  # If nothing was found
             return await interaction.edit_original_response(
