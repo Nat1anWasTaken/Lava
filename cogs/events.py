@@ -31,18 +31,15 @@ class Events(Cog):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
-            self.logger.debug(
-                "Received player update event for guild %s", self.bot.get_guild(player.guild_id))
+            self.logger.debug("Received player update event for guild %s", self.bot.get_guild(player.guild_id))
 
             if event.player.fetch("autoplay") and len(event.player.queue) == 0:
                 self.logger.info(
-                    "Queue is under 10, adding recommended track for guild %s...", self.bot.get_guild(
-                        player.guild_id)
+                    "Queue is under 10, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
 
                 recommendations = await get_recommended_tracks(
-                    Variables.SPOTIFY_CLIENT, event.player, ([
-                                                             event.player.current] + event.player.queue)[-10:], 20
+                    Variables.SPOTIFY_CLIENT, event.player, ([event.player.current] + event.player.queue)[-10:], 20
                 )
 
                 for track in recommendations:
@@ -56,8 +53,7 @@ class Events(Cog):
         elif isinstance(event, TrackEndEvent):
             player: DefaultPlayer = event.player
 
-            self.logger.info("Received track end event for guild %s",
-                             self.bot.get_guild(player.guild_id))
+            self.logger.info("Received track end event for guild %s", self.bot.get_guild(player.guild_id))
 
             try:
                 await update_display(self.bot, player)
@@ -67,8 +63,7 @@ class Events(Cog):
         elif isinstance(event, QueueEndEvent):
             player: DefaultPlayer = event.player
 
-            self.logger.info("Received queue end event for guild %s",
-                             self.bot.get_guild(player.guild_id))
+            self.logger.info("Received queue end event for guild %s", self.bot.get_guild(player.guild_id))
 
             try:
                 await update_display(self.bot, player)
@@ -80,12 +75,10 @@ class Events(Cog):
 
             locale: str = str(player.fetch("locale", "zh_TW"))
 
-            self.logger.info("Received track load failed event for guild %s",
-                             self.bot.get_guild(player.guild_id))
+            self.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
 
             # noinspection PyTypeChecker
-            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(
-                int(player.fetch("channel")))
+            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch("channel")))
 
             message = await channel.send(
                 embed=ErrorEmbed(
@@ -105,22 +98,19 @@ class Events(Cog):
         if isinstance(error.original, MissingVoicePermissions):
             embed = ErrorEmbed(
                 self.bot.get_text('error.command.title', locale, '指令錯誤'),
-                self.bot.get_text('error.no_play_perms',
-                                  locale, "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
+                self.bot.get_text('error.no_play_perms', locale, "我需要 `連接` 和 `說話` 權限才能夠播放音樂")
             )
 
         elif isinstance(error.original, BotNotInVoice):
             embed = ErrorEmbed(
                 self.bot.get_text('error.command.title', locale, '指令錯誤'),
-                self.bot.get_text('error.bot_not_in_voice',
-                                  locale, "我沒有連接到一個語音頻道")
+                self.bot.get_text('error.bot_not_in_voice', locale, "我沒有連接到一個語音頻道")
             )
 
         elif isinstance(error.original, UserNotInVoice):
             embed = ErrorEmbed(
                 self.bot.get_text('error.command.title', locale, '指令錯誤'),
-                self.bot.get_text('error.user_not_in_voice',
-                                  locale, "你沒有連接到一個語音頻道")
+                self.bot.get_text('error.user_not_in_voice', locale, "你沒有連接到一個語音頻道")
             )
 
         elif isinstance(error.original, UserInDifferentChannel):
@@ -144,8 +134,7 @@ class Events(Cog):
                 and after.channel is None
                 and member.id == self.bot.user.id
         ):
-            player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-                member.guild.id)
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)
 
             await player.stop()
             player.queue.clear()
@@ -168,8 +157,7 @@ class Events(Cog):
             except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):
                 return
 
-            player: DefaultPlayer = self.bot.lavalink.player_manager.get(
-                interaction.guild_id)
+            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)
 
             match interaction.data.custom_id:
                 case "control.resume":

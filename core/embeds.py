@@ -11,8 +11,7 @@ class SuccessEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="✅ | " + title,
-                         description=description, color=0x0f9d58, **kwargs)
+        super().__init__(title="✅ | " + title, description=description, color=0x0f9d58, **kwargs)
 
 
 class InfoEmbed(Embed):
@@ -23,8 +22,7 @@ class InfoEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="ℹ️ | " + title,
-                         description=description, color=0x4285f4, **kwargs)
+        super().__init__(title="ℹ️ | " + title, description=description, color=0x4285f4, **kwargs)
 
 
 class LoadingEmbed(Embed):
@@ -35,8 +33,7 @@ class LoadingEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="⌛ | " + title,
-                         description=description, color=0x4285F4, **kwargs)
+        super().__init__(title="⌛ | " + title, description=description, color=0x4285F4, **kwargs)
 
 
 class WarningEmbed(Embed):
@@ -47,8 +44,7 @@ class WarningEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="⚠ | " + title,
-                         description=description, color=0xf4b400, **kwargs)
+        super().__init__(title="⚠ | " + title, description=description, color=0xf4b400, **kwargs)
 
 
 class ErrorEmbed(Embed):
@@ -59,5 +55,4 @@ class ErrorEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="❌ | " + title,
-                         description=description, color=0xdb4437, **kwargs)
+        super().__init__(title="❌ | " + title, description=description, color=0xdb4437, **kwargs)

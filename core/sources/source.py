@@ -65,8 +65,7 @@ class SpotifySource(BaseSource):
 
         Variables.SPOTIFY_CLIENT = Spotify(auth_manager=credentials)
 
-        Variables.SPOTIFY_CLIENT.recommendations(
-            seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
+        Variables.SPOTIFY_CLIENT.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
 
     def check_query(self, query: str) -> bool:
         spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
@@ -204,8 +203,7 @@ class SpotifySource(BaseSource):
         :param url: Spotify track url
         :return: Track id, None if not a track url
         """
-        track_url_rx = re.compile(
-            r'https?:\/\/open\.spotify\.com\/track\/(\w+)')
+        track_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/track\/(\w+)')
 
         match = track_url_rx.match(url)
 
@@ -221,8 +219,7 @@ class SpotifySource(BaseSource):
         :param url: Spotify playlist url
         :return: Playlist id, None if not a playlist url
         """
-        playlist_url_rx = re.compile(
-            r'https?:\/\/open\.spotify\.com\/playlist\/(\w+)')
+        playlist_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/playlist\/(\w+)')
 
         match = playlist_url_rx.match(url)
 
@@ -238,8 +235,7 @@ class SpotifySource(BaseSource):
         :param url: Spotify album url
         :return: Album id, None if not a album url
         """
-        album_url_rx = re.compile(
-            r'https?:\/\/open\.spotify\.com\/album\/(\w+)')
+        album_url_rx = re.compile(r'https?:\/\/open\.spotify\.com\/album\/(\w+)')
 
         match = album_url_rx.match(url)
 
@@ -287,8 +283,7 @@ class BilibiliSource(BaseSource):
 
         text = BeautifulSoup(values, features='lxml')
 
-        title = text.find('title').contents[0].replace(
-            ' ', ',').replace('/', ',')
+        title = text.find('title').contents[0].replace(' ', ',').replace('/', ',')
 
         items = text.find_all('script')[2]
 
@@ -338,8 +333,7 @@ class YTDLSource(BaseSource):
         except IndexError:
             return None
 
-        match = re.match(
-            r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
+        match = re.match(r'^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)', url_info['webpage_url'])
 
         track.title = url_info['title']
         track.author = f"Unknown / [{match.group(1)}]({match.group(0)})"
@@ -375,17 +369,14 @@ class SourceManager(Source):
         self.logger.info("Received query: %s, checking in sources...", query)
 
         for source in self.sources:
-            self.logger.debug("Checking source for query %s: %s",
-                              query, source.__class__.__name__)
+            self.logger.debug("Checking source for query %s: %s", query, source.__class__.__name__)
 
             if not source.check_query(query):
-                self.logger.debug(
-                    "Source %s does not match query %, skipping...", source.__class__.__name__, query)
+                self.logger.debug("Source %s does not match query %, skipping...", source.__class__.__name__, query)
 
                 continue
 
-            self.logger.info("Source %s matched query %s, loading...",
-                             source.__class__.__name__, query)
+            self.logger.info("Source %s matched query %s, loading...", source.__class__.__name__, query)
 
             return await source.load_item(client, query)
 

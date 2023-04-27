@@ -50,8 +50,7 @@ class LavalinkVoiceClient(VoiceClient):
         Handles the disconnect.
         Cleans up running player and leaves the voice client.
         """
-        player: DefaultPlayer = self.lavalink.player_manager.get(
-            self.channel.guild.id)
+        player: DefaultPlayer = self.lavalink.player_manager.get(self.channel.guild.id)
 
         if not force and not player.is_connected:
             return

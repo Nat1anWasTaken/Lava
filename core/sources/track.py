@@ -5,8 +5,7 @@ from lavalink import DeferredAudioTrack, LoadResult, LoadType, LoadError
 
 class SpotifyAudioTrack(DeferredAudioTrack):
     async def load(self, client):  # skipcq: PYL-W0201
-        getLogger('lava.sources').info(
-            "Loading spotify track %s...", self.title)
+        getLogger('lava.sources').info("Loading spotify track %s...", self.title)
 
         result: LoadResult = await client.get_tracks(
             f'ytsearch:{self.title} {self.author}'
