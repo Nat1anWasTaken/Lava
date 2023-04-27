@@ -21,7 +21,8 @@ def get_current_branch() -> str:
     Get the current branch of the git repository
     :return: The current branch
     """
-    output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    output = subprocess.check_output(
+        ['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
     return output.strip().decode()
 
 
@@ -32,13 +33,15 @@ def get_upstream_url(branch: str) -> Optional[str]:
     :return: The upstream url, or None if it doesn't exist
     """
     try:
-        output = subprocess.check_output(['git', 'config', '--get', f'branch.{branch}.remote'])
+        output = subprocess.check_output(
+            ['git', 'config', '--get', f'branch.{branch}.remote'])
     except subprocess.CalledProcessError:
         return None
 
     remote_name = output.strip().decode()
 
-    output = subprocess.check_output(['git', 'config', '--get', f'remote.{remote_name}.url'])
+    output = subprocess.check_output(
+        ['git', 'config', '--get', f'remote.{remote_name}.url'])
     return output.strip().decode()
 
 
@@ -78,12 +81,14 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     :param interaction: The interaction that triggered the command.
     :param should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
     """
-    player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
+    player = interaction.bot.lavalink.player_manager.create(
+        interaction.author.guild.id)
 
     if not interaction.author.voice or not interaction.author.voice.channel:
         raise UserNotInVoice('Please join a voice channel first')
 
-    v_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
+    v_client = get(interaction.bot.voice_clients,
+                   guild=interaction.author.guild)
 
     if not v_client:
         if not should_connect:
@@ -94,7 +99,8 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
         if not permissions.connect or not permissions.speak:  # Check user limit too?
-            raise MissingVoicePermissions('Connect and Speak permissions is required in order to play music')
+            raise MissingVoicePermissions(
+                'Connect and Speak permissions is required in order to play music')
 
         player.store('channel', interaction.channel.id)
 
@@ -141,7 +147,8 @@ async def get_recommended_tracks(spotify: Spotify,
     for track in tracks:
         if not isinstance(track, SpotifyAudioTrack):
             try:
-                result = spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
+                result = spotify.search(
+                    f"{track.title} by {track.author}", type="track", limit=1)
 
                 seed_tracks.append(result["tracks"]["items"][0]["id"])
 
@@ -152,7 +159,8 @@ async def get_recommended_tracks(spotify: Spotify,
 
         seed_tracks.append(track.identifier)
 
-    recommendations = spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
+    recommendations = spotify.recommendations(
+        seed_tracks=seed_tracks, limit=amount)
 
     output = []
 
@@ -185,24 +193,28 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         player.store("locale", locale)
 
     bot.logger.debug(
-        "Updating display for player in guild %s in a %s seconds delay", bot.get_guild(player.guild_id), delay
+        "Updating display for player in guild %s in a %s seconds delay", bot.get_guild(
+            player.guild_id), delay
     )
 
     await asyncio.sleep(delay)
 
     # noinspection PyTypeChecker
-    channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(int(player.fetch('channel')))
+    channel: Union[GuildChannel, TextChannel, Thread] = bot.get_channel(
+        int(player.fetch('channel')))
 
     try:
         message: Message = await channel.fetch_message(int(player.fetch('message')))
     except (TypeError, NotFound):  # Message not found
         if not new_message:
-            raise ValueError("No message found or provided to update the display with")
+            raise ValueError(
+                "No message found or provided to update the display with")
 
     if new_message:
         try:
             bot.logger.debug(
-                "Deleting old existing display message for player in guild %s", bot.get_guild(player.guild_id)
+                "Deleting old existing display message for player in guild %s", bot.get_guild(
+                    player.guild_id)
             )
 
             await message.delete()
@@ -242,14 +254,16 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
                     custom_id="control.next"
                 ),
                 Button(
-                    style=[ButtonStyle.grey, ButtonStyle.green, ButtonStyle.blurple][player.loop],
+                    style=[ButtonStyle.grey, ButtonStyle.green,
+                           ButtonStyle.blurple][player.loop],
                     emoji=bot.get_icon('control.repeat', "🔁"),
                     custom_id="control.repeat"
                 )
             ),
             ActionRow(
                 Button(
-                    style=ButtonStyle.green if player.fetch("autoplay") else ButtonStyle.grey,
+                    style=ButtonStyle.green if player.fetch(
+                        "autoplay") else ButtonStyle.grey,
                     emoji=bot.get_icon('control.autoplay', "🔥"),
                     custom_id="control.autoplay",
                     disabled=not bool(Variables.SPOTIFY_CLIENT)
@@ -286,7 +300,8 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     else:
         await message.edit(embed=generate_display_embed(bot, player), components=components)
 
-    bot.logger.debug("Updating player in guild %s display message to %s", bot.get_guild(player.guild_id), message.id)
+    bot.logger.debug("Updating player in guild %s display message to %s",
+                     bot.get_guild(player.guild_id), message.id)
 
     player.store('message', message.id)
 
@@ -340,7 +355,8 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
                             f" {generate_progress_bar(bot, player.current.duration, player.position)} " \
                             f"`{format_time(player.current.duration)}`"
 
-        embed.add_field(name=bot.get_text("display.author", locale, "👤 作者"), value=player.current.author, inline=True)
+        embed.add_field(name=bot.get_text("display.author", locale,
+                        "👤 作者"), value=player.current.author, inline=True)
         embed.add_field(
             name=bot.get_text("display.requester", locale, "👥 點播者"),
             value=bot.get_text(
@@ -361,12 +377,13 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
                     for index, track in enumerate(player.queue[:5])
                 ]
             ) + (f"\n{bot.get_text('display.queue.more', locale, '還有更多...')}" if len(player.queue) > 5 else "")) or
-                  bot.get_text("empty", locale, "空"),
+            bot.get_text("empty", locale, "空"),
             inline=True
         )
         embed.add_field(
             name=bot.get_text("display.filters", locale, "⚙️ 已啟用效果器"),
-            value=', '.join([key.capitalize() for key in player.filters]) or bot.get_text("none", locale, "無"),
+            value=', '.join([key.capitalize() for key in player.filters]) or bot.get_text(
+                "none", locale, "無"),
             inline=True
         )
         embed.add_field(
@@ -383,7 +400,8 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
         )
 
     else:
-        embed.title = bot.get_text("error.nothing_playing", locale, "沒有正在播放的音樂")
+        embed.title = bot.get_text(
+            "error.nothing_playing", locale, "沒有正在播放的音樂")
 
     return embed
 
