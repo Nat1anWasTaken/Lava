@@ -144,7 +144,7 @@ class Commands(Cog):
         # Check locals
         if not results or not results.tracks:
             for source in self.bot.lavalink.sources:
-                result = await source.load_item(self, query)
+                result = await source.load_item(self.bot.lavalink, query)
 
                 if result:
                     results = result
