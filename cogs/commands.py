@@ -224,7 +224,6 @@ class Commands(Cog):
                 )
             case LoadType.SEARCH:
                 options = []
-                result = await self.bot.lavalink.get_tracks(f"{query}")
 
                 for track in result.tracks:
                     options.append(
@@ -232,29 +231,26 @@ class Commands(Cog):
                             label=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
                         )
                     )
-                components = [
-                    StringSelect(
-                        placeholder=f"{self.bot.get_text('command.play.select_menu.placeholder', locale, '選擇一首歌曲')}",
-                        min_values=1,
-                        max_values=1,
-                        custom_id=f"track_selection_{interaction.id}",
-                        options=options
-                    )
-                ]
+
                 await interaction.edit_original_response(
                     embed=WarningEmbed(
                         title=f"{self.bot.get_text('command.play.select_warning.title', locale, '您似乎沒有選到任何一首歌曲')}"
                         ,
                         description=f"{self.bot.get_text('command.play.select_warning.description', locale, '不過不要緊，你還可以透過底下的選單來選擇一首音樂')}"
                     ),
-                    components=components
+                    components=StringSelect(
+                        placeholder=f"{self.bot.get_text('command.play.select_menu.placeholder', locale, '選擇一首歌曲')}",
+                        min_values=1,
+                        max_values=1,
+                        custom_id=f"select_{interaction.id}",
+                        options=options
+                    )
                 )
 
                 select_interaction: MessageInteraction = await self.bot.wait_for(
                     "dropdown",
                     timeout=None,
-                    check=lambda
-                        i: i.author == interaction.author and i.data.custom_id == f"track_selection_{interaction.id}"
+                    check=lambda i: i.author == interaction.author and i.data.custom_id == f"select_{interaction.id}"
                 )
 
                 re_results = await player.node.get_tracks(f'{select_interaction.data.values[0]}', check_local=True)
