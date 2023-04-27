@@ -139,12 +139,6 @@ class Commands(Cog):
 
         player.store("channel", interaction.channel.id)
 
-        # TODO: Add support for spotify, apple music etc...
-        url_rx = re.compile(r"https?://(?:www\.)?.+")
-
-        if not url_rx.match(query):
-            query = f'ytsearch:{query}'
-
         results: LoadResult = await player.node.get_tracks(query)
 
         # Check locals
