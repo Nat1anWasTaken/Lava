@@ -184,7 +184,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
     if locale:
         player.store("locale", locale)
 
-    bot.logger.debug(
+    bot.logger.info(
         "Updating display for player in guild %s in a %s seconds delay", bot.get_guild(player.guild_id), delay
     )
 
@@ -205,7 +205,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
                 "Deleting old existing display message for player in guild %s", bot.get_guild(player.guild_id)
             )
 
-            await message.delete()
+            bot.loop.create_task(message.delete())
         except (AttributeError, UnboundLocalError):
             pass
 
@@ -278,10 +278,7 @@ async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message =
         ]
 
     if interaction:
-        if interaction.original_message():
-            await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
-        else:
-            await interaction.response.send_message(embed=generate_display_embed(bot, player), components=components)
+        await interaction.response.edit_message(embed=generate_display_embed(bot, player), components=components)
 
     else:
         await message.edit(embed=generate_display_embed(bot, player), components=components)

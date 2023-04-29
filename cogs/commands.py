@@ -96,13 +96,15 @@ class Commands(Cog):
         description=Localized("顯示目前正在播放的歌曲", key="command.nowplaying.description")
     )
     async def nowplaying(self, interaction: ApplicationCommandInteraction):
+        await interaction.response.defer()
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
             interaction.guild.id
         )
 
-        await update_display(self.bot, player, interaction=interaction)
+        await update_display(self.bot, player, new_message=(await interaction.original_response()))
 
     @commands.slash_command(
         name=Localized("play", key="command.play.name"),
