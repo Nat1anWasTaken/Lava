@@ -146,20 +146,7 @@ docker-compose up
 
 ## 貢獻
 
-**為我們實作 / 修復功能**
-
-1. Fork 這個 Repository 
-2. 在你的 Repository 做出你想要的改動
-3. 向這個 Repository 發出 Pull Request
-> 在實作前，建議先發一個 Issue 確認這個功能 / 修復是被需要的
-
-**提出問題 / 請求功能**
-
-1. 到 Issues 頁面
-2. 點選 New Issue
-3. 輸入你想要的東西
-
-<p align="right">(<a href="#readme-top">回到頂部</a>)</p>
+你可以前往 [CONTRUBUTING.md](CONTRIBUTING.md) 來查看完整的貢獻指南
 
 <!-- SHIELDS -->
 
