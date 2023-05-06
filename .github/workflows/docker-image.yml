@@ -12,16 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag lava-music-bot:$(date +%s)
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile -t ghcr.io/nat1anwastaken/lava:$(date +%s) -t docker.io/nat1anwastaken/lava:$(date +%s)
 
-    - name: Push To GitHub Registry
-      uses: redhat-actions/push-to-registry@v2.7
-      with:
-        image: lava-music-bot:$(date +%s)
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        tags: latest
+      - name: Login to GitHub Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Push to GitHub Registry
+        run: docker push ghcr.io/nat1anwastaken/lava:$(date +%s)
+
+      - name: Push to Docker Hub
+        run: docker push docker.io/nat1anwastaken/lava:$(date +%s)
