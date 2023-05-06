@@ -121,17 +121,7 @@ docker-compose up
 
 ## 計畫
 
-- [ ] 新增更多音樂平台
-  - [x] YouTube
-  - [x] Spotify
-  - [x] SoundCloud
-  - [x] Bilibili
-  - [x] YouTube-DL
-  - [ ] Apple Music
-    ...
-- [ ] 增加穩定性
-
-如果你發現了任何問題，歡迎至 [Issues][issues] 提出問題
+計畫已遷移至 [Projects][projects]
 
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
@@ -177,6 +167,8 @@ docker-compose up
 [python]: https://python.org
 
 [lavalink]: https://github.com/freyacodes/Lavalink
+
+[projects]: https://github.com/users/Nat1anWasTaken/projects/3
 
 [LavaLauncher]: https://github.com/Nat1anWasTaken/LavaLauncher
 
