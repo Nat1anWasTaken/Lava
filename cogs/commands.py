@@ -1,8 +1,7 @@
 import re
 from os import getpid
 
-from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed, \
-    SelectOption, MessageInteraction
+from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed, SelectOption, MessageInteraction
 from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.ui import Button, StringSelect
@@ -97,13 +96,15 @@ class Commands(Cog):
         description=Localized("顯示目前正在播放的歌曲", key="command.nowplaying.description")
     )
     async def nowplaying(self, interaction: ApplicationCommandInteraction):
+        await interaction.response.defer()
+
         await ensure_voice(interaction, should_connect=False)
 
         player: DefaultPlayer = self.bot.lavalink.player_manager.get(
             interaction.guild.id
         )
 
-        await update_display(self.bot, player, interaction=interaction)
+        await update_display(self.bot, player, new_message=(await interaction.original_response()))
 
     @commands.slash_command(
         name=Localized("play", key="command.play.name"),
@@ -140,31 +141,7 @@ class Commands(Cog):
 
         player.store("channel", interaction.channel.id)
 
-        # TODO: Add support for spotify, apple music etc...
-        url_rx = re.compile(r"https?://(?:www\.)?.+")
-
-        if not url_rx.match(query):
-            query = f'ytsearch:{query}'
-
-        results: LoadResult = await player.node.get_tracks(query, check_local=False)
-
-        if not results or not results.tracks:
-            results = await player.node.get_tracks(f'{query}', check_local=True)
-
-        if not results or not results.tracks:
-            return await interaction.edit_original_response(
-                embed=ErrorEmbed(
-                    self.bot.get_text("command.play.error.no_results.title", locale, "沒有找到任何歌曲"),
-                    self.bot.get_text(
-                        "command.play.error.no_results.description", locale,
-                        "如果你想要使用關鍵字搜尋，請在輸入關鍵字後等待幾秒，搜尋結果將會自動顯示在上方",
-                    )
-                )
-            )
-
-        # Find the index song should be (In front of any autoplay songs)
-        if not index:
-            index = sum(1 for t in player.queue if t.requester)
+        results: LoadResult = await player.node.get_tracks(query)
 
         filter_warnings = [
             InfoEmbed(
@@ -181,6 +158,67 @@ class Commands(Cog):
                 ) + ' ' + ', '.join([key.capitalize() for key in player.filters])
             )
         ] if player.filters else []
+
+        # Check locals
+        if not results or not results.tracks:
+            self.bot.logger.info("No results found with lavalink for query %s, checking local sources", query)
+            results: LoadResult = await player.node.get_tracks(query, check_local=True)
+
+        if not results or not results.tracks:  # If nothing was found
+            options = []
+
+            result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+
+            for track in result.tracks:
+                options.append(
+                    SelectOption(
+                        label=f"{track.title[:80]} by {track.author[:16]} ", value=track.uri
+                    )
+                )
+            components = [
+                StringSelect(
+                    placeholder=f"{self.bot.get_text('command.play.select_menu.placeholder', locale, '選擇一首歌曲')}",
+                    min_values=1,
+                    max_values=1,
+                    custom_id=f"track_selection_{interaction.id}",
+                    options=options
+                )
+            ]
+            await interaction.edit_original_response(
+            embed = WarningEmbed(
+                title=f"{self.bot.get_text('command.play.select_warning.title', locale, '您似乎沒有選到任何一首歌曲')}"
+                ,description=f"{self.bot.get_text('command.play.select_warning.description', locale, '不過不要緊，你還可以透過底下的選單來選擇一首音樂')}"
+                ),
+            components=components)
+
+            select_interaction: MessageInteraction = await self.bot.wait_for(
+                "dropdown",
+                timeout=None,
+                check=lambda i: i.author == interaction.author and i.data.custom_id == f"track_selection_{interaction.id}"
+            )
+
+                
+            re_results = await player.node.get_tracks(f'{select_interaction.data.values[0]}', check_local=True)
+
+            player.add(
+                requester=interaction.author.id,
+                track=re_results.tracks[0], index=index
+            )
+
+                    # noinspection PyTypeChecker
+            await interaction.edit_original_response(
+                 embeds=[
+                            SuccessEmbed(
+                                self.bot.get_text("command.play.loaded.title", locale, "已加入播放序列"),
+                                description=re_results.tracks[0].title
+                            )
+                        ] + filter_warnings,
+            components=None)
+
+        # Find the index song should be (In front of any autoplay songs)
+        if not index:
+            index = sum(1 for t in player.queue if t.requester)
+
 
         match results.load_type:
             case LoadType.TRACK:
@@ -221,57 +259,8 @@ class Commands(Cog):
                                    ) + "..." if len(results.tracks) > 10 else ""
                                )
                            ] + filter_warnings
-                )
-            case LoadType.SEARCH:
-                options = []
-
-                for track in results.tracks:
-                    options.append(
-                        SelectOption(
-                            label=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
-                        )
-                    )
-
-                await interaction.edit_original_response(
-                    embed=WarningEmbed(
-                        title=f"{self.bot.get_text('command.play.select_warning.title', locale, '您似乎沒有選到任何一首歌曲')}"
-                        ,
-                        description=f"{self.bot.get_text('command.play.select_warning.description', locale, '不過不要緊，你還可以透過底下的選單來選擇一首音樂')}"
-                    ),
-                    components=StringSelect(
-                        placeholder=f"{self.bot.get_text('command.play.select_menu.placeholder', locale, '選擇一首歌曲')}",
-                        min_values=1,
-                        max_values=1,
-                        custom_id=f"select_{interaction.id}",
-                        options=options
-                    )
-                )
-
-                select_interaction: MessageInteraction = await self.bot.wait_for(
-                    "dropdown",
-                    timeout=None,
-                    check=lambda i: i.author == interaction.author and i.data.custom_id == f"select_{interaction.id}"
-                )
-
-                re_results = await player.node.get_tracks(f'{select_interaction.data.values[0]}', check_local=True)
-                print(re_results.tracks[0])
-
-                player.add(
-                    requester=interaction.author.id,
-                    track=re_results.tracks[0], index=index
-                )
-
-                # noinspection PyTypeChecker
-                await interaction.edit_original_response(
-                    embeds=[
-                               SuccessEmbed(
-                                   self.bot.get_text("command.play.loaded.title", locale, "已加入播放序列"),
-                                   {re_results.tracks[0].title}
-                               )
-                           ] + filter_warnings,
-                    components=None
-                )
-
+                )       
+        
         # If the player isn't already playing, start it.
         if not player.is_playing:
             await player.play()
@@ -717,6 +706,7 @@ class Commands(Cog):
                     name=f"{track.title[:80]} by {track.author[:16]}", value=track.uri
                 )
             )
+
         return choices
 
     @commands.slash_command(
