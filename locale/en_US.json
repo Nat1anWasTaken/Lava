@@ -17,6 +17,7 @@
     "command.play.error.no_results.title": "No results:(",
     "command.play.error.no_results.description": "If you want to search with keywords, please type your keywords into `query`, then wait a moment, and the search result will display in a pop-up",
     "command.play.filter_warning.title": "Warning",
+    "command.play.filter_warning.description": "偵測到 效果器正在運作中，\n這可能會造成音樂聲音有變形(加速、升高等)的情形產生，\n如果這不是你期望的，可以透過效果器的指令來關閉它們\n指令名稱通常等於效果器名稱，例如 `/timescale` 就是控制 Timescale 效果器\n\n以下是正在運行的效果器：",
     "command.play.loaded.title": "Added to queue",
     "command.skip.name": "skip",
     "command.skip.description": "Skip current playing track",
