@@ -7,5 +7,5 @@ psutil==5.9.5
 disnake==2.8.1
 colorlog==6.7.0
 python-dotenv==1.0.0
-yt-dlp==2023.3.4
+yt-dlp==2023.7.6
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
