@@ -1,5 +1,6 @@
-from disnake import VoiceClient, abc
+from disnake import VoiceClient, abc, VoiceChannel
 from lavalink import DefaultPlayer
+from disnake.utils import get
 
 from core.bot import Bot
 
@@ -12,11 +13,10 @@ class LavalinkVoiceClient(VoiceClient):
     https://discordpy.readthedocs.io/en/latest/api.html#voiceprotocol
     """
 
-    def __init__(self, bot: Bot, channel: abc.Connectable):
+    def __init__(self, bot: Bot, channel: VoiceChannel):
         self.bot = bot
         self.channel = channel
         self.lavalink = bot.lavalink
-
         super().__init__(bot, channel)
 
     async def on_voice_server_update(self, data):
@@ -31,6 +31,10 @@ class LavalinkVoiceClient(VoiceClient):
             't': 'VOICE_STATE_UPDATE',
             'd': data
         }
+
+        channel = get(self.channel.guild.voice_channels, id=int(data['channel_id']))
+        self.channel = channel
+
         await self.lavalink.voice_update_handler(lavalink_data)
 
         if not data['channel_id']:
