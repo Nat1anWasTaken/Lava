@@ -4,7 +4,7 @@ spotipy==2.23.0
 requests==2.31.0
 beautifulsoup4==4.12.2
 psutil==5.9.5
-disnake==2.8.1
+disnake==2.9.0
 colorlog==6.7.0
 python-dotenv==1.0.0
 yt-dlp==2023.7.6
