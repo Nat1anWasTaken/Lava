@@ -1,8 +1,8 @@
-from disnake import VoiceClient, abc, VoiceChannel
+from disnake import VoiceClient, VoiceChannel
 from lavalink import DefaultPlayer
 from disnake.utils import get
 
-from core.bot import Bot
+from lava.bot import Bot
 
 
 class LavalinkVoiceClient(VoiceClient):

@@ -5,7 +5,7 @@ from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 from lavalink import Client
 
-from core.sources.source import SourceManager
+from lava.source import SourceManager
 
 
 class Bot(OriginalBot):

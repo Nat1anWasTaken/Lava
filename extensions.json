@@ -1,4 +1,4 @@
 [
-    "cogs.events",
-    "cogs.commands"
+    "lava.cogs.events",
+    "lava.cogs.commands"
 ]

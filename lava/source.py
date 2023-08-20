@@ -6,13 +6,13 @@ from typing import Union, Tuple, Optional
 
 import requests
 from bs4 import BeautifulSoup
-from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo
+from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack
 from spotipy import Spotify, SpotifyOAuth
 from yt_dlp import YoutubeDL, DownloadError
 from yt_dlp.utils import UnsupportedError
 
-from core.sources.track import SpotifyAudioTrack
-from core.variables import Variables
+from lava.errors import LoadError
+from lava.variables import Variables
 
 
 class BaseSource:
@@ -38,6 +38,26 @@ class BaseSource:
         :return: The load result as LoadResult
         """
         raise NotImplementedError
+
+
+class SpotifyAudioTrack(DeferredAudioTrack):
+    async def load(self, client):  # skipcq: PYL-W0201
+        getLogger('lava.sources').info("Loading spotify track %s...", self.title)
+
+        result: LoadResult = await client.get_tracks(
+            f'ytsearch:{self.title} {self.author}'
+        )
+
+        if result.load_type != LoadType.SEARCH or not result.tracks:
+            raise LoadError
+
+        first_track = result.tracks[0]
+        base64 = first_track.track
+        self.track = base64
+
+        getLogger('lava.sources').info("Loaded spotify track %s", self.title)
+
+        return base64
 
 
 class SpotifySource(BaseSource):

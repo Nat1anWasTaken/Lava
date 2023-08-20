@@ -9,10 +9,10 @@ from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
 from psutil import cpu_percent, virtual_memory, Process
 
-from core.bot import Bot
-from core.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
-from core.errors import UserInDifferentChannel
-from core.utils import ensure_voice, update_display, split_list, bytes_to_gb, get_commit_hash, get_upstream_url, \
+from lava.bot import Bot
+from lava.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
+from lava.errors import UserInDifferentChannel
+from lava.utils import ensure_voice, update_display, split_list, bytes_to_gb, get_commit_hash, get_upstream_url, \
     get_current_branch
 
 allowed_filters = {
