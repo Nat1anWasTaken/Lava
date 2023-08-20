@@ -1,4 +1,4 @@
-from disnake import VoiceClient, abc, VoiceChannel
+from disnake import VoiceClient, VoiceChannel
 from lavalink import DefaultPlayer
 from disnake.utils import get
 
