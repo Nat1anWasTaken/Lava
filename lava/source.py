@@ -11,8 +11,8 @@ from spotipy import Spotify, SpotifyOAuth
 from yt_dlp import YoutubeDL, DownloadError
 from yt_dlp.utils import UnsupportedError
 
-from core.errors import LoadError
-from core.variables import Variables
+from lava.errors import LoadError
+from lava.variables import Variables
 
 
 class BaseSource:

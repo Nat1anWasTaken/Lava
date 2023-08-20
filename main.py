@@ -9,7 +9,7 @@ from disnake import Intents
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
-from core.bot import Bot
+from lava.bot import Bot
 
 
 def main():
