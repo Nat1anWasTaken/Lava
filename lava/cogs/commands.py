@@ -584,15 +584,15 @@ class Commands(Cog):
                 choices=[
                     OptionChoice(
                         name=Localized('關閉', key='repeat_mode.off'),
-                        value=f"{Localized('關閉', key='repeat_mode.off')}/0"
+                        value=f"關閉/0"
                     ),
                     OptionChoice(
                         name=Localized('單曲', key='repeat_mode.song'),
-                        value=f"{Localized('單曲', key='repeat_mode.song')} 單曲/1"
+                        value=f"單曲/1"
                     ),
                     OptionChoice(
                         name=Localized('整個序列', key='repeat_mode.queue'),
-                        value=f"{Localized('整個序列', key='repeat_mode.queue')} 整個序列/2"
+                        value=f"整個序列/2"
                     )
                 ],
                 required=True
