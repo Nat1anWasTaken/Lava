@@ -392,7 +392,7 @@ class SourceManager(Source):
             self.logger.debug("Checking source for query %s: %s", query, source.__class__.__name__)
 
             if not source.check_query(query):
-                self.logger.debug("Source %s does not match query %, skipping...", source.__class__.__name__, query)
+                self.logger.debug("Source %s does not match query %s, skipping...", source.__class__.__name__, query)
 
                 continue
 
