@@ -6,7 +6,7 @@ PORT = 8080
 
 
 class Handler(BaseHTTPRequestHandler):
-    def do_GET(self):
+    def do_get(self):
         code = self.path.split('code=')[1]
         print(code)
         sys.exit()
