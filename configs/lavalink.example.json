@@ -3,7 +3,7 @@
         {
             "host": "lavalink",
             "port": 2333,
-            "password": "",
+            "password": "youshallnotpass",
             "name": "test",
             "region": "us"
         }
