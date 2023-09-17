@@ -15,7 +15,7 @@ lavalink:
         frameBufferDurationMs: 5000
         gc-warnings: true
         opusEncodingQuality: 10
-        password: hello
+        password: youshallnotpass
         playerUpdateInterval: 5
         resamplingQuality: LOW
         soundcloudSearchEnabled: true
@@ -58,4 +58,3 @@ sentry:
 server:
     address: 0.0.0.0
     port: 2333
-    password: "youshallnotpass"
