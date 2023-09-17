@@ -5,7 +5,6 @@ RUN apt-get update
 RUN apt-get install -y git curl jq
 RUN pip install --user -r /requirements.txt
 
-COPY --from=builder /root/.local /root/.local
 COPY . .
 
 CMD ["bash", "/script/run.sh"]
