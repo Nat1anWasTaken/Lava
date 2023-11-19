@@ -91,11 +91,11 @@ git clone https://github.com/Nat1anWasTaken/Lava.git
 cd Lava
 ```
 
-3. 將 `.env.example` 重新命名為 `.env`
+3. 將 `example.stack.env` 重新命名為 `stack.env`
 ```bash
-mv .env.example .env
+mv example.stack.env stack.env
 ```
-填入 `.env` 的內容
+填入 `stack.env` 的內容
 
 4. 啟動
 ```bash

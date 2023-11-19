@@ -13,7 +13,7 @@ from lava.bot import Bot
 
 
 def main():
-    load_dotenv()
+    load_dotenv("stack.env")
 
     setup_logging()
 
