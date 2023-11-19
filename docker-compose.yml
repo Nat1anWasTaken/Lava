@@ -5,7 +5,7 @@ services:
     build: .
     restart: always
     env_file:
-      - .env
+      - stack.env
     environment:
       - TOKEN=$TOKEN
       - SPOTIFY_CLIENT_ID=$SPOTIFY_CLIENT_ID
