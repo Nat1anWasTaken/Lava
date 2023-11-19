@@ -6,6 +6,11 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - TOKEN=$TOKEN
+      - SPOTIFY_CLIENT_ID=$SPOTIFY_CLIENT_ID
+      - SPOTIFY_CLIENT_SECRET=$SPOTIFY_CLIENT_SECRET
+      - SPOTIFY_REDIRECT_URI=$SPOTIFY_REDIRECT_URI
     volumes:
       - "./configs:/configs"
     ports:
