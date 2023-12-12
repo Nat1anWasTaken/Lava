@@ -24,9 +24,11 @@ class Events(Cog):
 
     async def cog_load(self):
         await self.bot.wait_until_ready()
-
-        lavalink.add_event_hook(self.track_hook)
-
+    
+    @commands.Cog.listener(name="on_ready")
+    async def on_ready(self):
+        self.bot.lavalink.add_event_hook(self.track_hook)
+        
     async def track_hook(self, event):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
