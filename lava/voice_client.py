@@ -32,12 +32,12 @@ class LavalinkVoiceClient(VoiceClient):
             'd': data
         }
 
-        channel = get(self.channel.guild.voice_channels, id=int(data['channel_id']))
-        self.channel = channel
-
-        await self.lavalink.voice_update_handler(lavalink_data)
-
-        if not data['channel_id']:
+        if data['channel_id']:
+            channel = get(self.channel.guild.voice_channels, id=int(data['channel_id']))
+            self.channel = channel
+            await self.lavalink.voice_update_handler(lavalink_data)
+        else:
+            await self.channel.guild.change_voice_state(channel=None)
             self.cleanup()
 
     async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,
