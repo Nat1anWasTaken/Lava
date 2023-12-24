@@ -157,7 +157,7 @@ async def get_recommended_tracks(spotify: Spotify,
     output = []
 
     for track in recommendations["tracks"]:
-        load_result: LoadResult = await player.node.get_tracks(track['external_urls']['spotify'], check_local=True)
+        load_result: LoadResult = await player.node.client.get_local_tracks(track['external_urls']['spotify'])
 
         output.append(load_result.tracks[0])
 
