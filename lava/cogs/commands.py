@@ -408,6 +408,39 @@ class Commands(Cog):
         )
 
     @commands.slash_command(
+        name=Localized("volume", key="command.volume.name"),
+        description=Localized("調整歌曲音量", key="command.volume.description"),
+        options=[
+            Option(
+                name="value",
+                description=Localized("要設定的音量值 (1000為最大值)", key="command.volume.option.value"),
+                type=OptionType.integer,
+                required=True
+            )
+        ]
+    )
+    async def volume(self, interaction: ApplicationCommandInteraction, value: int):
+        await interaction.response.defer()
+
+        locale = str(interaction.locale)
+
+        await ensure_voice(interaction, should_connect=False)
+
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id
+        )
+
+        await player.set_volume(value)
+
+        await interaction.edit_original_response(
+            embed=SuccessEmbed(self.bot.get_text("command.volume.success", locale, f"已設定音量為 `{value}`"))
+        )
+
+        await update_display(
+            self.bot, player, await interaction.original_response(), delay=5, locale=interaction.locale
+        )
+
+    @commands.slash_command(
         name=Localized("stop", key="command.stop.name"),
         description=Localized("停止播放並清空播放序列", key="command.stop.description")
     )
