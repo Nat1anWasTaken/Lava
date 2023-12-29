@@ -92,6 +92,9 @@
     "command.lowpass.option.smoothing": "強度 (1 < n)",
     "command.bassboost.name": "bassboost",
     "command.bassboost.description": "低音增強 (等化器)",
+    "command.volume.name": "volume",
+    "command.volume.description": "調整音量",
+    "command.volume.option.percent": "百分比 (0 ≤ n ≤ 100)",
     "command.filters.removed": "已移除效果器",
     "command.filters.invalid_params": "請輸入有效的參數",
     "command.filters.set": "已設置效果器",
@@ -116,6 +119,7 @@
     "none": "無",
     "display.filters": "⚙️ 已啟用效果器",
     "display.shuffle": "🔀 隨機播放",
+    "display.volume": "🔊 音量",
     "display.enable": "開啟",
     "display.disable": "關閉",
     "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"

@@ -372,6 +372,11 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
             if player.shuffle else bot.get_text("display.disable", locale, "關閉"),
             inline=True
         )
+        embed.add_field(
+            name=bot.get_text("display.volume", locale, "🔊 音量"),
+            value=f"**`{player.volume}%`**",
+            inline=True
+        )
 
         embed.set_footer(
             text=bot.get_text(

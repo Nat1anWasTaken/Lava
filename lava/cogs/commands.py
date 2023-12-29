@@ -820,6 +820,35 @@ class Commands(Cog):
 
         await self.update_filter(interaction, "equalizer", player=player)
 
+    @commands.slash_command(
+        name=Localized("volume", key="command.volume.name"),
+        description=Localized("調整音量", key="command.volume.description"),
+        options=[
+            Option(
+                name="percent",
+                description=Localized("百分比 (0 ≤ n ≤ 100)", key="command.volume.option.percent"),
+                type=OptionType.integer,
+                required=False
+            )
+        ]
+    )
+    async def volume(self, interaction: ApplicationCommandInteraction, percent: commands.Range[int, 0, 100] = 100):
+        await interaction.response.defer()
+
+        await ensure_voice(interaction, should_connect=False)
+
+        player: DefaultPlayer = self.bot.lavalink.player_manager.get(
+            interaction.guild.id
+        )
+
+        await player.set_volume(percent)
+
+        await interaction.edit_original_response(
+            embed=SuccessEmbed(
+                f"已將音量調整為 **`{percent}%`**"
+            )
+        )
+
     async def update_filter(self, interaction: ApplicationCommandInteraction, filter_name: str,
                             player: DefaultPlayer = None, **kwargs):
         await interaction.response.defer()
