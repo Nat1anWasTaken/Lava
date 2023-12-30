@@ -7,20 +7,6 @@ services:
     env_file:
       - stack.env
     volumes:
-      - "./configs:/configs"
+      - "./configs:/lava/configs"
     ports:
       - "8084:8084"
-    networks:
-      - lava
-
-  lavalink:
-    image: fredboat/lavalink
-    hostname: lavalink
-    restart: always
-    volumes:
-      - "./configs/application.yml:/opt/Lavalink/application.yml:r"
-    networks:
-      - lava
-
-networks:
-  lava:
