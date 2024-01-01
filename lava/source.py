@@ -7,9 +7,9 @@ from typing import Union, Tuple, Optional
 import requests
 from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack
-from spotipy import Spotify, SpotifyOAuth
-from yt_dlp import YoutubeDL, DownloadError
-from yt_dlp.utils import UnsupportedError
+from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
+from yt_dlp import YoutubeDL
+from yt_dlp.utils import UnsupportedError, DownloadError
 
 from lava.errors import LoadError
 from lava.variables import Variables
@@ -68,24 +68,13 @@ class SpotifySource(BaseSource):
 
         spotify_client_id = getenv("SPOTIFY_CLIENT_ID")
         spotify_client_secret = getenv("SPOTIFY_CLIENT_SECRET")
-        spotify_redirect_uri = getenv("SPOTIFY_REDIRECT_URI")
 
-        if not (spotify_client_id and spotify_client_secret):
-            raise ValueError(
-                "One of SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI enviorment variables is missing,"
-                "Spotify links and autoplay will be disabled."
-            )
-
-        credentials = SpotifyOAuth(
+        credentials = SpotifyClientCredentials(
             client_id=spotify_client_id,
-            client_secret=spotify_client_secret,
-            redirect_uri=spotify_redirect_uri,
-            open_browser=False
+            client_secret=spotify_client_secret
         )
 
         Variables.SPOTIFY_CLIENT = Spotify(auth_manager=credentials)
-
-        Variables.SPOTIFY_CLIENT.recommendations(seed_artists=["4NHQUGzhtTLFvgF5SZesLK"])
 
     def check_query(self, query: str) -> bool:
         spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
