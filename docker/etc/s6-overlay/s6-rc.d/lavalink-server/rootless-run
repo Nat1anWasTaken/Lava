@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+cd /lava
+if [[ "${LAVALINK_SERVER}" == "true" ]] || [[ "${LAVALINK_SERVER}" == "TRUE" ]] || [[ "${LAVALINK_SERVER}" == "1" ]]; then
+  java -jar /lava/lavalink.jar
+else
+  echo "Not starting lavalink server"
+  sleep infinity
+fi
