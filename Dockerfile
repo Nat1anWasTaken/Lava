@@ -23,7 +23,7 @@ COPY --chown=1200:1200 . /lava
 WORKDIR /lava
 USER lava
 RUN rm ./docker -r && \
-  pip install --user -r /lava/requirements.txt && \
+  pip install -r /lava/requirements.txt && \
   curl -fsSL https://github.com/lavalink-devs/Lavalink/releases/download/${LAVALINK_VERSION}/Lavalink.jar -o /lava/lavalink.jar
 
 USER root
