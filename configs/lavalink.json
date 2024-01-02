@@ -1,10 +1,10 @@
 {
     "nodes": [
         {
-            "host": "lavalink",
+            "host": "localhost",
             "port": 2333,
             "password": "youshallnotpass",
-            "name": "test",
+            "name": "local",
             "region": "us"
         }
     ]

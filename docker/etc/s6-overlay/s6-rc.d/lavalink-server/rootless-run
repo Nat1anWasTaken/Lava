@@ -2,7 +2,17 @@
 
 cd /lava
 if [[ "${LAVALINK_SERVER}" == "true" ]] || [[ "${LAVALINK_SERVER}" == "TRUE" ]] || [[ "${LAVALINK_SERVER}" == "1" ]]; then
-  java -jar /lava/lavalink.jar
+  cd /lava
+  cp /lava/configs/application.yml /lava
+
+  if [[ -z "${LOGGING_LEVEL_ROOT}" ]]; then 
+    export LOGGING_LEVEL_ROOT=WARN
+  fi
+  if [[ -z "${LOGGING_LEVEL_LAVALINK}" ]]; then
+    export LOGGING_LEVEL_LAVALINK=WARN
+  fi
+
+  java -jar ./lavalink.jar
 else
   echo "Not starting lavalink server"
   sleep infinity

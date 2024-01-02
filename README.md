@@ -79,6 +79,9 @@
 
 ### Docker
 
+<details>
+<summary>Docker compose</summary>
+
 確保 Docker 已經安裝在你的電腦或伺服器上，接著：
 
 1. Clone 這個 Repository
@@ -101,6 +104,43 @@ mv example.stack.env stack.env
 ```bash
 docker-compose up
 ```
+</details>
+
+<details>
+<summary>Docker CLI</summary>
+
+確保 Docker 已經安裝在你的電腦或伺服器上，接著：
+
+1. Clone 這個 Repository
+```bash
+git clone https://github.com/Nat1anWasTaken/Lava.git
+```
+
+2. cd 到專案目錄
+```bash
+cd Lava
+```
+
+3. 建立映像檔
+```bash
+docker build -t lava .
+```
+
+4. 啟動機器人
+```bash
+docker run -it \
+  --name lava \
+  -e TOKEN="機器人 Token" \
+  -e LAVALINK_SERVER="true" \ # 啟動內建 Lavalink 伺服器
+  -e SPOTIFY_CLIENT_ID="Spotify client id" \
+  -e SPOTIFY_CLIENT_SECRET="Spotify client secret" \
+  -e SPOTIPY_REDIRECT_URI="http://localhost:8084" \
+  -p 8084:8084 \
+  --restart unless-stopped \
+  lava
+```
+
+</details>
 
 > 如果你有需要跳過 Spotify 自動設定 (`Go to the following url: ...`)，你可以將 `SKIP_SPOTIFY_SETUP` 設定為 `1`
 
