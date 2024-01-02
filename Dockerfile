@@ -1,6 +1,6 @@
 FROM python:3.11.5-slim-bookworm
 
-ARG S6_OVERLAY_VERSION=3.1.6.2 LAVALINK_VERSION=3.7.10 DEBIAN_FRONTEND="noninteractive" 
+ARG S6_OVERLAY_VERSION=3.1.6.2 LAVALINK_VERSION=4.0.0 DEBIAN_FRONTEND="noninteractive"
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
