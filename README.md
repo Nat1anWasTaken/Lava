@@ -129,7 +129,7 @@ docker build -t lava .
 4. 啟動機器人
 ```bash
 docker run -it \
-  -n lava \
+  --name lava \
   -e TOKEN="機器人 Token" \
   -e LAVALINK_SERVER="true" \ # 啟動內建 Lavalink 伺服器
   -e SPOTIFY_CLIENT_ID="Spotify client id" \
