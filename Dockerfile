@@ -23,7 +23,6 @@ COPY --chown=1200:1200 . /lava
 WORKDIR /lava
 USER lava
 RUN rm ./docker -r && \
-  python -m pip install -r /lava/requirements.txt && \
   curl -fsSL https://github.com/lavalink-devs/Lavalink/releases/download/${LAVALINK_VERSION}/Lavalink.jar -o /lava/lavalink.jar
 
 USER root
@@ -32,5 +31,6 @@ ENV S6_VERBOSITY=1 \
   S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
   SHELL=/bin/bash
 COPY --chmod=755 ./docker /
+RUN python -m pip install -r /lava/requirements.txt
 
 ENTRYPOINT ["/init"]
