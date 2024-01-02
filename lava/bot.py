@@ -1,7 +1,5 @@
 import json
 from logging import Logger
-from os.path import exists
-from shutil import copy
 
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
@@ -17,9 +15,6 @@ class Bot(OriginalBot):
         self.logger = logger
 
         self.lavalink: Client = MISSING
-
-        if not exists("configs/icons.json"):
-            copy("configs/icons.example.json", "configs/icons.json")
 
         with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
@@ -39,9 +34,6 @@ class Bot(OriginalBot):
         self.lavalink = Client(self.user.id)
 
         self.logger.info("Loading lavalink nodes...")
-
-        if not exists("configs/lavalink.json"):
-            copy("configs/lavalink.example.json", "configs/lavalink.json")
 
         with open("configs/lavalink.json", "r") as f:
             config = json.load(f)
