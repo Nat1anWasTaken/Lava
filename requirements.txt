@@ -8,4 +8,7 @@ disnake==2.9.1
 colorlog==6.8.0
 python-dotenv==1.0.0
 yt-dlp==2023.12.30
+colorlog
+youtube-related
+youtube-search
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
