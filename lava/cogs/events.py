@@ -33,12 +33,12 @@ class Events(Cog):
 
             self.logger.debug("Received player update event for guild %s", self.bot.get_guild(player.guild_id))
 
-            if event.player.fetch("autoplay") and len(event.player.queue) <= 2:
+            if event.player.fetch("autoplay") and len(event.player.queue) <= 5:
                 self.logger.info(
                     "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
 
-                recommendations = await get_recommended_tracks(player, player.current, 5)
+                recommendations = await get_recommended_tracks(player, player.current, 5 - len(player.queue))
 
                 for recommendation in recommendations:
                     event.player.add(requester=0, track=recommendation)
