@@ -1,12 +1,11 @@
 import asyncio
-import random
 import subprocess
 from typing import Union, Iterable, Optional
 
 import youtube_related
 import youtube_search
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale
-from disnake.abc import GuildChannel, MISSING
+from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
 from lavalink import DefaultPlayer, parse_time, AudioTrack
