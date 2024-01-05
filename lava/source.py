@@ -7,7 +7,7 @@ from typing import Union, Tuple, Optional
 import requests
 from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack
-from spotipy import Spotify, SpotifyOAuth, SpotifyClientCredentials
+from spotipy import Spotify, SpotifyClientCredentials
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import UnsupportedError, DownloadError
 
