@@ -33,7 +33,7 @@ class Events(Cog):
 
             self.logger.debug("Received player update event for guild %s", self.bot.get_guild(player.guild_id))
 
-            if event.player.fetch("autoplay") and len(event.player.queue) == 0:
+            if event.player.fetch("autoplay") and len(event.player.queue) <= 2:
                 self.logger.info(
                     "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
