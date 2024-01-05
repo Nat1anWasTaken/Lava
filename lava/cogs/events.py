@@ -11,7 +11,7 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from lava.bot import Bot
 from lava.embeds import ErrorEmbed
 from lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from lava.utils import get_recommended_track, update_display, ensure_voice, toggle_autoplay
+from lava.utils import get_recommended_tracks, update_display, ensure_voice, toggle_autoplay
 
 
 class Events(Cog):
@@ -38,9 +38,10 @@ class Events(Cog):
                     "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
 
-                recommendation = await get_recommended_track(player, player.current)
+                recommendations = await get_recommended_tracks(player, player.current, 5)
 
-                event.player.add(requester=0, track=recommendation)
+                for recommendation in recommendations:
+                    event.player.add(requester=0, track=recommendation)
 
             try:
                 await update_display(self.bot, player)

@@ -125,33 +125,36 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
         player.store("autoplay", "1")
 
 
-async def get_recommended_track(player: DefaultPlayer, track: AudioTrack) -> Union[AudioTrack]:
+async def get_recommended_tracks(player: DefaultPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
     """
     Get recommended track from the given track.
 
     :param player: The player instance.
     :param track: The seed tracks to get recommended tracks from.
+    :param max_results: The max amount of tracks to get.
     """
     try:
-        results = await youtube_related.async_fetch(track.uri)
+        results_from_youtube = await youtube_related.async_fetch(track.uri)
     except ValueError:  # The track is not a YouTube track
         search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
 
-        results = await youtube_related.async_fetch(f"https://youtube.com/watch?v={search_results[0]['id']}")
+        results_from_youtube = await youtube_related.async_fetch(
+            f"https://youtube.com/watch?v={search_results[0]['id']}")
 
-    result: AudioTrack = MISSING
+    results: list[AudioTrack] = []
 
-    for item in results:
-        if item["id"] in [song.identifier for song in player.queue]:
+    for result in results_from_youtube:
+        if result['id'] in [song.identifier for song in player.queue]:  # Don't add duplicate songs
             continue
 
-        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={item['id']}")).tracks[0]
+        if len(results) >= max_results:
+            break
 
-    if not result:
-        random_picked = random.choice(results)
-        result = (await player.node.get_tracks(f"https://youtube.com/watch?v={random_picked['id']}")).tracks[0]
+        track = (await player.node.get_tracks(f"https://youtube.com/watch?v={result['id']}")).tracks[0]
 
-    return result
+        results.append(track)
+
+    return results
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,
