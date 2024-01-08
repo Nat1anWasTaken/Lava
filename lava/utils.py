@@ -76,7 +76,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     This check ensures that the bot and command author are in the same voice channel.
 
     :param interaction: The interaction that triggered the command.
-    :param should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
+    :param should_connect: Should the bot connect to the channel if not connected.s
     """
     player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
 
