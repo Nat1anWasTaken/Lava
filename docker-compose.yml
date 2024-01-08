@@ -2,7 +2,7 @@ version: "3"
 
 services:
   lava:
-    build: .
+    image: ghcr.io/nat1anwastaken/lava:latest
     restart: always
     env_file:
       - stack.env
