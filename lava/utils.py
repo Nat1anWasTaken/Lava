@@ -2,16 +2,16 @@ import asyncio
 import subprocess
 from typing import Union, Iterable, Optional
 
+import youtube_related
+import youtube_search
 from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale
 from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
-from lavalink import DefaultPlayer, parse_time, DeferredAudioTrack, LoadResult
-from spotipy import Spotify
+from lavalink import DefaultPlayer, parse_time, AudioTrack
 
 from lava.bot import Bot
-from lava.errors import UserNotInVoice, MissingVoicePermissions, BotNotInVoice, UserInDifferentChannel
-from lava.source import SpotifyAudioTrack
+from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
 from lava.variables import Variables
 from lava.voice_client import LavalinkVoiceClient
 
@@ -76,7 +76,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     This check ensures that the bot and command author are in the same voice channel.
 
     :param interaction: The interaction that triggered the command.
-    :param should_connect: Whether the bot should connect to the voice channel if it isn't already connected.
+    :param should_connect: Should the bot connect to the channel if not connected.s
     """
     player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
 
@@ -117,51 +117,43 @@ def toggle_autoplay(player: DefaultPlayer) -> None:
         player.delete("autoplay")
 
         for item in player.queue:  # Remove songs added by autoplay
-            if not item.requester:
+            if item.requester == 0:
                 player.queue.remove(item)
 
     else:
         player.store("autoplay", "1")
 
 
-async def get_recommended_tracks(spotify: Spotify,
-                                 player: DefaultPlayer,
-                                 tracks: list[DeferredAudioTrack],
-                                 amount: int = 10) -> list[SpotifyAudioTrack]:
+async def get_recommended_tracks(player: DefaultPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
     """
-    Get recommended tracks from the given track.
+    Get recommended track from the given track.
 
-    :param spotify: The spotify instance.
     :param player: The player instance.
-    :param tracks: The seed tracks to get recommended tracks from.
-    :param amount: The amount of recommended tracks to get.
+    :param track: The seed tracks to get recommended tracks from.
+    :param max_results: The max amount of tracks to get.
     """
-    seed_tracks = []
+    try:
+        results_from_youtube = await youtube_related.async_fetch(track.uri)
+    except ValueError:  # The track is not a YouTube track
+        search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
 
-    for track in tracks:
-        if not isinstance(track, SpotifyAudioTrack):
-            try:
-                result = spotify.search(f"{track.title} by {track.author}", type="track", limit=1)
+        results_from_youtube = await youtube_related.async_fetch(
+            f"https://youtube.com/watch?v={search_results[0]['id']}")
 
-                seed_tracks.append(result["tracks"]["items"][0]["id"])
+    results: list[AudioTrack] = []
 
-            except IndexError:
-                continue
-
+    for result in results_from_youtube:
+        if result['id'] in [song.identifier for song in player.queue]:  # Don't add duplicate songs
             continue
 
-        seed_tracks.append(track.identifier)
+        if len(results) >= max_results:
+            break
 
-    recommendations = spotify.recommendations(seed_tracks=seed_tracks, limit=amount)
+        track = (await player.node.get_tracks(f"https://youtube.com/watch?v={result['id']}")).tracks[0]
 
-    output = []
+        results.append(track)
 
-    for track in recommendations["tracks"]:
-        load_result: LoadResult = await player.node.client.get_local_tracks(track['external_urls']['spotify'])
-
-        output.append(load_result.tracks[0])
-
-    return output
+    return results
 
 
 async def update_display(bot: Bot, player: DefaultPlayer, new_message: Message = None, delay: int = 0,

@@ -1,7 +1,6 @@
 from logging import getLogger
 from typing import Union
 
-import lavalink
 from disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \
     MessageInteraction
 from disnake.abc import GuildChannel
@@ -12,8 +11,7 @@ from lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, Tra
 from lava.bot import Bot
 from lava.embeds import ErrorEmbed
 from lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
-from lava.utils import update_display, ensure_voice, toggle_autoplay, get_recommended_tracks
-from lava.variables import Variables
+from lava.utils import get_recommended_tracks, update_display, ensure_voice, toggle_autoplay
 
 
 class Events(Cog):
@@ -24,28 +22,26 @@ class Events(Cog):
 
     async def cog_load(self):
         await self.bot.wait_until_ready()
-    
+
     @commands.Cog.listener(name="on_ready")
     async def on_ready(self):
         self.bot.lavalink.add_event_hook(self.track_hook)
-        
+
     async def track_hook(self, event):
         if isinstance(event, PlayerUpdateEvent):
             player: DefaultPlayer = event.player
 
             self.logger.debug("Received player update event for guild %s", self.bot.get_guild(player.guild_id))
 
-            if event.player.fetch("autoplay") and len(event.player.queue) == 0:
+            if event.player.fetch("autoplay") and len(event.player.queue) <= 5:
                 self.logger.info(
-                    "Queue is under 10, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
+                    "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(player.guild_id)
                 )
 
-                recommendations = await get_recommended_tracks(
-                    Variables.SPOTIFY_CLIENT, event.player, ([event.player.current] + event.player.queue)[-10:], 20
-                )
+                recommendations = await get_recommended_tracks(player, player.current, 5 - len(player.queue))
 
-                for track in recommendations:
-                    event.player.add(requester=0, track=track)
+                for recommendation in recommendations:
+                    event.player.add(requester=0, track=recommendation)
 
             try:
                 await update_display(self.bot, player)
