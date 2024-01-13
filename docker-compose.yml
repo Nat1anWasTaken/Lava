@@ -8,5 +8,3 @@ services:
       - stack.env
     volumes:
       - "./configs:/lava/configs"
-    ports:
-      - "8084:8084"
