@@ -8,12 +8,14 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLA
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-arch.tar.xz /tmp
 
 RUN apt-get update && \
-  apt-get install -y git curl jq openjdk-17-jre-headless xz-utils && \
+  apt-get install -y git curl jq openjdk-17-jre-headless xz-utils \
+  gcc g++ python3-dev libffi-dev build-essential && \
   apt-get clean && \
   tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
   tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz && \
   tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz && \
   tar -C / -Jxpf /tmp/s6-overlay-symlinks-arch.tar.xz && \
+  rm -rf /tmp/* && \
   groupadd -g 1200 lava && \
   useradd lava --system --gid 1200 --uid 1200 --create-home && \
   mkdir /lava && \
