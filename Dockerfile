@@ -1,4 +1,4 @@
-FROM python:3.12.1-slim-bookworm
+FROM python:3.12.2-slim-bookworm
 
 ARG S6_OVERLAY_VERSION=3.1.6.2 LAVALINK_VERSION=4.0.0 DEBIAN_FRONTEND="noninteractive"
 
