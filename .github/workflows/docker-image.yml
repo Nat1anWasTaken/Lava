@@ -29,3 +29,5 @@ jobs:
         uses: docker/bake-action@v4
         with:
           push: true
+          files: |
+            docker-bake.hcl
