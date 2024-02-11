@@ -30,6 +30,13 @@ class Commands(Cog):
         self.bot = bot
 
     @commands.slash_command(
+        name=Localized("lofi", key="command.lofi.name"),
+        description=Localized("播放 Lofi Radio", key="command.lofi.description")
+    )
+    async def lofi(self, interaction: ApplicationCommandInteraction):
+        await self.play(interaction, query="https://www.youtube.com/watch?v=jfKfPfyJRdk")
+
+    @commands.slash_command(
         name=Localized("info", key="command.info.name"),
         description=Localized("顯示機器人資訊", key="command.info.description")
     )
