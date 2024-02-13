@@ -92,6 +92,15 @@ class Commands(Cog):
         )
 
     @commands.slash_command(
+        name=Localized("ping", key="command.ping.name"),
+        description=Localized("查看機器人延遲", key="command.ping.description")
+    )
+    async def ping(self, interaction: ApplicationCommandInteraction):
+        locale = str(interaction.locale)
+
+        await interaction.response.send_message(embed=InfoEmbed(self.bot.get_text("command.ping.title", locale, "機器人延遲"), description=f"{round(self.bot.latency * 1000)}ms"))
+    
+    @commands.slash_command(
         name=Localized("nowplaying", key="command.nowplaying.name"),
         description=Localized("顯示目前正在播放的歌曲", key="command.nowplaying.description")
     )
