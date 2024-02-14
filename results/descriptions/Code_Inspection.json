@@ -1,0 +1,1261 @@
+{
+  "profile": "Default",
+  "groups": [
+    {
+      "name": "EditorConfig",
+      "inspections": [
+        {
+          "shortName": "EditorConfigCharClassRedundancy",
+          "displayName": "Unnecessary character class",
+          "enabled": false,
+          "description": "Reports character classes that consist of a single character. Such classes can be simplified to a character, for example `[a]`→`a`."
+        },
+        {
+          "shortName": "EditorConfigDeprecatedDescriptor",
+          "displayName": "Deprecated property",
+          "enabled": false,
+          "description": "Reports EditorConfig properties that are no longer supported."
+        },
+        {
+          "shortName": "EditorConfigRootDeclarationUniqueness",
+          "displayName": "Extra top-level declaration",
+          "enabled": false,
+          "description": "Reports multiple top-level declarations. There can be only one optional \"root=true\" top-level declaration in the EditorConfig file. Using multiple top-level declarations is not allowed."
+        },
+        {
+          "shortName": "EditorConfigNumerousWildcards",
+          "displayName": "Too many wildcards",
+          "enabled": false,
+          "description": "Reports sections that contain too many wildcards. Using a lot of wildcards may lead to performance issues."
+        },
+        {
+          "shortName": "EditorConfigWildcardRedundancy",
+          "displayName": "Redundant wildcard",
+          "enabled": false,
+          "description": "Reports wildcards that become redundant when the \"\\*\\*\" wildcard is used in the same section.\n\n\nThe \"\\*\\*\" wildcard defines a broader set of files than any other wildcard.\nThat is why, any other wildcard used in the same section has no affect and can be removed."
+        },
+        {
+          "shortName": "EditorConfigPartialOverride",
+          "displayName": "Overlapping sections",
+          "enabled": false,
+          "description": "Reports subsets of files specified in the current section that overlap with other subsets in other sections. For example: `[{foo,bar}]` and `[{foo,bas}]` both contain \"foo\"."
+        },
+        {
+          "shortName": "EditorConfigEmptySection",
+          "displayName": "Empty section",
+          "enabled": false,
+          "description": "Reports sections that do not contain any EditorConfig properties."
+        },
+        {
+          "shortName": "EditorConfigHeaderUniqueness",
+          "displayName": "EditorConfig section is not unique",
+          "enabled": false,
+          "description": "Reports sections that define the same file pattern as other sections."
+        },
+        {
+          "shortName": "EditorConfigShadowingOption",
+          "displayName": "Overriding property",
+          "enabled": false,
+          "description": "Reports properties that override the same properties defined earlier in the file.\n\nFor example:\n\n\n    [*.java]\n    indent_size=4\n    [{*.java,*.js}]\n    indent_size=2\n\nThe second section includes the same files as `[*.java]` but also sets indent_size to value 2. Thus the first declaration `indent_size=4`will be ignored."
+        },
+        {
+          "shortName": "EditorConfigListAcceptability",
+          "displayName": "Unexpected value list",
+          "enabled": false,
+          "description": "Reports lists of values that are used in properties in which lists are not supported. In this case, only a single value can be specified."
+        },
+        {
+          "shortName": "EditorConfigShadowedOption",
+          "displayName": "Overridden property",
+          "enabled": false,
+          "description": "Reports properties that are already defined in other sections.\n\nFor example:\n\n\n    [*.java]\n    indent_size=4\n    [{*.java,*.js}]\n    indent_size=2\n\nThe second section includes all `*.java` files too but it also redefines indent_size. As a result the value 2 will be used for files matching `*.java`."
+        },
+        {
+          "shortName": "EditorConfigEmptyHeader",
+          "displayName": "Empty header",
+          "enabled": false,
+          "description": "Reports sections with an empty header. Section header must contain file path globs in the format similar to one supported by `gitignore`."
+        },
+        {
+          "shortName": "EditorConfigValueCorrectness",
+          "displayName": "Invalid property value",
+          "enabled": false,
+          "description": "Reports property values that do not meet value restrictions. For example, some properties may be only \"true\" or \"false\", others contain only integer numbers etc. If a value has a limited set of variants, use code completion to see all of them."
+        },
+        {
+          "shortName": "EditorConfigVerifyByCore",
+          "displayName": "Invalid .editorconfig file",
+          "enabled": false,
+          "description": "Verifies the whole file using the backing EditorConfig core library and reports any failures. Any such failure would prevent EditorConfig properties from being correctly applied."
+        },
+        {
+          "shortName": "EditorConfigValueUniqueness",
+          "displayName": "Non-unique list value",
+          "enabled": false,
+          "description": "Reports duplicates in lists of values."
+        },
+        {
+          "shortName": "EditorConfigMissingRequiredDeclaration",
+          "displayName": "Required declarations are missing",
+          "enabled": false,
+          "description": "Reports properties that miss the required declarations. Refer to the documentation for more information."
+        },
+        {
+          "shortName": "EditorConfigCharClassLetterRedundancy",
+          "displayName": "Duplicate character class letter",
+          "enabled": false,
+          "description": "Reports wildcard patterns in the EditorConfig section that contain a duplicate character in the character class, for example `[aa]`."
+        },
+        {
+          "shortName": "EditorConfigKeyCorrectness",
+          "displayName": "Unknown property",
+          "enabled": false,
+          "description": "Reports properties that are not supported by the IDE. Note: some \"ij\" domain properties may require specific language plugins."
+        },
+        {
+          "shortName": "EditorConfigPatternEnumerationRedundancy",
+          "displayName": "Unnecessary braces",
+          "enabled": false,
+          "description": "Reports pattern lists that are either empty `{}` or contain just one pattern, for example `{foo}` in contrast to a list containing multiple patterns, for example `{foo,bar}`. In this case braces are handled as a part of the name. For example, the pattern `*.{a}` will match the file `my.{a}` but not `my.a`."
+        },
+        {
+          "shortName": "EditorConfigEncoding",
+          "displayName": "File encoding doesn't match EditorConfig charset",
+          "enabled": false,
+          "description": "Checks that current file encoding matches the encoding defined in \"charset\" property of .editorconfig file."
+        },
+        {
+          "shortName": "EditorConfigSpaceInHeader",
+          "displayName": "Space in file pattern",
+          "enabled": false,
+          "description": "Reports space characters in wildcard patterns that affect pattern matching. If these characters are not intentional, they should be removed."
+        },
+        {
+          "shortName": "EditorConfigOptionRedundancy",
+          "displayName": "Redundant property",
+          "enabled": false,
+          "description": "Reports properties that are redundant when another applicable section already contains the same property and value.\n\n\nFor example:\n\n\n    [*]\n    indent_size=4\n    [*.java]\n    indent_size=4\n\nare both applicable to `*.java` files and define the same `indent_size` value."
+        },
+        {
+          "shortName": "EditorConfigRootDeclarationCorrectness",
+          "displayName": "Unexpected top-level declaration",
+          "enabled": false,
+          "description": "Reports unexpected top-level declarations. Top-level declarations other than \"root=true\" are not allowed in the EditorConfig file."
+        },
+        {
+          "shortName": "EditorConfigReferenceCorrectness",
+          "displayName": "Invalid reference",
+          "enabled": false,
+          "description": "Reports identifiers that are either unknown or have a wrong type."
+        },
+        {
+          "shortName": "EditorConfigUnusedDeclaration",
+          "displayName": "Unused declaration",
+          "enabled": false,
+          "description": "Reports unused declarations. Such declarations can be removed."
+        },
+        {
+          "shortName": "EditorConfigPairAcceptability",
+          "displayName": "Unexpected key-value pair",
+          "enabled": false,
+          "description": "Reports key-value pairs that are not allowed in the current context."
+        },
+        {
+          "shortName": "EditorConfigPatternRedundancy",
+          "displayName": "Duplicate or redundant pattern",
+          "enabled": false,
+          "description": "Reports file patterns that are redundant as there already are other patterns that define the same scope of files or even a broader one. For example, in `[{*.java,*}]` the first `*.java` pattern defines a narrower scope compared to `*`. That is why it is redundant and can be removed."
+        },
+        {
+          "shortName": "EditorConfigNoMatchingFiles",
+          "displayName": "No matching files",
+          "enabled": false,
+          "description": "Reports sections with wildcard patterns that do not match any files under the directory in which the `.editorconfig` file is located."
+        },
+        {
+          "shortName": "EditorConfigUnexpectedComma",
+          "displayName": "Unexpected comma",
+          "enabled": false,
+          "description": "Reports commas that cannot be used in the current context. Commas are allowed only as separators for values in lists."
+        }
+      ]
+    },
+    {
+      "name": "Python",
+      "inspections": [
+        {
+          "shortName": "PyPandasSeriesToListInspection",
+          "displayName": "Method Series.to_list() is recommended",
+          "enabled": true,
+          "description": "Reports redundant `list` in `list(Series.values)` statement for pandas and polars libraries.\nSuch `Series` values extraction can be replaced with the `to_list()` function call.\n\n**Example:**\n\n```\nlist(df['column'].values)\n```\n\nWhen the quick-fix is applied, the code changes to:\n\n```\ndf['column'].to_list()\n```"
+        },
+        {
+          "shortName": "PySetFunctionToLiteralInspection",
+          "displayName": "Function call can be replaced with set literal",
+          "enabled": true,
+          "description": "Reports calls to the `set` function that can be replaced with\nthe `set` literal.\n\n**Example:**\n\n\n    def do_mult(a, b):\n        c = a * b\n        return set([c, a, b])\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def do_mult(a, b):\n        c = a * b\n        return {c, a, b}\n"
+        },
+        {
+          "shortName": "PyStatementEffectInspection",
+          "displayName": "Statement has no effect",
+          "enabled": true,
+          "description": "Reports statements that have no effect.\n\n**Example:**\n\n\n    class Car:\n        def __init__(self, speed=0):\n            self.speed = speed\n            self.time # has no effect\n\n    2 + 3 # has no effect\n\nIn this example, you can either add a field `time` to the `Car` class or\nintroduce variables for the problematic statements."
+        },
+        {
+          "shortName": "PyMandatoryEncodingInspection",
+          "displayName": "No encoding specified for file",
+          "enabled": false,
+          "description": "Reports a missing encoding comment in Python 2.\n\n**Example:**\n\n\n    class Book(object):\n        def __init__(self):\n            pass\n\nWhen the quick-fix is applied, the missing comment is added:\n\n\n    # coding=utf-8\n    class Book(object):\n        def __init__(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyOverridesInspection",
+          "displayName": "Invalid usages of @override decorator",
+          "enabled": true,
+          "description": "Reports when a method decorated with @override doesn't have a matching method in its ancestor classes\n\n**Example:**\n\n\n    from typing import override\n\n    class Parent:\n        def foo(self) -> int:\n            return 1\n\n        def bar(self, x: str) -> str:\n            return x\n\n    class Child(Parent):\n        @override\n        def foo(self) -> int:\n            return 2\n\n        @override # Missing super method for override function\n        def baz(self) -> int:\n            return 1\n"
+        },
+        {
+          "shortName": "PyInconsistentIndentationInspection",
+          "displayName": "Inconsistent indentation",
+          "enabled": true,
+          "description": "Reports inconsistent indentation in Python source files when, for example,\nyou use a mixture of tabs and spaces in your code."
+        },
+        {
+          "shortName": "PyAttributeOutsideInitInspection",
+          "displayName": "An instance attribute is defined outside `__init__`",
+          "enabled": true,
+          "description": "Reports a problem when instance attribute definition is outside `__init__` method.\n\n**Example:**\n\n\n        class Book:\n        def __init__(self):\n            self.author = 'Mark Twain'\n\n        def release(self):\n            self.year = '1889'\n\n\nWhen the quick-fix is applied, the code sample changes to:\n\n\n        class Book:\n        def __init__(self):\n            self.year = '1889'\n            self.author = 'Mark Twain'\n\n        def release(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyTypedDictInspection",
+          "displayName": "Invalid TypedDict definition and usages",
+          "enabled": true,
+          "description": "Reports invalid definition and usage of\n[TypedDict](https://www.python.org/dev/peps/pep-0589/).\n\n**Example:**\n\n\n    from typing import TypedDict\n\n\n    class Movie(TypedDict):\n        name: str\n        year: int\n        rate: int = 10  # Right-hand side values are not supported\n\n        def method(self): # Invalid statement in TypedDict\n            pass\n\n\n    m = Movie(name=\"name\", year=1000, rate=9)\n    print(m[\"director\"])  # There is no the 'director' key in 'Movie'\n    del m[\"name\"]  # The 'name' key cannot be deleted\n    m[\"year\"] = \"1001\"  # Expected 'int', got 'str'\n"
+        },
+        {
+          "shortName": "PyPep8Inspection",
+          "displayName": "PEP 8 coding style violation",
+          "enabled": true,
+          "description": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool."
+        },
+        {
+          "shortName": "PyMissingTypeHintsInspection",
+          "displayName": "Missing type hinting for function definition",
+          "enabled": false,
+          "description": "Reports missing type hints for function declaration in\none of the two formats: parameter annotations or a type comment.\n\nSelect the **Only when types are known** checkbox if you want the inspection check\nthe types collected from runtime or inferred."
+        },
+        {
+          "shortName": "PyTupleItemAssignmentInspection",
+          "displayName": "Tuple item assignment is prohibited",
+          "enabled": true,
+          "description": "Reports assignments to a tuple item.\n\n**Example:**\n\n\n    t = ('red', 'blue', 'green', 'white')\n    t[3] = 'black'\n\nA quick-fix offers to replace the tuple with a list."
+        },
+        {
+          "shortName": "PyInitNewSignatureInspection",
+          "displayName": "Incompatible signatures of __new__ and __init__",
+          "enabled": true,
+          "description": "Reports incompatible signatures of the `__new__` and `__init__` methods.\n\n**Example:**\n\n\n    class MyClass(object):\n        def __new__(cls, arg1):\n            return super().__new__(cls)\n\n        def __init__(self):\n            pass\n\nIf the `__new__` and `__init__` have different arguments, then the `MyClass`\ncannot be instantiated.\n\nAs a fix, the IDE offers to apply the Change Signature refactoring."
+        },
+        {
+          "shortName": "PyDunderSlotsInspection",
+          "displayName": "Invalid usages of classes with  '__slots__' definitions",
+          "enabled": true,
+          "description": "Reports invalid usages of a class with `__slots__` definitions.\n\n**Example:**\n\n\n    class Foo:\n        __slots__ = ['foo', 'bar']\n\n\n    foo = Foo()\n    foo.baz = 'spam'\n"
+        },
+        {
+          "shortName": "PyDefaultArgumentInspection",
+          "displayName": "The default argument is mutable",
+          "enabled": true,
+          "description": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
+        },
+        {
+          "shortName": "PyMissingConstructorInspection",
+          "displayName": "Missed call to '__init__' of the super class",
+          "enabled": true,
+          "description": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
+        },
+        {
+          "shortName": "PyTestUnpassedFixtureInspection",
+          "displayName": "Fixture is not requested by test functions",
+          "enabled": true,
+          "description": "Reports if a fixture is used without being passed to test function parameters or to `@pytest.mark.usefixtures` decorator"
+        },
+        {
+          "shortName": "PyShadowingBuiltinsInspection",
+          "displayName": "Shadowing built-in names",
+          "enabled": true,
+          "description": "Reports shadowing built-in names, such as `len` or `list`.\n\n**Example:**\n\n\n    def len(a, b, c):\n        d = a + b + c\n        return d\n\nIn this code fragment, the `len` built-in name is used. The IDE offers to\napply the Rename refactoring as a fix."
+        },
+        {
+          "shortName": "PySimplifyBooleanCheckInspection",
+          "displayName": "Redundant boolean variable check",
+          "enabled": true,
+          "description": "Reports equality comparison with a boolean literal.\n\n**Example:**\n\n\n    def func(s):\n        if s.isdigit() == True:\n            return int(s)\n\nWith the quick-fix applied, the code fragment will be simplified to:\n\n\n    def func(s):\n        if s.isdigit():\n            return int(s)\n"
+        },
+        {
+          "shortName": "PyMethodOverridingInspection",
+          "displayName": "Method signature does not match signature of overridden method",
+          "enabled": true,
+          "description": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
+        },
+        {
+          "shortName": "PoetryPackageVersionsInspection",
+          "displayName": "Poetry package versions",
+          "enabled": true,
+          "description": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+        },
+        {
+          "shortName": "PyTestParametrizedInspection",
+          "displayName": "Incorrect arguments in @pytest.mark.parametrize",
+          "enabled": true,
+          "description": "Reports functions that are decorated with [@pytest.mark.parametrize](https://docs.pytest.org/en/stable/parametrize.html) but do not have arguments to accept\nparameters of the decorator."
+        },
+        {
+          "shortName": "PyDecoratorInspection",
+          "displayName": "Class-specific decorator is used outside the class",
+          "enabled": true,
+          "description": "Reports usages of `@classmethod` or `@staticmethod` decorators\nin methods outside a class.\n\n**Example:**\n\n\n    class State(object):\n\n        @classmethod\n        def my_state(cls, name):\n            cls.name = name\n\n\n    @classmethod\n    def change_state(self):\n        pass\n\nThe `change_state` method should not use the `@classmethod` decorator or it should be\nmoved to the `State` class declaration.\n\nIf you apply the `Remove decorator` action, the code changes to:\n\n\n    class State(object):\n\n        @classmethod\n        def my_state(cls, name):\n            cls.name = name\n\n\n    def change_state(self):\n        pass\n"
+        },
+        {
+          "shortName": "PyAsyncCallInspection",
+          "displayName": "Missing `await` syntax in coroutine calls",
+          "enabled": true,
+          "description": "Reports coroutines that were called\nwithout using the `await` syntax.\n\n**Example:**\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        bar()\n\nAfter the quick-fix is applied, the code changes to:\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        await bar()\n"
+        },
+        {
+          "shortName": "CommandLineInspection",
+          "displayName": "Incorrect CLI syntax",
+          "enabled": true,
+          "description": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
+        },
+        {
+          "shortName": "PyComparisonWithNoneInspection",
+          "displayName": "Using equality operators to compare with None",
+          "enabled": true,
+          "description": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
+        },
+        {
+          "shortName": "PyCallingNonCallableInspection",
+          "displayName": "Attempt to call a non-callable object",
+          "enabled": true,
+          "description": "Reports a problem when you are trying\nto call objects that are not callable, like, for example, properties:\n\n**Example:**\n\n\n    class Record:\n        @property\n        def as_json(self):\n\n    json = Record().as_json()\n"
+        },
+        {
+          "shortName": "PyUnreachableCodeInspection",
+          "displayName": "Unreachable code",
+          "enabled": true,
+          "description": "Reports code fragments that cannot be normally reached.\n\n**Example:**\n\n\n    if True:\n        print('Yes')\n    else:\n        print('No')\n\nAs a fix, you might want to check and modify the algorithm to ensure it implements\nthe expected logic."
+        },
+        {
+          "shortName": "PyMethodParametersInspection",
+          "displayName": "Improper first parameter",
+          "enabled": true,
+          "description": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
+        },
+        {
+          "shortName": "PyChainedComparisonsInspection",
+          "displayName": "Too complex chained comparisons",
+          "enabled": true,
+          "description": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
+        },
+        {
+          "shortName": "PyDocstringTypesInspection",
+          "displayName": "Type in docstring does not match inferred type",
+          "enabled": true,
+          "description": "Reports types in docstring that do not match dynamically inferred types."
+        },
+        {
+          "shortName": "PyCompatibilityInspection",
+          "displayName": "Code is incompatible with specific Python versions",
+          "enabled": false,
+          "description": "Reports incompatibility with the specified versions of Python.\nEnable this inspection if you need your code to be compatible with a range of Python versions, for example,\nif you are building a library.\n\nTo define the range of the inspected Python versions, select the corresponding checkboxes in the **Options**\nsection.\n\nFor more information about the Python versions supported by the IDE, see the\n[web help](https://www.jetbrains.com/help/pycharm/python.html#support)."
+        },
+        {
+          "shortName": "PyGlobalUndefinedInspection",
+          "displayName": "Global variable is not defined at the module level",
+          "enabled": true,
+          "description": "Reports problems when a variable defined through the `global`\nstatement is not defined in the module scope.\n\n**Example:**\n\n\n    def foo():\n        global bar\n        print(bar)\n\n    foo()\n\nAs a fix, you can move the global variable declaration:\n\n\n    global bar\n\n\n    def foo():\n        print(bar)\n"
+        },
+        {
+          "shortName": "PyMethodFirstArgAssignmentInspection",
+          "displayName": "First argument of the method is reassigned",
+          "enabled": true,
+          "description": "Reports cases when the first parameter,\nsuch as `self` or `cls`, is reassigned in a method.\nBecause in most cases, there are no objectives in such reassignment, the\nIDE indicates an error.\n\n**Example:**\n\n\n    class Account:\n        def calc(self, balance):\n            if balance == 0:\n                self = balance\n            return self\n\nAs a fix, you might want to check and modify the algorithm to ensure that reassignment is needed. If everything is correct,\nyou can invoke intention actions for this code and opt to ignore the warning."
+        },
+        {
+          "shortName": "PyNewStyleGenericSyntaxInspection",
+          "displayName": "Invalid usage of new-style type parameters and type aliases",
+          "enabled": true,
+          "description": "Reports invalid usage of [PEP 695](https://www.python.org/dev/peps/pep-0695/) type parameter syntax\n\n\nFinds the following problems in function and class definitions and new-style type alias statements:\n\n* Extending typing.Generic in new-style generic classes\n* Extending parameterized typing.Protocol in new-style generic classes\n* Using generic upper bounds and constraints with type parameters for ParamSpec and TypeVarTuple\n* Mixing traditional and new-style type variables\n* Using traditional type variables in new-style type aliases\n\n\nExamples:\n\n\n      from typing import Generic\n\n      class Example[T](Generic[T]): ... # Classes with type parameter list should not extend 'Generic'\n\n\n      class Example[T: (list[S], str)]: ... # Generic types are not allowed inside constraints and bounds of type parameters\n\n\n      from typing import TypeVar\n\n      K = TypeVar(\"K\")\n\n      class ClassC[V]:\n          def method2[M](self, a: M, b: K) -> M | K: ... # Mixing traditional and new-style TypeVars is not allowed\n"
+        },
+        {
+          "shortName": "PyProtocolInspection",
+          "displayName": "Invalid protocol definitions and usages",
+          "enabled": true,
+          "description": "Reports invalid definitions and usages of protocols introduced in\n[PEP-544](https://www.python.org/dev/peps/pep-0544/).\n\n**Example:**\n\n\n    from typing import Protocol\n\n\n    class MyProtocol(Protocol):\n        def method(self, p: int) -> str:\n            pass\n\n\n    class MyClass(MyProtocol):\n        def method(self, p: str) -> int: # Type of 'method' is not compatible with 'MyProtocol'\n            pass\n\n\n    class MyAnotherProtocol(MyClass, Protocol): # All bases of a protocol must be protocols\n        pass\n\n"
+        },
+        {
+          "shortName": "PyTypeHintsInspection",
+          "displayName": "Invalid type hints definitions and usages",
+          "enabled": true,
+          "description": "Reports invalid usages of type hints.\n\n**Example:**\n\n\n    from typing import TypeVar\n\n    T0 = TypeVar('T1') # Argument of 'TypeVar' must be 'T0'\n\n\n    def b(p: int) -> int:  # Type specified both in a comment and annotation\n        # type: (int) -> int\n        pass\n\n\n    def c(p1, p2): # Type signature has too many arguments\n        # type: (int) -> int\n        pass\n\nAvailable quick-fixes offer various actions. You can rename, remove, or move problematic elements. You can also manually modify type declarations to ensure no warning is shown."
+        },
+        {
+          "shortName": "PyMethodMayBeStaticInspection",
+          "displayName": "Method is not declared static",
+          "enabled": true,
+          "description": "Reports any methods that do not require a class instance creation and can be\nmade static.\n\n**Example:**\n\n\n    class MyClass(object):\n        def my_method(self, x):\n            print(x)\n\nIf a **Make function from method** quick-fix is applied, the code changes to:\n\n\n    def my_method(x):\n        print(x)\n\n\n    class MyClass(object):\n        pass\n\nIf you select the **Make method static** quick-fix, the `@staticmethod` decorator is added:\n\n\n    class MyClass(object):\n        @staticmethod\n        def my_method(x):\n            print(x)\n"
+        },
+        {
+          "shortName": "PyTupleAssignmentBalanceInspection",
+          "displayName": "Tuple assignment balance is incorrect",
+          "enabled": true,
+          "description": "Reports cases when the number of expressions on the right-hand side\nand targets on the left-hand side are not the same.\n\n**Example:**\n\n\n    t = ('red', 'blue', 'green', 'white')\n    (c1, c2, c3) = t\n\nAs a quick-fix, you can modify the highlighted code fragment to restore the tuple\nbalance."
+        },
+        {
+          "shortName": "PyClassHasNoInitInspection",
+          "displayName": "Class has no `__init__` method",
+          "enabled": true,
+          "description": "Reports cases in Python 2 when a class has no `__init__` method, neither its parent\nclasses.\n\n**Example:**\n\n\n    class Book():\n        pass\n\nThe quick-fix adds the `__init__` method:\n\n\n    class Book():\n        def __init__(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyArgumentEqualDefaultInspection",
+          "displayName": "The function argument is equal to the default parameter value",
+          "enabled": false,
+          "description": "Reports a problem when an argument\npassed to the function is equal to the default parameter value.\n\nThis inspection is disabled by default to avoid performance degradation.\n\n**Example:**\n\n\n    def my_function(a: int = 2):\n        print(a)\n\n\n    my_function(2)\n"
+        },
+        {
+          "shortName": "PyClassVarInspection",
+          "displayName": "Invalid usage of ClassVar variables",
+          "enabled": true,
+          "description": "Reports invalid usages of [ClassVar](https://docs.python.org/3/library/typing.html#typing.ClassVar) annotations.\n\n**Example:**\n\n\n    from typing import ClassVar\n\n\n    class Cat:\n        color: ClassVar[str] = \"white\"\n        weight: int\n\n        def __init__(self, weight: int):\n            self.weight = weight\n\n\n    Cat.color = \"black\"  # OK\n    my_cat = Cat(5)\n    my_cat.color = \"gray\"  # Error, setting class variable on instance\n"
+        },
+        {
+          "shortName": "PyDictCreationInspection",
+          "displayName": "Dictionary creation can be rewritten by dictionary literal",
+          "enabled": true,
+          "description": "Reports situations when you can rewrite dictionary creation\nby using a dictionary literal.\n\nThis approach brings performance improvements.\n\n**Example:**\n\n\n    dic = {}\n    dic['var'] = 1\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    dic = {'var': 1}\n"
+        },
+        {
+          "shortName": "PyStringFormatInspection",
+          "displayName": "Errors in string formatting operations",
+          "enabled": true,
+          "description": "Reports errors in string formatting operations.\n\n**Example 1:**\n\n\n    \"Hello {1}\".format(\"people\")\n\n**Example 2:**\n\n\n    def bar():\n        return 1\n\n\n    \"%s %s\" % bar()\n\nAs a fix, you need to rewrite string formatting fragments to\nadhere to the [formatting syntax](https://docs.python.org/3/library/string.html#format-string-syntax)."
+        },
+        {
+          "shortName": "PyExceptionInheritInspection",
+          "displayName": "Exceptions do not inherit from standard 'Exception' class",
+          "enabled": true,
+          "description": "Reports cases when a custom exception class is\nraised but does not inherit from the\n[builtin Exception class](https://docs.python.org/3/library/exceptions.html).\n\n**Example:**\n\n\n    class A:\n        pass\n\n\n    def me_exception():\n        raise A()\n\nThe proposed quick-fix changes the code to:\n\n\n    class A(Exception):\n        pass\n\n\n    def me_exception():\n        raise A()\n"
+        },
+        {
+          "shortName": "PyAssignmentToLoopOrWithParameterInspection",
+          "displayName": "Assignments to 'for' loop or 'with' statement parameter",
+          "enabled": true,
+          "description": "Reports the cases when you rewrite a loop variable with an inner loop.\n\n**Example:**\n\n\n        for i in range(5):\n          for i in range(20, 25):\n              print(\"Inner\", i)\n          print(\"Outer\", i)\n      \nIt also warns you if a variable declared in the `with` statement is redeclared inside the statement body:\n\n\n        with open(\"file\") as f:\n          f.read()\n          with open(\"file\") as f:\n      \n"
+        },
+        {
+          "shortName": "PyFromFutureImportInspection",
+          "displayName": "Improper position of from __future__ import",
+          "enabled": true,
+          "description": "Reports `from __future__ import`\nstatements that are used not at\nthe beginning of a file.\n\n**Example:**\n\n\n    a = 1\n    from __future__ import print_function\n    print()\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    from __future__ import print_function\n\n    a = 1\n    print()\n"
+        },
+        {
+          "shortName": "PyUnresolvedReferencesInspection",
+          "displayName": "Unresolved references",
+          "enabled": false,
+          "description": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly."
+        },
+        {
+          "shortName": "PySuperArgumentsInspection",
+          "displayName": "Wrong arguments to call super",
+          "enabled": true,
+          "description": "Reports cases when any call to `super(A, B)` does not meet the\nfollowing requirements:\n\n* `B` is an instance of `A`\n* `B` a subclass of `A`\n\n**Example:**\n\n\n    class Figure:\n        def color(self):\n            pass\n\n\n    class Rectangle(Figure):\n        def color(self):\n            pass\n\n\n    class Square(Figure):\n        def color(self):\n            return super(Rectangle, self).color() # Square is not an instance or subclass of Rectangle\n\nAs a fix, you can make the `Square` an instance of the `Rectangle` class."
+        },
+        {
+          "shortName": "PyPackageRequirementsInspection",
+          "displayName": "Unsatisfied package requirements",
+          "enabled": true,
+          "description": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click."
+        },
+        {
+          "shortName": "PyNonAsciiCharInspection",
+          "displayName": "File contains non-ASCII character",
+          "enabled": true,
+          "description": "Reports cases in Python 2 when a file contains non-ASCII characters and does not\nhave an encoding declaration at the top.\n\n**Example:**\n\n\n    class A(object):\n    # №5\n        def __init__(self):\n            pass\n\nIn this example, the IDE reports a non-ASCII symbol in a comment and a lack of encoding\ndeclaration. Apply the proposed quick-fix to add a missing encoding declaration:\n\n\n    # coding=utf-8\n    class A(object)\n    # №5\n        def __init__(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyTrailingSemicolonInspection",
+          "displayName": "Prohibited trailing semicolon in a statement",
+          "enabled": true,
+          "description": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
+        },
+        {
+          "shortName": "PyRedundantParenthesesInspection",
+          "displayName": "Redundant parentheses",
+          "enabled": true,
+          "description": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
+        },
+        {
+          "shortName": "PyOldStyleClassesInspection",
+          "displayName": "Old-style class contains new-style class features",
+          "enabled": true,
+          "description": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
+        },
+        {
+          "shortName": "PyAbstractClassInspection",
+          "displayName": "Class must implement all abstract methods",
+          "enabled": true,
+          "description": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyArgumentListInspection",
+          "displayName": "Incorrect call arguments",
+          "enabled": true,
+          "description": "Reports discrepancies between declared parameters and actual arguments, as well as\nincorrect arguments, for example, duplicate named arguments, and incorrect argument order.\n\n**Example:**\n\n\n    class Foo:\n        def __call__(self, p1: int, *, p2: str = \"%\"):\n            return p2 * p1\n\n\n    bar = Foo()\n    bar.__call__() # unfilled parameter\n    bar(5, \"#\") # unexpected argument\n\nThe correct code fragment looks at follows:\n\n\n    class Foo:\n        def __call__(self, p1: int, *, p2: str = \"%\"):\n            return p2 * p1\n\n\n    bar = Foo()\n    bar.__call__(5)\n    bar(5, p2=\"#\")\n"
+        },
+        {
+          "shortName": "PyInterpreterInspection",
+          "displayName": "An invalid interpreter",
+          "enabled": false,
+          "description": "Reports problems if there is no Python interpreter configured for the project or if the interpreter is invalid. Without a properly\nconfigured interpreter, you cannot execute your Python scripts and benefit from some Python code insight features.\n\nThe IDE provides quick access to the interpreter settings."
+        },
+        {
+          "shortName": "PyBroadExceptionInspection",
+          "displayName": "Unclear exception clauses",
+          "enabled": true,
+          "description": "Reports exception clauses that do not provide specific information\nabout the problem.\n\n**Example:**\n\n* Clauses that do not specify an exception class\n* Clauses that are specified as `Exception`"
+        },
+        {
+          "shortName": "PyTypeCheckerInspection",
+          "displayName": "Incorrect type",
+          "enabled": true,
+          "description": "Reports type errors in function call expressions, targets, and return values. In a dynamically typed language, this is possible in a limited number of cases.\n\nTypes of function parameters can be specified in\ndocstrings or in Python 3 function annotations.\n\n**Example:**\n\n\n    def foo() -> int:\n        return \"abc\" # Expected int, got str\n\n\n    a: str\n    a = foo() # Expected str, got int\n\nWith the quick-fix, you can modify the problematic types:\n\n\n    def foo() -> str:\n        return \"abc\"\n\n\n    a: str\n    a = foo()\n"
+        },
+        {
+          "shortName": "PyPropertyAccessInspection",
+          "displayName": "Inappropriate access to properties",
+          "enabled": true,
+          "description": "Reports cases when properties are accessed inappropriately:\n\n* Read-only properties are set\n* Write-only properties are read\n* Non-deletable properties are deleted\n\n**Example:**\n\n\n    class MyClass:\n        @property\n        def read_only(self): return None\n\n        def __write_only_setter(self, value): pass\n\n        write_only = property(None, __write_only_setter)\n\n\n    a = MyClass()\n    a.read_only = 10 # property cannot be set\n    del a.read_only # property cannot be deleted\n    print(a.write_only) # property cannot be read\n"
+        },
+        {
+          "shortName": "PyStubPackagesAdvertiser",
+          "displayName": "Stub packages advertiser",
+          "enabled": true,
+          "description": "Reports availability of stub packages.\n\n\n[Stub package](https://www.python.org/dev/peps/pep-0561/) is a package that contains type information for the corresponding\nruntime package.\n\nUsing stub packages ensures better coding assistance for the corresponding python package."
+        },
+        {
+          "shortName": "PyByteLiteralInspection",
+          "displayName": "A byte literal contains a non-ASCII character",
+          "enabled": true,
+          "description": "Reports characters in byte literals that are outside ASCII range.\n\n**Example:**\n\n\n      s = b'№5'\n"
+        },
+        {
+          "shortName": "PyRelativeImportInspection",
+          "displayName": "Suspicious relative imports",
+          "enabled": true,
+          "description": "Reports usages of relative imports inside plain directories, for example, directories neither containing `__init__.py` nor\nexplicitly marked as namespace packages."
+        },
+        {
+          "shortName": "PyAugmentAssignmentInspection",
+          "displayName": "Assignment can be replaced with augmented assignment",
+          "enabled": false,
+          "description": "Reports assignments that can be replaced with augmented assignments.\n\n**Example:**\n\n\n    a = 23\n    b = 3\n    a = a + b\n\nAfter the quick-fix is applied, the code changes to:\n\n\n    a = 23\n    b = 3\n    a += b\n"
+        },
+        {
+          "shortName": "PyDeprecationInspection",
+          "displayName": "Deprecated function, class, or module",
+          "enabled": true,
+          "description": "Reports usages of Python functions, or methods that are marked as\ndeprecated and raise the `DeprecationWarning` or `PendingDeprecationWarning` warning.\n\nAlso, this inspection highlights usages of `abc.abstractstaticmethod`, `abc.abstractproperty`, and `abc.abstractclassmethod`\ndecorators.\n\n**Example:**\n\n\n    class Foo:\n        @property\n        def bar(self):\n            import warnings\n            warnings.warn(\"this is deprecated\", DeprecationWarning, 2)\n            return 5\n\n\n    foo = Foo()\n    print(foo.bar)\n"
+        },
+        {
+          "shortName": "PyUnnecessaryBackslashInspection",
+          "displayName": "Unnecessary backslash",
+          "enabled": true,
+          "description": "Reports backslashes in places where line continuation is implicit inside `()`,\n`[]`, and `{}`.\n\n**Example:**\n\n\n    a = ('first', \\\n         'second', 'third')\n\nWhen the quick-fix is applied, the redundant backslash is deleted."
+        },
+        {
+          "shortName": "PyRedeclarationInspection",
+          "displayName": "Redeclared names without usages",
+          "enabled": true,
+          "description": "Reports unconditional redeclarations of names without being used in between.\n\n**Example:**\n\n\n    def x(): pass\n\n\n    x = 2\n\nIt applies to function and class declarations, and top-level assignments.\n\nWhen the warning is shown, you can try a recommended action, for example, you might be prompted to\nrename the variable."
+        },
+        {
+          "shortName": "PyShadowingNamesInspection",
+          "displayName": "Shadowing names from outer scopes",
+          "enabled": true,
+          "description": "Reports shadowing names defined in outer scopes.\n\n**Example:**\n\n\n    def outer(p):\n        def inner(p):\n            pass\n\nAs a quick-fix, the IDE offers to remove a parameter or rename it."
+        },
+        {
+          "shortName": "PyFinalInspection",
+          "displayName": "Invalid usages of final classes, methods, and variables",
+          "enabled": true,
+          "description": "Reports invalid usages of final classes,\nmethods and variables.\n\n**Example:**\n\n\n    from typing import final\n\n\n    @final\n    class A:\n        def a_method(self):\n            pass\n\n\n    class B(A):\n        def a_method(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyStubPackagesCompatibilityInspection",
+          "displayName": "Incompatible stub packages",
+          "enabled": true,
+          "description": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
+        },
+        {
+          "shortName": "PyProtectedMemberInspection",
+          "displayName": "Accessing a protected member of a class or a module",
+          "enabled": true,
+          "description": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
+        },
+        {
+          "shortName": "PyUnboundLocalVariableInspection",
+          "displayName": "Unbound local variables",
+          "enabled": true,
+          "description": "Reports local variables referenced before assignment.\n\n**Example:**\n\n\n    x = 0\n    if x > 10:\n        b = 3\n    print(b)\n\nThe IDE reports a problem for `print(b)`. A possible fix is:\n\n\n    x = 0\n    if x > 10:\n        b = 3\n        print(b)\n"
+        },
+        {
+          "shortName": "PyNamedTupleInspection",
+          "displayName": "Invalid definition of 'typing.NamedTuple'",
+          "enabled": true,
+          "description": "Reports invalid definition of a\n[typing.NamedTuple](https://docs.python.org/3/library/typing.html#typing.NamedTuple).\n\n**Example:**\n\n\n    import typing\n\n\n    class FullName(typing.NamedTuple):\n        first: str\n        last: str = \"\"\n        middle: str\n\nAs a fix, place the field with the default value after the fields without default values:\n\n\n    import typing\n\n\n    class FullName(typing.NamedTuple):\n        first: str\n        middle: str\n        last: str = \"\"\n"
+        },
+        {
+          "shortName": "PySingleQuotedDocstringInspection",
+          "displayName": "Single quoted docstring",
+          "enabled": true,
+          "description": "Reports docstrings that do not adhere to the triple double-quoted string format.\n\n**Example:**\n\n\n    def calc(self, balance=0):\n        'param: balance'\n        self.balance = balance\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def calc(self, balance=0):\n        \"\"\"param: balance\"\"\"\n        self.balance = balance\n"
+        },
+        {
+          "shortName": "PyUnusedLocalInspection",
+          "displayName": "Unused local symbols",
+          "enabled": true,
+          "description": "Reports local variables, parameters, and functions that are locally defined, but not used name in a function."
+        },
+        {
+          "shortName": "PyReturnFromInitInspection",
+          "displayName": "__init__ method that returns a value",
+          "enabled": true,
+          "description": "Reports occurrences of `return` statements with a return value inside\n`__init__` methods of classes.\n\n**Example:**\n\n\n    class Sum:\n        def __init__(self, a, b):\n            self.a = a\n            self.b = b\n            self.sum = a + b\n            return self.sum\n\nA constructor should not return any value. The `__init__` method should\nonly initialize the values of instance members for news objects.\n\nAs a quick-fix, the IDE offers to remove the `return` statement."
+        },
+        {
+          "shortName": "PyNestedDecoratorsInspection",
+          "displayName": "Problematic nesting of decorators",
+          "enabled": true,
+          "description": "Reports problems with nesting decorators. The inspection highlights the cases when `classmethod` or `staticmethod`\nis applied before another decorator.\n\n**Example:**\n\n\n    def innocent(f):\n        return f\n\n\n    class A:\n        @innocent  # Decorator will not receive a callable it may expect\n        @classmethod\n        def f2(cls):\n            pass\n\n        @innocent  # Decorator will not receive a callable it may expect\n        @staticmethod\n        def f1():\n            pass\n\nAs a quick-fix, the IDE offers to remove the decorator."
+        },
+        {
+          "shortName": "PyMissingOrEmptyDocstringInspection",
+          "displayName": "Missing or empty docstring",
+          "enabled": false,
+          "description": "Reports missing and empty docstrings.\n\n**Example of a missing docstring**\n\n\n    def demo(a):\n        c = a ** 2\n\n**Example of an empty docstring**\n\n\n    def demo(a):\n        \"\"\"\n        \"\"\"\n        c = a ** 2\n\nWhen the quick-fix is applied, the code fragments change to:\n\n\n    def demo(a):\n        \"\"\"\n\n        :param a:\n        \"\"\"\n        c = a ** 2\n\nYou need to provide some details about the parameter in the generated template."
+        },
+        {
+          "shortName": "PyOverloadsInspection",
+          "displayName": "Overloads in regular Python files",
+          "enabled": true,
+          "description": "Reports cases when overloads in regular Python files are placed after the implementation or when their signatures are\nnot compatible with the implementation.\n\n**Example:**\n\n\n    from typing import overload\n\n\n    @overload\n    def foo(p1, p2): # Overload signature is not compatible with the implementation\n        pass\n\n\n    @overload\n    def foo(p1): # Overload signature is not compatible with the implementation\n        pass\n\n\n    def foo(p1, p2, p3):\n        print(p1, p2, p3)\n"
+        },
+        {
+          "shortName": "PyPep8NamingInspection",
+          "displayName": "PEP 8 naming convention violation",
+          "enabled": true,
+          "description": "Reports violations of the\n[PEP8](https://www.python.org/dev/peps/pep-0008/) naming conventions.\n\n**Example:**\n\n\n    class mammalia(object):\n        extremities = 4\n\n        def feeds(self):\n            print(\"milk\")\n\nIn this code fragment, IDE offers to rename `mammalia` to `Mammalia`.\nWhen the quick-fix is applied, the code change to:\n\n\n    class Mammalia(object):\n        extremities = 4\n\n        def feeds(self):\n            print(\"milk\")\n"
+        },
+        {
+          "shortName": "PyDictDuplicateKeysInspection",
+          "displayName": "Dictionary contains duplicate keys",
+          "enabled": true,
+          "description": "Reports using the same value as the dictionary key twice.\n\n**Example:**\n\n\n    dic = {\"a\": [1, 2], \"a\": [3, 4]}\n"
+        },
+        {
+          "shortName": "PyExceptClausesOrderInspection",
+          "displayName": "Wrong order of 'except' clauses",
+          "enabled": true,
+          "description": "Reports cases when `except` clauses are not in the proper order,\nfrom the more specific to the more generic, or one exception class is caught twice.\n\n\nIf you do not fix the order, some exceptions may not be caught by the most specific handler.\n\n**Example:**\n\n\n    try:\n        call()\n    except ValueError:\n        pass\n    except UnicodeError:\n        pass\n\nThe IDE recommends moving the clause up. When the quick-fix is applied, the code changes to:\n\n\n    try:\n        call()\n    except UnicodeError:\n        pass\n    except ValueError:\n        pass\n"
+        },
+        {
+          "shortName": "PyDataclassInspection",
+          "displayName": "Invalid definition and usage of Data Classes",
+          "enabled": true,
+          "description": "Reports invalid definitions and usages of classes created with\n`dataclasses` or `attr` modules.\n\n**Example:**\n\n\n    import dataclasses\n\n\n    @dataclasses.dataclass\n    class FullName:\n        first: str\n        middle: str = \"\"\n        last: str\n"
+        },
+        {
+          "shortName": "PyprojectInspection",
+          "displayName": "Depencencies in pyproject.toml",
+          "enabled": true,
+          "description": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
+        },
+        {
+          "shortName": "PyClassicStyleClassInspection",
+          "displayName": "Classic style class usage",
+          "enabled": false,
+          "description": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyNoneFunctionAssignmentInspection",
+          "displayName": "Assigning function calls that don't return anything",
+          "enabled": true,
+          "description": "Reports cases when an assignment is done on a function that does not return anything.\nThis inspection is similar to [pylint inspection E1111](https://docs.pylint.org/en/1.6.0/features.html#id6).\n\n**Example:**\n\n\n    def just_print():\n        print(\"Hello!\")\n\n\n    action = just_print()\n\nAs a quick-fix, the IDE offers to remove the assignment."
+        },
+        {
+          "shortName": "PyPropertyDefinitionInspection",
+          "displayName": "Incorrect property definition",
+          "enabled": true,
+          "description": "Reports problems with the arguments of `property()` and functions\nannotated with `@property`.\n\n\n    class C:\n        @property\n        def abc(self):  # Getter should return or yield something\n            pass\n\n        @abc.setter\n        def foo(self, value):  # Names of function and decorator don't match\n            pass\n\n        @abc.setter\n        def abc(self, v1, v2):  # Setter signature should be (self, value)\n            pass\n\n        @abc.deleter\n        def abc(self, v1):  # Delete signature should be (self)\n            pass\n\nA quick-fix offers to update parameters."
+        },
+        {
+          "shortName": "PyIncorrectDocstringInspection",
+          "displayName": "Incorrect docstring",
+          "enabled": true,
+          "description": "Reports mismatched parameters in a docstring. For example, `b` is highlighted, because there is no\nsuch a parameter in the `add` function.\n\n\n        def add(a, c):\n        \"\"\"\n        @param a:\n        @param b:\n        @return:\n        \"\"\"\n        pass\n\nThe inspection does not warn you of missing parameters if none of them is mentioned in a docstring:\n\n\n    def mult(a, c):\n        \"\"\"\n        @return:\n        \"\"\"\n        pass\n"
+        },
+        {
+          "shortName": "PyListCreationInspection",
+          "displayName": "Non-optimal list declaration",
+          "enabled": true,
+          "description": "Reports cases when a list declaration\ncan be rewritten with a list literal.\n\nThis ensures better performance of your application.\n\n**Example:**\n\n\n    l = [1]\n    l.append(2)\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    l = [1, 2]\n"
+        }
+      ]
+    },
+    {
+      "name": "Shell script",
+      "inspections": [
+        {
+          "shortName": "ShellCheck",
+          "displayName": "ShellCheck",
+          "enabled": false,
+          "description": "Reports shell script bugs detected by the integrated [ShellCheck](https://github.com/koalaman/shellcheck) static analysis tool."
+        }
+      ]
+    },
+    {
+      "name": "XML",
+      "inspections": [
+        {
+          "shortName": "XmlHighlighting",
+          "displayName": "XML highlighting",
+          "enabled": false,
+          "description": "Reports XML validation problems in the results of a batch code inspection."
+        },
+        {
+          "shortName": "XmlDuplicatedId",
+          "displayName": "Duplicate 'id' attribute",
+          "enabled": false,
+          "description": "Reports a duplicate `id` attribute in XML."
+        },
+        {
+          "shortName": "XmlInvalidId",
+          "displayName": "Unresolved 'id' reference",
+          "enabled": false,
+          "description": "Reports an unresolved `id` reference in XML."
+        },
+        {
+          "shortName": "XmlUnboundNsPrefix",
+          "displayName": "Unbound namespace prefix",
+          "enabled": false,
+          "description": "Reports an unbound namespace prefix in XML."
+        },
+        {
+          "shortName": "XmlUnusedNamespaceDeclaration",
+          "displayName": "Unused schema declaration",
+          "enabled": false,
+          "description": "Reports an unused namespace declaration or location hint in XML."
+        },
+        {
+          "shortName": "XmlWrongRootElement",
+          "displayName": "Wrong root element",
+          "enabled": false,
+          "description": "Reports a root tag name different from the name specified in the `<doctype>` tag."
+        },
+        {
+          "shortName": "XmlPathReference",
+          "displayName": "Unresolved file reference",
+          "enabled": false,
+          "description": "Reports an unresolved file reference in XML."
+        },
+        {
+          "shortName": "CheckTagEmptyBody",
+          "displayName": "Empty element content",
+          "enabled": false,
+          "description": "Reports XML elements without contents.\n\n**Example:**\n\n\n      <user>\n        <name></name>\n      </user>\n\nAfter the quick-fix is applied:\n\n\n      <user>\n        <name/>\n      </user>\n"
+        },
+        {
+          "shortName": "XmlDeprecatedElement",
+          "displayName": "Deprecated symbol",
+          "enabled": false,
+          "description": "Reports a deprecated XML element or attribute.\n\nSymbols can be marked by XML comment or documentation tag with text 'deprecated'."
+        },
+        {
+          "shortName": "XmlDefaultAttributeValue",
+          "displayName": "Redundant attribute with default value",
+          "enabled": false,
+          "description": "Reports a redundant assignment of the default value to an XML attribute."
+        },
+        {
+          "shortName": "CheckDtdRefs",
+          "displayName": "Unresolved DTD reference",
+          "enabled": false,
+          "description": "Reports inconsistency in a DTD-specific reference, for example, in a reference to an XML entity or to a DTD element declaration. Works in DTD an XML files."
+        },
+        {
+          "shortName": "CheckXmlFileWithXercesValidator",
+          "displayName": "Failed external validation",
+          "enabled": false,
+          "description": "Reports a discrepancy in an XML file with the specified DTD or schema detected by the Xerces validator."
+        }
+      ]
+    },
+    {
+      "name": "YAML",
+      "inspections": [
+        {
+          "shortName": "YAMLRecursiveAlias",
+          "displayName": "Recursive alias",
+          "enabled": false,
+          "description": "Reports recursion in YAML aliases.\n\nAlias can't be recursive and be used inside the data referenced by a corresponding anchor.\n\n**Example:**\n\n\n      some_key: &some_anchor\n        sub_key1: value1\n        sub_key2: *some_anchor\n"
+        },
+        {
+          "shortName": "YAMLSchemaValidation",
+          "displayName": "Validation by JSON Schema",
+          "enabled": false,
+          "description": "Reports inconsistencies between a YAML file and a JSON Schema if the schema is specified.\n\n**Scheme example:**\n\n\n      {\n        \"properties\": {\n          \"SomeNumberProperty\": {\n            \"type\": \"number\"\n          }\n        }\n      }\n\n**The following is an example with the corresponding warning:**\n\n\n      SomeNumberProperty: hello world\n"
+        },
+        {
+          "shortName": "YAMLIncompatibleTypes",
+          "displayName": "Suspicious type mismatch",
+          "enabled": false,
+          "description": "Reports a mismatch between a scalar value type in YAML file and types of the values in the similar positions.\n\n**Example:**\n\n\n    myElements:\n      - value1\n      - value2\n      - false # <- reported, because it is a boolean value, while other values are strings\n"
+        },
+        {
+          "shortName": "YAMLDuplicatedKeys",
+          "displayName": "Duplicated YAML keys",
+          "enabled": false,
+          "description": "Reports duplicated keys in YAML files.\n\n**Example:**\n\n\n      same_key: some value\n      same_key: another value\n"
+        },
+        {
+          "shortName": "YAMLUnusedAnchor",
+          "displayName": "Unused anchor",
+          "enabled": false,
+          "description": "Reports unused anchors.\n\n**Example:**\n\n\n      some_key: &some_anchor\n        key1: value1\n"
+        },
+        {
+          "shortName": "YAMLUnresolvedAlias",
+          "displayName": "Unresolved alias",
+          "enabled": false,
+          "description": "Reports unresolved aliases in YAML files.\n\n**Example:**\n\n\n      some_key: *unknown_alias\n"
+        },
+        {
+          "shortName": "YAMLSchemaDeprecation",
+          "displayName": "Deprecated YAML key",
+          "enabled": false,
+          "description": "Reports deprecated keys in YAML files.\n\nDeprecation is checked only if there exists a JSON schema associated with the corresponding YAML file.\n\nNote that the deprecation mechanism is not defined in the JSON Schema specification yet,\nand this inspection uses a non-standard `deprecationMessage` extension.\n\n**Scheme deprecation example:**\n\n\n      {\n        \"properties\": {\n          \"SomeDeprecatedProperty\": {\n            \"deprecationMessage\": \"Baz\",\n            \"description\": \"Foo bar\"\n          }\n        }\n      }\n\n**The following is an example with the corresponding warning:**\n\n\n      SomeDeprecatedProperty: some value\n"
+        }
+      ]
+    },
+    {
+      "name": "JSON and JSON5",
+      "inspections": [
+        {
+          "shortName": "JsonSchemaDeprecation",
+          "displayName": "Deprecated JSON property",
+          "enabled": false,
+          "description": "Reports a deprecated property in a JSON file.  \nNote that deprecation mechanism is not defined in the JSON Schema specification yet, and this inspection uses a non-standard extension 'deprecationMessage'."
+        },
+        {
+          "shortName": "JsonSchemaRefReference",
+          "displayName": "Unresolved '$ref' and '$schema' references",
+          "enabled": false,
+          "description": "Reports an unresolved `$ref` or `$schema` path in a JSON schema.  "
+        },
+        {
+          "shortName": "Json5StandardCompliance",
+          "displayName": "Compliance with JSON5 standard",
+          "enabled": false,
+          "description": "Reports inconsistency with [the language specification](http://json5.org) in a JSON5 file."
+        },
+        {
+          "shortName": "JsonDuplicatePropertyKeys",
+          "displayName": "Duplicate keys in object literals",
+          "enabled": false,
+          "description": "Reports a duplicate key in an object literal."
+        },
+        {
+          "shortName": "JsonSchemaCompliance",
+          "displayName": "Compliance with JSON schema",
+          "enabled": false,
+          "description": "Reports inconsistence between a JSON file and the [JSON schema](https://json-schema.org) that is assigned to it.  "
+        },
+        {
+          "shortName": "JsonStandardCompliance",
+          "displayName": "Compliance with JSON standard",
+          "enabled": false,
+          "description": "Reports the following discrepancies of a JSON file with [the language specification](https://tools.ietf.org/html/rfc7159):\n\n* A line or block comment (configurable).\n* Multiple top-level values (expect for JSON Lines files, configurable for others).\n* A trailing comma in an object or array (configurable).\n* A single quoted string.\n* A property key is a not a double quoted strings.\n* A NaN or Infinity/-Infinity numeric value as a floating point literal (configurable)."
+        }
+      ]
+    },
+    {
+      "name": "RegExp",
+      "inspections": [
+        {
+          "shortName": "RegExpDuplicateCharacterInClass",
+          "displayName": "Duplicate character in character class",
+          "enabled": true,
+          "description": "Reports duplicate characters inside a RegExp character class. Duplicate characters are unnecessary and can be removed without changing the semantics of the regex.\n\n**Example:**\n\n\n      [aabc]\n\nAfter the quick-fix is applied:\n\n\n      [abc]\n"
+        },
+        {
+          "shortName": "RegExpRedundantClassElement",
+          "displayName": "Redundant '\\d', '[:digit:]', or '\\D' class elements",
+          "enabled": true,
+          "description": "Reports redundant `\\d` or `[:digit:]` that are used in one class with `\\w` or `[:word:]` (`\\D` with `\\W`) and can be removed.\n\n**Example:**\n\n\n      [\\w\\d]\n\nAfter the quick-fix is applied:\n\n\n      [\\w]\n\nNew in 2022.2"
+        },
+        {
+          "shortName": "RegExpSimplifiable",
+          "displayName": "Regular expression can be simplified",
+          "enabled": false,
+          "description": "Reports regular expressions that can be simplified.\n\n**Example:**\n\n\n      [a] xx* [ah-hz]\n\nAfter the quick-fix is applied:\n\n\n      a x+ [ahz]\n\nNew in 2022.1"
+        },
+        {
+          "shortName": "RegExpEmptyAlternationBranch",
+          "displayName": "Empty branch in alternation",
+          "enabled": true,
+          "description": "Reports empty branches in a RegExp alternation. An empty branch will only match the empty string, and in most cases that is not what is desired. This inspection will not report a single empty branch at the start or the end of an alternation.\n\n**Example:**\n\n\n      (alpha||bravo)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo)\n\nNew in 2017.2"
+        },
+        {
+          "shortName": "RegExpSuspiciousBackref",
+          "displayName": "Suspicious back reference",
+          "enabled": true,
+          "description": "Reports back references that will not be resolvable at runtime. This means that the back reference can never match anything. A back reference will not be resolvable when the group is defined after the back reference, or if the group is defined in a different branch of an alternation.\n\n**Example of a group defined after its back reference:**\n\n\n      \\1(abc)\n\n**Example of a group and a back reference in different branches:**\n\n\n      a(b)c|(xy)\\1z\n\nNew in 2022.1"
+        },
+        {
+          "shortName": "RegExpSingleCharAlternation",
+          "displayName": "Single character alternation",
+          "enabled": true,
+          "description": "Reports single char alternation in a RegExp. It is simpler to use a character class instead. This may also provide better matching performance.\n\n**Example:**\n\n\n      a|b|c|d\n\nAfter the quick-fix is applied:\n\n\n      [abcd]\n\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpUnnecessaryNonCapturingGroup",
+          "displayName": "Unnecessary non-capturing group",
+          "enabled": true,
+          "description": "Reports unnecessary non-capturing groups, which have no influence on the match result.\n\n**Example:**\n\n\n      Everybody be cool, (?:this) is a robbery!\n\nAfter the quick-fix is applied:\n\n\n      Everybody be cool, this is a robbery!\n\nNew in 2021.1"
+        },
+        {
+          "shortName": "RegExpRedundantEscape",
+          "displayName": "Redundant character escape",
+          "enabled": false,
+          "description": "Reports redundant character escape sequences that can be replaced with unescaped characters preserving the meaning. Many escape sequences that are necessary outside of a character class are redundant inside square brackets `[]` of a character class.\n\n\nAlthough unescaped opening curly braces `{` outside of character classes are allowed in some dialects (JavaScript, Python, and so on),\nit can cause confusion and make the pattern less portable, because there are dialects that require escaping curly braces as characters.\nFor this reason the inspection does not report escaped opening curly braces.\n\n**Example:**\n\n\n      \\-\\;[\\.]\n\nAfter the quick-fix is applied:\n\n\n      -;[.]\n\n\nThe **Ignore escaped closing brackets '}' and '\\]'** option specifies whether to report `\\}` and `\\]` outside of a character class\nwhen they are allowed to be unescaped by the RegExp dialect.\n\nNew in 2017.3"
+        },
+        {
+          "shortName": "RegExpRedundantNestedCharacterClass",
+          "displayName": "Redundant nested character class",
+          "enabled": true,
+          "description": "Reports unnecessary nested character classes.\n\n**Example:**\n\n\n      [a-c[x-z]]\n\nAfter the quick-fix is applied:\n\n\n      [a-cx-z]\n\nNew in 2020.2"
+        },
+        {
+          "shortName": "CustomRegExpInspection",
+          "displayName": "Custom RegExp inspection",
+          "enabled": true,
+          "description": "Custom Regex Inspection"
+        },
+        {
+          "shortName": "RegExpOctalEscape",
+          "displayName": "Octal escape",
+          "enabled": false,
+          "description": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion.\n\n**Example:**\n\n\n      \\07\n\nAfter the quick-fix is applied:\n\n\n      \\x07\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpUnexpectedAnchor",
+          "displayName": "Begin or end anchor in unexpected position",
+          "enabled": true,
+          "description": "Reports `^` or `\\A` anchors not at the beginning of the pattern and `$`, `\\Z` or `\\z` anchors not at the end of the pattern. In the wrong position these RegExp anchors prevent the pattern from matching anything. In case of the `^` and `$` anchors, most likely the literal character was meant and the escape forgotten.\n\n**Example:**\n\n\n      (Price $10)\n\n\nNew in 2018.1"
+        },
+        {
+          "shortName": "RegExpAnonymousGroup",
+          "displayName": "Anonymous capturing group or numeric back reference",
+          "enabled": false,
+          "description": "Reports anonymous capturing groups and numeric back references in a RegExp. These are only reported when the RegExp dialect supports named group and named group references. Named groups and named back references improve code readability and are recommended to use instead. When a capture is not needed, matching can be more performant and use less memory by using a non-capturing group, i.e. `(?:xxx)` instead of `(xxx)`.\n\n**Example:**\n\n\n      (\\d\\d\\d\\d)\\1\n\nA better regex pattern could look like this:\n\n\n      (?<quad>\\d\\d\\d\\d)\\k<quad>\n\nNew in 2017.2"
+        },
+        {
+          "shortName": "RegExpEscapedMetaCharacter",
+          "displayName": "Escaped meta character",
+          "enabled": false,
+          "description": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpRepeatedSpace",
+          "displayName": "Consecutive spaces",
+          "enabled": true,
+          "description": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpDuplicateAlternationBranch",
+          "displayName": "Duplicate branch in alternation",
+          "enabled": true,
+          "description": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+        }
+      ]
+    },
+    {
+      "name": "Properties files",
+      "inspections": [
+        {
+          "shortName": "DuplicatePropertyInspection",
+          "displayName": "Duplicate property",
+          "enabled": false,
+          "description": "Reports duplicate property keys with different values, duplicate keys, or duplicate property values.\n\nExample:\n\n\n    property1=value;\n    property2=value;\n\nThe **Options** list allows selecting the area in which the inspection should search for duplicates."
+        },
+        {
+          "shortName": "UseEllipsisInPropertyInspection",
+          "displayName": "Three dot characters instead of the ellipsis",
+          "enabled": false,
+          "description": "Reports three \"dot\" characters which are used instead of the ellipsis character for UTF-8 properties files."
+        },
+        {
+          "shortName": "AlphaUnsortedPropertiesFile",
+          "displayName": "Properties file or resource bundle is alphabetically unsorted",
+          "enabled": false,
+          "description": "Reports alphabetically unsorted resource bundles or .properties files."
+        },
+        {
+          "shortName": "TrailingSpacesInProperty",
+          "displayName": "Trailing spaces in property",
+          "enabled": false,
+          "description": "Reports properties whose keys or values end with a whitespace."
+        },
+        {
+          "shortName": "UnusedProperty",
+          "displayName": "Unused property",
+          "enabled": false,
+          "description": "Reports properties that are not referenced outside of the .properties file they are contained in."
+        },
+        {
+          "shortName": "WrongPropertyKeyValueDelimiter",
+          "displayName": "Property key/value delimiter doesn't match code style settings",
+          "enabled": false,
+          "description": "Reports properties in which key or value delimiters do not match code style settings."
+        }
+      ]
+    },
+    {
+      "name": "HTML",
+      "inspections": [
+        {
+          "shortName": "HtmlUnknownBooleanAttribute",
+          "displayName": "Incorrect boolean attribute",
+          "enabled": false,
+          "description": "Reports an HTML non-boolean attribute without a value. Suggests configuring attributes that should not be reported."
+        },
+        {
+          "shortName": "RequiredAttributes",
+          "displayName": "Missing required attribute",
+          "enabled": false,
+          "description": "Reports a missing mandatory attribute in an XML/HTML tag. Suggests configuring attributes that should not be reported."
+        },
+        {
+          "shortName": "HtmlUnknownTarget",
+          "displayName": "Unresolved file in a link",
+          "enabled": false,
+          "description": "Reports an unresolved file in a link."
+        },
+        {
+          "shortName": "CheckValidXmlInScriptTagBody",
+          "displayName": "Malformed content of 'script' tag",
+          "enabled": false,
+          "description": "Reports contents of `script` tags that are invalid XML.  \n\n**Example:**\n\n\n      <script type=\"text/javascript\">\n        console.log('<');\n      </script>\n\nAfter the quick-fix is applied:\n\n\n      <script type=\"text/javascript\">\n        console.log('&lt;');\n      </script>\n"
+        },
+        {
+          "shortName": "HtmlUnknownAttribute",
+          "displayName": "Unknown attribute",
+          "enabled": false,
+          "description": "Reports an unknown HTML attribute. Suggests configuring attributes that should not be reported."
+        },
+        {
+          "shortName": "HtmlMissingClosingTag",
+          "displayName": "Missing closing tag",
+          "enabled": false,
+          "description": "Reports an HTML element without a closing tag. Some coding styles require that HTML elements have closing tags even where this is optional.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <p>Behold!\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <p>Behold!</p>\n        </body>\n      </html>\n"
+        },
+        {
+          "shortName": "HtmlWrongAttributeValue",
+          "displayName": "Wrong attribute value",
+          "enabled": false,
+          "description": "Reports an incorrect HTML attribute value."
+        },
+        {
+          "shortName": "HtmlExtraClosingTag",
+          "displayName": "Redundant closing tag",
+          "enabled": false,
+          "description": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
+        },
+        {
+          "shortName": "HtmlUnknownAnchorTarget",
+          "displayName": "Unresolved fragment in a link",
+          "enabled": false,
+          "description": "Reports an unresolved last part of an URL after the `#` sign."
+        },
+        {
+          "shortName": "HtmlUnknownTag",
+          "displayName": "Unknown tag",
+          "enabled": false,
+          "description": "Reports an unknown HTML tag. Suggests configuring tags that should not be reported."
+        },
+        {
+          "shortName": "CheckEmptyScriptTag",
+          "displayName": "Empty tag",
+          "enabled": false,
+          "description": "Reports empty tags that do not work in some browsers.\n\n**Example:**\n\n\n      <html>\n        <script/>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <script></script>\n      </html>\n"
+        }
+      ]
+    },
+    {
+      "name": "General",
+      "inspections": [
+        {
+          "shortName": "InconsistentLineSeparators",
+          "displayName": "Inconsistent line separators",
+          "enabled": false,
+          "description": "Reports files with line separators different from the ones that are specified in the project's settings.\n\nFor example, the inspection will be triggered if you set the line separator to `\\n` in\n[Settings \\| Editor \\| Code Style \\| Line separator](settings://preferences.sourceCode?Line%20separator),\nwhile the file you are editing uses `\\r\\n` as a line separator.\n\nThe inspection also warns you about mixed line separators within a file."
+        },
+        {
+          "shortName": "ReassignedToPlainText",
+          "displayName": "Reassigned to plain text",
+          "enabled": false,
+          "description": "Reports files that were explicitly re-assigned to Plain Text File Type. This association is unnecessary because the platform auto-detects text files by content automatically.\n\nYou can dismiss this warning by removing the file type association\nin **Settings \\| Editor \\| File Types \\| Text**."
+        },
+        {
+          "shortName": "RedundantSuppression",
+          "displayName": "Redundant suppression",
+          "enabled": false,
+          "description": "Reports usages of the following elements that can be safely removed because the inspection they affect is no longer applicable in this context:\n\n* `@SuppressWarning` annotation, or\n* `// noinspection` line comment, or\n* `/** noinspection */` JavaDoc comment\n\nExample:\n\n\n    public class C {\n     // symbol is already private,\n     // but annotation is still around\n      @SuppressWarnings({\"WeakerAccess\"})\n      private boolean CONST = true;\n      void f() {\n        CONST = false;\n      }\n    }\n"
+        },
+        {
+          "shortName": "ProblematicWhitespace",
+          "displayName": "Problematic whitespace",
+          "enabled": false,
+          "description": "Reports the following problems:\n\n* Tabs used for indentation when the code style is configured to use only spaces.\n* Spaces used for indentation when the code style is configured to use only tabs.\n* Spaces used for indentation and tabs used for alignment when the code style is configured to use smart tabs."
+        },
+        {
+          "shortName": "LongLine",
+          "displayName": "Line is longer than allowed by code style",
+          "enabled": false,
+          "description": "Reports lines that are longer than the **Hard wrap at** parameter specified in [Settings \\| Editor \\| Code Style \\| General](settings://preferences.sourceCode?Hard%20wrap%20at)."
+        },
+        {
+          "shortName": "Annotator",
+          "displayName": "Annotator",
+          "enabled": false,
+          "description": "Reports issues essential to this file (e.g., syntax errors) in the result of a batch code inspection run. These issues are usually always highlighted in the editor and can't be configured, unlike inspections. These options control the scope of checks performed by this inspection:\n\n* Option \"**Report syntax errors**\": report parser-related issues.\n* Option \"**Report issues from language-specific annotators** \": report issues found by annotators configured for the relevant language. See [Custom Language Support: Annotators](https://plugins.jetbrains.com/docs/intellij/annotator.html) for details.\n* Option \"**Report other highlighting problems** \": report issues specific to the language of the current file (e.g., type mismatches or unreported exceptions). See [Custom Language Support: Highlighting](https://plugins.jetbrains.com/docs/intellij/syntax-highlighting-and-error-highlighting.html#semantic-highlighting) for details."
+        },
+        {
+          "shortName": "TodoComment",
+          "displayName": "TODO comment",
+          "enabled": false,
+          "description": "Reports **TODO** comments in your code.\n\nYou can configure the format for **TODO** comments in [Settings \\| Editor \\| TODO](settings://preferences.toDoOptions).\n\nEnable the **Only warn on TODO comments without any details** option to only warn on empty TODO comments, that\ndon't provide any description on the task that should be done. Disable to report all TODO comments."
+        },
+        {
+          "shortName": "IncorrectFormatting",
+          "displayName": "Incorrect formatting",
+          "enabled": false,
+          "description": "Reports formatting issues that appear if your code doesn't\nfollow your project's code style settings.\n\n\nThis inspection is not compatible with languages that require\nthird-party formatters for code formatting, for example, Go or\nC with CLangFormat enabled."
+        },
+        {
+          "shortName": "EmptyDirectory",
+          "displayName": "Empty directory",
+          "enabled": false,
+          "description": "Reports empty directories.\n\nAvailable only from **Code \\| Inspect Code** or\n**Code \\| Analyze Code \\| Run Inspection by Name** and isn't reported in the editor.\n\nUse the **Only report empty directories located under a source folder** option to have only directories under source\nroots reported."
+        },
+        {
+          "shortName": "InjectedReferences",
+          "displayName": "Injected references",
+          "enabled": false,
+          "description": "Reports unresolved references injected by [Language Injections](https://www.jetbrains.com/help/idea/using-language-injections.html).\n\nExample:\n\n\n        @Language(\"file-reference\")\n        String fileName = \"/home/user/nonexistent.file\"; // highlighted if file doesn't exist\n"
+        }
+      ]
+    },
+    {
+      "name": "Qodana",
+      "inspections": [
+        {
+          "shortName": "QodanaSanity",
+          "displayName": "Sanity",
+          "enabled": false,
+          "description": "Reports issues essential to this file like syntax errors, unresolved methods and variables, etc..."
+        }
+      ]
+    },
+    {
+      "name": "RELAX NG",
+      "inspections": [
+        {
+          "shortName": "UnresolvedReference",
+          "displayName": "Unresolved reference",
+          "enabled": false,
+          "description": "Reports an unresolved reference to a named pattern (`define`) in RELAX-NG files that use XML syntax. Suggests creating the referenced `define` element."
+        },
+        {
+          "shortName": "UnusedDefine",
+          "displayName": "Unused define",
+          "enabled": false,
+          "description": "Reports an unused named pattern (`define`) in a RELAX-NG file (XML or Compact Syntax). `define` elements that are used through an include in another file are ignored."
+        }
+      ]
+    },
+    {
+      "name": "Proofreading",
+      "inspections": [
+        {
+          "shortName": "SpellCheckingInspection",
+          "displayName": "Typo",
+          "enabled": false,
+          "description": "Reports typos and misspellings in your code, comments, and literals and fixes them with one click."
+        },
+        {
+          "shortName": "LanguageDetectionInspection",
+          "displayName": "Natural language detection",
+          "enabled": false,
+          "description": "Detects natural languages and suggests enabling corresponding grammar and spelling checks."
+        },
+        {
+          "shortName": "GrazieInspection",
+          "displayName": "Grammar",
+          "enabled": false,
+          "description": "Reports grammar mistakes in your text. You can configure the inspection in [Settings \\| Editor \\| Natural Languages \\| Grammar](settings://reference.settingsdialog.project.grazie)."
+        }
+      ]
+    },
+    {
+      "name": "Internationalization",
+      "inspections": [
+        {
+          "shortName": "NonAsciiCharacters",
+          "displayName": "Non-ASCII characters",
+          "enabled": false,
+          "description": "Reports code elements that use non-ASCII symbols in an unusual context.\n\nExample:\n\n* Non-ASCII characters used in identifiers, strings, or comments.\n* Identifiers written in different languages, such as `my`**С**`ollection` with the letter **C** written in Cyrillic.\n* Comments or strings containing Unicode symbols, such as long dashes and arrows."
+        },
+        {
+          "shortName": "LossyEncoding",
+          "displayName": "Lossy encoding",
+          "enabled": false,
+          "description": "Reports characters that cannot be displayed because of the current document encoding.\n\nExamples:\n\n* If you type international characters in a document with the **US-ASCII** charset, some characters will be lost on save.\n* If you load a **UTF-8** -encoded file using the **ISO-8859-1** one-byte charset, some characters will be displayed incorrectly.\n\nYou can fix this by changing the file encoding\neither by specifying the encoding directly in the file, e.g. by editing `encoding=` attribute in the XML prolog of XML file,\nor by changing the corresponding options in **Settings \\| Editor \\| File Encodings**."
+        }
+      ]
+    },
+    {
+      "name": "TOML",
+      "inspections": [
+        {
+          "shortName": "TomlUnresolvedReference",
+          "displayName": "Unresolved reference",
+          "enabled": true,
+          "description": "Reports unresolved references in TOML files."
+        }
+      ]
+    },
+    {
+      "name": "Version control",
+      "inspections": [
+        {
+          "shortName": "IgnoreFileDuplicateEntry",
+          "displayName": "Ignore file duplicates",
+          "enabled": false,
+          "description": "Reports duplicate entries (patterns) in the ignore file (e.g. .gitignore, .hgignore). Duplicate entries in these files are redundant and can be removed.\n\nExample:\n\n\n        # Output directories\n        /out/\n        /target/\n        /out/\n"
+        }
+      ]
+    }
+  ]
+}

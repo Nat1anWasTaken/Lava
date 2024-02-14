@@ -1,0 +1,25 @@
+{
+  "modules": [
+    {
+      "name": "project",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$",
+          "excludePatterns": [],
+          "excludeFolders": [],
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "Python 3.11",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    }
+  ]
+}
