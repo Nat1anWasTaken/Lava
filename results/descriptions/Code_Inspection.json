@@ -292,16 +292,16 @@
           "description": "Reports equality comparison with a boolean literal.\n\n**Example:**\n\n\n    def func(s):\n        if s.isdigit() == True:\n            return int(s)\n\nWith the quick-fix applied, the code fragment will be simplified to:\n\n\n    def func(s):\n        if s.isdigit():\n            return int(s)\n"
         },
         {
-          "shortName": "PyMethodOverridingInspection",
-          "displayName": "Method signature does not match signature of overridden method",
-          "enabled": true,
-          "description": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
-        },
-        {
           "shortName": "PoetryPackageVersionsInspection",
           "displayName": "Poetry package versions",
           "enabled": true,
           "description": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+        },
+        {
+          "shortName": "PyMethodOverridingInspection",
+          "displayName": "Method signature does not match signature of overridden method",
+          "enabled": true,
+          "description": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
         },
         {
           "shortName": "PyTestParametrizedInspection",
@@ -322,16 +322,16 @@
           "description": "Reports coroutines that were called\nwithout using the `await` syntax.\n\n**Example:**\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        bar()\n\nAfter the quick-fix is applied, the code changes to:\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        await bar()\n"
         },
         {
-          "shortName": "CommandLineInspection",
-          "displayName": "Incorrect CLI syntax",
-          "enabled": true,
-          "description": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
-        },
-        {
           "shortName": "PyComparisonWithNoneInspection",
           "displayName": "Using equality operators to compare with None",
           "enabled": true,
           "description": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
+        },
+        {
+          "shortName": "CommandLineInspection",
+          "displayName": "Incorrect CLI syntax",
+          "enabled": true,
+          "description": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
         },
         {
           "shortName": "PyCallingNonCallableInspection",
@@ -592,16 +592,16 @@
           "description": "Reports invalid usages of final classes,\nmethods and variables.\n\n**Example:**\n\n\n    from typing import final\n\n\n    @final\n    class A:\n        def a_method(self):\n            pass\n\n\n    class B(A):\n        def a_method(self):\n            pass\n"
         },
         {
-          "shortName": "PyProtectedMemberInspection",
-          "displayName": "Accessing a protected member of a class or a module",
-          "enabled": true,
-          "description": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
-        },
-        {
           "shortName": "PyStubPackagesCompatibilityInspection",
           "displayName": "Incompatible stub packages",
           "enabled": true,
           "description": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
+        },
+        {
+          "shortName": "PyProtectedMemberInspection",
+          "displayName": "Accessing a protected member of a class or a module",
+          "enabled": true,
+          "description": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
         },
         {
           "shortName": "PyUnboundLocalVariableInspection",
@@ -676,16 +676,16 @@
           "description": "Reports invalid definitions and usages of classes created with\n`dataclasses` or `attr` modules.\n\n**Example:**\n\n\n    import dataclasses\n\n\n    @dataclasses.dataclass\n    class FullName:\n        first: str\n        middle: str = \"\"\n        last: str\n"
         },
         {
-          "shortName": "PyprojectInspection",
-          "displayName": "Depencencies in pyproject.toml",
-          "enabled": true,
-          "description": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
-        },
-        {
           "shortName": "PyClassicStyleClassInspection",
           "displayName": "Classic style class usage",
           "enabled": false,
           "description": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyprojectInspection",
+          "displayName": "Depencencies in pyproject.toml",
+          "enabled": true,
+          "description": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
         },
         {
           "shortName": "PyNoneFunctionAssignmentInspection",
