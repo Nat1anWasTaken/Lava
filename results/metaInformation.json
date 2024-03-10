@@ -1,19 +1,19 @@
 {
-  "total": 0,
+  "total": 1,
   "tools inspection": {
-    "Code Inspection": 0
+    "Code Inspection": 1
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "6a8dba574fc0bd3cbb47c1b862cd55cd0d539570",
-        "branch": "run-sh"
+        "revisionId": "e446a771f1762da5a80ed536b43e09186c13e796",
+        "branch": "renovate/yt-dlp-2024.x"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/7942704773",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8225521162",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git"
   }
 }
