@@ -30,7 +30,7 @@
     <a href="README.md">中文</a>
     ·
     <br />
-    <a href="https://discord.gg/acgmcity">Try it out(Chinese server)</a>
+    <a href="https://discord.gg/acgmcity">Try it out!(Chinese server)</a>
     ·
     <a href="https://github.com/Nat1anWasTaken/Lava/issues">Bug report</a>
     ·
@@ -70,7 +70,7 @@
 
 ## Get started
 
-If you just want to experiment the bot is like, you can join [Yeecord(Chinese)][yeecord] and use `Lava#8364` there
+If you just want to experiment what the bot is like, you can join [Yeecord(Chinese)][yeecord] and use `Lava#8364` there
 
 Or
 
@@ -78,7 +78,7 @@ You can [click here][LavaLauncher] to get the instructions on how to setup **Lav
 
 ### Spotify Support
 
-To use `Spotify` and `Autoplay` support, you need to provide those three environment variable explained aboved at step one.
+To use `Spotify` and `Autoplay` support, you need to fill in those ecorresponding environment variable explained aboved at step one.
 
 ### Requirements
 
@@ -91,7 +91,7 @@ To use `Spotify` and `Autoplay` support, you need to provide those three environ
 
 ## Usage
 
-After successfully start-up the bot and invited it into your server, you can use `/play` to play music, as like in the example screenshot
+After setting up the bot and invited it into your server, you can use `/play` to play music, as like in the example screenshot
 
 Every command usage is explained in command description, you can learn how to use this bot by reading them
 
