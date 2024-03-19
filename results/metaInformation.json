@@ -8,12 +8,12 @@
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "d0b78abbaeed4c31f270daabdcf0821f716f987e",
+        "revisionId": "22f414807478427cb8967df4773f80dd8fafbd67",
         "branch": "refs/heads/master"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8232823845",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8344333364",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git"
   }
 }
