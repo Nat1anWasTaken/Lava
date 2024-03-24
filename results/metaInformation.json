@@ -8,12 +8,12 @@
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "22f414807478427cb8967df4773f80dd8fafbd67",
-        "branch": "refs/heads/master"
+        "revisionId": "ee61002e92117b40eed2bc9940eb2ac60bfd5477",
+        "branch": "refs/heads/103-fix-lavalink-server-stopped-working"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8344333364",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8409946560",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git"
   }
 }

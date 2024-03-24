@@ -517,19 +517,19 @@
                 ]
               },
               {
-                "id": "PyMissingConstructorInspection",
+                "id": "PyDefaultArgumentInspection",
                 "shortDescription": {
-                  "text": "Missed call to '__init__' of the super class"
+                  "text": "The default argument is mutable"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
-                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
+                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
+                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMissingConstructor",
+                    "suppressToolId": "PyDefaultArgument",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -550,19 +550,19 @@
                 ]
               },
               {
-                "id": "PyDefaultArgumentInspection",
+                "id": "PyMissingConstructorInspection",
                 "shortDescription": {
-                  "text": "The default argument is mutable"
+                  "text": "Missed call to '__init__' of the super class"
                 },
                 "fullDescription": {
-                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
-                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
+                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
+                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyDefaultArgument",
+                    "suppressToolId": "PyMissingConstructor",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -979,19 +979,19 @@
                 ]
               },
               {
-                "id": "PyMethodParametersInspection",
+                "id": "PyChainedComparisonsInspection",
                 "shortDescription": {
-                  "text": "Improper first parameter"
+                  "text": "Too complex chained comparisons"
                 },
                 "fullDescription": {
-                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
-                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
+                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
+                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyMethodParameters",
+                    "suppressToolId": "PyChainedComparisons",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1012,19 +1012,19 @@
                 ]
               },
               {
-                "id": "PyChainedComparisonsInspection",
+                "id": "PyMethodParametersInspection",
                 "shortDescription": {
-                  "text": "Too complex chained comparisons"
+                  "text": "Improper first parameter"
                 },
                 "fullDescription": {
-                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
-                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
+                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
+                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyChainedComparisons",
+                    "suppressToolId": "PyMethodParameters",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1804,21 +1804,21 @@
                 ]
               },
               {
-                "id": "PyAbstractClassInspection",
+                "id": "PyOldStyleClassesInspection",
                 "shortDescription": {
-                  "text": "Class must implement all abstract methods"
+                  "text": "Old-style class contains new-style class features"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
-                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
+                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyAbstractClass",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyOldStyleClasses",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -1837,21 +1837,21 @@
                 ]
               },
               {
-                "id": "PyOldStyleClassesInspection",
+                "id": "PyAbstractClassInspection",
                 "shortDescription": {
-                  "text": "Old-style class contains new-style class features"
+                  "text": "Class must implement all abstract methods"
                 },
                 "fullDescription": {
-                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
-                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
+                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
+                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyOldStyleClasses",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyAbstractClass",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -4051,39 +4051,6 @@
                 ]
               },
               {
-                "id": "XmlDuplicatedId",
-                "shortDescription": {
-                  "text": "Duplicate 'id' attribute"
-                },
-                "fullDescription": {
-                  "text": "Reports a duplicate 'id' attribute in XML.",
-                  "markdown": "Reports a duplicate `id` attribute in XML."
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "error",
-                  "parameters": {
-                    "suppressToolId": "XmlDuplicatedId",
-                    "ideaSeverity": "ERROR",
-                    "qodanaSeverity": "Critical"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "XML",
-                      "index": 3,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "JsonSchemaDeprecation",
                 "shortDescription": {
                   "text": "Deprecated JSON property"
@@ -4106,6 +4073,39 @@
                     "target": {
                       "id": "JSON and JSON5",
                       "index": 5,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "XmlDuplicatedId",
+                "shortDescription": {
+                  "text": "Duplicate 'id' attribute"
+                },
+                "fullDescription": {
+                  "text": "Reports a duplicate 'id' attribute in XML.",
+                  "markdown": "Reports a duplicate `id` attribute in XML."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "error",
+                  "parameters": {
+                    "suppressToolId": "XmlDuplicatedId",
+                    "ideaSeverity": "ERROR",
+                    "qodanaSeverity": "Critical"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "XML",
+                      "index": 3,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5140,39 +5140,6 @@
                 ]
               },
               {
-                "id": "RegExpRedundantNestedCharacterClass",
-                "shortDescription": {
-                  "text": "Redundant nested character class"
-                },
-                "fullDescription": {
-                  "text": "Reports unnecessary nested character classes. Example: '[a-c[x-z]]' After the quick-fix is applied: '[a-cx-z]' New in 2020.2",
-                  "markdown": "Reports unnecessary nested character classes.\n\n**Example:**\n\n\n      [a-c[x-z]]\n\nAfter the quick-fix is applied:\n\n\n      [a-cx-z]\n\nNew in 2020.2"
-                },
-                "defaultConfiguration": {
-                  "enabled": true,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "RegExpRedundantNestedCharacterClass",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "RegExp",
-                      "index": 6,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "XmlDeprecatedElement",
                 "shortDescription": {
                   "text": "Deprecated symbol"
@@ -5195,6 +5162,39 @@
                     "target": {
                       "id": "XML",
                       "index": 3,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "RegExpRedundantNestedCharacterClass",
+                "shortDescription": {
+                  "text": "Redundant nested character class"
+                },
+                "fullDescription": {
+                  "text": "Reports unnecessary nested character classes. Example: '[a-c[x-z]]' After the quick-fix is applied: '[a-cx-z]' New in 2020.2",
+                  "markdown": "Reports unnecessary nested character classes.\n\n**Example:**\n\n\n      [a-c[x-z]]\n\nAfter the quick-fix is applied:\n\n\n      [a-cx-z]\n\nNew in 2020.2"
+                },
+                "defaultConfiguration": {
+                  "enabled": true,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "RegExpRedundantNestedCharacterClass",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RegExp",
+                      "index": 6,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "HtmlExtraClosingTag",
-                "shortDescription": {
-                  "text": "Redundant closing tag"
-                },
-                "fullDescription": {
-                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
-                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "HtmlExtraClosingTag",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "HTML",
-                      "index": 8,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "RegExpOctalEscape",
                 "shortDescription": {
                   "text": "Octal escape"
@@ -5404,19 +5371,19 @@
                 ]
               },
               {
-                "id": "HtmlUnknownAnchorTarget",
+                "id": "HtmlExtraClosingTag",
                 "shortDescription": {
-                  "text": "Unresolved fragment in a link"
+                  "text": "Redundant closing tag"
                 },
                 "fullDescription": {
-                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
-                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
+                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
+                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
                 },
                 "defaultConfiguration": {
                   "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "HtmlUnknownAnchorTarget",
+                    "suppressToolId": "HtmlExtraClosingTag",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5459,6 +5426,39 @@
                     "target": {
                       "id": "RELAX NG",
                       "index": 11,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "HtmlUnknownAnchorTarget",
+                "shortDescription": {
+                  "text": "Unresolved fragment in a link"
+                },
+                "fullDescription": {
+                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
+                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "HtmlUnknownAnchorTarget",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "HTML",
+                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5767,39 +5767,6 @@
                 ]
               },
               {
-                "id": "RegExpEscapedMetaCharacter",
-                "shortDescription": {
-                  "text": "Escaped meta character"
-                },
-                "fullDescription": {
-                  "text": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character '[', ']' and '^', because those would need additional escaping inside a character class. Example: '\\d+\\.\\d+' After the quick-fix is applied: '\\d+[.]\\d+' New in 2017.1",
-                  "markdown": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "note",
-                  "parameters": {
-                    "suppressToolId": "RegExpEscapedMetaCharacter",
-                    "ideaSeverity": "INFORMATION",
-                    "qodanaSeverity": "Info"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "RegExp",
-                      "index": 6,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "LossyEncoding",
                 "shortDescription": {
                   "text": "Lossy encoding"
@@ -5833,21 +5800,21 @@
                 ]
               },
               {
-                "id": "RegExpDuplicateAlternationBranch",
+                "id": "RegExpEscapedMetaCharacter",
                 "shortDescription": {
-                  "text": "Duplicate branch in alternation"
+                  "text": "Escaped meta character"
                 },
                 "fullDescription": {
-                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
-                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+                  "text": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character '[', ']' and '^', because those would need additional escaping inside a character class. Example: '\\d+\\.\\d+' After the quick-fix is applied: '\\d+[.]\\d+' New in 2017.1",
+                  "markdown": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
-                  "enabled": true,
-                  "level": "warning",
+                  "enabled": false,
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "RegExpDuplicateAlternationBranch",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "RegExpEscapedMetaCharacter",
+                    "ideaSeverity": "INFORMATION",
+                    "qodanaSeverity": "Info"
                   }
                 },
                 "relationships": [
@@ -5879,6 +5846,39 @@
                   "level": "warning",
                   "parameters": {
                     "suppressToolId": "RegExpRepeatedSpace",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RegExp",
+                      "index": 6,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "RegExpDuplicateAlternationBranch",
+                "shortDescription": {
+                  "text": "Duplicate branch in alternation"
+                },
+                "fullDescription": {
+                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
+                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+                },
+                "defaultConfiguration": {
+                  "enabled": true,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "RegExpDuplicateAlternationBranch",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-03-19T13:59:49.930031722Z",
+          "startTimeUtc": "2024-03-24T14:19:25.551191232Z",
           "exitCode": 0,
           "toolExecutionNotifications": [
             {
@@ -6683,7 +6683,7 @@
                 "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
               },
               "level": "error",
-              "timeUtc": "2024-03-19T14:00:19.131133629Z",
+              "timeUtc": "2024-03-24T14:19:55.330632059Z",
               "properties": {
                 "qodanaKind": "sanityFailure"
               }
@@ -6696,13 +6696,13 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "22f414807478427cb8967df4773f80dd8fafbd67",
-          "branch": "refs/heads/master",
+          "revisionId": "ee61002e92117b40eed2bc9940eb2ac60bfd5477",
+          "branch": "refs/heads/103-fix-lavalink-server-stopped-working",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git",
-            "lastAuthorName": "Ryno0224",
+            "lastAuthorName": "wolf-yuan",
             "vcsType": "Git",
-            "lastAuthorEmail": "125075864+ryno0224@users.noreply.github.com"
+            "lastAuthorEmail": "wolf@wolf-yuan.dev"
           }
         }
       ],
@@ -8414,10 +8414,10 @@
         }
       ],
       "automationDetails": {
-        "id": "project/qodana/2024-03-19",
-        "guid": "b0988f3e-a17e-424c-b6d3-fc37f34edcb6",
+        "id": "project/qodana/2024-03-24",
+        "guid": "dda4ebb4-49e6-4682-8cdc-3f7dc6e71c3d",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8344333364"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8409946560"
         }
       },
       "newlineSequences": [
@@ -8472,6 +8472,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "36b78d35da92927826a0f2e3b4c11811cf22fcac61558f8d3d5e09ee4f4a9ec6"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'InteractionResponded'",
+              "markdown": "Unresolved reference 'InteractionResponded'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/events.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 4,
+                    "startColumn": 42,
+                    "charOffset": 100,
+                    "charLength": 20,
+                    "snippet": {
+                      "text": "InteractionResponded"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 2,
+                    "startColumn": 1,
+                    "charOffset": 31,
+                    "charLength": 186,
+                    "snippet": {
+                      "text": "from typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "4a1b8bb65478406d6d822c7df3bde8586376cda1f2de4c717d4688da10f7affd"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8587,110 +8639,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'Source'",
-              "markdown": "Unresolved reference 'Source'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/source.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 9,
-                    "startColumn": 22,
-                    "charOffset": 184,
-                    "charLength": 6,
-                    "snippet": {
-                      "text": "Source"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 7,
-                    "startColumn": 1,
-                    "charOffset": 117,
-                    "charLength": 220,
-                    "snippet": {
-                      "text": "import requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials\nfrom yt_dlp import YoutubeDL"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "558653979545d7d2f6618222402bc4cc6d2cd11a47c484188e8844d112040f71"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'BeautifulSoup'",
-              "markdown": "Unresolved reference 'BeautifulSoup'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/source.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 8,
-                    "startColumn": 17,
-                    "charOffset": 149,
-                    "charLength": 13,
-                    "snippet": {
-                      "text": "BeautifulSoup"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 6,
-                    "startColumn": 1,
-                    "charOffset": 116,
-                    "charLength": 192,
-                    "snippet": {
-                      "text": "\nimport requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "569053e57a7f4ce5251c171c9d5813c629b82ea3ebbe920cf581687bf2e8b5a5"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'disnake'",
               "markdown": "Unresolved reference 'disnake'"
             },
@@ -8732,6 +8680,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "56f04ef5cde4350c9ca6b392982da630abe437059ac4e7ffab8555cea03664ec"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'TextChannel'",
+              "markdown": "Unresolved reference 'TextChannel'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/events.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 4,
+                    "startColumn": 21,
+                    "charOffset": 79,
+                    "charLength": 11,
+                    "snippet": {
+                      "text": "TextChannel"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 2,
+                    "startColumn": 1,
+                    "charOffset": 31,
+                    "charLength": 186,
+                    "snippet": {
+                      "text": "from typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "6d4168f2daf53c7b7424b4f036adcbeec1dd270c1373c3ee2592aa1886881b76"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8899,58 +8899,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'bs4'",
-              "markdown": "Unresolved reference 'bs4'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/source.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 8,
-                    "startColumn": 6,
-                    "charOffset": 138,
-                    "charLength": 3,
-                    "snippet": {
-                      "text": "bs4"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 6,
-                    "startColumn": 1,
-                    "charOffset": 116,
-                    "charLength": 192,
-                    "snippet": {
-                      "text": "\nimport requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "8f55e0ba549841996971a8cb8c9a826762b7a2003061dfc20b25ca1573c2b753"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'disnake'",
               "markdown": "Unresolved reference 'disnake'"
             },
@@ -8992,6 +8940,110 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "963fdd45834a0410ffadece9fda1391bf97ee18a54a7b5699fc233102322ed5f"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'Localized'",
+              "markdown": "Unresolved reference 'Localized'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/embeds.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 3,
+                    "startColumn": 28,
+                    "charOffset": 53,
+                    "charLength": 9,
+                    "snippet": {
+                      "text": "Localized"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 64,
+                    "snippet": {
+                      "text": "from typing import Union\n\nfrom disnake import Embed, Localized\n\n"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "9753cf7d949292bd54513f3afa6dbea07ab6e400b465800090840b0e90cf7ebb"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'disnake'",
+              "markdown": "Unresolved reference 'disnake'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/events.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 4,
+                    "startColumn": 6,
+                    "charOffset": 64,
+                    "charLength": 7,
+                    "snippet": {
+                      "text": "disnake"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 2,
+                    "startColumn": 1,
+                    "charOffset": 31,
+                    "charLength": 186,
+                    "snippet": {
+                      "text": "from typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "ad508dcc594a58615b0298a14eb45907b6d00d4ae2d29c8c61d1f1765dad9119"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -9211,6 +9263,58 @@
             "kind": "fail",
             "level": "error",
             "message": {
+              "text": "Unresolved reference 'Thread'",
+              "markdown": "Unresolved reference 'Thread'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/events.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 4,
+                    "startColumn": 34,
+                    "charOffset": 92,
+                    "charLength": 6,
+                    "snippet": {
+                      "text": "Thread"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 2,
+                    "startColumn": 1,
+                    "charOffset": 31,
+                    "charLength": 186,
+                    "snippet": {
+                      "text": "from typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "f246aa1e2f4f6fe3f1366f996e74ca214e9f525dd57a92c39be71f565ef575b0"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
               "text": "Unresolved reference 'Embed'",
               "markdown": "Unresolved reference 'Embed'"
             },
@@ -9413,14 +9517,16 @@
               "ideaSeverity": "ERROR",
               "qodanaSeverity": "Critical"
             }
-          },
+          }
+        ],
+        "qodana.promo.results": [
           {
-            "ruleId": "PyUnresolvedReferencesInspection",
+            "ruleId": "RegExpRedundantEscape",
             "kind": "fail",
-            "level": "error",
+            "level": "warning",
             "message": {
-              "text": "Unresolved reference 'lavalink'",
-              "markdown": "Unresolved reference 'lavalink'"
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
             },
             "locations": [
               {
@@ -9430,22 +9536,22 @@
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 9,
-                    "startColumn": 6,
-                    "charOffset": 168,
-                    "charLength": 8,
+                    "startLine": 215,
+                    "startColumn": 66,
+                    "charOffset": 6954,
+                    "charLength": 2,
                     "snippet": {
-                      "text": "lavalink"
+                      "text": "\\/"
                     },
-                    "sourceLanguage": "Python"
+                    "sourceLanguage": "RegExp"
                   },
                   "contextRegion": {
-                    "startLine": 7,
+                    "startLine": 213,
                     "startColumn": 1,
-                    "charOffset": 117,
-                    "charLength": 220,
+                    "charOffset": 6826,
+                    "charLength": 185,
                     "snippet": {
-                      "text": "import requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials\nfrom yt_dlp import YoutubeDL"
+                      "text": "        :return: Track id, None if not a track url\n        \"\"\"\n        track_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/track\\/(\\w+)')\n\n        match = track_url_rx.match(url)"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -9459,11 +9565,739 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "ffc795f612442c3bec41d08e0735ac11693f194c514422842dbb31abeb9bb3c0"
+              "equalIndicator/v1": "1543b295df5a5404d5aaba4317208a62c5859a45c6e28617c53765b46700a29f"
             },
             "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 345,
+                    "startColumn": 72,
+                    "charOffset": 10535,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 343,
+                    "startColumn": 1,
+                    "charOffset": 10439,
+                    "charLength": 171,
+                    "snippet": {
+                      "text": "            return None\n\n        match = re.match(r'^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)', url_info['webpage_url'])\n\n        track.title = url_info['title']"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "2abefca8aac1c5a61b6be27fa3547ba05c68835d37ae996aef83717d0a86eb30"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 215,
+                    "startColumn": 44,
+                    "charOffset": 6932,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 213,
+                    "startColumn": 1,
+                    "charOffset": 6826,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Track id, None if not a track url\n        \"\"\"\n        track_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/track\\/(\\w+)')\n\n        match = track_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "36eacccf38589be7626348e7ef5fad933553ed75b2e18c899b371371f165bcad"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 215,
+                    "startColumn": 73,
+                    "charOffset": 6961,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 213,
+                    "startColumn": 1,
+                    "charOffset": 6826,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Track id, None if not a track url\n        \"\"\"\n        track_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/track\\/(\\w+)')\n\n        match = track_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "53305b5207c6363bb1d42c5c67aa729e035c7998d2bceaeee464bbbe3e4da1e1"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 345,
+                    "startColumn": 39,
+                    "charOffset": 10502,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 343,
+                    "startColumn": 1,
+                    "charOffset": 10439,
+                    "charLength": 171,
+                    "snippet": {
+                      "text": "            return None\n\n        match = re.match(r'^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)', url_info['webpage_url'])\n\n        track.title = url_info['title']"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "5ce1e5a7867eb9d1c41862e25789339aaaad4d91dcbda1807996aeff7a71c3cc"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 247,
+                    "startColumn": 46,
+                    "charOffset": 7802,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 245,
+                    "startColumn": 1,
+                    "charOffset": 7694,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Album id, None if not a album url\n        \"\"\"\n        album_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/album\\/(\\w+)')\n\n        match = album_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "794c4f2b0b9c68526ba6c3b31ba6545cf462455bb5a9e53c593af76d5d7f2b39"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 247,
+                    "startColumn": 44,
+                    "charOffset": 7800,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 245,
+                    "startColumn": 1,
+                    "charOffset": 7694,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Album id, None if not a album url\n        \"\"\"\n        album_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/album\\/(\\w+)')\n\n        match = album_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "7fa9b387be485f66f23e244ebedbbf21b937ef12567bee0dbad22cdbd9b5b4c5"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 215,
+                    "startColumn": 46,
+                    "charOffset": 6934,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 213,
+                    "startColumn": 1,
+                    "charOffset": 6826,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Track id, None if not a track url\n        \"\"\"\n        track_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/track\\/(\\w+)')\n\n        match = track_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "9d089a0aa1e5e7dc9b16371726295a4cfcfd6abf2b4fc6a2ba0a91c90b871886"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 247,
+                    "startColumn": 66,
+                    "charOffset": 7822,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 245,
+                    "startColumn": 1,
+                    "charOffset": 7694,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Album id, None if not a album url\n        \"\"\"\n        album_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/album\\/(\\w+)')\n\n        match = album_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "9dfb156c71813134c7e27dc6a6c3f54463269e5a5d02efeaec82b55cc44d1cb4"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 247,
+                    "startColumn": 73,
+                    "charOffset": 7829,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 245,
+                    "startColumn": 1,
+                    "charOffset": 7694,
+                    "charLength": 185,
+                    "snippet": {
+                      "text": "        :return: Album id, None if not a album url\n        \"\"\"\n        album_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/album\\/(\\w+)')\n\n        match = album_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "ac618af7c29b30f24f4f1228a3c872dd82d1c293f7ca7991c721816a7a4a3517"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 231,
+                    "startColumn": 49,
+                    "charOffset": 7374,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 229,
+                    "startColumn": 1,
+                    "charOffset": 7257,
+                    "charLength": 200,
+                    "snippet": {
+                      "text": "        :return: Playlist id, None if not a playlist url\n        \"\"\"\n        playlist_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/playlist\\/(\\w+)')\n\n        match = playlist_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "b831e0b84471ebbf783b75c0d7bff82b5f66273310c270dd180858ccfa915dba"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 231,
+                    "startColumn": 79,
+                    "charOffset": 7404,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 229,
+                    "startColumn": 1,
+                    "charOffset": 7257,
+                    "charLength": 200,
+                    "snippet": {
+                      "text": "        :return: Playlist id, None if not a playlist url\n        \"\"\"\n        playlist_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/playlist\\/(\\w+)')\n\n        match = playlist_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "bcb6f1a033595ca8fcaea793ff3a47a40916e40c59be9e02ce4614b83b240751"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 231,
+                    "startColumn": 69,
+                    "charOffset": 7394,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 229,
+                    "startColumn": 1,
+                    "charOffset": 7257,
+                    "charLength": 200,
+                    "snippet": {
+                      "text": "        :return: Playlist id, None if not a playlist url\n        \"\"\"\n        playlist_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/playlist\\/(\\w+)')\n\n        match = playlist_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "d6c4bf0da22175cb2c3c70c43849c128e312c71e318454622983bf01cc10cd96"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 345,
+                    "startColumn": 41,
+                    "charOffset": 10504,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 343,
+                    "startColumn": 1,
+                    "charOffset": 10439,
+                    "charLength": 171,
+                    "snippet": {
+                      "text": "            return None\n\n        match = re.match(r'^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)', url_info['webpage_url'])\n\n        track.title = url_info['title']"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "ed736189e445cf8f10189ddfe9b461fab8d6078f5c1aa035ec8273dc302a15ac"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "RegExpRedundantEscape",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "Redundant character escape '\\/' in RegExp",
+              "markdown": "Redundant character escape `\\/` in RegExp"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/source.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 231,
+                    "startColumn": 47,
+                    "charOffset": 7372,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "\\/"
+                    },
+                    "sourceLanguage": "RegExp"
+                  },
+                  "contextRegion": {
+                    "startLine": 229,
+                    "startColumn": 1,
+                    "charOffset": 7257,
+                    "charLength": 200,
+                    "snippet": {
+                      "text": "        :return: Playlist id, None if not a playlist url\n        \"\"\"\n        playlist_url_rx = re.compile(r'https?:\\/\\/open\\.spotify\\.com\\/playlist\\/(\\w+)')\n\n        match = playlist_url_rx.match(url)"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "f4806f083c725eb7610fe75fa3a8291c21112710d3de9f78ca9833c260605baa"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
             }
           }
         ],
