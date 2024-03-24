@@ -1,19 +1,19 @@
 {
-  "total": 31,
+  "total": 0,
   "tools inspection": {
-    "Code Inspection": 31
+    "Code Inspection": 0
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "ee61002e92117b40eed2bc9940eb2ac60bfd5477",
-        "branch": "refs/heads/103-fix-lavalink-server-stopped-working"
+        "revisionId": "ef087c2e1fcb34b96abc01595163498a663441d3",
+        "branch": "103-fix-lavalink-server-stopped-working"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8409946560",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8409949457",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git"
   }
 }

@@ -317,16 +317,16 @@
           "description": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
         },
         {
-          "shortName": "PyOldStyleClassesInspection",
-          "displayName": "Old-style class contains new-style class features",
-          "enabled": true,
-          "description": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
-        },
-        {
           "shortName": "PyAbstractClassInspection",
           "displayName": "Class must implement all abstract methods",
           "enabled": true,
           "description": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyOldStyleClassesInspection",
+          "displayName": "Old-style class contains new-style class features",
+          "enabled": true,
+          "description": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
         },
         {
           "shortName": "PyArgumentListInspection",
@@ -497,16 +497,16 @@
           "description": "Reports invalid definitions and usages of classes created with\n`dataclasses` or `attr` modules.\n\n**Example:**\n\n\n    import dataclasses\n\n\n    @dataclasses.dataclass\n    class FullName:\n        first: str\n        middle: str = \"\"\n        last: str\n"
         },
         {
-          "shortName": "PyClassicStyleClassInspection",
-          "displayName": "Classic style class usage",
-          "enabled": false,
-          "description": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
-        },
-        {
           "shortName": "PyprojectInspection",
           "displayName": "Depencencies in pyproject.toml",
           "enabled": true,
           "description": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
+        },
+        {
+          "shortName": "PyClassicStyleClassInspection",
+          "displayName": "Classic style class usage",
+          "enabled": false,
+          "description": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
         },
         {
           "shortName": "PyNoneFunctionAssignmentInspection",
@@ -977,16 +977,16 @@
           "description": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
         },
         {
-          "shortName": "RegExpRepeatedSpace",
-          "displayName": "Consecutive spaces",
-          "enabled": true,
-          "description": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
-        },
-        {
           "shortName": "RegExpDuplicateAlternationBranch",
           "displayName": "Duplicate branch in alternation",
           "enabled": true,
           "description": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpRepeatedSpace",
+          "displayName": "Consecutive spaces",
+          "enabled": true,
+          "description": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
         }
       ]
     },
