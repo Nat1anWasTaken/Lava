@@ -15,12 +15,12 @@
       "language": "Python",
       "line": 1,
       "offset": 1,
-      "length": 77,
+      "length": 84,
       "code": {
         "startLine": 1,
-        "length": 77,
+        "length": 84,
         "offset": 0,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
+        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional, Tuple\n\nimport youtube_related"
       }
     }
   ],
@@ -28,7 +28,7 @@
     "module": "project",
     "inspectionName": "PyInterpreterInspection"
   },
-  "hash": "0f2ae4d9ed418b29b9f57a32c4f2eb07ae60323307f25417e09d7a7fd84ae0cf"
+  "hash": "05cf9960c6ac607109709fc8bdca3e9486541ceb48a4f56e30232a1aabbf7a10"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -46,12 +46,12 @@
       "language": "Python",
       "line": 1,
       "offset": 1,
-      "length": 32,
+      "length": 33,
       "code": {
         "startLine": 1,
-        "length": 32,
+        "length": 33,
         "offset": 0,
-        "surroundingCode": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands"
+        "surroundingCode": "import re\nimport json\nimport uuid\n\nfrom os import getpid, path"
       }
     }
   ],
@@ -59,7 +59,7 @@
     "module": "project",
     "inspectionName": "PyInterpreterInspection"
   },
-  "hash": "34b4b5b7ebd58eccf9a05e7f09ece9f677a5525b95661150feb5e4b37f4002e9"
+  "hash": "5d5f4461e8b85e9b8a13cea1e8a7212b4d5377847437ae1c25acf3910262a7cc"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -290,6 +290,37 @@
   "sources": [
     {
       "type": "file",
+      "path": "lava/playlist.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 1,
+      "length": 48,
+      "code": {
+        "startLine": 1,
+        "length": 48,
+        "offset": 0,
+        "surroundingCode": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyInterpreterInspection"
+  },
+  "hash": "a6d24c69e3f32fe33ddecadd7799972355d76c66bf027e24700c3f5898968dd9"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "An invalid interpreter",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "High",
+  "comment": "No Python interpreter configured for the project",
+  "detailsInfo": "Reports problems if there is no Python interpreter configured for the project or if the interpreter is invalid. Without a properly\nconfigured interpreter, you cannot execute your Python scripts and benefit from some Python code insight features.\n\nThe IDE provides quick access to the interpreter settings.",
+  "sources": [
+    {
+      "type": "file",
       "path": "lava/voice_client.py",
       "language": "Python",
       "line": 1,
@@ -378,6 +409,37 @@
     "Sanity"
   ],
   "severity": "Critical",
+  "comment": "Unresolved reference 'Path'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/playlist.py",
+      "language": "Python",
+      "line": 3,
+      "offset": 21,
+      "length": 4,
+      "code": {
+        "startLine": 1,
+        "length": 4,
+        "offset": 44,
+        "surroundingCode": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "0de64fc6a1e5ad95240cd4b21c826f9a9f0e8ffc4c70ae39e8f193cadd2ff4ef"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
   "comment": "Unresolved reference 'Exception'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
@@ -409,21 +471,21 @@
     "Sanity"
   ],
   "severity": "Critical",
-  "comment": "Unresolved reference 'getpid'",
+  "comment": "Unresolved reference 'pathlib'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
     {
       "type": "file",
-      "path": "lava/cogs/commands.py",
+      "path": "lava/playlist.py",
       "language": "Python",
-      "line": 2,
-      "offset": 16,
-      "length": 6,
+      "line": 3,
+      "offset": 6,
+      "length": 7,
       "code": {
         "startLine": 1,
-        "length": 6,
-        "offset": 25,
-        "surroundingCode": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
+        "length": 7,
+        "offset": 29,
+        "surroundingCode": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
       }
     }
   ],
@@ -431,7 +493,7 @@
     "module": "project",
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
-  "hash": "3295fc09f7891bd72944aaa3f7dcf6a24be2b9603bf88418c3dd5264d19ba9b9"
+  "hash": "337d585465a7bdea02463f200927f3219dd520156b9a3f69d02384ad25db982c"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -502,37 +564,6 @@
     "Sanity"
   ],
   "severity": "Critical",
-  "comment": "Unresolved reference 'disnake'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 4,
-      "offset": 6,
-      "length": 7,
-      "code": {
-        "startLine": 2,
-        "length": 7,
-        "offset": 28,
-        "surroundingCode": "from os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands\nfrom disnake.ext.commands import Cog"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "62e0971836f4b87ebc1043ab47756bea374bf9d4615273788a9d3beb6c68abf8"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
   "comment": "Unresolved reference 'Union'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
@@ -595,21 +626,21 @@
     "Sanity"
   ],
   "severity": "Critical",
-  "comment": "No module named 're'",
+  "comment": "No module named 'json'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
     {
       "type": "file",
-      "path": "lava/cogs/commands.py",
+      "path": "lava/playlist.py",
       "language": "Python",
       "line": 1,
       "offset": 8,
-      "length": 2,
+      "length": 4,
       "code": {
         "startLine": 1,
-        "length": 2,
+        "length": 4,
         "offset": 7,
-        "surroundingCode": "import re\nfrom os import getpid\n"
+        "surroundingCode": "import json\nimport uuid\nfrom pathlib import Path"
       }
     }
   ],
@@ -617,7 +648,7 @@
     "module": "project",
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
-  "hash": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
+  "hash": "8bb871355a6d759e9669053263b0337eb165a8efaa111f1a9e4acb28f82cb32c"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -649,37 +680,6 @@
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
   "hash": "9b0e0f5e4476e44ffde08b245a121f682e6619dd90c409521e1a0141aa8818a5"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
-  "comment": "Unresolved reference 'os'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 2,
-      "offset": 6,
-      "length": 2,
-      "code": {
-        "startLine": 1,
-        "length": 2,
-        "offset": 15,
-        "surroundingCode": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "a0cf4ebea2c905ce0207c89de62aba93ea72a7621fd237ffc353e7382a2d01ab"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -804,6 +804,37 @@
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
   "hash": "ce9eddc315e2d1ba38125819dd8b863a6b3c782f4f84b7833e7510beb3ed0a8e"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "No module named 'uuid'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/playlist.py",
+      "language": "Python",
+      "line": 2,
+      "offset": 8,
+      "length": 4,
+      "code": {
+        "startLine": 1,
+        "length": 4,
+        "offset": 19,
+        "surroundingCode": "import json\nimport uuid\nfrom pathlib import Path\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "d09d9cc1d7d0f7bdb376ac5d28771c734c1b222887477c38e21d8aabba62c1ce"
 },{
   "tool": "Code Inspection",
   "category": "Python",

@@ -517,19 +517,19 @@
                 ]
               },
               {
-                "id": "PyDefaultArgumentInspection",
+                "id": "PyMissingConstructorInspection",
                 "shortDescription": {
-                  "text": "The default argument is mutable"
+                  "text": "Missed call to '__init__' of the super class"
                 },
                 "fullDescription": {
-                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
-                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
+                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
+                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyDefaultArgument",
+                    "suppressToolId": "PyMissingConstructor",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -550,19 +550,19 @@
                 ]
               },
               {
-                "id": "PyMissingConstructorInspection",
+                "id": "PyDefaultArgumentInspection",
                 "shortDescription": {
-                  "text": "Missed call to '__init__' of the super class"
+                  "text": "The default argument is mutable"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
-                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
+                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
+                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMissingConstructor",
+                    "suppressToolId": "PyDefaultArgument",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -1738,39 +1738,6 @@
                 ]
               },
               {
-                "id": "PyRedundantParenthesesInspection",
-                "shortDescription": {
-                  "text": "Redundant parentheses"
-                },
-                "fullDescription": {
-                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
-                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
-                },
-                "defaultConfiguration": {
-                  "enabled": true,
-                  "level": "note",
-                  "parameters": {
-                    "suppressToolId": "PyRedundantParentheses",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "Python",
-                      "index": 0,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "PyTrailingSemicolonInspection",
                 "shortDescription": {
                   "text": "Prohibited trailing semicolon in a statement"
@@ -1804,19 +1771,19 @@
                 ]
               },
               {
-                "id": "PyAbstractClassInspection",
+                "id": "PyRedundantParenthesesInspection",
                 "shortDescription": {
-                  "text": "Class must implement all abstract methods"
+                  "text": "Redundant parentheses"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
-                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
+                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyAbstractClass",
+                    "suppressToolId": "PyRedundantParentheses",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1852,6 +1819,39 @@
                     "suppressToolId": "PyOldStyleClasses",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "Python",
+                      "index": 0,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "PyAbstractClassInspection",
+                "shortDescription": {
+                  "text": "Class must implement all abstract methods"
+                },
+                "fullDescription": {
+                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
+                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+                },
+                "defaultConfiguration": {
+                  "enabled": true,
+                  "level": "note",
+                  "parameters": {
+                    "suppressToolId": "PyAbstractClass",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -2794,19 +2794,19 @@
                 ]
               },
               {
-                "id": "PyClassicStyleClassInspection",
+                "id": "PyprojectInspection",
                 "shortDescription": {
-                  "text": "Classic style class usage"
+                  "text": "Depencencies in pyproject.toml"
                 },
                 "fullDescription": {
-                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
-                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
+                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
+                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
                 },
                 "defaultConfiguration": {
-                  "enabled": false,
+                  "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyClassicStyleClass",
+                    "suppressToolId": "PyprojectInspection",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -2827,19 +2827,19 @@
                 ]
               },
               {
-                "id": "PyprojectInspection",
+                "id": "PyClassicStyleClassInspection",
                 "shortDescription": {
-                  "text": "Depencencies in pyproject.toml"
+                  "text": "Classic style class usage"
                 },
                 "fullDescription": {
-                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
-                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
+                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
+                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
                 },
                 "defaultConfiguration": {
-                  "enabled": true,
+                  "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyprojectInspection",
+                    "suppressToolId": "PyClassicStyleClass",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5338,6 +5338,39 @@
                 ]
               },
               {
+                "id": "HtmlExtraClosingTag",
+                "shortDescription": {
+                  "text": "Redundant closing tag"
+                },
+                "fullDescription": {
+                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
+                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "HtmlExtraClosingTag",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "HTML",
+                      "index": 8,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
                 "id": "RegExpOctalEscape",
                 "shortDescription": {
                   "text": "Octal escape"
@@ -5371,19 +5404,19 @@
                 ]
               },
               {
-                "id": "HtmlExtraClosingTag",
+                "id": "HtmlUnknownAnchorTarget",
                 "shortDescription": {
-                  "text": "Redundant closing tag"
+                  "text": "Unresolved fragment in a link"
                 },
                 "fullDescription": {
-                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
-                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
+                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
+                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
                 },
                 "defaultConfiguration": {
                   "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "HtmlExtraClosingTag",
+                    "suppressToolId": "HtmlUnknownAnchorTarget",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5426,39 +5459,6 @@
                     "target": {
                       "id": "RELAX NG",
                       "index": 11,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "HtmlUnknownAnchorTarget",
-                "shortDescription": {
-                  "text": "Unresolved fragment in a link"
-                },
-                "fullDescription": {
-                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
-                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "HtmlUnknownAnchorTarget",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "HTML",
-                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-03-25T07:04:48.168493629Z",
+          "startTimeUtc": "2024-03-25T09:49:56.908921Z",
           "exitCode": 0,
           "toolExecutionNotifications": [
             {
@@ -6683,7 +6683,7 @@
                 "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
               },
               "level": "error",
-              "timeUtc": "2024-03-25T07:04:53.844141027Z",
+              "timeUtc": "2024-03-25T09:50:03.685360167Z",
               "properties": {
                 "qodanaKind": "sanityFailure"
               }
@@ -6696,10 +6696,10 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "724f57fa7b55f4b741f8966d7c9ef0b04e805de2",
+          "revisionId": "cc743042f6aa92e2a44e957e168093a65f4e82be",
           "branch": "refs/heads/105-feat-playlist-support",
           "properties": {
-            "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git",
+            "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
             "lastAuthorName": "Mantou-9487",
             "vcsType": "Git",
             "lastAuthorEmail": "opcantel@gmail.com"
@@ -6818,6 +6818,336 @@
           }
         },
         {
+          "ruleId": "PyIncorrectDocstringInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Missing parameter interaction in docstring",
+            "markdown": "Missing parameter interaction in docstring"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/utils.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 381,
+                  "startColumn": 39,
+                  "charOffset": 13676,
+                  "charLength": 42,
+                  "snippet": {
+                    "text": "interaction: ApplicationCommandInteraction"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 379,
+                  "startColumn": 1,
+                  "charOffset": 13620,
+                  "charLength": 149,
+                  "snippet": {
+                    "text": "    return embed\n\nasync def find_playlist(playlist:str, interaction: ApplicationCommandInteraction) -> Playlist:\n    \"\"\"\n    Find a playlist by uuid."
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "3f1eaab30139b88298372563fc5e056ca682141a3534d2a304a2a95a972db7dd"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyIncorrectDocstringInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Unexpected parameter public in docstring",
+            "markdown": "Unexpected parameter public in docstring"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/utils.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 387,
+                  "startColumn": 12,
+                  "charOffset": 13870,
+                  "charLength": 6,
+                  "snippet": {
+                    "text": "public"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 385,
+                  "startColumn": 1,
+                  "charOffset": 13771,
+                  "charLength": 277,
+                  "snippet": {
+                    "text": "    :param playlist: The uuid of the playlist.\n    :param ctx: The application context.\n    :param public: Flag indicating whether to search for public playlists.\n    :return: A Playlist Instance,\n             or None if the playlist doesn't exist or doesn't meet the criteria."
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "94b58382cdbb7e8a9fb20a0e550a81e5d9e34deb3ca4be39c8c448cc99eb5e7c"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyIncorrectDocstringInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Unexpected parameter ctx in docstring",
+            "markdown": "Unexpected parameter ctx in docstring"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/utils.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 386,
+                  "startColumn": 12,
+                  "charOffset": 13829,
+                  "charLength": 3,
+                  "snippet": {
+                    "text": "ctx"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 384,
+                  "startColumn": 1,
+                  "charOffset": 13770,
+                  "charLength": 197,
+                  "snippet": {
+                    "text": "\n    :param playlist: The uuid of the playlist.\n    :param ctx: The application context.\n    :param public: Flag indicating whether to search for public playlists.\n    :return: A Playlist Instance,"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "f779656c731a0ab8e23c046e74608117df1373f180266f99dce28d59389e58ae"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyMethodMayBeStaticInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Method 'playlist_search' may be 'static'",
+            "markdown": "Method `playlist_search` may be 'static'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/cogs/commands.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 88,
+                  "startColumn": 15,
+                  "charOffset": 1941,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "playlist_search"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 86,
+                  "startColumn": 1,
+                  "charOffset": 1903,
+                  "charLength": 133,
+                  "snippet": {
+                    "text": "        return choices\n\n    async def playlist_search(\n        self, interaction: ApplicationCommandInteraction, playlist: str\n    ):"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "3d135aa36bf3470436c9f0fcb3e8575e8ccfe36d6057e56ab863072d12088508"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyMethodMayBeStaticInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Method 'global_playlist_search' may be 'static'",
+            "markdown": "Method `global_playlist_search` may be 'static'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/cogs/commands.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 108,
+                  "startColumn": 15,
+                  "charOffset": 2571,
+                  "charLength": 22,
+                  "snippet": {
+                    "text": "global_playlist_search"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 106,
+                  "startColumn": 1,
+                  "charOffset": 2533,
+                  "charLength": 140,
+                  "snippet": {
+                    "text": "        return choices\n\n    async def global_playlist_search(\n        self, interaction: ApplicationCommandInteraction, playlist: str\n    ):"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "524406404be0fc56907b43c35ae4276a9ac3db245ac91d692f95218059de8e42"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyMethodParametersInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Usually first parameter of a method is named 'self'",
+            "markdown": "Usually first parameter of a method is named 'self'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/playlist.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "charOffset": 263,
+                  "charLength": 3,
+                  "snippet": {
+                    "text": "val"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 9,
+                  "startColumn": 1,
+                  "charOffset": 211,
+                  "charLength": 102,
+                  "snippet": {
+                    "text": "        self.public = public\n\n    def is_valid_uuid(val):\n        try:\n            uuid.UUID(str(val))"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "3fe368200fa150edde80474217ab62606aedada1cec140a7fd6dc2e5ab5e0437"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
           "ruleId": "PyUnboundLocalVariableInspection",
           "kind": "fail",
           "level": "warning",
@@ -6833,9 +7163,9 @@
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 200,
-                  "startColumn": 34,
-                  "charOffset": 6797,
+                  "startLine": 278,
+                  "startColumn": 15,
+                  "charOffset": 9778,
                   "charLength": 7,
                   "snippet": {
                     "text": "message"
@@ -6843,9 +7173,119 @@
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 198,
+                  "startLine": 276,
                   "startColumn": 1,
-                  "charOffset": 6749,
+                  "charOffset": 9753,
+                  "charLength": 222,
+                  "snippet": {
+                    "text": "\n    else:\n        await message.edit(embed=generate_display_embed(bot, player), components=components)\n\n    bot.logger.debug(\"Updating player in guild %s display message to %s\", bot.get_guild(player.guild_id), message.id)"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "0687672e9d556f931b3d553ad1ee9871ec70056636055b56b697618df2716c83"
+          },
+          "properties": {
+            "ideaSeverity": "WARNING",
+            "qodanaSeverity": "High",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyUnboundLocalVariableInspection",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Local variable 'name' might be referenced before assignment",
+            "markdown": "Local variable 'name' might be referenced before assignment"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/cogs/commands.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 1440,
+                  "startColumn": 22,
+                  "charOffset": 46295,
+                  "charLength": 4,
+                  "snippet": {
+                    "text": "name"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 1438,
+                  "startColumn": 1,
+                  "charOffset": 46233,
+                  "charLength": 163,
+                  "snippet": {
+                    "text": "\n            for track in result.tracks:\n                data[name][\"data\"][\"tracks\"].append(\n                    {\n                        \"encoded\": track.track,"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "23d1020605dfb9f342d94f3907505bdd423e797d2468160d1903e2bcfe782a35"
+          },
+          "properties": {
+            "ideaSeverity": "WARNING",
+            "qodanaSeverity": "High",
+            "tags": [
+              "Python"
+            ]
+          }
+        },
+        {
+          "ruleId": "PyUnboundLocalVariableInspection",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Local variable 'message' might be referenced before assignment",
+            "markdown": "Local variable 'message' might be referenced before assignment"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/utils.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 202,
+                  "startColumn": 34,
+                  "charOffset": 6905,
+                  "charLength": 7,
+                  "snippet": {
+                    "text": "message"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 200,
+                  "startColumn": 1,
+                  "charOffset": 6857,
                   "charLength": 134,
                   "snippet": {
                     "text": "            )\n\n            bot.loop.create_task(message.delete())\n        except (AttributeError, UnboundLocalError):\n            pass"
@@ -6862,7 +7302,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "3bb117c2c3e359a7a5f8ed0b50ce407ac692c970fc39560b0e1420e776256e95"
+            "equalIndicator/v1": "53970ef81d994ecbf8aba0fbeeb6e31fc1c24db665dd081ce7ab17af2c942399"
           },
           "properties": {
             "ideaSeverity": "WARNING",
@@ -6888,9 +7328,9 @@
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 530,
+                  "startLine": 783,
                   "startColumn": 24,
-                  "charOffset": 19229,
+                  "charOffset": 24804,
                   "charLength": 6,
                   "snippet": {
                     "text": "player"
@@ -6898,12 +7338,12 @@
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 528,
+                  "startLine": 781,
                   "startColumn": 1,
-                  "charOffset": 19142,
-                  "charLength": 255,
+                  "charOffset": 24717,
+                  "charLength": 246,
                   "snippet": {
-                    "text": "            await update_display(\n                bot=self.bot,\n                player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),\n                new_message=await interaction.original_response(),\n                delay=5,"
+                    "text": "            await update_display(\n                bot=self.bot,\n                player=player\n                or interaction.bot.lavalink.player_manager.get(interaction.guild.id),\n                new_message=await interaction.original_response(),"
                   },
                   "sourceLanguage": "Python"
                 }
@@ -6917,7 +7357,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "f6e1002ca1c5f932e271808a48e75971f846c4c6be903ef118a41d1db00819fe"
+            "equalIndicator/v1": "da65c8d24982783cd72b0b464c4a33aec48f0ec923c25aff82ba6e0b10c65400"
           },
           "properties": {
             "ideaSeverity": "WARNING",
@@ -6928,37 +7368,37 @@
           }
         },
         {
-          "ruleId": "PyUnboundLocalVariableInspection",
+          "ruleId": "PyUnusedLocalInspection",
           "kind": "fail",
-          "level": "warning",
+          "level": "note",
           "message": {
-            "text": "Local variable 'message' might be referenced before assignment",
-            "markdown": "Local variable 'message' might be referenced before assignment"
+            "text": "Local variable 'data' value is not used",
+            "markdown": "Local variable 'data' value is not used"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "lava/utils.py",
+                  "uri": "lava/cogs/commands.py",
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 276,
-                  "startColumn": 15,
-                  "charOffset": 9670,
-                  "charLength": 7,
+                  "startLine": 1409,
+                  "startColumn": 17,
+                  "charOffset": 45332,
+                  "charLength": 4,
                   "snippet": {
-                    "text": "message"
+                    "text": "data"
                   },
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 274,
+                  "startLine": 1407,
                   "startColumn": 1,
-                  "charOffset": 9645,
-                  "charLength": 222,
+                  "charOffset": 45214,
+                  "charLength": 173,
                   "snippet": {
-                    "text": "\n    else:\n        await message.edit(embed=generate_display_embed(bot, player), components=components)\n\n    bot.logger.debug(\"Updating player in guild %s display message to %s\", bot.get_guild(player.guild_id), message.id)"
+                    "text": "                f\"./playlist/{interaction.author.id}.json\", \"r\", encoding=\"utf-8\"\n            ) as f:\n                data = json.load(f)\n\n            modal = PlaylistModal("
                   },
                   "sourceLanguage": "Python"
                 }
@@ -6972,11 +7412,11 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "ff68674bac662da0c2613e990346fbca6b737585f7477127a4d881d42b5593c4"
+            "equalIndicator/v1": "35a6bf5750a599f5398689e1c584128a67391a58ecf94cdfcc083592ec7cc578"
           },
           "properties": {
-            "ideaSeverity": "WARNING",
-            "qodanaSeverity": "High",
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
             "tags": [
               "Python"
             ]
@@ -7053,9 +7493,9 @@
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 684,
+                  "startLine": 65,
                   "startColumn": 28,
-                  "charOffset": 24957,
+                  "charOffset": 1322,
                   "charLength": 42,
                   "snippet": {
                     "text": "interaction: ApplicationCommandInteraction"
@@ -7063,12 +7503,12 @@
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 682,
+                  "startLine": 63,
                   "startColumn": 1,
-                  "charOffset": 24897,
-                  "charLength": 249,
+                  "charOffset": 1271,
+                  "charLength": 223,
                   "snippet": {
-                    "text": "\n    @play.autocomplete(\"query\")\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\", query):\n            return []"
+                    "text": "        self.bot = bot\n\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(\n            r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\","
                   },
                   "sourceLanguage": "Python"
                 }
@@ -7082,7 +7522,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "d75467a284812476427f939f071eaa47765aca768dc29f9bac63a2964823cef2"
+            "equalIndicator/v1": "b983585ea25ff84ca2995022fdc131a4e50da3dae6cd44a8fbdea37d5730269f"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -7146,13 +7586,68 @@
               "Python"
             ]
           }
+        },
+        {
+          "ruleId": "PyUnusedLocalInspection",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Local variable 'results' value is not used",
+            "markdown": "Local variable 'results' value is not used"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lava/cogs/commands.py",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 1508,
+                  "startColumn": 9,
+                  "charOffset": 48601,
+                  "charLength": 7,
+                  "snippet": {
+                    "text": "results"
+                  },
+                  "sourceLanguage": "Python"
+                },
+                "contextRegion": {
+                  "startLine": 1506,
+                  "startColumn": 1,
+                  "charOffset": 48578,
+                  "charLength": 141,
+                  "snippet": {
+                    "text": "            )\n\n        results = LoadResult.from_dict(data[playlist_info.name])\n\n        await ensure_voice(interaction, should_connect=True)"
+                  },
+                  "sourceLanguage": "Python"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "e7bff44160d069f534eebf42d8f2a24dd33b405a8aff17c2874ee401fbe9577c"
+          },
+          "properties": {
+            "ideaSeverity": "WEAK WARNING",
+            "qodanaSeverity": "Moderate",
+            "tags": [
+              "Python"
+            ]
+          }
         }
       ],
       "automationDetails": {
         "id": "project/qodana/2024-03-25",
-        "guid": "bda71239-f438-4a24-8203-348baf4b10d1",
+        "guid": "afbf74f2-4c7e-4901-b574-ea96d1a127e6",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8416283761"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8418130313"
         }
       },
       "newlineSequences": [
@@ -7180,9 +7675,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 77,
+                    "charLength": 84,
                     "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional, Tuple"
                     },
                     "sourceLanguage": "Python"
                   },
@@ -7190,9 +7685,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 101,
+                    "charLength": 108,
                     "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional, Tuple\n\nimport youtube_related"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -7206,7 +7701,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "0f2ae4d9ed418b29b9f57a32c4f2eb07ae60323307f25417e09d7a7fd84ae0cf"
+              "equalIndicator/v1": "05cf9960c6ac607109709fc8bdca3e9486541ceb48a4f56e30232a1aabbf7a10"
             },
             "properties": {
               "ideaSeverity": "WARNING",
@@ -7232,9 +7727,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 32,
+                    "charLength": 33,
                     "snippet": {
-                      "text": "import re\nfrom os import getpid\n"
+                      "text": "import re\nimport json\nimport uuid"
                     },
                     "sourceLanguage": "Python"
                   },
@@ -7242,9 +7737,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 180,
+                    "charLength": 62,
                     "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands"
+                      "text": "import re\nimport json\nimport uuid\n\nfrom os import getpid, path"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -7258,7 +7753,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "34b4b5b7ebd58eccf9a05e7f09ece9f677a5525b95661150feb5e4b37f4002e9"
+              "equalIndicator/v1": "5d5f4461e8b85e9b8a13cea1e8a7212b4d5377847437ae1c25acf3910262a7cc"
             },
             "properties": {
               "ideaSeverity": "WARNING",
@@ -7641,6 +8136,58 @@
               {
                 "physicalLocation": {
                   "artifactLocation": {
+                    "uri": "lava/playlist.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 48,
+                    "snippet": {
+                      "text": "import json\nimport uuid\nfrom pathlib import Path"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 65,
+                    "snippet": {
+                      "text": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "a6d24c69e3f32fe33ddecadd7799972355d76c66bf027e24700c3f5898968dd9"
+            },
+            "properties": {
+              "ideaSeverity": "WARNING",
+              "qodanaSeverity": "High"
+            }
+          },
+          {
+            "ruleId": "PyInterpreterInspection",
+            "kind": "fail",
+            "level": "warning",
+            "message": {
+              "text": "No Python interpreter configured for the project",
+              "markdown": "No Python interpreter configured for the project"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
                     "uri": "lava/voice_client.py",
                     "uriBaseId": "SRCROOT"
                   },
@@ -7790,6 +8337,58 @@
             "kind": "fail",
             "level": "error",
             "message": {
+              "text": "Unresolved reference 'Path'",
+              "markdown": "Unresolved reference 'Path'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/playlist.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 3,
+                    "startColumn": 21,
+                    "charOffset": 44,
+                    "charLength": 4,
+                    "snippet": {
+                      "text": "Path"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 65,
+                    "snippet": {
+                      "text": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "0de64fc6a1e5ad95240cd4b21c826f9a9f0e8ffc4c70ae39e8f193cadd2ff4ef"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
               "text": "Unresolved reference 'Exception'",
               "markdown": "Unresolved reference 'Exception'"
             },
@@ -7842,23 +8441,23 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'getpid'",
-              "markdown": "Unresolved reference 'getpid'"
+              "text": "Unresolved reference 'pathlib'",
+              "markdown": "Unresolved reference 'pathlib'"
             },
             "locations": [
               {
                 "physicalLocation": {
                   "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
+                    "uri": "lava/playlist.py",
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 2,
-                    "startColumn": 16,
-                    "charOffset": 25,
-                    "charLength": 6,
+                    "startLine": 3,
+                    "startColumn": 6,
+                    "charOffset": 29,
+                    "charLength": 7,
                     "snippet": {
-                      "text": "getpid"
+                      "text": "pathlib"
                     },
                     "sourceLanguage": "Python"
                   },
@@ -7866,9 +8465,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 147,
+                    "charLength": 65,
                     "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
+                      "text": "import json\nimport uuid\nfrom pathlib import Path\n\nclass Playlist:"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -7882,7 +8481,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "3295fc09f7891bd72944aaa3f7dcf6a24be2b9603bf88418c3dd5264d19ba9b9"
+              "equalIndicator/v1": "337d585465a7bdea02463f200927f3219dd520156b9a3f69d02384ad25db982c"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -7998,58 +8597,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 4,
-                    "startColumn": 6,
-                    "charOffset": 38,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 2,
-                    "startColumn": 1,
-                    "charOffset": 10,
-                    "charLength": 207,
-                    "snippet": {
-                      "text": "from os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands\nfrom disnake.ext.commands import Cog"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "62e0971836f4b87ebc1043ab47756bea374bf9d4615273788a9d3beb6c68abf8"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'Union'",
               "markdown": "Unresolved reference 'Union'"
             },
@@ -8154,23 +8701,23 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "No module named 're'",
-              "markdown": "No module named 're'"
+              "text": "No module named 'json'",
+              "markdown": "No module named 'json'"
             },
             "locations": [
               {
                 "physicalLocation": {
                   "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
+                    "uri": "lava/playlist.py",
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
                     "startLine": 1,
                     "startColumn": 8,
                     "charOffset": 7,
-                    "charLength": 2,
+                    "charLength": 4,
                     "snippet": {
-                      "text": "re"
+                      "text": "json"
                     },
                     "sourceLanguage": "Python"
                   },
@@ -8178,9 +8725,9 @@
                     "startLine": 1,
                     "startColumn": 1,
                     "charOffset": 0,
-                    "charLength": 32,
+                    "charLength": 48,
                     "snippet": {
-                      "text": "import re\nfrom os import getpid\n"
+                      "text": "import json\nimport uuid\nfrom pathlib import Path"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -8194,7 +8741,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
+              "equalIndicator/v1": "8bb871355a6d759e9669053263b0337eb165a8efaa111f1a9e4acb28f82cb32c"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8247,58 +8794,6 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "9b0e0f5e4476e44ffde08b245a121f682e6619dd90c409521e1a0141aa8818a5"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'os'",
-              "markdown": "Unresolved reference 'os'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 6,
-                    "charOffset": 15,
-                    "charLength": 2,
-                    "snippet": {
-                      "text": "os"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 147,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "a0cf4ebea2c905ce0207c89de62aba93ea72a7621fd237ffc353e7382a2d01ab"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8507,6 +9002,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "ce9eddc315e2d1ba38125819dd8b863a6b3c782f4f84b7833e7510beb3ed0a8e"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "No module named 'uuid'",
+              "markdown": "No module named 'uuid'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/playlist.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 2,
+                    "startColumn": 8,
+                    "charOffset": 19,
+                    "charLength": 4,
+                    "snippet": {
+                      "text": "uuid"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 49,
+                    "snippet": {
+                      "text": "import json\nimport uuid\nfrom pathlib import Path\n"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "d09d9cc1d7d0f7bdb376ac5d28771c734c1b222887477c38e21d8aabba62c1ce"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8777,9 +9324,9 @@
         "configProfile": "absent",
         "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
         "qodanaNewResultSummary": {
-          "moderate": 5,
-          "high": 3,
-          "total": 8
+          "moderate": 13,
+          "high": 4,
+          "total": 17
         }
       }
     }

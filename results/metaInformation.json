@@ -1,19 +1,19 @@
 {
-  "total": 8,
+  "total": 17,
   "tools inspection": {
-    "Code Inspection": 8
+    "Code Inspection": 17
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "724f57fa7b55f4b741f8966d7c9ef0b04e805de2",
+        "revisionId": "cc743042f6aa92e2a44e957e168093a65f4e82be",
         "branch": "refs/heads/105-feat-playlist-support"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8416283761",
-    "repoUrl": "https://github.com/Nat1anWasTaken/Lava.git"
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8418130313",
+    "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
