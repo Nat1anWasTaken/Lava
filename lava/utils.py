@@ -1,10 +1,10 @@
 import asyncio
 import subprocess
-from typing import Union, Iterable, Optional
+from typing import Union, Iterable, Optional, Tuple
 
 import youtube_related
 import youtube_search
-from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale
+from disnake import Interaction, Message, Thread, TextChannel, Embed, NotFound, Colour, ButtonStyle, Locale, ApplicationCommandInteraction
 from disnake.abc import GuildChannel
 from disnake.ui import Button, ActionRow
 from disnake.utils import get
@@ -14,6 +14,8 @@ from lava.bot import Bot
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
 from lava.variables import Variables
 from lava.voice_client import LavalinkVoiceClient
+from lava.playlist import Playlist
+from lava.embeds import ErrorEmbed
 
 
 def get_current_branch() -> str:
@@ -376,6 +378,31 @@ def generate_display_embed(bot: Bot, player: DefaultPlayer) -> Embed:
 
     return embed
 
+async def find_playlist(playlist:str, interaction: ApplicationCommandInteraction) -> Playlist:
+    """
+    Find a playlist by uuid.
+
+    :param playlist: The uuid of the playlist.
+    :param ctx: The application context.
+    :param public: Flag indicating whether to search for public playlists.
+    :return: A Playlist Instance,
+             or None if the playlist doesn't exist or doesn't meet the criteria.
+    """
+
+    result = Playlist.from_uuid(playlist)
+
+    if result is None:
+        await interaction.edit_original_response(embed=ErrorEmbed(
+            title="UUID無效."
+        ))
+    elif result.public is False and result.user_id != interaction.author.id:
+        await interaction.edit_original_response(embed=ErrorEmbed(
+            title="此歌單是非公開的!"
+        ))
+    elif (result.public is False or result.public is True or result.public is None) and result.user_id == interaction.author.id:
+        return result
+    else:
+        return result
 
 def format_time(time: Union[float, int]) -> str:
     """
@@ -387,7 +414,10 @@ def format_time(time: Union[float, int]) -> str:
 
     days, hours, minutes, seconds = map(round, (days, hours, minutes, seconds))
 
-    return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+    if hours == 0:
+        return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+    
+    return f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
 
 
 def generate_progress_bar(bot: Bot, duration: Union[float, int], position: Union[float, int]):
