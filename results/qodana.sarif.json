@@ -682,19 +682,19 @@
                 ]
               },
               {
-                "id": "PyMethodOverridingInspection",
+                "id": "PoetryPackageVersionsInspection",
                 "shortDescription": {
-                  "text": "Method signature does not match signature of overridden method"
+                  "text": "Poetry package versions"
                 },
                 "fullDescription": {
-                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
-                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
+                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
+                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMethodOverriding",
+                    "suppressToolId": "PoetryPackageVersions",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -715,19 +715,19 @@
                 ]
               },
               {
-                "id": "PoetryPackageVersionsInspection",
+                "id": "PyMethodOverridingInspection",
                 "shortDescription": {
-                  "text": "Poetry package versions"
+                  "text": "Method signature does not match signature of overridden method"
                 },
                 "fullDescription": {
-                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
-                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
+                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PoetryPackageVersions",
+                    "suppressToolId": "PyMethodOverriding",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -847,21 +847,21 @@
                 ]
               },
               {
-                "id": "PyComparisonWithNoneInspection",
+                "id": "CommandLineInspection",
                 "shortDescription": {
-                  "text": "Using equality operators to compare with None"
+                  "text": "Incorrect CLI syntax"
                 },
                 "fullDescription": {
-                  "text": "Reports comparisons with 'None'. That type of comparisons should always be done with 'is' or 'is not', never the equality operators. Example: 'a = 2\n\n\nif a == None:\n    print(\"Success\")' Once the quick-fix is applied, the code changes to: 'a = 2\n\n\nif a is None:\n    print(\"Success\")'",
-                  "markdown": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
+                  "text": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies that option names and arguments are correct. Do not disable the inspection if you are going to use command-line interfaces like manage.py in Django.",
+                  "markdown": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyComparisonWithNone",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "CommandLineInspection",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -880,21 +880,21 @@
                 ]
               },
               {
-                "id": "CommandLineInspection",
+                "id": "PyComparisonWithNoneInspection",
                 "shortDescription": {
-                  "text": "Incorrect CLI syntax"
+                  "text": "Using equality operators to compare with None"
                 },
                 "fullDescription": {
-                  "text": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies that option names and arguments are correct. Do not disable the inspection if you are going to use command-line interfaces like manage.py in Django.",
-                  "markdown": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
+                  "text": "Reports comparisons with 'None'. That type of comparisons should always be done with 'is' or 'is not', never the equality operators. Example: 'a = 2\n\n\nif a == None:\n    print(\"Success\")' Once the quick-fix is applied, the code changes to: 'a = 2\n\n\nif a is None:\n    print(\"Success\")'",
+                  "markdown": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "CommandLineInspection",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyComparisonWithNone",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -979,19 +979,19 @@
                 ]
               },
               {
-                "id": "PyChainedComparisonsInspection",
+                "id": "PyMethodParametersInspection",
                 "shortDescription": {
-                  "text": "Too complex chained comparisons"
+                  "text": "Improper first parameter"
                 },
                 "fullDescription": {
-                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
-                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
+                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
+                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyChainedComparisons",
+                    "suppressToolId": "PyMethodParameters",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1012,19 +1012,19 @@
                 ]
               },
               {
-                "id": "PyMethodParametersInspection",
+                "id": "PyChainedComparisonsInspection",
                 "shortDescription": {
-                  "text": "Improper first parameter"
+                  "text": "Too complex chained comparisons"
                 },
                 "fullDescription": {
-                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
-                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
+                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
+                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyMethodParameters",
+                    "suppressToolId": "PyChainedComparisons",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1804,21 +1804,21 @@
                 ]
               },
               {
-                "id": "PyOldStyleClassesInspection",
+                "id": "PyAbstractClassInspection",
                 "shortDescription": {
-                  "text": "Old-style class contains new-style class features"
+                  "text": "Class must implement all abstract methods"
                 },
                 "fullDescription": {
-                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
-                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
+                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
+                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyOldStyleClasses",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyAbstractClass",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -1837,21 +1837,21 @@
                 ]
               },
               {
-                "id": "PyAbstractClassInspection",
+                "id": "PyOldStyleClassesInspection",
                 "shortDescription": {
-                  "text": "Class must implement all abstract methods"
+                  "text": "Old-style class contains new-style class features"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when not all abstract properties or methods are defined in a subclass. Example: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_triangle(self):\n        pass' When the quick-fix is applied, the IDE implements an abstract method for the 'Triangle' class: 'from abc import abstractmethod, ABC\n\n\nclass Figure(ABC):\n\n    @abstractmethod\n    def do_figure(self):\n        pass\n\n\nclass Triangle(Figure):\n    def do_figure(self):\n        pass\n\n    def do_triangle(self):\n        pass'",
-                  "markdown": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
+                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyAbstractClass",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyOldStyleClasses",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -2332,21 +2332,21 @@
                 ]
               },
               {
-                "id": "PyStubPackagesCompatibilityInspection",
+                "id": "PyProtectedMemberInspection",
                 "shortDescription": {
-                  "text": "Incompatible stub packages"
+                  "text": "Accessing a protected member of a class or a module"
                 },
                 "fullDescription": {
-                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
-                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
+                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
+                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyStubPackagesCompatibility",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyProtectedMember",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -2365,21 +2365,21 @@
                 ]
               },
               {
-                "id": "PyProtectedMemberInspection",
+                "id": "PyStubPackagesCompatibilityInspection",
                 "shortDescription": {
-                  "text": "Accessing a protected member of a class or a module"
+                  "text": "Incompatible stub packages"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
-                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
+                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
+                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyProtectedMember",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyStubPackagesCompatibility",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -2794,19 +2794,19 @@
                 ]
               },
               {
-                "id": "PyClassicStyleClassInspection",
+                "id": "PyprojectInspection",
                 "shortDescription": {
-                  "text": "Classic style class usage"
+                  "text": "Depencencies in pyproject.toml"
                 },
                 "fullDescription": {
-                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
-                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
+                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
+                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
                 },
                 "defaultConfiguration": {
-                  "enabled": false,
+                  "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyClassicStyleClass",
+                    "suppressToolId": "PyprojectInspection",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -2827,19 +2827,19 @@
                 ]
               },
               {
-                "id": "PyprojectInspection",
+                "id": "PyClassicStyleClassInspection",
                 "shortDescription": {
-                  "text": "Depencencies in pyproject.toml"
+                  "text": "Classic style class usage"
                 },
                 "fullDescription": {
-                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
-                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
+                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
+                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
                 },
                 "defaultConfiguration": {
-                  "enabled": true,
+                  "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyprojectInspection",
+                    "suppressToolId": "PyClassicStyleClass",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -4051,39 +4051,6 @@
                 ]
               },
               {
-                "id": "XmlDuplicatedId",
-                "shortDescription": {
-                  "text": "Duplicate 'id' attribute"
-                },
-                "fullDescription": {
-                  "text": "Reports a duplicate 'id' attribute in XML.",
-                  "markdown": "Reports a duplicate `id` attribute in XML."
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "error",
-                  "parameters": {
-                    "suppressToolId": "XmlDuplicatedId",
-                    "ideaSeverity": "ERROR",
-                    "qodanaSeverity": "Critical"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "XML",
-                      "index": 3,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "JsonSchemaDeprecation",
                 "shortDescription": {
                   "text": "Deprecated JSON property"
@@ -4106,6 +4073,39 @@
                     "target": {
                       "id": "JSON and JSON5",
                       "index": 5,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "XmlDuplicatedId",
+                "shortDescription": {
+                  "text": "Duplicate 'id' attribute"
+                },
+                "fullDescription": {
+                  "text": "Reports a duplicate 'id' attribute in XML.",
+                  "markdown": "Reports a duplicate `id` attribute in XML."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "error",
+                  "parameters": {
+                    "suppressToolId": "XmlDuplicatedId",
+                    "ideaSeverity": "ERROR",
+                    "qodanaSeverity": "Critical"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "XML",
+                      "index": 3,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "RegExpOctalEscape",
-                "shortDescription": {
-                  "text": "Octal escape"
-                },
-                "fullDescription": {
-                  "text": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion. Example: '\\07' After the quick-fix is applied: '\\x07' New in 2017.1",
-                  "markdown": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion.\n\n**Example:**\n\n\n      \\07\n\nAfter the quick-fix is applied:\n\n\n      \\x07\n\nNew in 2017.1"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "note",
-                  "parameters": {
-                    "suppressToolId": "RegExpOctalEscape",
-                    "ideaSeverity": "INFORMATION",
-                    "qodanaSeverity": "Info"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "RegExp",
-                      "index": 6,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "HtmlExtraClosingTag",
                 "shortDescription": {
                   "text": "Redundant closing tag"
@@ -5393,6 +5360,39 @@
                     "target": {
                       "id": "HTML",
                       "index": 8,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "RegExpOctalEscape",
+                "shortDescription": {
+                  "text": "Octal escape"
+                },
+                "fullDescription": {
+                  "text": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion. Example: '\\07' After the quick-fix is applied: '\\x07' New in 2017.1",
+                  "markdown": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion.\n\n**Example:**\n\n\n      \\07\n\nAfter the quick-fix is applied:\n\n\n      \\x07\n\nNew in 2017.1"
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "note",
+                  "parameters": {
+                    "suppressToolId": "RegExpOctalEscape",
+                    "ideaSeverity": "INFORMATION",
+                    "qodanaSeverity": "Info"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RegExp",
+                      "index": 6,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5767,39 +5767,6 @@
                 ]
               },
               {
-                "id": "RegExpEscapedMetaCharacter",
-                "shortDescription": {
-                  "text": "Escaped meta character"
-                },
-                "fullDescription": {
-                  "text": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character '[', ']' and '^', because those would need additional escaping inside a character class. Example: '\\d+\\.\\d+' After the quick-fix is applied: '\\d+[.]\\d+' New in 2017.1",
-                  "markdown": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "note",
-                  "parameters": {
-                    "suppressToolId": "RegExpEscapedMetaCharacter",
-                    "ideaSeverity": "INFORMATION",
-                    "qodanaSeverity": "Info"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "RegExp",
-                      "index": 6,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "LossyEncoding",
                 "shortDescription": {
                   "text": "Lossy encoding"
@@ -5833,21 +5800,21 @@
                 ]
               },
               {
-                "id": "RegExpRepeatedSpace",
+                "id": "RegExpEscapedMetaCharacter",
                 "shortDescription": {
-                  "text": "Consecutive spaces"
+                  "text": "Escaped meta character"
                 },
                 "fullDescription": {
-                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
-                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+                  "text": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character '[', ']' and '^', because those would need additional escaping inside a character class. Example: '\\d+\\.\\d+' After the quick-fix is applied: '\\d+[.]\\d+' New in 2017.1",
+                  "markdown": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
-                  "enabled": true,
-                  "level": "warning",
+                  "enabled": false,
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "RegExpRepeatedSpace",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "RegExpEscapedMetaCharacter",
+                    "ideaSeverity": "INFORMATION",
+                    "qodanaSeverity": "Info"
                   }
                 },
                 "relationships": [
@@ -5879,6 +5846,39 @@
                   "level": "warning",
                   "parameters": {
                     "suppressToolId": "RegExpDuplicateAlternationBranch",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RegExp",
+                      "index": 6,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "RegExpRepeatedSpace",
+                "shortDescription": {
+                  "text": "Consecutive spaces"
+                },
+                "fullDescription": {
+                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
+                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+                },
+                "defaultConfiguration": {
+                  "enabled": true,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "RegExpRepeatedSpace",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-03-30T13:34:24.588809857Z",
+          "startTimeUtc": "2024-03-30T13:35:09.35149875Z",
           "exitCode": 0,
           "toolExecutionNotifications": [
             {
@@ -6683,7 +6683,7 @@
                 "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
               },
               "level": "error",
-              "timeUtc": "2024-03-30T13:34:30.820289962Z",
+              "timeUtc": "2024-03-30T13:35:15.511931806Z",
               "properties": {
                 "qodanaKind": "sanityFailure"
               }
@@ -6696,11 +6696,11 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "f14f286844e6dec7ad7be1cfd399a27aae683217",
+          "revisionId": "3255c63e6c7c1908bca7d4f7cc741f6c0e54012b",
           "branch": "refs/heads/106-bug-video-returned-by-youtube-isnt-what-was-requested",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
-            "lastAuthorName": "Nat1anWasTaken",
+            "lastAuthorName": "Nat1an",
             "vcsType": "Git",
             "lastAuthorEmail": "nathan@nat1an.xyz"
           }
@@ -7150,9 +7150,9 @@
       ],
       "automationDetails": {
         "id": "project/qodana/2024-03-30",
-        "guid": "88a52062-bd16-4c10-9f1c-9cae89ad3e71",
+        "guid": "f2d6cd43-a293-46eb-81ef-8cd7984941e5",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491137275"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491142477"
         }
       },
       "newlineSequences": [
@@ -7790,110 +7790,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'VoiceChannel'",
-              "markdown": "Unresolved reference 'VoiceChannel'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 34,
-                    "charOffset": 33,
-                    "charLength": 12,
-                    "snippet": {
-                      "text": "VoiceChannel"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "4cf1318a84233b52f781eea642fb51072f097e48b08c39e0d92808bab326117e"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'VoiceClient'",
-              "markdown": "Unresolved reference 'VoiceClient'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 21,
-                    "charOffset": 20,
-                    "charLength": 11,
-                    "snippet": {
-                      "text": "VoiceClient"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "51d8712e942fce253198977b5c0d98c6b38ec974f9bb936b41afef8b48dadec4"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'disnake'",
               "markdown": "Unresolved reference 'disnake'"
             },
@@ -8102,58 +7998,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'lavalink'",
-              "markdown": "Unresolved reference 'lavalink'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 6,
-                    "charOffset": 51,
-                    "charLength": 8,
-                    "snippet": {
-                      "text": "lavalink"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 111,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "84ea173295f4f3aee284ad09db79ba824eccb3016b6f2e0699aeba72f3cb3b99"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "No module named 're'",
               "markdown": "No module named 're'"
             },
@@ -8195,58 +8039,6 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 6,
-                    "charOffset": 5,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "963fdd45834a0410ffadece9fda1391bf97ee18a54a7b5699fc233102322ed5f"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8362,6 +8154,58 @@
             "kind": "fail",
             "level": "error",
             "message": {
+              "text": "Unresolved reference 'Union'",
+              "markdown": "Unresolved reference 'Union'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/utils.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 3,
+                    "startColumn": 20,
+                    "charOffset": 52,
+                    "charLength": 5,
+                    "snippet": {
+                      "text": "Union"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 101,
+                    "snippet": {
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "aaba4db1aeb7b64c9f6640a9d9a8f63eac8345f3fb978802afb907546a4ca228"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
               "text": "Unresolved reference 'Exception'",
               "markdown": "Unresolved reference 'Exception'"
             },
@@ -8455,6 +8299,110 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "cc7097b4f547688980830e6e1610da0e65fb7a7a0bcf81cea4118582ee8c3f71"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "No module named 'subprocess'",
+              "markdown": "No module named 'subprocess'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/utils.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 2,
+                    "startColumn": 8,
+                    "charOffset": 22,
+                    "charLength": 10,
+                    "snippet": {
+                      "text": "subprocess"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 78,
+                    "snippet": {
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "dc5085730eeb38bcb6ef286af37a6df61aafa27258bac4214ab750294cc18566"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'typing'",
+              "markdown": "Unresolved reference 'typing'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/utils.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 3,
+                    "startColumn": 6,
+                    "charOffset": 38,
+                    "charLength": 6,
+                    "snippet": {
+                      "text": "typing"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 101,
+                    "snippet": {
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "e30e9d8b0f4fa66d39bf147e6c3d20a307bd08cd186402a7fc048340419e4903"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8611,6 +8559,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "f6158208da390ef9c169759c4e651ff041a971c724d9b413c3f6d07cda187566"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "No module named 'asyncio'",
+              "markdown": "No module named 'asyncio'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/utils.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 8,
+                    "charOffset": 7,
+                    "charLength": 7,
+                    "snippet": {
+                      "text": "asyncio"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 77,
+                    "snippet": {
+                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "f7c0a1f364995b2c8120457474c43830f8c89ea18efe074f1e07dbe02879fb7c"
             },
             "properties": {
               "ideaSeverity": "ERROR",

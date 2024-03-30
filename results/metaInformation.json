@@ -8,12 +8,12 @@
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "f14f286844e6dec7ad7be1cfd399a27aae683217",
+        "revisionId": "3255c63e6c7c1908bca7d4f7cc741f6c0e54012b",
         "branch": "refs/heads/106-bug-video-returned-by-youtube-isnt-what-was-requested"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491137275",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491142477",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
