@@ -1,19 +1,19 @@
 {
-  "total": 8,
+  "total": 31,
   "tools inspection": {
-    "Code Inspection": 8
+    "Code Inspection": 31
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "9fc052028fb745fbeac574690e50f4b1751ae988",
-        "branch": "refs/heads/master"
+        "revisionId": "67c2ad3efc61f9f16d4edea89b8e51ccf9c2ac69",
+        "branch": "refs/heads/revert-107-106-bug-video-returned-by-youtube-isnt-what-was-requested"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491100406",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491099865",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
