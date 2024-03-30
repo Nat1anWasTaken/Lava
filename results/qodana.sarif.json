@@ -1738,21 +1738,21 @@
                 ]
               },
               {
-                "id": "PyRedundantParenthesesInspection",
+                "id": "PyTrailingSemicolonInspection",
                 "shortDescription": {
-                  "text": "Redundant parentheses"
+                  "text": "Prohibited trailing semicolon in a statement"
                 },
                 "fullDescription": {
-                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
-                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
+                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
+                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyRedundantParentheses",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyTrailingSemicolon",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -1771,21 +1771,21 @@
                 ]
               },
               {
-                "id": "PyTrailingSemicolonInspection",
+                "id": "PyRedundantParenthesesInspection",
                 "shortDescription": {
-                  "text": "Prohibited trailing semicolon in a statement"
+                  "text": "Redundant parentheses"
                 },
                 "fullDescription": {
-                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
-                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
+                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
+                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyTrailingSemicolon",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyRedundantParentheses",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -2332,21 +2332,21 @@
                 ]
               },
               {
-                "id": "PyStubPackagesCompatibilityInspection",
+                "id": "PyProtectedMemberInspection",
                 "shortDescription": {
-                  "text": "Incompatible stub packages"
+                  "text": "Accessing a protected member of a class or a module"
                 },
                 "fullDescription": {
-                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
-                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
+                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
+                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyStubPackagesCompatibility",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyProtectedMember",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -2365,21 +2365,21 @@
                 ]
               },
               {
-                "id": "PyProtectedMemberInspection",
+                "id": "PyStubPackagesCompatibilityInspection",
                 "shortDescription": {
-                  "text": "Accessing a protected member of a class or a module"
+                  "text": "Incompatible stub packages"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
-                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
+                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
+                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyProtectedMember",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyStubPackagesCompatibility",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "HtmlExtraClosingTag",
-                "shortDescription": {
-                  "text": "Redundant closing tag"
-                },
-                "fullDescription": {
-                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
-                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "HtmlExtraClosingTag",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "HTML",
-                      "index": 8,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "RegExpOctalEscape",
                 "shortDescription": {
                   "text": "Octal escape"
@@ -5393,6 +5360,39 @@
                     "target": {
                       "id": "RegExp",
                       "index": 6,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "HtmlExtraClosingTag",
+                "shortDescription": {
+                  "text": "Redundant closing tag"
+                },
+                "fullDescription": {
+                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
+                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "HtmlExtraClosingTag",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "HTML",
+                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5833,19 +5833,19 @@
                 ]
               },
               {
-                "id": "RegExpRepeatedSpace",
+                "id": "RegExpDuplicateAlternationBranch",
                 "shortDescription": {
-                  "text": "Consecutive spaces"
+                  "text": "Duplicate branch in alternation"
                 },
                 "fullDescription": {
-                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
-                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
+                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "RegExpRepeatedSpace",
+                    "suppressToolId": "RegExpDuplicateAlternationBranch",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5866,19 +5866,19 @@
                 ]
               },
               {
-                "id": "RegExpDuplicateAlternationBranch",
+                "id": "RegExpRepeatedSpace",
                 "shortDescription": {
-                  "text": "Duplicate branch in alternation"
+                  "text": "Consecutive spaces"
                 },
                 "fullDescription": {
-                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
-                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
+                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "RegExpDuplicateAlternationBranch",
+                    "suppressToolId": "RegExpRepeatedSpace",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-03-30T13:24:09.746864916Z",
+          "startTimeUtc": "2024-03-30T13:24:13.958366582Z",
           "exitCode": 0,
           "toolExecutionNotifications": [
             {
@@ -6683,7 +6683,7 @@
                 "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
               },
               "level": "error",
-              "timeUtc": "2024-03-30T13:24:16.064761589Z",
+              "timeUtc": "2024-03-30T13:24:20.114466832Z",
               "properties": {
                 "qodanaKind": "sanityFailure"
               }
@@ -6696,11 +6696,11 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "0160c306fe5f75d7dfb1a3dc1b8c1411c050b8d2",
-          "branch": "refs/heads/master",
+          "revisionId": "cd5e20d83c1ffe55b6617bc3e38c8e3ab5e94752",
+          "branch": "refs/heads/106-bug-video-returned-by-youtube-isnt-what-was-requested",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
-            "lastAuthorName": "Nat1an",
+            "lastAuthorName": "Nat1anWasTaken",
             "vcsType": "Git",
             "lastAuthorEmail": "nathan@nat1an.xyz"
           }
@@ -7150,9 +7150,9 @@
       ],
       "automationDetails": {
         "id": "project/qodana/2024-03-30",
-        "guid": "b8a4a9b1-1e04-40f9-b03d-c7a3f9706ce3",
+        "guid": "8b17af59-ba12-4daf-8dab-c0d16faccd6d",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491091817"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491092434"
         }
       },
       "newlineSequences": [
@@ -7790,6 +7790,110 @@
             "kind": "fail",
             "level": "error",
             "message": {
+              "text": "Unresolved reference 'VoiceChannel'",
+              "markdown": "Unresolved reference 'VoiceChannel'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/voice_client.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 34,
+                    "charOffset": 33,
+                    "charLength": 12,
+                    "snippet": {
+                      "text": "VoiceChannel"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 110,
+                    "snippet": {
+                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "4cf1318a84233b52f781eea642fb51072f097e48b08c39e0d92808bab326117e"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'VoiceClient'",
+              "markdown": "Unresolved reference 'VoiceClient'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/voice_client.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 21,
+                    "charOffset": 20,
+                    "charLength": 11,
+                    "snippet": {
+                      "text": "VoiceClient"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 110,
+                    "snippet": {
+                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "51d8712e942fce253198977b5c0d98c6b38ec974f9bb936b41afef8b48dadec4"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
               "text": "Unresolved reference 'disnake'",
               "markdown": "Unresolved reference 'disnake'"
             },
@@ -7998,6 +8102,58 @@
             "kind": "fail",
             "level": "error",
             "message": {
+              "text": "Unresolved reference 'lavalink'",
+              "markdown": "Unresolved reference 'lavalink'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/voice_client.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 2,
+                    "startColumn": 6,
+                    "charOffset": 51,
+                    "charLength": 8,
+                    "snippet": {
+                      "text": "lavalink"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 111,
+                    "snippet": {
+                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "84ea173295f4f3aee284ad09db79ba824eccb3016b6f2e0699aeba72f3cb3b99"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
               "text": "No module named 're'",
               "markdown": "No module named 're'"
             },
@@ -8039,6 +8195,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'disnake'",
+              "markdown": "Unresolved reference 'disnake'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/voice_client.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 6,
+                    "charOffset": 5,
+                    "charLength": 7,
+                    "snippet": {
+                      "text": "disnake"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 110,
+                    "snippet": {
+                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "963fdd45834a0410ffadece9fda1391bf97ee18a54a7b5699fc233102322ed5f"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8154,58 +8362,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'Union'",
-              "markdown": "Unresolved reference 'Union'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 3,
-                    "startColumn": 20,
-                    "charOffset": 52,
-                    "charLength": 5,
-                    "snippet": {
-                      "text": "Union"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 101,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "aaba4db1aeb7b64c9f6640a9d9a8f63eac8345f3fb978802afb907546a4ca228"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'Exception'",
               "markdown": "Unresolved reference 'Exception'"
             },
@@ -8299,110 +8455,6 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "cc7097b4f547688980830e6e1610da0e65fb7a7a0bcf81cea4118582ee8c3f71"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 'subprocess'",
-              "markdown": "No module named 'subprocess'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 8,
-                    "charOffset": 22,
-                    "charLength": 10,
-                    "snippet": {
-                      "text": "subprocess"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 78,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "dc5085730eeb38bcb6ef286af37a6df61aafa27258bac4214ab750294cc18566"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'typing'",
-              "markdown": "Unresolved reference 'typing'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 3,
-                    "startColumn": 6,
-                    "charOffset": 38,
-                    "charLength": 6,
-                    "snippet": {
-                      "text": "typing"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 101,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "e30e9d8b0f4fa66d39bf147e6c3d20a307bd08cd186402a7fc048340419e4903"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8559,58 +8611,6 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "f6158208da390ef9c169759c4e651ff041a971c724d9b413c3f6d07cda187566"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 'asyncio'",
-              "markdown": "No module named 'asyncio'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 8,
-                    "charOffset": 7,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "asyncio"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 77,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "f7c0a1f364995b2c8120457474c43830f8c89ea18efe074f1e07dbe02879fb7c"
             },
             "properties": {
               "ideaSeverity": "ERROR",

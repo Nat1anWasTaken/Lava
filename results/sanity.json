@@ -378,6 +378,68 @@
     "Sanity"
   ],
   "severity": "Critical",
+  "comment": "Unresolved reference 'VoiceChannel'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 34,
+      "length": 12,
+      "code": {
+        "startLine": 1,
+        "length": 12,
+        "offset": 33,
+        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "4cf1318a84233b52f781eea642fb51072f097e48b08c39e0d92808bab326117e"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Unresolved reference 'VoiceClient'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 21,
+      "length": 11,
+      "code": {
+        "startLine": 1,
+        "length": 11,
+        "offset": 20,
+        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "51d8712e942fce253198977b5c0d98c6b38ec974f9bb936b41afef8b48dadec4"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
   "comment": "Unresolved reference 'disnake'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
@@ -502,6 +564,37 @@
     "Sanity"
   ],
   "severity": "Critical",
+  "comment": "Unresolved reference 'lavalink'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 2,
+      "offset": 6,
+      "length": 8,
+      "code": {
+        "startLine": 1,
+        "length": 8,
+        "offset": 51,
+        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "84ea173295f4f3aee284ad09db79ba824eccb3016b6f2e0699aeba72f3cb3b99"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
   "comment": "No module named 're'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
@@ -525,6 +618,37 @@
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
   "hash": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unresolved references",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Unresolved reference 'disnake'",
+  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 6,
+      "length": 7,
+      "code": {
+        "startLine": 1,
+        "length": 7,
+        "offset": 5,
+        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnresolvedReferencesInspection"
+  },
+  "hash": "963fdd45834a0410ffadece9fda1391bf97ee18a54a7b5699fc233102322ed5f"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -595,37 +719,6 @@
     "Sanity"
   ],
   "severity": "Critical",
-  "comment": "Unresolved reference 'Union'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 3,
-      "offset": 20,
-      "length": 5,
-      "code": {
-        "startLine": 1,
-        "length": 5,
-        "offset": 52,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "aaba4db1aeb7b64c9f6640a9d9a8f63eac8345f3fb978802afb907546a4ca228"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
   "comment": "Unresolved reference 'Exception'",
   "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
   "sources": [
@@ -680,68 +773,6 @@
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
   "hash": "cc7097b4f547688980830e6e1610da0e65fb7a7a0bcf81cea4118582ee8c3f71"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
-  "comment": "No module named 'subprocess'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 2,
-      "offset": 8,
-      "length": 10,
-      "code": {
-        "startLine": 1,
-        "length": 10,
-        "offset": 22,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "dc5085730eeb38bcb6ef286af37a6df61aafa27258bac4214ab750294cc18566"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
-  "comment": "Unresolved reference 'typing'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 3,
-      "offset": 6,
-      "length": 6,
-      "code": {
-        "startLine": 1,
-        "length": 6,
-        "offset": 38,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "e30e9d8b0f4fa66d39bf147e6c3d20a307bd08cd186402a7fc048340419e4903"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -835,37 +866,6 @@
     "inspectionName": "PyUnresolvedReferencesInspection"
   },
   "hash": "f6158208da390ef9c169759c4e651ff041a971c724d9b413c3f6d07cda187566"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unresolved references",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "Critical",
-  "comment": "No module named 'asyncio'",
-  "detailsInfo": "Reports references in your code that cannot be resolved.\n\nIn a dynamically typed language, this is possible in a limited number of cases.\n\nIf a reference type is unknown, then its attributes are not highlighted as unresolved even if you know that they should be:\n\n\n    def print_string(s):\n      print(s.abc())\n\nIn this code fragment `s` is always a string and `abc` should be highlighted as unresolved. However, `s`\ntype is inferred as `Any` and no warning is reported.\n\nThe IDE provides quick-fix actions to add missing references on-the-fly.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 8,
-      "length": 7,
-      "code": {
-        "startLine": 1,
-        "length": 7,
-        "offset": 7,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyUnresolvedReferencesInspection"
-  },
-  "hash": "f7c0a1f364995b2c8120457474c43830f8c89ea18efe074f1e07dbe02879fb7c"
 },{
   "tool": "Code Inspection",
   "category": "Python",
