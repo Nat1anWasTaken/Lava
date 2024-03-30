@@ -83,16 +83,16 @@
           "description": "Reports invalid usages of a class with `__slots__` definitions.\n\n**Example:**\n\n\n    class Foo:\n        __slots__ = ['foo', 'bar']\n\n\n    foo = Foo()\n    foo.baz = 'spam'\n"
         },
         {
-          "shortName": "PyMissingConstructorInspection",
-          "displayName": "Missed call to '__init__' of the super class",
-          "enabled": true,
-          "description": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
-        },
-        {
           "shortName": "PyDefaultArgumentInspection",
           "displayName": "The default argument is mutable",
           "enabled": true,
           "description": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
+        },
+        {
+          "shortName": "PyMissingConstructorInspection",
+          "displayName": "Missed call to '__init__' of the super class",
+          "enabled": true,
+          "description": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
         },
         {
           "shortName": "PyTestUnpassedFixtureInspection",
@@ -113,16 +113,16 @@
           "description": "Reports equality comparison with a boolean literal.\n\n**Example:**\n\n\n    def func(s):\n        if s.isdigit() == True:\n            return int(s)\n\nWith the quick-fix applied, the code fragment will be simplified to:\n\n\n    def func(s):\n        if s.isdigit():\n            return int(s)\n"
         },
         {
-          "shortName": "PyMethodOverridingInspection",
-          "displayName": "Method signature does not match signature of overridden method",
-          "enabled": true,
-          "description": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
-        },
-        {
           "shortName": "PoetryPackageVersionsInspection",
           "displayName": "Poetry package versions",
           "enabled": true,
           "description": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+        },
+        {
+          "shortName": "PyMethodOverridingInspection",
+          "displayName": "Method signature does not match signature of overridden method",
+          "enabled": true,
+          "description": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
         },
         {
           "shortName": "PyTestParametrizedInspection",
@@ -143,16 +143,16 @@
           "description": "Reports coroutines that were called\nwithout using the `await` syntax.\n\n**Example:**\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        bar()\n\nAfter the quick-fix is applied, the code changes to:\n\n\n    async def bar():\n        pass\n\n\n    async def foo():\n        await bar()\n"
         },
         {
-          "shortName": "PyComparisonWithNoneInspection",
-          "displayName": "Using equality operators to compare with None",
-          "enabled": true,
-          "description": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
-        },
-        {
           "shortName": "CommandLineInspection",
           "displayName": "Incorrect CLI syntax",
           "enabled": true,
           "description": "Reports the problems if the arguments of the command you type in the console are not in the proper order. The inspection also verifies\nthat option names and arguments are correct.\n\nDo not disable the inspection if you are going to use command-line interfaces like [manage.py in Django](https://www.jetbrains.com/help/pycharm/running-manage-py.html)."
+        },
+        {
+          "shortName": "PyComparisonWithNoneInspection",
+          "displayName": "Using equality operators to compare with None",
+          "enabled": true,
+          "description": "Reports comparisons with `None`. That type of comparisons\nshould always be done with `is` or `is not`, never\nthe equality operators.\n\n**Example:**\n\n\n    a = 2\n\n\n    if a == None:\n        print(\"Success\")\n\nOnce the quick-fix is applied, the code changes to:\n\n\n    a = 2\n\n\n    if a is None:\n        print(\"Success\")\n"
         },
         {
           "shortName": "PyCallingNonCallableInspection",
@@ -317,16 +317,16 @@
           "description": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
         },
         {
-          "shortName": "PyOldStyleClassesInspection",
-          "displayName": "Old-style class contains new-style class features",
-          "enabled": true,
-          "description": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
-        },
-        {
           "shortName": "PyAbstractClassInspection",
           "displayName": "Class must implement all abstract methods",
           "enabled": true,
           "description": "Reports cases when not all abstract properties or methods are defined in\na subclass.\n\n**Example:**\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_triangle(self):\n            pass\n\nWhen the quick-fix is applied, the IDE implements an abstract method for the `Triangle` class:\n\n\n    from abc import abstractmethod, ABC\n\n\n    class Figure(ABC):\n\n        @abstractmethod\n        def do_figure(self):\n            pass\n\n\n    class Triangle(Figure):\n        def do_figure(self):\n            pass\n\n        def do_triangle(self):\n            pass\n"
+        },
+        {
+          "shortName": "PyOldStyleClassesInspection",
+          "displayName": "Old-style class contains new-style class features",
+          "enabled": true,
+          "description": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
         },
         {
           "shortName": "PyArgumentListInspection",
@@ -977,16 +977,16 @@
           "description": "Reports escaped meta characters. Some RegExp coding styles specify that meta characters should be placed inside a character class, to make the regular expression easier to understand. This inspection does not warn about the meta character `[`, `]` and `^`, because those would need additional escaping inside a character class.\n\n**Example:**\n\n\n      \\d+\\.\\d+\n\nAfter the quick-fix is applied:\n\n\n      \\d+[.]\\d+\n\nNew in 2017.1"
         },
         {
-          "shortName": "RegExpDuplicateAlternationBranch",
-          "displayName": "Duplicate branch in alternation",
-          "enabled": true,
-          "description": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
-        },
-        {
           "shortName": "RegExpRepeatedSpace",
           "displayName": "Consecutive spaces",
           "enabled": true,
           "description": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+        },
+        {
+          "shortName": "RegExpDuplicateAlternationBranch",
+          "displayName": "Duplicate branch in alternation",
+          "enabled": true,
+          "description": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
         }
       ]
     },
