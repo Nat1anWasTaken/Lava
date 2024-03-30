@@ -1,1 +1,249 @@
-{"version":"3","listProblem":[]}
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "An instance attribute is defined outside `__init__`",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Instance attribute track defined outside __init__",
+  "detailsInfo": "Reports a problem when instance attribute definition is outside `__init__` method.\n\n**Example:**\n\n\n        class Book:\n        def __init__(self):\n            self.author = 'Mark Twain'\n\n        def release(self):\n            self.year = '1889'\n\n\nWhen the quick-fix is applied, the code sample changes to:\n\n\n        class Book:\n        def __init__(self):\n            self.year = '1889'\n            self.author = 'Mark Twain'\n\n        def release(self):\n            pass\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/source.py",
+      "language": "Python",
+      "line": 56,
+      "offset": 9,
+      "length": 10,
+      "code": {
+        "startLine": 54,
+        "length": 10,
+        "offset": 82,
+        "surroundingCode": "        first_track = result.tracks[0]\n        base64 = first_track.track\n        self.track = base64\n\n        getLogger('lava.sources').info(\"Loaded spotify track %s\", self.title)"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyAttributeOutsideInitInspection"
+  },
+  "hash": "b553a48c4deddb42df062a64b15d4161d51ea67ac561443955d062ab8851d072"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Class has no `__init__` method",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Class has no __init__ method",
+  "detailsInfo": "Reports cases in Python 2 when a class has no `__init__` method, neither its parent\nclasses.\n\n**Example:**\n\n\n    class Book():\n        pass\n\nThe quick-fix adds the `__init__` method:\n\n\n    class Book():\n        def __init__(self):\n            pass\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/variables.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 7,
+      "length": 9,
+      "code": {
+        "startLine": 1,
+        "length": 9,
+        "offset": 6,
+        "surroundingCode": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\""
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyClassHasNoInitInspection"
+  },
+  "hash": "be7606d77e92bcb99f2c7707d3c431b3ef89e217bc6015032fba692d52ca5bea"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unbound local variables",
+  "tags": [
+    "Python"
+  ],
+  "severity": "High",
+  "comment": "Local variable 'message' might be referenced before assignment",
+  "detailsInfo": "Reports local variables referenced before assignment.\n\n**Example:**\n\n\n    x = 0\n    if x > 10:\n        b = 3\n    print(b)\n\nThe IDE reports a problem for `print(b)`. A possible fix is:\n\n\n    x = 0\n    if x > 10:\n        b = 3\n        print(b)\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/utils.py",
+      "language": "Python",
+      "line": 200,
+      "offset": 34,
+      "length": 7,
+      "code": {
+        "startLine": 198,
+        "length": 7,
+        "offset": 48,
+        "surroundingCode": "            )\n\n            bot.loop.create_task(message.delete())\n        except (AttributeError, UnboundLocalError):\n            pass"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnboundLocalVariableInspection"
+  },
+  "hash": "3bb117c2c3e359a7a5f8ed0b50ce407ac692c970fc39560b0e1420e776256e95"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unbound local variables",
+  "tags": [
+    "Python"
+  ],
+  "severity": "High",
+  "comment": "Local variable 'player' might be referenced before assignment",
+  "detailsInfo": "Reports local variables referenced before assignment.\n\n**Example:**\n\n\n    x = 0\n    if x > 10:\n        b = 3\n    print(b)\n\nThe IDE reports a problem for `print(b)`. A possible fix is:\n\n\n    x = 0\n    if x > 10:\n        b = 3\n        print(b)\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/cogs/commands.py",
+      "language": "Python",
+      "line": 530,
+      "offset": 24,
+      "length": 6,
+      "code": {
+        "startLine": 528,
+        "length": 6,
+        "offset": 87,
+        "surroundingCode": "            await update_display(\n                bot=self.bot,\n                player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),\n                new_message=await interaction.original_response(),\n                delay=5,"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnboundLocalVariableInspection"
+  },
+  "hash": "f6e1002ca1c5f932e271808a48e75971f846c4c6be903ef118a41d1db00819fe"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unbound local variables",
+  "tags": [
+    "Python"
+  ],
+  "severity": "High",
+  "comment": "Local variable 'message' might be referenced before assignment",
+  "detailsInfo": "Reports local variables referenced before assignment.\n\n**Example:**\n\n\n    x = 0\n    if x > 10:\n        b = 3\n    print(b)\n\nThe IDE reports a problem for `print(b)`. A possible fix is:\n\n\n    x = 0\n    if x > 10:\n        b = 3\n        print(b)\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/utils.py",
+      "language": "Python",
+      "line": 276,
+      "offset": 15,
+      "length": 7,
+      "code": {
+        "startLine": 274,
+        "length": 7,
+        "offset": 25,
+        "surroundingCode": "\n    else:\n        await message.edit(embed=generate_display_embed(bot, player), components=components)\n\n    bot.logger.debug(\"Updating player in guild %s display message to %s\", bot.get_guild(player.guild_id), message.id)"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnboundLocalVariableInspection"
+  },
+  "hash": "ff68674bac662da0c2613e990346fbca6b737585f7477127a4d881d42b5593c4"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unused local symbols",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Parameter 'timeout' value is not used",
+  "detailsInfo": "Reports local variables, parameters, and functions that are locally defined, but not used name in a function.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 43,
+      "offset": 32,
+      "length": 14,
+      "code": {
+        "startLine": 41,
+        "length": 14,
+        "offset": 59,
+        "surroundingCode": "            self.cleanup()\n\n    async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,\n                      self_mute: bool = False) -> None:\n        \"\"\""
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnusedLocalInspection"
+  },
+  "hash": "7aff68364220f438337fc6fc089e6cbe6cca8bc216919d92216baf7b011138e4"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unused local symbols",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Parameter 'interaction' value is not used",
+  "detailsInfo": "Reports local variables, parameters, and functions that are locally defined, but not used name in a function.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/cogs/commands.py",
+      "language": "Python",
+      "line": 684,
+      "offset": 28,
+      "length": 42,
+      "code": {
+        "startLine": 682,
+        "length": 42,
+        "offset": 60,
+        "surroundingCode": "\n    @play.autocomplete(\"query\")\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\", query):\n            return []"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnusedLocalInspection"
+  },
+  "hash": "d75467a284812476427f939f071eaa47765aca768dc29f9bac63a2964823cef2"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Unused local symbols",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Parameter 'reconnect' value is not used",
+  "detailsInfo": "Reports local variables, parameters, and functions that are locally defined, but not used name in a function.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/voice_client.py",
+      "language": "Python",
+      "line": 43,
+      "offset": 48,
+      "length": 15,
+      "code": {
+        "startLine": 41,
+        "length": 15,
+        "offset": 75,
+        "surroundingCode": "            self.cleanup()\n\n    async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,\n                      self_mute: bool = False) -> None:\n        \"\"\""
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyUnusedLocalInspection"
+  },
+  "hash": "da04a5cd4e65db71fdc174052f9f085a16ec32563813f4f883c2de9cc2d0e0ac"
+}]}
