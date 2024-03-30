@@ -1,7 +1,7 @@
 {
-  "total": 8,
+  "total": 31,
   "tools inspection": {
-    "Code Inspection": 8
+    "Code Inspection": 31
   },
   "linter": "QDPYC",
   "attributes": {
@@ -9,11 +9,11 @@
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
         "revisionId": "e2e804a189ad803eb904c2dee39fa5602298e22a",
-        "branch": "refs/heads/master"
+        "branch": "refs/heads/feat-apple-music"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491150727",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8491859339",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
