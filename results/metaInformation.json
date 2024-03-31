@@ -1,19 +1,19 @@
 {
-  "total": 2,
+  "total": 8,
   "tools inspection": {
-    "Code Inspection": 2
+    "Code Inspection": 8
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "d9350ccc99db63e14b8610cc03e539cebfe7398d",
-        "branch": "26-feat-custom-status-and-latency-display"
+        "revisionId": "07cf2a6acf183594ea2d3aca742c12d24c480b69",
+        "branch": "refs/heads/master"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8496398135",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8497243239",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
