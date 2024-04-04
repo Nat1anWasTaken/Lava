@@ -5,7 +5,7 @@ import os
 from os import getenv
 
 from colorlog import ColoredFormatter
-from disnake import Intents, Streaming, Activity, Game, ActivityType
+from disnake import Intents, Activity, BaseActivity, PartialEmoji
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
@@ -21,14 +21,12 @@ def main():
 
     loop = asyncio.new_event_loop()
 
-    activity = set_activity()    
-
     bot = Bot(
         logger=main_logger,
         command_prefix=getenv("PREFIX", "l!"),
         intents=Intents.all(),
         loop=loop,
-        activity=activity,
+        activity=get_activity(),
         command_sync_flags=CommandSyncFlags.default(),
     )
 
@@ -39,24 +37,11 @@ def main():
     bot.run(os.environ["TOKEN"])
 
 
-def set_activity():
+def get_activity() -> BaseActivity:
     with open("configs/activity.json", "r") as f:
         activity = json.load(f)
 
-    status = activity["status"]
-    name = activity["name"]
-
-    match status:
-        case "playing":
-            activity = Game(name=name)
-        case "listening":
-            activity = Activity(type=ActivityType.listening, name=name)
-        case "streaming":
-            activity = Streaming(name=name, url=activity["url"])
-        case "watching":
-            activity = Activity(type=ActivityType.watching, name=name)
-
-    return activity
+    return Activity(**activity)
 
 
 def setup_logging():
