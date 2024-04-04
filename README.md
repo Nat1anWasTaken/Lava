@@ -53,6 +53,7 @@
       </ul>
     </li>
     <li><a href="#用法">用法</a></li>
+    <li><a href="#設定">設定</a></li>
     <li><a href="#計畫">計畫</a></li>
     <li><a href="#授權">授權</a></li>
     <li><a href="#貢獻">貢獻</a><li>
@@ -143,6 +144,51 @@ docker run -it \
 在成功架設起機器人並邀請進伺服器後，你可以直接使用 `/play` 指令播放音樂，就像上方的截圖一樣
 
 每個指令的用途都寫在了指令描述裡，你可以透過他們來學會如何使用這個機器人
+
+<p align="right">(<a href="#readme-top">回到頂部</a>)</p>
+
+<!-- CONFIGURATION -->
+
+## 設定
+Lava 提供了一些簡單的設定讓你能夠輕鬆地自定義你的音樂機器人，像是：
+
+### 進度條 
+你可以透過修改 `configs/icons.json` 來自定義進度條要使用的表情符號
+```json
+{
+    "empty": "⬛",
+    "progress": {
+        "start_point": "⬜",
+        "start_fill": "⬜",
+        "mid_point": "⬜",
+        "end_fill": "⬛",
+        "end_point": "⬛",
+        "end": "⬛"
+    },
+    "control": {
+        "rewind": "⏪",
+        "forward": "⏩",
+        "pause": "⏸️",
+        "resume": "▶️",
+        "stop": "⏹️",
+        "previous": "⏮️",
+        "next": "⏭️",
+        "shuffle": "🔀",
+        "repeat": "🔁",
+        "autoplay": "🔥"
+    }
+}
+```
+
+### 狀態
+你可以透過修改 `configs/activity.json` 來自定義機器人的狀態
+```json
+{
+    "type": 0, // 0: 正在玩, 1: 正在直播, 2: 正在聆聽, 3: 正在觀看
+    "name": "音樂", // 狀態文字
+    "url": "" // 直播連結（僅適用於直播狀態）
+}
+```
 
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
