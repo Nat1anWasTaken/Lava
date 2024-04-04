@@ -73,37 +73,6 @@
   "sources": [
     {
       "type": "file",
-      "path": "main.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 2547,
-      "code": {
-        "startLine": 1,
-        "length": 2547,
-        "offset": 0,
-        "surroundingCode": "import asyncio\r\nimport json\r\nimport logging\r\nimport os\r\nfrom os import getenv\r\n\r\nfrom colorlog import ColoredFormatter\r\nfrom disnake import Intents, Streaming, Activity, Game, ActivityType\r\nfrom disnake.ext.commands import CommandSyncFlags\r\nfrom dotenv import load_dotenv\r\n\r\nfrom lava.bot import Bot\r\n\r\n\r\ndef main():\r\n    load_dotenv(\"stack.env\")\r\n\r\n    setup_logging()\r\n\r\n    main_logger = logging.getLogger(\"lava.main\")\r\n\r\n    loop = asyncio.new_event_loop()\r\n\r\n    activity = set_activity()    \r\n\r\n    bot = Bot(\r\n        logger=main_logger,\r\n        command_prefix=getenv(\"PREFIX\", \"l!\"),\r\n        intents=Intents.all(),\r\n        loop=loop,\r\n        activity=activity,\r\n        command_sync_flags=CommandSyncFlags.default(),\r\n    )\r\n\r\n    bot.i18n.load(\"locale/\")\r\n\r\n    load_extensions(bot)\r\n\r\n    bot.run(os.environ[\"TOKEN\"])\r\n\r\n\r\ndef set_activity():\r\n    with open(\"configs/activity.json\", \"r\") as f:\r\n        activity = json.load(f)\r\n\r\n    status = activity[\"status\"]\r\n    name = activity[\"name\"]\r\n\r\n    match status:\r\n        case \"playing\":\r\n            activity = Game(name=name)\r\n        case \"listening\":\r\n            activity = Activity(type=ActivityType.listening, name=name)\r\n        case \"streaming\":\r\n            activity = Streaming(name=name, url=activity[\"url\"])\r\n        case \"watching\":\r\n            activity = Activity(type=ActivityType.watching, name=name)\r\n\r\n    return activity\r\n\r\n\r\ndef setup_logging():\r\n    \"\"\"\r\n    Set up the loggings for the bot\r\n    :return: None\r\n    \"\"\"\r\n    formatter = ColoredFormatter(\r\n        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',\r\n        datefmt='%Y-%m-%d %H:%M:%S',\r\n        log_colors={\r\n            'DEBUG': 'cyan',\r\n            'INFO': 'white',\r\n            'WARNING': 'yellow',\r\n            'ERROR': 'red',\r\n            'CRITICAL': 'bold_red',\r\n        }\r\n    )\r\n\r\n    stream_handler = logging.StreamHandler()\r\n    stream_handler.setLevel(logging.INFO)\r\n    stream_handler.setFormatter(formatter)\r\n\r\n    file_handler = logging.FileHandler(filename=\"lava.log\", encoding=\"utf-8\", mode=\"w\")\r\n    file_handler.setLevel(logging.DEBUG)\r\n    file_handler.setFormatter(formatter)\r\n\r\n    logging.basicConfig(\r\n        handlers=[stream_handler, file_handler], level=logging.INFO\r\n    )\r\n\r\n\r\ndef load_extensions(bot: Bot) -> Bot:\r\n    \"\"\"\r\n    Load extensions in extensions.json file\r\n    :param bot: The bot to load the extensions to\r\n    :return: The bot\r\n    \"\"\"\r\n    with open(\"extensions.json\", \"r\") as f:\r\n        extensions = json.load(f)\r\n\r\n    for extension in extens"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyInterpreterInspection"
-  },
-  "hash": "516f3be82ca1a70504b0e28b1f3457c1c0541042fdda1f020869c771cbfa3094"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "An invalid interpreter",
-  "tags": [
-    "Sanity"
-  ],
-  "severity": "High",
-  "comment": "No Python interpreter configured for the project",
-  "detailsInfo": "Reports problems if there is no Python interpreter configured for the project or if the interpreter is invalid. Without a properly\nconfigured interpreter, you cannot execute your Python scripts and benefit from some Python code insight features.\n\nThe IDE provides quick access to the interpreter settings.",
-  "sources": [
-    {
-      "type": "file",
       "path": "lava/bot.py",
       "language": "Python",
       "line": 1,
@@ -246,6 +215,37 @@
     "inspectionName": "PyInterpreterInspection"
   },
   "hash": "920ee80fcb895ece91d14b1b57f0dbec728ee53609a9bc96e5d4dec713bd62a2"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "An invalid interpreter",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "High",
+  "comment": "No Python interpreter configured for the project",
+  "detailsInfo": "Reports problems if there is no Python interpreter configured for the project or if the interpreter is invalid. Without a properly\nconfigured interpreter, you cannot execute your Python scripts and benefit from some Python code insight features.\n\nThe IDE provides quick access to the interpreter settings.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "main.py",
+      "language": "Python",
+      "line": 1,
+      "offset": 1,
+      "length": 2115,
+      "code": {
+        "startLine": 1,
+        "length": 2115,
+        "offset": 0,
+        "surroundingCode": "import asyncio\r\nimport json\r\nimport logging\r\nimport os\r\nfrom os import getenv\r\n\r\nfrom colorlog import ColoredFormatter\r\nfrom disnake import Intents, Activity, BaseActivity, PartialEmoji\r\nfrom disnake.ext.commands import CommandSyncFlags\r\nfrom dotenv import load_dotenv\r\n\r\nfrom lava.bot import Bot\r\n\r\n\r\ndef main():\r\n    load_dotenv(\"stack.env\")\r\n\r\n    setup_logging()\r\n\r\n    main_logger = logging.getLogger(\"lava.main\")\r\n\r\n    loop = asyncio.new_event_loop()\r\n\r\n    bot = Bot(\r\n        logger=main_logger,\r\n        command_prefix=getenv(\"PREFIX\", \"l!\"),\r\n        intents=Intents.all(),\r\n        loop=loop,\r\n        activity=get_activity(),\r\n        command_sync_flags=CommandSyncFlags.default(),\r\n    )\r\n\r\n    bot.i18n.load(\"locale/\")\r\n\r\n    load_extensions(bot)\r\n\r\n    bot.run(os.environ[\"TOKEN\"])\r\n\r\n\r\ndef get_activity() -> BaseActivity:\r\n    with open(\"configs/activity.json\", \"r\") as f:\r\n        activity = json.load(f)\r\n\r\n    return Activity(**activity)\r\n\r\n\r\ndef setup_logging():\r\n    \"\"\"\r\n    Set up the loggings for the bot\r\n    :return: None\r\n    \"\"\"\r\n    formatter = ColoredFormatter(\r\n        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',\r\n        datefmt='%Y-%m-%d %H:%M:%S',\r\n        log_colors={\r\n            'DEBUG': 'cyan',\r\n            'INFO': 'white',\r\n            'WARNING': 'yellow',\r\n            'ERROR': 'red',\r\n            'CRITICAL': 'bold_red',\r\n        }\r\n    )\r\n\r\n    stream_handler = logging.StreamHandler()\r\n    stream_handler.setLevel(logging.INFO)\r\n    stream_handler.setFormatter(formatter)\r\n\r\n    file_handler = logging.FileHandler(filename=\"lava.log\", encoding=\"utf-8\", mode=\"w\")\r\n    file_handler.setLevel(logging.DEBUG)\r\n    file_handler.setFormatter(formatter)\r\n\r\n    logging.basicConfig(\r\n        handlers=[stream_handler, file_handler], level=logging.INFO\r\n    )\r\n\r\n\r\ndef load_extensions(bot: Bot) -> Bot:\r\n    \"\"\"\r\n    Load extensions in extensions.json file\r\n    :param bot: The bot to load the extensions to\r\n    :return: The bot\r\n    \"\"\"\r\n    with open(\"extensions.json\", \"r\") as f:\r\n        extensions = json.load(f)\r\n\r\n    for extension in extensions:\r\n        "
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyInterpreterInspection"
+  },
+  "hash": "9697b19a8e70091ef03d8987a44b742eba2ba8ac58fd4014676beae3777ba23f"
 },{
   "tool": "Code Inspection",
   "category": "Python",
