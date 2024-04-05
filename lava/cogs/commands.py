@@ -98,8 +98,13 @@ class Commands(Cog):
     async def ping(self, interaction: ApplicationCommandInteraction):
         locale = str(interaction.locale)
 
-        await interaction.response.send_message(embed=InfoEmbed(self.bot.get_text("command.ping.title", locale, "機器人延遲"), description=f"{round(self.bot.latency * 1000)}ms"))
-    
+        await interaction.response.send_message(
+            embed=InfoEmbed(
+                self.bot.get_text("command.ping.title", locale, "機器人延遲"),
+                description=f"{round(self.bot.latency * 1000)}ms"
+            )
+        )
+
     @commands.slash_command(
         name=Localized("nowplaying", key="command.nowplaying.name"),
         description=Localized("顯示目前正在播放的歌曲", key="command.nowplaying.description")
@@ -171,6 +176,8 @@ class Commands(Cog):
         # Find the index song should be (In front of any autoplay songs)
         if not index:
             index = sum(1 for t in player.queue if t.requester)
+        else:
+            index -= 1
 
         filter_warnings = [
             InfoEmbed(
