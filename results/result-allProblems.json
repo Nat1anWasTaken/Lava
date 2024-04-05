@@ -106,11 +106,11 @@
       "type": "file",
       "path": "lava/cogs/commands.py",
       "language": "Python",
-      "line": 539,
+      "line": 546,
       "offset": 24,
       "length": 6,
       "code": {
-        "startLine": 537,
+        "startLine": 544,
         "length": 6,
         "offset": 87,
         "surroundingCode": "            await update_display(\n                bot=self.bot,\n                player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),\n                new_message=await interaction.original_response(),\n                delay=5,"
@@ -121,7 +121,7 @@
     "module": "project",
     "inspectionName": "PyUnboundLocalVariableInspection"
   },
-  "hash": "8a6d1b9ab32cc649d7d90127791955976918fbac8f0d42e713d37fb0b9a62051"
+  "hash": "42cf8180709a6cdcfe3a747a3de2d8b178f29960b0eec2a5e8d0ab7de6537494"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -199,11 +199,11 @@
       "type": "file",
       "path": "lava/cogs/commands.py",
       "language": "Python",
-      "line": 693,
+      "line": 700,
       "offset": 28,
       "length": 42,
       "code": {
-        "startLine": 691,
+        "startLine": 698,
         "length": 42,
         "offset": 60,
         "surroundingCode": "\n    @play.autocomplete(\"query\")\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\", query):\n            return []"
@@ -214,7 +214,7 @@
     "module": "project",
     "inspectionName": "PyUnusedLocalInspection"
   },
-  "hash": "81e8b4afe2f90610429bc398abc66f5c73667eef3e675a68fbe0d2c0efd68fa3"
+  "hash": "ca9e30be7afa7eb91e194cce263721f36315633f03c92a10afe9fb5c5e53388a"
 },{
   "tool": "Code Inspection",
   "category": "Python",
