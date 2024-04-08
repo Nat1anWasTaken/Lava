@@ -1,19 +1,19 @@
 {
-  "total": 8,
+  "total": 0,
   "tools inspection": {
-    "Code Inspection": 8
+    "Code Inspection": 0
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "1c1bfc19731a511228b68f448c0351cb3e39262e",
-        "branch": "refs/heads/master"
+        "revisionId": "f11259dbfa12b5f5ee4734d3ed356891924c0b08",
+        "branch": "renovate/peaceiris-actions-gh-pages-4.x"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8574159551",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8605584952",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
