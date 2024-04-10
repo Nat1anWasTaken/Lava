@@ -1651,19 +1651,19 @@
                 ]
               },
               {
-                "id": "PyMethodOverridingInspection",
+                "id": "PoetryPackageVersionsInspection",
                 "shortDescription": {
-                  "text": "Method signature does not match signature of overridden method"
+                  "text": "Poetry package versions"
                 },
                 "fullDescription": {
-                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
-                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
+                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
+                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMethodOverriding",
+                    "suppressToolId": "PoetryPackageVersions",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -1684,19 +1684,19 @@
                 ]
               },
               {
-                "id": "PoetryPackageVersionsInspection",
+                "id": "PyMethodOverridingInspection",
                 "shortDescription": {
-                  "text": "Poetry package versions"
+                  "text": "Method signature does not match signature of overridden method"
                 },
                 "fullDescription": {
-                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
-                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
+                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PoetryPackageVersions",
+                    "suppressToolId": "PyMethodOverriding",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -2707,21 +2707,21 @@
                 ]
               },
               {
-                "id": "PyRedundantParenthesesInspection",
+                "id": "PyTrailingSemicolonInspection",
                 "shortDescription": {
-                  "text": "Redundant parentheses"
+                  "text": "Prohibited trailing semicolon in a statement"
                 },
                 "fullDescription": {
-                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
-                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
+                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
+                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyRedundantParentheses",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyTrailingSemicolon",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -2740,21 +2740,21 @@
                 ]
               },
               {
-                "id": "PyTrailingSemicolonInspection",
+                "id": "PyRedundantParenthesesInspection",
                 "shortDescription": {
-                  "text": "Prohibited trailing semicolon in a statement"
+                  "text": "Redundant parentheses"
                 },
                 "fullDescription": {
-                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
-                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
+                  "text": "Reports about redundant parentheses in expressions. The IDE provides the quick-fix action to remove the redundant parentheses.",
+                  "markdown": "Reports about redundant parentheses in expressions.\n\nThe IDE provides the quick-fix action to remove the redundant parentheses."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyTrailingSemicolon",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyRedundantParentheses",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "HtmlExtraClosingTag",
-                "shortDescription": {
-                  "text": "Redundant closing tag"
-                },
-                "fullDescription": {
-                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
-                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "HtmlExtraClosingTag",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "HTML",
-                      "index": 8,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "RegExpOctalEscape",
                 "shortDescription": {
                   "text": "Octal escape"
@@ -5404,19 +5371,19 @@
                 ]
               },
               {
-                "id": "UnusedDefine",
+                "id": "HtmlExtraClosingTag",
                 "shortDescription": {
-                  "text": "Unused define"
+                  "text": "Redundant closing tag"
                 },
                 "fullDescription": {
-                  "text": "Reports an unused named pattern ('define') in a RELAX-NG file (XML or Compact Syntax). 'define' elements that are used through an include in another file are ignored.",
-                  "markdown": "Reports an unused named pattern (`define`) in a RELAX-NG file (XML or Compact Syntax). `define` elements that are used through an include in another file are ignored."
+                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
+                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
                 },
                 "defaultConfiguration": {
                   "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "UnusedDefine",
+                    "suppressToolId": "HtmlExtraClosingTag",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5424,8 +5391,8 @@
                 "relationships": [
                   {
                     "target": {
-                      "id": "RELAX NG",
-                      "index": 11,
+                      "id": "HTML",
+                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5459,6 +5426,39 @@
                     "target": {
                       "id": "HTML",
                       "index": 8,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "UnusedDefine",
+                "shortDescription": {
+                  "text": "Unused define"
+                },
+                "fullDescription": {
+                  "text": "Reports an unused named pattern ('define') in a RELAX-NG file (XML or Compact Syntax). 'define' elements that are used through an include in another file are ignored.",
+                  "markdown": "Reports an unused named pattern (`define`) in a RELAX-NG file (XML or Compact Syntax). `define` elements that are used through an include in another file are ignored."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "UnusedDefine",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RELAX NG",
+                      "index": 11,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-04-10T03:33:29.104452167Z",
+          "startTimeUtc": "2024-04-10T18:48:48.145135156Z",
           "exitCode": 0,
           "executionSuccessful": true
         }
@@ -6684,20 +6684,76 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "d475c6f307318f37caf62f8852b980db49337716",
-          "branch": "renovate/python-3.x",
+          "revisionId": "c3dcb46f0d9cac8372d550caff6547944edcad2f",
+          "branch": "renovate/pypi-yt-dlp-vulnerability",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
             "vcsType": "Git"
           }
         }
       ],
-      "results": [],
+      "results": [
+        {
+          "ruleId": "PyPackageRequirementsInspection",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
+            "markdown": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "SRCROOT"
+                },
+                "region": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 289,
+                  "snippet": {
+                    "text": "PyNaCl==1.5.0\r\nspotipy==2.23.0\r\nrequests==2.31.0\r\nbeautifulsoup4==4.12.3\r\npsutil==5.9.8\r\ndisnake==2.9.1\r\npython-dotenv==1.0.1\r\nyt-dlp==2024.4.9\r\ncolorlog\r\nyoutube-related\r\nyoutube-search\r\ngit+https://github.com/Nat1anWasTaken/Lavalink.py.git\r\ngit+https://github.com/Snipy7374/disnake-ext-p"
+                  },
+                  "sourceLanguage": "Requirements"
+                },
+                "contextRegion": {
+                  "startLine": 1,
+                  "startColumn": 1,
+                  "charOffset": 0,
+                  "charLength": 301,
+                  "snippet": {
+                    "text": "PyNaCl==1.5.0\r\nspotipy==2.23.0\r\nrequests==2.31.0\r\nbeautifulsoup4==4.12.3\r\npsutil==5.9.8\r\ndisnake==2.9.1\r\npython-dotenv==1.0.1\r\nyt-dlp==2024.4.9\r\ncolorlog\r\nyoutube-related\r\nyoutube-search\r\ngit+https://github.com/Nat1anWasTaken/Lavalink.py.git\r\ngit+https://github.com/Snipy7374/disnake-ext-paginator.git"
+                  },
+                  "sourceLanguage": "Requirements"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "project",
+                  "kind": "module"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "equalIndicator/v1": "96c9608a7f39b59b2efc22ab40874a0c60670fc0524f18e08deed7000d314034"
+          },
+          "properties": {
+            "ideaSeverity": "WARNING",
+            "qodanaSeverity": "High",
+            "tags": [
+              "Requirements"
+            ]
+          }
+        }
+      ],
       "automationDetails": {
         "id": "project/qodana/2024-04-10",
-        "guid": "6efdd2af-a220-411e-9ca0-e12282fdc0ac",
+        "guid": "e2ec5653-78a9-4c3f-bb43-d2a4d09a9e8a",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8625580447"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8636191579"
         }
       },
       "newlineSequences": [
@@ -6708,7 +6764,8 @@
         "configProfile": "absent",
         "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
         "qodanaNewResultSummary": {
-          "total": 0
+          "high": 1,
+          "total": 1
         }
       }
     }
