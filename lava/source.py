@@ -299,7 +299,7 @@ class BilibiliSource(BaseSource):
         """
         Gets audio URL from a Bilibili video URL
 
-        :param bvid: Bilibili video URL
+        :param url: Bilibili video URL
         :return: audio URL
         """
         headers = {
