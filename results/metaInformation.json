@@ -1,19 +1,19 @@
 {
-  "total": 1,
+  "total": 8,
   "tools inspection": {
-    "Code Inspection": 1
+    "Code Inspection": 8
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "c3dcb46f0d9cac8372d550caff6547944edcad2f",
-        "branch": "renovate/pypi-yt-dlp-vulnerability"
+        "revisionId": "bb8296aa5d01cc18f867d099d93131f28f3432ed",
+        "branch": "refs/heads/master"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8636191579",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8647974400",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }
