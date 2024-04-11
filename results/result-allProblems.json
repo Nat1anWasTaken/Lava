@@ -32,716 +32,96 @@
 },{
   "tool": "Code Inspection",
   "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/source.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 51,
-      "code": {
-        "startLine": 1,
-        "length": 51,
-        "offset": 0,
-        "surroundingCode": "import json\nimport re\nfrom logging import getLogger\nfrom os import getenv\nfrom typing import Union, Tuple, Optional"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "24ab94664f82832faf9df47ca346c69ec6983580d8a7f208b1ceb51b1190de18"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/errors.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 37,
-      "code": {
-        "startLine": 1,
-        "length": 37,
-        "offset": 0,
-        "surroundingCode": "from disnake.abc import Connectable\n\n\nclass UserNotInVoice(Exception):\n    pass"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "2859e465baa90d387da22e5896f2515679a05c9d1f2600ee5ded5121b8e7f5aa"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 77,
-      "code": {
-        "startLine": 1,
-        "length": 77,
-        "offset": 0,
-        "surroundingCode": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "2cf0a2f222193604c39cb7ffdec2bf1c0b9998e0a1aebb2abace5912917d49bb"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
+  "type": "Class has no `__init__` method",
   "tags": [
     "Python"
   ],
   "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/bot.py",
-      "language": "Python",
-      "line": 6,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 4,
-        "length": 8,
-        "offset": 89,
-        "surroundingCode": "from disnake.abc import MISSING\nfrom disnake.ext.commands import Bot as OriginalBot\nfrom lavalink import Client\n\nfrom lava.source import SourceManager"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "5117b6d9efc1049655fc3582286b8fae6011a525df6217ced71dc5436d51abe5"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/source.py",
-      "language": "Python",
-      "line": 9,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 7,
-        "length": 8,
-        "offset": 51,
-        "surroundingCode": "import requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials\nfrom yt_dlp import YoutubeDL"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "582a95ad29e742907129965dc2001e5af48a88bacbea2742eb09e04a9e95ad77"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/embeds.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 62,
-      "code": {
-        "startLine": 1,
-        "length": 62,
-        "offset": 0,
-        "surroundingCode": "from typing import Union\n\nfrom disnake import Embed, Localized\n\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "632a13f5ea22d222ce111308e478b0ab5c95e98607429b0f3477008e05725178"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/voice_client.py",
-      "language": "Python",
-      "line": 2,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 1,
-        "length": 8,
-        "offset": 51,
-        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "6927ef1e2f2bb98a8996970181045339dba1ab5c27180f58ad1436546b84f77a"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/bot.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 39,
-      "code": {
-        "startLine": 1,
-        "length": 39,
-        "offset": 0,
-        "surroundingCode": "import json\nfrom logging import Logger\n\nfrom disnake.abc import MISSING\nfrom disnake.ext.commands import Bot as OriginalBot"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "8daa616ab79425254787c8c9d1c42906376d9ff2fa4f669a8d393000b314f75c"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/events.py",
-      "language": "Python",
-      "line": 9,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 7,
-        "length": 8,
-        "offset": 97,
-        "surroundingCode": "from disnake.ext import commands\r\nfrom disnake.ext.commands import Cog, CommandInvokeError\r\nfrom lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent\r\n\r\nfrom lava.bot import Bot\r"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "94012ee4094f84f8cc1f5c4c64c7122dd73ce8c0d190d7f8774466931486edeb"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Requirements"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "requirements.txt",
-      "language": "Requirements",
-      "line": 1,
-      "offset": 1,
-      "length": 289,
-      "code": {
-        "startLine": 1,
-        "length": 289,
-        "offset": 0,
-        "surroundingCode": "PyNaCl==1.5.0\r\nspotipy==2.23.0\r\nrequests==2.31.0\r\nbeautifulsoup4==4.12.3\r\npsutil==5.9.8\r\ndisnake==2.9.1\r\npython-dotenv==1.0.1\r\nyt-dlp==2024.4.9\r\ncolorlog\r\nyoutube-related\r\nyoutube-search\r\ngit+https://github.com/Nat1anWasTaken/Lavalink.py.git\r\ngit+https://github.com/Snipy7374/disnake-ext-paginator.git"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "96c9608a7f39b59b2efc22ab40874a0c60670fc0524f18e08deed7000d314034"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/events.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 7344,
-      "code": {
-        "startLine": 1,
-        "length": 7344,
-        "offset": 0,
-        "surroundingCode": "from logging import getLogger\r\nfrom typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r\nfrom disnake.ext import commands\r\nfrom disnake.ext.commands import Cog, CommandInvokeError\r\nfrom lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent\r\n\r\nfrom lava.bot import Bot\r\nfrom lava.embeds import ErrorEmbed\r\nfrom lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel\r\nfrom lava.utils import get_recommended_tracks, update_display, ensure_voice, toggle_autoplay\r\n\r\n\r\nclass Events(Cog):\r\n    def __init__(self, bot: Bot):\r\n        self.bot = bot\r\n\r\n        self.logger = getLogger(\"lava.events\")\r\n\r\n    async def cog_load(self):\r\n        await self.bot.wait_until_ready()\r\n\r\n    @commands.Cog.listener(name=\"on_ready\")\r\n    async def on_ready(self):\r\n        self.bot.lavalink.add_event_hook(self.track_hook)\r\n\r\n    async def track_hook(self, event):\r\n        if isinstance(event, PlayerUpdateEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.debug(\"Received player update event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            if event.player.fetch(\"autoplay\") and len(event.player.queue) <= 5:\r\n                self.logger.info(\r\n                    \"Queue is empty, adding recommended track for guild %s...\", self.bot.get_guild(player.guild_id)\r\n                )\r\n\r\n                recommendations = await get_recommended_tracks(player, player.current, 5 - len(player.queue))\r\n\r\n                for recommendation in recommendations:\r\n                    event.player.add(requester=0, track=recommendation)\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received track end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, QueueEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received queue end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackLoadFailedEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            locale: str = str(player.fetch(\"locale\", \"zh_TW\"))\r\n\r\n            self.logger.info(\"Received track load failed event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            # noinspection PyTypeChecker\r\n            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch(\"channel\")))\r\n\r\n            message = await channel.send(\r\n                embed=ErrorEmbed(\r\n                    f\"{self.bot.get_text('error.play_failed', locale, '無法播放歌曲')}: {event.track['title']}\",\r\n                    f\"{self.bot.get_text('reason', locale, '原因')}: `{event.original or 'Unknown'}`\"\r\n                )\r\n            )\r\n\r\n            await player.skip()\r\n\r\n            await update_display(self.bot, player, message, delay=5)\r\n\r\n    @commands.Cog.listener(name=\"on_slash_command_error\")\r\n    async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):\r\n        locale = str(interaction.locale)\r\n\r\n        if isinstance(error.original, MissingVoicePermissions):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.no_play_perms', locale, \"我需要 `連接` 和 `說話` 權限才能夠播放音樂\")\r\n            )\r\n\r\n        elif isinstance(error.original, BotNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.bot_not_in_voice', locale, \"我沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.user_not_in_voice', locale, \"你沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserInDifferentChannel):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                f\"{self.bot.get_text('error.must_in_same_voice', locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>\"\r\n            )\r\n\r\n        else:\r\n            raise error.original\r\n\r\n        try:\r\n            await interaction.response.send_message(embed=embed)\r\n        except InteractionResponded:\r\n            await interaction.edit_original_response(embed=embed)\r\n\r\n    @commands.Cog.listener(name=\"on_voice_state_update\")\r\n    async def on_voice_state_update(self, member, before, after):\r\n        if (\r\n                before.channel is not None\r\n                and after.channel is None\r\n                and member.id == self.bot.user.id\r\n        ):\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)\r\n\r\n            await player.stop()\r\n            player.queue.clear()\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:  # There's no message to update\r\n                pass\r\n\r\n    @commands.Cog.listener(name=\"on_message_interaction\")\r\n    async def on_message_interaction(self, interaction: MessageInteraction):\r\n        if interaction.data.custom_id.startswith(\"control\"):\r\n            if interaction.data.custom_id.startswith(\"control.empty\"):\r\n                await interaction.response.edit_message()\r\n\r\n                return\r\n\r\n            try:\r\n                await ensure_voice(interaction, should_connect=False)\r\n            except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):\r\n                return\r\n\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)\r\n\r\n            match interaction.data.custom_id:\r\n                case \"control.resume\":\r\n                    await player.set_pause(False)\r\n\r\n                case \"control.pause\":\r\n                    await player.set_pause(True)\r\n\r\n                case \"control.stop\":\r\n                    await player.stop()\r\n                    player.queue.clear()\r\n\r\n                case \"control.previous\":\r\n                    await player.seek(0)\r\n\r\n                case \"control.next\":\r\n                    await player.skip()\r\n\r\n                case \"control.shuffle\":\r\n                    player.set_shuffle(not player.shuffle)\r\n\r\n                case \"control.repeat\":\r\n                    player.set_loop(player.loop + 1 if player.loop < 2 else 0)\r\n\r\n                case \"control.rewind\":\r\n                    await player.seek(round(player.position) - 10000)\r\n\r\n                case \"control.forward\":\r\n                    await player.seek(round(player.position) + 10000)\r\n\r\n                case "
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "9df31c5b97bbf520c0eb5532f70c434df362b69496d30c805da775ba774f248c"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 9,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 7,
-        "length": 8,
-        "offset": 79,
-        "surroundingCode": "from disnake.ui import Button\nfrom disnake_ext_paginator import Paginator\nfrom lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer\nfrom psutil import cpu_percent, virtual_memory, Process\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "a1a1dfa7722ddb4b15b355ebc1cb710ae1a5250af37bbeedfb6ac1ce71f0415e"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Package containing module 'lavalink' is not listed in the project requirements",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 11,
-      "offset": 6,
-      "length": 8,
-      "code": {
-        "startLine": 9,
-        "length": 8,
-        "offset": 76,
-        "surroundingCode": "from disnake.ui import Button, ActionRow\nfrom disnake.utils import get\nfrom lavalink import DefaultPlayer, parse_time, AudioTrack\n\nfrom lava.bot import Bot"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "b23571f15e0d6d91f64cd80f3e868011474e32eba74c7b6086a0ed5dba01b5b5"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "main.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 2115,
-      "code": {
-        "startLine": 1,
-        "length": 2115,
-        "offset": 0,
-        "surroundingCode": "import asyncio\r\nimport json\r\nimport logging\r\nimport os\r\nfrom os import getenv\r\n\r\nfrom colorlog import ColoredFormatter\r\nfrom disnake import Intents, Activity, BaseActivity, PartialEmoji\r\nfrom disnake.ext.commands import CommandSyncFlags\r\nfrom dotenv import load_dotenv\r\n\r\nfrom lava.bot import Bot\r\n\r\n\r\ndef main():\r\n    load_dotenv(\"stack.env\")\r\n\r\n    setup_logging()\r\n\r\n    main_logger = logging.getLogger(\"lava.main\")\r\n\r\n    loop = asyncio.new_event_loop()\r\n\r\n    bot = Bot(\r\n        logger=main_logger,\r\n        command_prefix=getenv(\"PREFIX\", \"l!\"),\r\n        intents=Intents.all(),\r\n        loop=loop,\r\n        activity=get_activity(),\r\n        command_sync_flags=CommandSyncFlags.default(),\r\n    )\r\n\r\n    bot.i18n.load(\"locale/\")\r\n\r\n    load_extensions(bot)\r\n\r\n    bot.run(os.environ[\"TOKEN\"])\r\n\r\n\r\ndef get_activity() -> BaseActivity:\r\n    with open(\"configs/activity.json\", \"r\") as f:\r\n        activity = json.load(f)\r\n\r\n    return Activity(**activity)\r\n\r\n\r\ndef setup_logging():\r\n    \"\"\"\r\n    Set up the loggings for the bot\r\n    :return: None\r\n    \"\"\"\r\n    formatter = ColoredFormatter(\r\n        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',\r\n        datefmt='%Y-%m-%d %H:%M:%S',\r\n        log_colors={\r\n            'DEBUG': 'cyan',\r\n            'INFO': 'white',\r\n            'WARNING': 'yellow',\r\n            'ERROR': 'red',\r\n            'CRITICAL': 'bold_red',\r\n        }\r\n    )\r\n\r\n    stream_handler = logging.StreamHandler()\r\n    stream_handler.setLevel(logging.INFO)\r\n    stream_handler.setFormatter(formatter)\r\n\r\n    file_handler = logging.FileHandler(filename=\"lava.log\", encoding=\"utf-8\", mode=\"w\")\r\n    file_handler.setLevel(logging.DEBUG)\r\n    file_handler.setFormatter(formatter)\r\n\r\n    logging.basicConfig(\r\n        handlers=[stream_handler, file_handler], level=logging.INFO\r\n    )\r\n\r\n\r\ndef load_extensions(bot: Bot) -> Bot:\r\n    \"\"\"\r\n    Load extensions in extensions.json file\r\n    :param bot: The bot to load the extensions to\r\n    :return: The bot\r\n    \"\"\"\r\n    with open(\"extensions.json\", \"r\") as f:\r\n        extensions = json.load(f)\r\n\r\n    for extension in extensions:\r\n        "
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "b2402132e93aeaafe0c9b7f898d024cf9ac3854f22ce9d9e3af4b514e54bcd03"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 32,
-      "code": {
-        "startLine": 1,
-        "length": 32,
-        "offset": 0,
-        "surroundingCode": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "cdf6e9dcec9a343acf2561dbe96427b543e5f4a22d30b0efe1f582fb0e54053a"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/voice_client.py",
-      "language": "Python",
-      "line": 1,
-      "offset": 1,
-      "length": 110,
-      "code": {
-        "startLine": 1,
-        "length": 110,
-        "offset": 0,
-        "surroundingCode": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n\nfrom lava.bot import Bot"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
-  },
-  "hash": "d15a96848fbf5c63c67d5890b64f1774414523c93d96c226c34e4c14c20ceee2"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Unsatisfied package requirements",
-  "tags": [
-    "Python"
-  ],
-  "severity": "High",
-  "comment": "Package requirements 'PyNaCl==1.5.0', 'spotipy==2.23.0', 'beautifulsoup4==4.12.3', 'psutil==5.9.8', 'disnake==2.9.1', 'python-dotenv==1.0.1', 'yt-dlp==2024.4.9', 'colorlog', 'youtube-related', 'youtube-search', 'Lavalink.py', 'disnake-ext-paginator' are not satisfied",
-  "detailsInfo": "Reports packages mentioned in requirements files (for example, `requirements.txt` or `Pipfile`) but not installed,\nor imported but not mentioned in requirements files.\n\n\nThe IDE shows a quick-fix banner so that you can install the missing packages in one click.",
+  "comment": "Class has no __init__ method",
+  "detailsInfo": "Reports cases in Python 2 when a class has no `__init__` method, neither its parent\nclasses.\n\n**Example:**\n\n\n    class Book():\n        pass\n\nThe quick-fix adds the `__init__` method:\n\n\n    class Book():\n        def __init__(self):\n            pass\n",
   "sources": [
     {
       "type": "file",
       "path": "lava/variables.py",
       "language": "Python",
       "line": 1,
-      "offset": 1,
-      "length": 114,
+      "offset": 7,
+      "length": 9,
       "code": {
         "startLine": 1,
-        "length": 114,
-        "offset": 0,
-        "surroundingCode": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\"\n"
+        "length": 9,
+        "offset": 6,
+        "surroundingCode": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\""
       }
     }
   ],
   "attributes": {
     "module": "project",
-    "inspectionName": "PyPackageRequirementsInspection"
+    "inspectionName": "PyClassHasNoInitInspection"
   },
-  "hash": "ea6913444551fb21fe00e5642bae3063db81b521e6066bb7c79c17708525968f"
+  "hash": "be7606d77e92bcb99f2c7707d3c431b3ef89e217bc6015032fba692d52ca5bea"
 },{
   "tool": "Code Inspection",
   "category": "Python",
-  "type": "PEP 8 coding style violation",
+  "type": "Incorrect docstring",
   "tags": [
     "Python"
   ],
   "severity": "Moderate",
-  "comment": "PEP 8: E501 line too long (126 \\> 120 characters)",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 412,
-      "offset": 117,
-      "length": 5,
-      "code": {
-        "startLine": 410,
-        "length": 5,
-        "offset": 264,
-        "surroundingCode": "    return f\"{bot.get_icon('progress.start_point', 'ST|')}\" \\\n           f\"{bot.get_icon('progress.start_fill', 'SF|') * round(percentage * 10)}\" \\\n           f\"{bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else bot.get_icon('progress.start_fill', 'SF|')}\" \\\n           f\"{bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}\" \\\n           f\"{bot.get_icon('progress.end', 'ED|') if percentage != 1 else bot.get_icon('progress.end_point', 'EP')}\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPep8Inspection"
-  },
-  "hash": "1193e0955ccff5b2dbdc81145b0982066d94ecf5de17ec7357158f9049ccb9ae"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "PEP 8 coding style violation",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "PEP 8: E501 line too long (126 \\> 120 characters)",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
+  "comment": "Unexpected parameter bvid in docstring",
+  "detailsInfo": "Reports mismatched parameters in a docstring. For example, `b` is highlighted, because there is no\nsuch a parameter in the `add` function.\n\n\n        def add(a, c):\n        \"\"\"\n        @param a:\n        @param b:\n        @return:\n        \"\"\"\n        pass\n\nThe inspection does not warn you of missing parameters if none of them is mentioned in a docstring:\n\n\n    def mult(a, c):\n        \"\"\"\n        @return:\n        \"\"\"\n        pass\n",
   "sources": [
     {
       "type": "file",
       "path": "lava/source.py",
       "language": "Python",
-      "line": 319,
-      "offset": 26,
-      "length": 101,
-      "code": {
-        "startLine": 317,
-        "length": 101,
-        "offset": 73,
-        "surroundingCode": "\n    def check_query(self, query: str) -> bool:\n        youtube_url_rx = r\"^(https?://(www\\.)?(youtube\\.com|music\\.youtube\\.com)/(watch\\?v=|playlist\\?list=)([a-zA-Z0-9_-]+))\"\n\n        if re.match(youtube_url_rx, query):"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPep8Inspection"
-  },
-  "hash": "24d5e21f04645740f75ff56a64dd6b000a3924497c9df20079721cb4a1a43eb7"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "PEP 8 coding style violation",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "PEP 8: E131 continuation line unaligned for hanging indent",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/utils.py",
-      "language": "Python",
-      "line": 353,
-      "offset": 19,
-      "length": 3,
-      "code": {
-        "startLine": 351,
-        "length": 3,
-        "offset": 152,
-        "surroundingCode": "                ]\n            ) + (f\"\\n{bot.get_text('display.queue.more', locale, '還有更多...')}\" if len(player.queue) > 5 else \"\")) or\n                  bot.get_text(\"empty\", locale, \"空\"),\n            inline=True\n        )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPep8Inspection"
-  },
-  "hash": "5fca3442d7b1bf629ab1019144384538d008b1bb3ba673bc6980da9bf202740a"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "PEP 8 coding style violation",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "PEP 8: E501 line too long (165 \\> 120 characters)",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 228,
-      "offset": 117,
-      "length": 7,
-      "code": {
-        "startLine": 226,
-        "length": 7,
-        "offset": 190,
-        "surroundingCode": "                    embeds=[\n                               SuccessEmbed(\n                                   title=f\"{self.bot.get_text('command.play.loaded.title', locale, '已加入播放序列')} {len(results.tracks)} / {results.playlist_info.name}\",\n                                   description='\\n'.join(\n                                       ["
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPep8Inspection"
-  },
-  "hash": "83d7334a843ad37133ef67dfb9d9d806b38a88095dced1a2ec687afcd57d0509"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "PEP 8 coding style violation",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "PEP 8: E501 line too long (127 \\> 120 characters)",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 857,
-      "offset": 118,
-      "length": 8,
-      "code": {
-        "startLine": 855,
-        "length": 8,
-        "offset": 207,
-        "surroundingCode": "            await interaction.edit_original_response(\n                embed=SuccessEmbed(\n                    f\"{self.bot.get_text('command.filters.removed', locale, '已移除效果器')}：{allowed_filters[filter_name].__name__}\"\n                )\n            )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyPep8Inspection"
-  },
-  "hash": "d58a0b0ee9e64eab3508bfb652644ed33f884c5488d116d4b104741134744a59"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "PEP 8 coding style violation",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "PEP 8: E501 line too long (193 \\> 120 characters)",
-  "detailsInfo": "Reports violations of the [PEP 8 coding style guide](https://www.python.org/dev/peps/pep-0008/) by running the bundled [pycodestyle.py](https://github.com/PyCQA/pycodestyle) tool.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 691,
-      "offset": 121,
+      "line": 302,
+      "offset": 16,
       "length": 4,
       "code": {
-        "startLine": 689,
+        "startLine": 300,
         "length": 4,
-        "offset": 202,
-        "surroundingCode": "        await interaction.edit_original_response(\n            embed=SuccessEmbed(\n                f\"{self.bot.get_text('command.shuffle.success', locale, '隨機播放模式')}：{self.bot.get_text('enable', locale, '開啟') if player.shuffle else self.bot.get_text('disable', locale, '關閉')}\"\n            )\n        )"
+        "offset": 65,
+        "surroundingCode": "        Gets audio URL from a Bilibili video URL\n\n        :param bvid: Bilibili video URL\n        :return: audio URL\n        \"\"\""
       }
     }
   ],
   "attributes": {
     "module": "project",
-    "inspectionName": "PyPep8Inspection"
+    "inspectionName": "PyIncorrectDocstringInspection"
   },
-  "hash": "f1effee920dae928b09f117a594bd3b2793d6ac6531dbf723934215dd96fcf5a"
+  "hash": "1df26b4552cfe045caf9d5424b1168e99fad4a22d13237e50d69c7ee858462c2"
+},{
+  "tool": "Code Inspection",
+  "category": "Python",
+  "type": "Incorrect docstring",
+  "tags": [
+    "Python"
+  ],
+  "severity": "Moderate",
+  "comment": "Missing parameter url in docstring",
+  "detailsInfo": "Reports mismatched parameters in a docstring. For example, `b` is highlighted, because there is no\nsuch a parameter in the `add` function.\n\n\n        def add(a, c):\n        \"\"\"\n        @param a:\n        @param b:\n        @return:\n        \"\"\"\n        pass\n\nThe inspection does not warn you of missing parameters if none of them is mentioned in a docstring:\n\n\n    def mult(a, c):\n        \"\"\"\n        @return:\n        \"\"\"\n        pass\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "lava/source.py",
+      "language": "Python",
+      "line": 298,
+      "offset": 29,
+      "length": 8,
+      "code": {
+        "startLine": 296,
+        "length": 8,
+        "offset": 57,
+        "surroundingCode": "        return cid, session\n\n    def get_audio_url(self, url: str):\n        \"\"\"\n        Gets audio URL from a Bilibili video URL"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PyIncorrectDocstringInspection"
+  },
+  "hash": "9b22860e99bd98e167b574175bcd8f9e0e76b10b0142d3541f98f88c4c7c6d3c"
 },{
   "tool": "Code Inspection",
   "category": "Python",
@@ -928,35 +308,4 @@
     "inspectionName": "PyUnusedLocalInspection"
   },
   "hash": "da04a5cd4e65db71fdc174052f9f085a16ec32563813f4f883c2de9cc2d0e0ac"
-},{
-  "tool": "Code Inspection",
-  "category": "RegExp",
-  "type": "Unnecessary non-capturing group",
-  "tags": [
-    "RegExp"
-  ],
-  "severity": "High",
-  "comment": "Unnecessary non-capturing group `(?:%[0-9a-fA-F][0-9a-fA-F])`",
-  "detailsInfo": "Reports unnecessary non-capturing groups, which have no influence on the match result.\n\n**Example:**\n\n\n      Everybody be cool, (?:this) is a robbery!\n\nAfter the quick-fix is applied:\n\n\n      Everybody be cool, this is a robbery!\n\nNew in 2021.1",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/cogs/commands.py",
-      "language": "Python",
-      "line": 701,
-      "offset": 72,
-      "length": 3,
-      "code": {
-        "startLine": 699,
-        "length": 3,
-        "offset": 187,
-        "surroundingCode": "    @play.autocomplete(\"query\")\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\", query):\n            return []\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "RegExpUnnecessaryNonCapturingGroup"
-  },
-  "hash": "8b94942e87c1718fbfc40caab74a00a7bb41dab6e209160a54ca97655e927c04"
 }]}
