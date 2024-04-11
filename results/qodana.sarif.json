@@ -1486,19 +1486,19 @@
                 ]
               },
               {
-                "id": "PyMissingConstructorInspection",
+                "id": "PyDefaultArgumentInspection",
                 "shortDescription": {
-                  "text": "Missed call to '__init__' of the super class"
+                  "text": "The default argument is mutable"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
-                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
+                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
+                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMissingConstructor",
+                    "suppressToolId": "PyDefaultArgument",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -1519,19 +1519,19 @@
                 ]
               },
               {
-                "id": "PyDefaultArgumentInspection",
+                "id": "PyMissingConstructorInspection",
                 "shortDescription": {
-                  "text": "The default argument is mutable"
+                  "text": "Missed call to '__init__' of the super class"
                 },
                 "fullDescription": {
-                  "text": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for an argument. Default argument values are evaluated only once at function definition time, which means that modifying the default value of the argument will affect all subsequent calls of that function. Example: 'def func(s, cache={}):\n    cache[s] = None' When the quick-fix is applied, the code changes to: 'def func(s, cache=None):\n    if cache is None:\n        cache = {}\n    cache[s] = None'",
-                  "markdown": "Reports a problem when a mutable value as a list or dictionary is detected in a default value for\nan argument.   \n\nDefault argument values are evaluated only once at function definition time,\nwhich means that modifying the\ndefault value of the argument will affect all subsequent calls of that function.\n\n**Example:**\n\n\n    def func(s, cache={}):\n        cache[s] = None\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    def func(s, cache=None):\n        if cache is None:\n            cache = {}\n        cache[s] = None\n"
+                  "text": "Reports cases when a call to the 'super' constructor in a class is missed. Example: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        pass' The 'Pear' class should have a 'super' call in the '__init__' method. When the quick-fix is applied, the code changes to: 'class Fruit:\n    def __init__(self):\n        pass\n\n\nclass Pear(Fruit):\n    def __init__(self):\n        super().__init__()'",
+                  "markdown": "Reports cases when a call to the `super` constructor in a class is missed.\n\n**Example:**\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            pass\n\nThe `Pear` class should have a `super` call in the `__init__`\nmethod.\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Fruit:\n        def __init__(self):\n            pass\n\n\n    class Pear(Fruit):\n        def __init__(self):\n            super().__init__()\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyDefaultArgument",
+                    "suppressToolId": "PyMissingConstructor",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -1948,19 +1948,19 @@
                 ]
               },
               {
-                "id": "PyMethodParametersInspection",
+                "id": "PyChainedComparisonsInspection",
                 "shortDescription": {
-                  "text": "Improper first parameter"
+                  "text": "Too complex chained comparisons"
                 },
                 "fullDescription": {
-                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
-                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
+                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
+                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyMethodParameters",
+                    "suppressToolId": "PyChainedComparisons",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -1981,19 +1981,19 @@
                 ]
               },
               {
-                "id": "PyChainedComparisonsInspection",
+                "id": "PyMethodParametersInspection",
                 "shortDescription": {
-                  "text": "Too complex chained comparisons"
+                  "text": "Improper first parameter"
                 },
                 "fullDescription": {
-                  "text": "Reports chained comparisons that can be simplified. Example: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if x >= xmin and x <= xmax:\n          pass' The IDE offers to simplify 'if x >= xmin and x <= xmax'. When the quick-fix is applied, the code changes to: 'def do_comparison(x):\n      xmin = 10\n      xmax = 100\n      if xmin <= x <= xmax:\n          pass'",
-                  "markdown": "Reports chained comparisons that can be simplified.\n\n**Example:**\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if x >= xmin and x <= xmax:\n              pass\n\nThe IDE offers to simplify `if x >= xmin and x <= xmax`.\nWhen the quick-fix is applied, the code changes to:\n\n\n      def do_comparison(x):\n          xmin = 10\n          xmax = 100\n          if xmin <= x <= xmax:\n              pass\n"
+                  "text": "Reports methods that lack the first parameter that is usually named 'self'. Example: 'class Movie:\n\n   def show():\n       pass' When the quick-fix is applied, the code changes to: 'class Movie:\n\n   def show(self):\n       pass' The inspection also reports naming issues in class methods. Example: 'class Movie:\n    @classmethod\n    def show(abc):\n        pass' Since the first parameter of a class method should be 'cls', the IDE provides a quick-fix to rename it.",
+                  "markdown": "Reports methods that lack the first parameter that is usually\nnamed `self`.\n\n**Example:**\n\n\n    class Movie:\n\n       def show():\n           pass\n\nWhen the quick-fix is applied, the code changes to:\n\n\n    class Movie:\n\n       def show(self):\n           pass\n\nThe inspection also reports naming issues in class methods.\n\n**Example:**\n\n\n    class Movie:\n        @classmethod\n        def show(abc):\n            pass\n\nSince the first parameter of a class method should be `cls`, the IDE provides a quick-fix\nto rename it."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyChainedComparisons",
+                    "suppressToolId": "PyMethodParameters",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
                   }
@@ -3301,21 +3301,21 @@
                 ]
               },
               {
-                "id": "PyProtectedMemberInspection",
+                "id": "PyStubPackagesCompatibilityInspection",
                 "shortDescription": {
-                  "text": "Accessing a protected member of a class or a module"
+                  "text": "Incompatible stub packages"
                 },
                 "fullDescription": {
-                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
-                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
+                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
+                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "note",
+                  "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyProtectedMember",
-                    "ideaSeverity": "WEAK WARNING",
-                    "qodanaSeverity": "Moderate"
+                    "suppressToolId": "PyStubPackagesCompatibility",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -3334,21 +3334,21 @@
                 ]
               },
               {
-                "id": "PyStubPackagesCompatibilityInspection",
+                "id": "PyProtectedMemberInspection",
                 "shortDescription": {
-                  "text": "Incompatible stub packages"
+                  "text": "Accessing a protected member of a class or a module"
                 },
                 "fullDescription": {
-                  "text": "Reports stub packages that do not support the version of the corresponding runtime package. A stub package contains type information for some runtime package.",
-                  "markdown": "Reports stub packages that do not support the version of the corresponding runtime package.\n\nA [stub package](https://www.python.org/dev/peps/pep-0561/) contains type information for some runtime package."
+                  "text": "Reports cases when a protected member is accessed outside the class, a descendant of the class where it is defined, or a module. Example: 'class Foo:\n    def _protected_method(self):\n        pass\n\n\nclass Bar(Foo):\n    def public_method(self):\n        self._protected_method()\n\n\nfoo = Foo()\nfoo._protected_method() # Access to a protected method'",
+                  "markdown": "Reports cases when a protected member is accessed outside the class,\na descendant of the class where it is defined, or a module.\n\n**Example:**\n\n\n    class Foo:\n        def _protected_method(self):\n            pass\n\n\n    class Bar(Foo):\n        def public_method(self):\n            self._protected_method()\n\n\n    foo = Foo()\n    foo._protected_method() # Access to a protected method\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "PyStubPackagesCompatibility",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "PyProtectedMember",
+                    "ideaSeverity": "WEAK WARNING",
+                    "qodanaSeverity": "Moderate"
                   }
                 },
                 "relationships": [
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "HtmlExtraClosingTag",
-                "shortDescription": {
-                  "text": "Redundant closing tag"
-                },
-                "fullDescription": {
-                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
-                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "HtmlExtraClosingTag",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "HTML",
-                      "index": 8,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "RegExpOctalEscape",
                 "shortDescription": {
                   "text": "Octal escape"
@@ -5404,19 +5371,19 @@
                 ]
               },
               {
-                "id": "UnusedDefine",
+                "id": "HtmlExtraClosingTag",
                 "shortDescription": {
-                  "text": "Unused define"
+                  "text": "Redundant closing tag"
                 },
                 "fullDescription": {
-                  "text": "Reports an unused named pattern ('define') in a RELAX-NG file (XML or Compact Syntax). 'define' elements that are used through an include in another file are ignored.",
-                  "markdown": "Reports an unused named pattern (`define`) in a RELAX-NG file (XML or Compact Syntax). `define` elements that are used through an include in another file are ignored."
+                  "text": "Reports redundant closing tags on empty elements, for example, 'img' or 'br'. Example: '<html>\n    <body>\n      <br></br>\n    </body>\n  </html>' After the quick-fix is applied: '<html>\n    <body>\n      <br>\n    </body>\n  </html>'",
+                  "markdown": "Reports redundant closing tags on empty elements, for example, `img` or `br`.\n\n**Example:**\n\n\n      <html>\n        <body>\n          <br></br>\n        </body>\n      </html>\n\nAfter the quick-fix is applied:\n\n\n      <html>\n        <body>\n          <br>\n        </body>\n      </html>\n"
                 },
                 "defaultConfiguration": {
                   "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "UnusedDefine",
+                    "suppressToolId": "HtmlExtraClosingTag",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5424,8 +5391,8 @@
                 "relationships": [
                   {
                     "target": {
-                      "id": "RELAX NG",
-                      "index": 11,
+                      "id": "HTML",
+                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5459,6 +5426,39 @@
                     "target": {
                       "id": "HTML",
                       "index": 8,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "UnusedDefine",
+                "shortDescription": {
+                  "text": "Unused define"
+                },
+                "fullDescription": {
+                  "text": "Reports an unused named pattern ('define') in a RELAX-NG file (XML or Compact Syntax). 'define' elements that are used through an include in another file are ignored.",
+                  "markdown": "Reports an unused named pattern (`define`) in a RELAX-NG file (XML or Compact Syntax). `define` elements that are used through an include in another file are ignored."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "UnusedDefine",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "RELAX NG",
+                      "index": 11,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5833,19 +5833,19 @@
                 ]
               },
               {
-                "id": "RegExpRepeatedSpace",
+                "id": "RegExpDuplicateAlternationBranch",
                 "shortDescription": {
-                  "text": "Consecutive spaces"
+                  "text": "Duplicate branch in alternation"
                 },
                 "fullDescription": {
-                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
-                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
+                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
+                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "RegExpRepeatedSpace",
+                    "suppressToolId": "RegExpDuplicateAlternationBranch",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5866,19 +5866,19 @@
                 ]
               },
               {
-                "id": "RegExpDuplicateAlternationBranch",
+                "id": "RegExpRepeatedSpace",
                 "shortDescription": {
-                  "text": "Duplicate branch in alternation"
+                  "text": "Consecutive spaces"
                 },
                 "fullDescription": {
-                  "text": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression. Example: '(alpha|bravo|charlie|alpha)' After the quick-fix is applied: '(alpha|bravo|charlie)' New in 2017.1",
-                  "markdown": "Reports duplicate branches in a RegExp alternation. Duplicate branches slow down matching and obscure the intent of the expression.\n\n**Example:**\n\n\n      (alpha|bravo|charlie|alpha)\n\nAfter the quick-fix is applied:\n\n\n      (alpha|bravo|charlie)\n\nNew in 2017.1"
+                  "text": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier. Example: '(     )' After the quick-fix is applied: '( {5})' New in 2017.1",
+                  "markdown": "Reports multiple consecutive spaces in a RegExp. Because spaces are not visible by default, it can be hard to see how many spaces are required. The RegExp can be made more clear by replacing the consecutive spaces with a single space and a counted quantifier.\n\n**Example:**\n\n\n      (     )\n\nAfter the quick-fix is applied:\n\n\n      ( {5})\n\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "RegExpDuplicateAlternationBranch",
+                    "suppressToolId": "RegExpRepeatedSpace",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -6675,20 +6675,8 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-04-11T14:24:44.05514762Z",
+          "startTimeUtc": "2024-04-11T14:39:39.712173118Z",
           "exitCode": 0,
-          "toolExecutionNotifications": [
-            {
-              "message": {
-                "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
-              },
-              "level": "error",
-              "timeUtc": "2024-04-11T14:24:49.565763046Z",
-              "properties": {
-                "qodanaKind": "sanityFailure"
-              }
-            }
-          ],
           "executionSuccessful": true
         }
       ],
@@ -6696,24 +6684,22 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "582f0b5181e94f40febb49b465e3ca5bb4e9aa26",
-          "branch": "refs/heads/115-bug-the-error-occurred-when-playing-the-bilibili-link",
+          "revisionId": "509a9d8fce992804c2fc910713fac9cc89f6a2df",
+          "branch": "115-bug-the-error-occurred-when-playing-the-bilibili-link",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
-            "lastAuthorName": "Mantou",
-            "vcsType": "Git",
-            "lastAuthorEmail": "opcantel@gmail.com"
+            "vcsType": "Git"
           }
         }
       ],
       "results": [
         {
-          "ruleId": "PyAttributeOutsideInitInspection",
+          "ruleId": "PyPep8Inspection",
           "kind": "fail",
           "level": "note",
           "message": {
-            "text": "Instance attribute track defined outside __init__",
-            "markdown": "Instance attribute track defined outside __init__"
+            "text": "PEP 8: E501 line too long (138 > 120 characters)",
+            "markdown": "PEP 8: E501 line too long (138 \\> 120 characters)"
           },
           "locations": [
             {
@@ -6723,22 +6709,22 @@
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 56,
-                  "startColumn": 9,
-                  "charOffset": 1665,
-                  "charLength": 10,
+                  "startLine": 307,
+                  "startColumn": 27,
+                  "charOffset": 9678,
+                  "charLength": 112,
                   "snippet": {
-                    "text": "self.track"
+                    "text": "'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'"
                   },
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 54,
+                  "startLine": 305,
                   "startColumn": 1,
-                  "charOffset": 1583,
-                  "charLength": 180,
+                  "charOffset": 9580,
+                  "charLength": 229,
                   "snippet": {
-                    "text": "        first_track = result.tracks[0]\n        base64 = first_track.track\n        self.track = base64\n\n        getLogger('lava.sources').info(\"Loaded spotify track %s\", self.title)"
+                    "text": "        headers = {\n            'referer': 'https://www.bilibili.com/',\n            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'\n        }\n        "
                   },
                   "sourceLanguage": "Python"
                 }
@@ -6752,7 +6738,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "b553a48c4deddb42df062a64b15d4161d51ea67ac561443955d062ab8851d072"
+            "equalIndicator/v1": "1d2a4b99f2215f13d79f78951930b7797f8113967c65c0f6a95c2916ea1d95b2"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -6763,257 +6749,37 @@
           }
         },
         {
-          "ruleId": "PyClassHasNoInitInspection",
+          "ruleId": "PyPep8Inspection",
           "kind": "fail",
           "level": "note",
           "message": {
-            "text": "Class has no __init__ method",
-            "markdown": "Class has no __init__ method"
+            "text": "PEP 8: W605 invalid escape sequence '\\d'",
+            "markdown": "PEP 8: W605 invalid escape sequence '\\\\d'"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "lava/variables.py",
+                  "uri": "lava/source.py",
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 1,
-                  "startColumn": 7,
-                  "charOffset": 6,
-                  "charLength": 9,
-                  "snippet": {
-                    "text": "Variables"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 1,
-                  "startColumn": 1,
-                  "charOffset": 0,
-                  "charLength": 114,
-                  "snippet": {
-                    "text": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\""
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "be7606d77e92bcb99f2c7707d3c431b3ef89e217bc6015032fba692d52ca5bea"
-          },
-          "properties": {
-            "ideaSeverity": "WEAK WARNING",
-            "qodanaSeverity": "Moderate",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyUnboundLocalVariableInspection",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "Local variable 'message' might be referenced before assignment",
-            "markdown": "Local variable 'message' might be referenced before assignment"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/utils.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 200,
-                  "startColumn": 34,
-                  "charOffset": 6797,
-                  "charLength": 7,
-                  "snippet": {
-                    "text": "message"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 198,
-                  "startColumn": 1,
-                  "charOffset": 6749,
-                  "charLength": 134,
-                  "snippet": {
-                    "text": "            )\n\n            bot.loop.create_task(message.delete())\n        except (AttributeError, UnboundLocalError):\n            pass"
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "3bb117c2c3e359a7a5f8ed0b50ce407ac692c970fc39560b0e1420e776256e95"
-          },
-          "properties": {
-            "ideaSeverity": "WARNING",
-            "qodanaSeverity": "High",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyUnboundLocalVariableInspection",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "Local variable 'player' might be referenced before assignment",
-            "markdown": "Local variable 'player' might be referenced before assignment"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/cogs/commands.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 546,
-                  "startColumn": 24,
-                  "charOffset": 19786,
-                  "charLength": 6,
-                  "snippet": {
-                    "text": "player"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 544,
-                  "startColumn": 1,
-                  "charOffset": 19699,
-                  "charLength": 255,
-                  "snippet": {
-                    "text": "            await update_display(\n                bot=self.bot,\n                player=player or interaction.bot.lavalink.player_manager.get(interaction.guild.id),\n                new_message=await interaction.original_response(),\n                delay=5,"
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "42cf8180709a6cdcfe3a747a3de2d8b178f29960b0eec2a5e8d0ab7de6537494"
-          },
-          "properties": {
-            "ideaSeverity": "WARNING",
-            "qodanaSeverity": "High",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyUnboundLocalVariableInspection",
-          "kind": "fail",
-          "level": "warning",
-          "message": {
-            "text": "Local variable 'message' might be referenced before assignment",
-            "markdown": "Local variable 'message' might be referenced before assignment"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/utils.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 276,
-                  "startColumn": 15,
-                  "charOffset": 9670,
-                  "charLength": 7,
-                  "snippet": {
-                    "text": "message"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 274,
-                  "startColumn": 1,
-                  "charOffset": 9645,
-                  "charLength": 222,
-                  "snippet": {
-                    "text": "\n    else:\n        await message.edit(embed=generate_display_embed(bot, player), components=components)\n\n    bot.logger.debug(\"Updating player in guild %s display message to %s\", bot.get_guild(player.guild_id), message.id)"
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "ff68674bac662da0c2613e990346fbca6b737585f7477127a4d881d42b5593c4"
-          },
-          "properties": {
-            "ideaSeverity": "WARNING",
-            "qodanaSeverity": "High",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyUnusedLocalInspection",
-          "kind": "fail",
-          "level": "note",
-          "message": {
-            "text": "Parameter 'timeout' value is not used",
-            "markdown": "Parameter 'timeout' value is not used"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/voice_client.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 43,
-                  "startColumn": 32,
-                  "charOffset": 1363,
+                  "startLine": 294,
+                  "startColumn": 26,
+                  "charOffset": 9288,
                   "charLength": 14,
                   "snippet": {
-                    "text": "timeout: float"
+                    "text": "'\"cid\":(\\d+),'"
                   },
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 41,
+                  "startLine": 292,
                   "startColumn": 1,
-                  "charOffset": 1304,
-                  "charLength": 184,
+                  "charOffset": 9129,
+                  "charLength": 270,
                   "snippet": {
-                    "text": "            self.cleanup()\n\n    async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,\n                      self_mute: bool = False) -> None:\n        \"\"\""
+                    "text": "        video_index_url = f\"https://www.bilibili.com/video/{bvid}\"\n        resp = requests.get(video_index_url, headers=headers).text\n        cid = re.findall('\"cid\":(\\d+),', resp)[0]\n        session = re.findall('\"session\":\"(.*?)\"', resp)[0]\n        return cid, session"
                   },
                   "sourceLanguage": "Python"
                 }
@@ -7027,7 +6793,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "7aff68364220f438337fc6fc089e6cbe6cca8bc216919d92216baf7b011138e4"
+            "equalIndicator/v1": "2af8842e25d2f8268cf6381d1c2309b093c9a46df25ae9b6978b2f1c29dc47b7"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -7038,37 +6804,37 @@
           }
         },
         {
-          "ruleId": "PyUnusedLocalInspection",
+          "ruleId": "PyPep8Inspection",
           "kind": "fail",
           "level": "note",
           "message": {
-            "text": "Parameter 'interaction' value is not used",
-            "markdown": "Parameter 'interaction' value is not used"
+            "text": "PEP 8: E302 expected 2 blank lines, found 1",
+            "markdown": "PEP 8: E302 expected 2 blank lines, found 1"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "lava/cogs/commands.py",
+                  "uri": "lava/source.py",
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 700,
-                  "startColumn": 28,
-                  "charOffset": 25514,
-                  "charLength": 42,
+                  "startLine": 364,
+                  "startColumn": 1,
+                  "charOffset": 11569,
+                  "charLength": 29,
                   "snippet": {
-                    "text": "interaction: ApplicationCommandInteraction"
+                    "text": "class YTDLSource(BaseSource):"
                   },
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 698,
+                  "startLine": 362,
                   "startColumn": 1,
-                  "charOffset": 25454,
-                  "charLength": 249,
+                  "charOffset": 11528,
+                  "charLength": 121,
                   "snippet": {
-                    "text": "\n    @play.autocomplete(\"query\")\n    async def search(self, interaction: ApplicationCommandInteraction, query: str):\n        if re.match(r\"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\", query):\n            return []"
+                    "text": "        return audio_url, title, author\n\nclass YTDLSource(BaseSource):\n    def __init__(self):\n        super().__init__()"
                   },
                   "sourceLanguage": "Python"
                 }
@@ -7082,7 +6848,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "ca9e30be7afa7eb91e194cce263721f36315633f03c92a10afe9fb5c5e53388a"
+            "equalIndicator/v1": "33c1f973e11e584f44b36680e28b2bd7ff86312005607c903c55faef4b29d183"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -7093,37 +6859,37 @@
           }
         },
         {
-          "ruleId": "PyUnusedLocalInspection",
+          "ruleId": "PyPep8Inspection",
           "kind": "fail",
           "level": "note",
           "message": {
-            "text": "Parameter 'reconnect' value is not used",
-            "markdown": "Parameter 'reconnect' value is not used"
+            "text": "PEP 8: E501 line too long (138 > 120 characters)",
+            "markdown": "PEP 8: E501 line too long (138 \\> 120 characters)"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "lava/voice_client.py",
+                  "uri": "lava/source.py",
                   "uriBaseId": "SRCROOT"
                 },
                 "region": {
-                  "startLine": 43,
-                  "startColumn": 48,
-                  "charOffset": 1379,
-                  "charLength": 15,
+                  "startLine": 290,
+                  "startColumn": 27,
+                  "charOffset": 9006,
+                  "charLength": 112,
                   "snippet": {
-                    "text": "reconnect: bool"
+                    "text": "'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'"
                   },
                   "sourceLanguage": "Python"
                 },
                 "contextRegion": {
-                  "startLine": 41,
+                  "startLine": 288,
                   "startColumn": 1,
-                  "charOffset": 1304,
-                  "charLength": 184,
+                  "charOffset": 8908,
+                  "charLength": 287,
                   "snippet": {
-                    "text": "            self.cleanup()\n\n    async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,\n                      self_mute: bool = False) -> None:\n        \"\"\""
+                    "text": "        headers = {\n            'referer': 'https://www.bilibili.com/',\n            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'\n        }\n        video_index_url = f\"https://www.bilibili.com/video/{bvid}\""
                   },
                   "sourceLanguage": "Python"
                 }
@@ -7137,7 +6903,7 @@
             }
           ],
           "partialFingerprints": {
-            "equalIndicator/v1": "da04a5cd4e65db71fdc174052f9f085a16ec32563813f4f883c2de9cc2d0e0ac"
+            "equalIndicator/v1": "45b786c3748bce59706f4549febd13708a6f8ed93dfa8ed0b87a51510946afbe"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -7150,9 +6916,9 @@
       ],
       "automationDetails": {
         "id": "project/qodana/2024-04-11",
-        "guid": "bf8299d6-5031-4497-a718-9f1f9aed9499",
+        "guid": "7f27ca31-f7aa-4e83-8304-5396a71e1185",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648372392"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648599157"
         }
       },
       "newlineSequences": [
@@ -7161,630 +6927,6 @@
       ],
       "properties": {
         "qodana.sanity.results": [
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 77,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 101,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "0f2ae4d9ed418b29b9f57a32c4f2eb07ae60323307f25417e09d7a7fd84ae0cf"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 32,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 180,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "34b4b5b7ebd58eccf9a05e7f09ece9f677a5525b95661150feb5e4b37f4002e9"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/bot.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 39,
-                    "snippet": {
-                      "text": "import json\nfrom logging import Logger\n"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 123,
-                    "snippet": {
-                      "text": "import json\nfrom logging import Logger\n\nfrom disnake.abc import MISSING\nfrom disnake.ext.commands import Bot as OriginalBot"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "608446ec511e17c3e7634e044b01595f8c5a3d59fbd975e4815293dd13bc1cad"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/events.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 7344,
-                    "snippet": {
-                      "text": "from logging import getLogger\r\nfrom typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r\nfrom disnake.ext import commands\r\nfrom disnake.ext.commands import Cog, CommandInvokeError\r\nfrom lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent\r\n\r\nfrom lava.bot import Bot\r\nfrom lava.embeds import ErrorEmbed\r\nfrom lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel\r\nfrom lava.utils import get_recommended_tracks, update_display, ensure_voice, toggle_autoplay\r\n\r\n\r\nclass Events(Cog):\r\n    def __init__(self, bot: Bot):\r\n        self.bot = bot\r\n\r\n        self.logger = getLogger(\"lava.events\")\r\n\r\n    async def cog_load(self):\r\n        await self.bot.wait_until_ready()\r\n\r\n    @commands.Cog.listener(name=\"on_ready\")\r\n    async def on_ready(self):\r\n        self.bot.lavalink.add_event_hook(self.track_hook)\r\n\r\n    async def track_hook(self, event):\r\n        if isinstance(event, PlayerUpdateEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.debug(\"Received player update event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            if event.player.fetch(\"autoplay\") and len(event.player.queue) <= 5:\r\n                self.logger.info(\r\n                    \"Queue is empty, adding recommended track for guild %s...\", self.bot.get_guild(player.guild_id)\r\n                )\r\n\r\n                recommendations = await get_recommended_tracks(player, player.current, 5 - len(player.queue))\r\n\r\n                for recommendation in recommendations:\r\n                    event.player.add(requester=0, track=recommendation)\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received track end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, QueueEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received queue end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackLoadFailedEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            locale: str = str(player.fetch(\"locale\", \"zh_TW\"))\r\n\r\n            self.logger.info(\"Received track load failed event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            # noinspection PyTypeChecker\r\n            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch(\"channel\")))\r\n\r\n            message = await channel.send(\r\n                embed=ErrorEmbed(\r\n                    f\"{self.bot.get_text('error.play_failed', locale, '無法播放歌曲')}: {event.track['title']}\",\r\n                    f\"{self.bot.get_text('reason', locale, '原因')}: `{event.original or 'Unknown'}`\"\r\n                )\r\n            )\r\n\r\n            await player.skip()\r\n\r\n            await update_display(self.bot, player, message, delay=5)\r\n\r\n    @commands.Cog.listener(name=\"on_slash_command_error\")\r\n    async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):\r\n        locale = str(interaction.locale)\r\n\r\n        if isinstance(error.original, MissingVoicePermissions):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.no_play_perms', locale, \"我需要 `連接` 和 `說話` 權限才能夠播放音樂\")\r\n            )\r\n\r\n        elif isinstance(error.original, BotNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.bot_not_in_voice', locale, \"我沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.user_not_in_voice', locale, \"你沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserInDifferentChannel):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                f\"{self.bot.get_text('error.must_in_same_voice', locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>\"\r\n            )\r\n\r\n        else:\r\n            raise error.original\r\n\r\n        try:\r\n            await interaction.response.send_message(embed=embed)\r\n        except InteractionResponded:\r\n            await interaction.edit_original_response(embed=embed)\r\n\r\n    @commands.Cog.listener(name=\"on_voice_state_update\")\r\n    async def on_voice_state_update(self, member, before, after):\r\n        if (\r\n                before.channel is not None\r\n                and after.channel is None\r\n                and member.id == self.bot.user.id\r\n        ):\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)\r\n\r\n            await player.stop()\r\n            player.queue.clear()\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:  # There's no message to update\r\n                pass\r\n\r\n    @commands.Cog.listener(name=\"on_message_interaction\")\r\n    async def on_message_interaction(self, interaction: MessageInteraction):\r\n        if interaction.data.custom_id.startswith(\"control\"):\r\n            if interaction.data.custom_id.startswith(\"control.empty\"):\r\n                await interaction.response.edit_message()\r\n\r\n                return\r\n\r\n            try:\r\n                await ensure_voice(interaction, should_connect=False)\r\n            except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):\r\n                return\r\n\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)\r\n\r\n            match interaction.data.custom_id:\r\n                case \"control.resume\":\r\n                    await player.set_pause(False)\r\n\r\n                case \"control.pause\":\r\n                    await player.set_pause(True)\r\n\r\n                case \"control.stop\":\r\n                    await player.stop()\r\n                    player.queue.clear()\r\n\r\n                case \"control.previous\":\r\n                    await player.seek(0)\r\n\r\n                case \"control.next\":\r\n                    await player.skip()\r\n\r\n                case \"control.shuffle\":\r\n                    player.set_shuffle(not player.shuffle)\r\n\r\n                case \"control.repeat\":\r\n                    player.set_loop(player.loop + 1 if player.loop < 2 else 0)\r\n\r\n                case \"control.rewind\":\r\n                    await player.seek(round(player.position) - 10000)\r\n\r\n                case \"control.forward\":\r\n                    await player.seek(round(player.position) + 10000)\r\n\r\n                case "
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 7344,
-                    "snippet": {
-                      "text": "from logging import getLogger\r\nfrom typing import Union\r\n\r\nfrom disnake import TextChannel, Thread, InteractionResponded, ApplicationCommandInteraction, \\\r\n    MessageInteraction\r\nfrom disnake.abc import GuildChannel\r\nfrom disnake.ext import commands\r\nfrom disnake.ext.commands import Cog, CommandInvokeError\r\nfrom lavalink import TrackLoadFailedEvent, DefaultPlayer, PlayerUpdateEvent, TrackEndEvent, QueueEndEvent\r\n\r\nfrom lava.bot import Bot\r\nfrom lava.embeds import ErrorEmbed\r\nfrom lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel\r\nfrom lava.utils import get_recommended_tracks, update_display, ensure_voice, toggle_autoplay\r\n\r\n\r\nclass Events(Cog):\r\n    def __init__(self, bot: Bot):\r\n        self.bot = bot\r\n\r\n        self.logger = getLogger(\"lava.events\")\r\n\r\n    async def cog_load(self):\r\n        await self.bot.wait_until_ready()\r\n\r\n    @commands.Cog.listener(name=\"on_ready\")\r\n    async def on_ready(self):\r\n        self.bot.lavalink.add_event_hook(self.track_hook)\r\n\r\n    async def track_hook(self, event):\r\n        if isinstance(event, PlayerUpdateEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.debug(\"Received player update event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            if event.player.fetch(\"autoplay\") and len(event.player.queue) <= 5:\r\n                self.logger.info(\r\n                    \"Queue is empty, adding recommended track for guild %s...\", self.bot.get_guild(player.guild_id)\r\n                )\r\n\r\n                recommendations = await get_recommended_tracks(player, player.current, 5 - len(player.queue))\r\n\r\n                for recommendation in recommendations:\r\n                    event.player.add(requester=0, track=recommendation)\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received track end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, QueueEndEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            self.logger.info(\"Received queue end event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:\r\n                pass\r\n\r\n        elif isinstance(event, TrackLoadFailedEvent):\r\n            player: DefaultPlayer = event.player\r\n\r\n            locale: str = str(player.fetch(\"locale\", \"zh_TW\"))\r\n\r\n            self.logger.info(\"Received track load failed event for guild %s\", self.bot.get_guild(player.guild_id))\r\n\r\n            # noinspection PyTypeChecker\r\n            channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch(\"channel\")))\r\n\r\n            message = await channel.send(\r\n                embed=ErrorEmbed(\r\n                    f\"{self.bot.get_text('error.play_failed', locale, '無法播放歌曲')}: {event.track['title']}\",\r\n                    f\"{self.bot.get_text('reason', locale, '原因')}: `{event.original or 'Unknown'}`\"\r\n                )\r\n            )\r\n\r\n            await player.skip()\r\n\r\n            await update_display(self.bot, player, message, delay=5)\r\n\r\n    @commands.Cog.listener(name=\"on_slash_command_error\")\r\n    async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):\r\n        locale = str(interaction.locale)\r\n\r\n        if isinstance(error.original, MissingVoicePermissions):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.no_play_perms', locale, \"我需要 `連接` 和 `說話` 權限才能夠播放音樂\")\r\n            )\r\n\r\n        elif isinstance(error.original, BotNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.bot_not_in_voice', locale, \"我沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserNotInVoice):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                self.bot.get_text('error.user_not_in_voice', locale, \"你沒有連接到一個語音頻道\")\r\n            )\r\n\r\n        elif isinstance(error.original, UserInDifferentChannel):\r\n            embed = ErrorEmbed(\r\n                self.bot.get_text('error.command.title', locale, '指令錯誤'),\r\n                f\"{self.bot.get_text('error.must_in_same_voice', locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>\"\r\n            )\r\n\r\n        else:\r\n            raise error.original\r\n\r\n        try:\r\n            await interaction.response.send_message(embed=embed)\r\n        except InteractionResponded:\r\n            await interaction.edit_original_response(embed=embed)\r\n\r\n    @commands.Cog.listener(name=\"on_voice_state_update\")\r\n    async def on_voice_state_update(self, member, before, after):\r\n        if (\r\n                before.channel is not None\r\n                and after.channel is None\r\n                and member.id == self.bot.user.id\r\n        ):\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(member.guild.id)\r\n\r\n            await player.stop()\r\n            player.queue.clear()\r\n\r\n            try:\r\n                await update_display(self.bot, player)\r\n            except ValueError:  # There's no message to update\r\n                pass\r\n\r\n    @commands.Cog.listener(name=\"on_message_interaction\")\r\n    async def on_message_interaction(self, interaction: MessageInteraction):\r\n        if interaction.data.custom_id.startswith(\"control\"):\r\n            if interaction.data.custom_id.startswith(\"control.empty\"):\r\n                await interaction.response.edit_message()\r\n\r\n                return\r\n\r\n            try:\r\n                await ensure_voice(interaction, should_connect=False)\r\n            except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):\r\n                return\r\n\r\n            player: DefaultPlayer = self.bot.lavalink.player_manager.get(interaction.guild_id)\r\n\r\n            match interaction.data.custom_id:\r\n                case \"control.resume\":\r\n                    await player.set_pause(False)\r\n\r\n                case \"control.pause\":\r\n                    await player.set_pause(True)\r\n\r\n                case \"control.stop\":\r\n                    await player.stop()\r\n                    player.queue.clear()\r\n\r\n                case \"control.previous\":\r\n                    await player.seek(0)\r\n\r\n                case \"control.next\":\r\n                    await player.skip()\r\n\r\n                case \"control.shuffle\":\r\n                    player.set_shuffle(not player.shuffle)\r\n\r\n                case \"control.repeat\":\r\n                    player.set_loop(player.loop + 1 if player.loop < 2 else 0)\r\n\r\n                case \"control.rewind\":\r\n                    await player.seek(round(player.position) - 10000)\r\n\r\n                case \"control.forward\":\r\n                    await player.seek(round(player.position) + 10000)\r\n\r\n                case "
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "6bb4836a3a1f496045060ed686569634a7f28b983597c6e5b78ccd342850a3d3"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/source.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 51,
-                    "snippet": {
-                      "text": "import json\nimport re\nfrom logging import getLogger"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 115,
-                    "snippet": {
-                      "text": "import json\nimport re\nfrom logging import getLogger\nfrom os import getenv\nfrom typing import Union, Tuple, Optional"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "82b2eb7ec5274df8edb99a9eb41dfffec6c0a161b97dca97a72a0b4d0d8906ce"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/errors.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 37,
-                    "snippet": {
-                      "text": "from disnake.abc import Connectable\n\n"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 79,
-                    "snippet": {
-                      "text": "from disnake.abc import Connectable\n\n\nclass UserNotInVoice(Exception):\n    pass"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "83fdd9baa341ec764dcb50b4791639640ddc7fc31a611e4b24494139193e5667"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/variables.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 114,
-                    "snippet": {
-                      "text": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\""
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 115,
-                    "snippet": {
-                      "text": "class Variables:\n    \"\"\"A class contains static variables for this bot\"\"\"\n    SPOTIFY_CLIENT = \"SPOTIFY_CLIENT_ID\"\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "920ee80fcb895ece91d14b1b57f0dbec728ee53609a9bc96e5d4dec713bd62a2"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "main.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 2115,
-                    "snippet": {
-                      "text": "import asyncio\r\nimport json\r\nimport logging\r\nimport os\r\nfrom os import getenv\r\n\r\nfrom colorlog import ColoredFormatter\r\nfrom disnake import Intents, Activity, BaseActivity, PartialEmoji\r\nfrom disnake.ext.commands import CommandSyncFlags\r\nfrom dotenv import load_dotenv\r\n\r\nfrom lava.bot import Bot\r\n\r\n\r\ndef main():\r\n    load_dotenv(\"stack.env\")\r\n\r\n    setup_logging()\r\n\r\n    main_logger = logging.getLogger(\"lava.main\")\r\n\r\n    loop = asyncio.new_event_loop()\r\n\r\n    bot = Bot(\r\n        logger=main_logger,\r\n        command_prefix=getenv(\"PREFIX\", \"l!\"),\r\n        intents=Intents.all(),\r\n        loop=loop,\r\n        activity=get_activity(),\r\n        command_sync_flags=CommandSyncFlags.default(),\r\n    )\r\n\r\n    bot.i18n.load(\"locale/\")\r\n\r\n    load_extensions(bot)\r\n\r\n    bot.run(os.environ[\"TOKEN\"])\r\n\r\n\r\ndef get_activity() -> BaseActivity:\r\n    with open(\"configs/activity.json\", \"r\") as f:\r\n        activity = json.load(f)\r\n\r\n    return Activity(**activity)\r\n\r\n\r\ndef setup_logging():\r\n    \"\"\"\r\n    Set up the loggings for the bot\r\n    :return: None\r\n    \"\"\"\r\n    formatter = ColoredFormatter(\r\n        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',\r\n        datefmt='%Y-%m-%d %H:%M:%S',\r\n        log_colors={\r\n            'DEBUG': 'cyan',\r\n            'INFO': 'white',\r\n            'WARNING': 'yellow',\r\n            'ERROR': 'red',\r\n            'CRITICAL': 'bold_red',\r\n        }\r\n    )\r\n\r\n    stream_handler = logging.StreamHandler()\r\n    stream_handler.setLevel(logging.INFO)\r\n    stream_handler.setFormatter(formatter)\r\n\r\n    file_handler = logging.FileHandler(filename=\"lava.log\", encoding=\"utf-8\", mode=\"w\")\r\n    file_handler.setLevel(logging.DEBUG)\r\n    file_handler.setFormatter(formatter)\r\n\r\n    logging.basicConfig(\r\n        handlers=[stream_handler, file_handler], level=logging.INFO\r\n    )\r\n\r\n\r\ndef load_extensions(bot: Bot) -> Bot:\r\n    \"\"\"\r\n    Load extensions in extensions.json file\r\n    :param bot: The bot to load the extensions to\r\n    :return: The bot\r\n    \"\"\"\r\n    with open(\"extensions.json\", \"r\") as f:\r\n        extensions = json.load(f)\r\n\r\n    for extension in extensions:\r\n        "
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 2115,
-                    "snippet": {
-                      "text": "import asyncio\r\nimport json\r\nimport logging\r\nimport os\r\nfrom os import getenv\r\n\r\nfrom colorlog import ColoredFormatter\r\nfrom disnake import Intents, Activity, BaseActivity, PartialEmoji\r\nfrom disnake.ext.commands import CommandSyncFlags\r\nfrom dotenv import load_dotenv\r\n\r\nfrom lava.bot import Bot\r\n\r\n\r\ndef main():\r\n    load_dotenv(\"stack.env\")\r\n\r\n    setup_logging()\r\n\r\n    main_logger = logging.getLogger(\"lava.main\")\r\n\r\n    loop = asyncio.new_event_loop()\r\n\r\n    bot = Bot(\r\n        logger=main_logger,\r\n        command_prefix=getenv(\"PREFIX\", \"l!\"),\r\n        intents=Intents.all(),\r\n        loop=loop,\r\n        activity=get_activity(),\r\n        command_sync_flags=CommandSyncFlags.default(),\r\n    )\r\n\r\n    bot.i18n.load(\"locale/\")\r\n\r\n    load_extensions(bot)\r\n\r\n    bot.run(os.environ[\"TOKEN\"])\r\n\r\n\r\ndef get_activity() -> BaseActivity:\r\n    with open(\"configs/activity.json\", \"r\") as f:\r\n        activity = json.load(f)\r\n\r\n    return Activity(**activity)\r\n\r\n\r\ndef setup_logging():\r\n    \"\"\"\r\n    Set up the loggings for the bot\r\n    :return: None\r\n    \"\"\"\r\n    formatter = ColoredFormatter(\r\n        '%(asctime)s %(log_color)s [%(levelname)s] %(message)s',\r\n        datefmt='%Y-%m-%d %H:%M:%S',\r\n        log_colors={\r\n            'DEBUG': 'cyan',\r\n            'INFO': 'white',\r\n            'WARNING': 'yellow',\r\n            'ERROR': 'red',\r\n            'CRITICAL': 'bold_red',\r\n        }\r\n    )\r\n\r\n    stream_handler = logging.StreamHandler()\r\n    stream_handler.setLevel(logging.INFO)\r\n    stream_handler.setFormatter(formatter)\r\n\r\n    file_handler = logging.FileHandler(filename=\"lava.log\", encoding=\"utf-8\", mode=\"w\")\r\n    file_handler.setLevel(logging.DEBUG)\r\n    file_handler.setFormatter(formatter)\r\n\r\n    logging.basicConfig(\r\n        handlers=[stream_handler, file_handler], level=logging.INFO\r\n    )\r\n\r\n\r\ndef load_extensions(bot: Bot) -> Bot:\r\n    \"\"\"\r\n    Load extensions in extensions.json file\r\n    :param bot: The bot to load the extensions to\r\n    :return: The bot\r\n    \"\"\"\r\n    with open(\"extensions.json\", \"r\") as f:\r\n        extensions = json.load(f)\r\n\r\n    for extension in extensions:\r\n        "
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "9697b19a8e70091ef03d8987a44b742eba2ba8ac58fd4014676beae3777ba23f"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 136,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n\nfrom lava.bot import Bot"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "b1402f2443407a2a86084f53ef71344806ebcafa2936c15f2aab8eecd7f20a4f"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyInterpreterInspection",
-            "kind": "fail",
-            "level": "warning",
-            "message": {
-              "text": "No Python interpreter configured for the project",
-              "markdown": "No Python interpreter configured for the project"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/embeds.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 62,
-                    "snippet": {
-                      "text": "from typing import Union\n\nfrom disnake import Embed, Localized"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 64,
-                    "snippet": {
-                      "text": "from typing import Union\n\nfrom disnake import Embed, Localized\n\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "c04f38b138402afbe6b8f4f15ae4a25ca7b4d2f4c9db87ebba038a7f03c51891"
-            },
-            "properties": {
-              "ideaSeverity": "WARNING",
-              "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'Exception'",
-              "markdown": "Unresolved reference 'Exception'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/errors.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 8,
-                    "startColumn": 21,
-                    "charOffset": 102,
-                    "charLength": 9,
-                    "snippet": {
-                      "text": "Exception"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 6,
-                    "startColumn": 1,
-                    "charOffset": 80,
-                    "charLength": 43,
-                    "snippet": {
-                      "text": "\n\nclass BotNotInVoice(Exception):\n    pass\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "22403c00f7e6a62353763b95245de8547295865f9e6356f3a8c7b28e27804a37"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'getpid'",
-              "markdown": "Unresolved reference 'getpid'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 16,
-                    "charOffset": 25,
-                    "charLength": 6,
-                    "snippet": {
-                      "text": "getpid"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 147,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "3295fc09f7891bd72944aaa3f7dcf6a24be2b9603bf88418c3dd5264d19ba9b9"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
           {
             "ruleId": "PyUnresolvedReferencesInspection",
             "kind": "fail",
@@ -7842,164 +6984,8 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/bot.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 4,
-                    "startColumn": 6,
-                    "charOffset": 45,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 2,
-                    "startColumn": 1,
-                    "charOffset": 12,
-                    "charLength": 139,
-                    "snippet": {
-                      "text": "from logging import Logger\n\nfrom disnake.abc import MISSING\nfrom disnake.ext.commands import Bot as OriginalBot\nfrom lavalink import Client"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "56f04ef5cde4350c9ca6b392982da630abe437059ac4e7ffab8555cea03664ec"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 4,
-                    "startColumn": 6,
-                    "charOffset": 38,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 2,
-                    "startColumn": 1,
-                    "charOffset": 10,
-                    "charLength": 207,
-                    "snippet": {
-                      "text": "from os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands\nfrom disnake.ext.commands import Cog"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "62e0971836f4b87ebc1043ab47756bea374bf9d4615273788a9d3beb6c68abf8"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 're'",
-              "markdown": "No module named 're'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 8,
-                    "charOffset": 7,
-                    "charLength": 2,
-                    "snippet": {
-                      "text": "re"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 32,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 're'",
-              "markdown": "No module named 're'"
+              "text": "Unresolved reference 'BeautifulSoup'",
+              "markdown": "Unresolved reference 'BeautifulSoup'"
             },
             "locations": [
               {
@@ -8009,22 +6995,22 @@
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 2,
-                    "startColumn": 8,
-                    "charOffset": 19,
-                    "charLength": 2,
+                    "startLine": 8,
+                    "startColumn": 17,
+                    "charOffset": 149,
+                    "charLength": 13,
                     "snippet": {
-                      "text": "re"
+                      "text": "BeautifulSoup"
                     },
                     "sourceLanguage": "Python"
                   },
                   "contextRegion": {
-                    "startLine": 1,
+                    "startLine": 6,
                     "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 73,
+                    "charOffset": 116,
+                    "charLength": 192,
                     "snippet": {
-                      "text": "import json\nimport re\nfrom logging import getLogger\nfrom os import getenv"
+                      "text": "\nimport requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -8038,7 +7024,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "918488860d73425d32ca12c63daa45afd86933b30ec7038febacf14e0ba4b28d"
+              "equalIndicator/v1": "569053e57a7f4ce5251c171c9d5813c629b82ea3ebbe920cf581687bf2e8b5a5"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8050,164 +7036,8 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'logging'",
-              "markdown": "Unresolved reference 'logging'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/bot.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 6,
-                    "charOffset": 17,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "logging"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 71,
-                    "snippet": {
-                      "text": "import json\nfrom logging import Logger\n\nfrom disnake.abc import MISSING"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "9b0e0f5e4476e44ffde08b245a121f682e6619dd90c409521e1a0141aa8818a5"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'os'",
-              "markdown": "Unresolved reference 'os'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/cogs/commands.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 6,
-                    "charOffset": 15,
-                    "charLength": 2,
-                    "snippet": {
-                      "text": "os"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 147,
-                    "snippet": {
-                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "a0cf4ebea2c905ce0207c89de62aba93ea72a7621fd237ffc353e7382a2d01ab"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'Union'",
-              "markdown": "Unresolved reference 'Union'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 3,
-                    "startColumn": 20,
-                    "charOffset": 52,
-                    "charLength": 5,
-                    "snippet": {
-                      "text": "Union"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 101,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "aaba4db1aeb7b64c9f6640a9d9a8f63eac8345f3fb978802afb907546a4ca228"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'logging'",
-              "markdown": "Unresolved reference 'logging'"
+              "text": "Unresolved reference 'bs4'",
+              "markdown": "Unresolved reference 'bs4'"
             },
             "locations": [
               {
@@ -8217,22 +7047,22 @@
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 3,
+                    "startLine": 8,
                     "startColumn": 6,
-                    "charOffset": 27,
-                    "charLength": 7,
+                    "charOffset": 138,
+                    "charLength": 3,
                     "snippet": {
-                      "text": "logging"
+                      "text": "bs4"
                     },
                     "sourceLanguage": "Python"
                   },
                   "contextRegion": {
-                    "startLine": 1,
+                    "startLine": 6,
                     "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 115,
+                    "charOffset": 116,
+                    "charLength": 192,
                     "snippet": {
-                      "text": "import json\nimport re\nfrom logging import getLogger\nfrom os import getenv\nfrom typing import Union, Tuple, Optional"
+                      "text": "\nimport requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -8246,7 +7076,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "ab0116de43d23b913752d8fa7510f2b1b618928e9c99de91dfb28f022f696103"
+              "equalIndicator/v1": "8f55e0ba549841996971a8cb8c9a826762b7a2003061dfc20b25ca1573c2b753"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8258,8 +7088,8 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "No module named 'json'",
-              "markdown": "No module named 'json'"
+              "text": "Unresolved reference 'lavalink'",
+              "markdown": "Unresolved reference 'lavalink'"
             },
             "locations": [
               {
@@ -8269,230 +7099,22 @@
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 1,
-                    "startColumn": 8,
-                    "charOffset": 7,
-                    "charLength": 4,
-                    "snippet": {
-                      "text": "json"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 51,
-                    "snippet": {
-                      "text": "import json\nimport re\nfrom logging import getLogger"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "bced320be22090642144e6a43cf75f7b2796ae211de5cc07a227f5a80ad89c99"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'Exception'",
-              "markdown": "Unresolved reference 'Exception'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/errors.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 4,
-                    "startColumn": 22,
-                    "charOffset": 59,
-                    "charLength": 9,
-                    "snippet": {
-                      "text": "Exception"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 2,
-                    "startColumn": 1,
-                    "charOffset": 36,
-                    "charLength": 44,
-                    "snippet": {
-                      "text": "\n\nclass UserNotInVoice(Exception):\n    pass\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "ca1cb7e1a451961ee2a844f0baef086fb085591584ccd185e9afde69be4fb8bf"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'Logger'",
-              "markdown": "Unresolved reference 'Logger'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/bot.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 21,
-                    "charOffset": 32,
-                    "charLength": 6,
-                    "snippet": {
-                      "text": "Logger"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 71,
-                    "snippet": {
-                      "text": "import json\nfrom logging import Logger\n\nfrom disnake.abc import MISSING"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "cc7097b4f547688980830e6e1610da0e65fb7a7a0bcf81cea4118582ee8c3f71"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 'subprocess'",
-              "markdown": "No module named 'subprocess'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 2,
-                    "startColumn": 8,
-                    "charOffset": 22,
-                    "charLength": 10,
-                    "snippet": {
-                      "text": "subprocess"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 78,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "dc5085730eeb38bcb6ef286af37a6df61aafa27258bac4214ab750294cc18566"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'typing'",
-              "markdown": "Unresolved reference 'typing'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 3,
+                    "startLine": 9,
                     "startColumn": 6,
-                    "charOffset": 38,
-                    "charLength": 6,
+                    "charOffset": 168,
+                    "charLength": 8,
                     "snippet": {
-                      "text": "typing"
+                      "text": "lavalink"
                     },
                     "sourceLanguage": "Python"
                   },
                   "contextRegion": {
-                    "startLine": 1,
+                    "startLine": 7,
                     "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 101,
+                    "charOffset": 117,
+                    "charLength": 220,
                     "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional\n\nimport youtube_related"
+                      "text": "import requests\nfrom bs4 import BeautifulSoup\nfrom lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack\nfrom spotipy import Spotify, SpotifyClientCredentials\nfrom yt_dlp import YoutubeDL"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -8506,215 +7128,7 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "e30e9d8b0f4fa66d39bf147e6c3d20a307bd08cd186402a7fc048340419e4903"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 'json'",
-              "markdown": "No module named 'json'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/bot.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 8,
-                    "charOffset": 7,
-                    "charLength": 4,
-                    "snippet": {
-                      "text": "json"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 39,
-                    "snippet": {
-                      "text": "import json\nfrom logging import Logger\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "f6158208da390ef9c169759c4e651ff041a971c724d9b413c3f6d07cda187566"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "No module named 'asyncio'",
-              "markdown": "No module named 'asyncio'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/utils.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 8,
-                    "charOffset": 7,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "asyncio"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 77,
-                    "snippet": {
-                      "text": "import asyncio\nimport subprocess\nfrom typing import Union, Iterable, Optional"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "f7c0a1f364995b2c8120457474c43830f8c89ea18efe074f1e07dbe02879fb7c"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/errors.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 6,
-                    "charOffset": 5,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 37,
-                    "snippet": {
-                      "text": "from disnake.abc import Connectable\n\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "fbfa707b90f6da575277ddb98765204179b015b36f3ad58b20fc314a1f909b7b"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'Connectable'",
-              "markdown": "Unresolved reference 'Connectable'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/errors.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 25,
-                    "charOffset": 24,
-                    "charLength": 11,
-                    "snippet": {
-                      "text": "Connectable"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 37,
-                    "snippet": {
-                      "text": "from disnake.abc import Connectable\n\n"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "fd599dc346cc1dc6a889926cf99b7d7d5e5b9aceddce3a34df501e1738c86bf4"
+              "equalIndicator/v1": "ffc795f612442c3bec41d08e0735ac11693f194c514422842dbb31abeb9bb3c0"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8725,9 +7139,8 @@
         "configProfile": "absent",
         "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
         "qodanaNewResultSummary": {
-          "moderate": 5,
-          "high": 3,
-          "total": 8
+          "moderate": 4,
+          "total": 4
         }
       }
     }

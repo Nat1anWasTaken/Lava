@@ -1,13 +1,12 @@
 {
   "languages": [
     "Python",
-    "XML",
-    ".gitignore (GitIgnore)",
     "Plain text",
     "Shell Script",
     "JSON",
     "YAML",
     "textmate",
+    ".gitignore (GitIgnore)",
     "Requirements"
   ]
 }
