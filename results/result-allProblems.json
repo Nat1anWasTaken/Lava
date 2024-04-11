@@ -63,68 +63,6 @@
 },{
   "tool": "Code Inspection",
   "category": "Python",
-  "type": "Incorrect docstring",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Unexpected parameter bvid in docstring",
-  "detailsInfo": "Reports mismatched parameters in a docstring. For example, `b` is highlighted, because there is no\nsuch a parameter in the `add` function.\n\n\n        def add(a, c):\n        \"\"\"\n        @param a:\n        @param b:\n        @return:\n        \"\"\"\n        pass\n\nThe inspection does not warn you of missing parameters if none of them is mentioned in a docstring:\n\n\n    def mult(a, c):\n        \"\"\"\n        @return:\n        \"\"\"\n        pass\n",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/source.py",
-      "language": "Python",
-      "line": 302,
-      "offset": 16,
-      "length": 4,
-      "code": {
-        "startLine": 300,
-        "length": 4,
-        "offset": 65,
-        "surroundingCode": "        Gets audio URL from a Bilibili video URL\n\n        :param bvid: Bilibili video URL\n        :return: audio URL\n        \"\"\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyIncorrectDocstringInspection"
-  },
-  "hash": "1df26b4552cfe045caf9d5424b1168e99fad4a22d13237e50d69c7ee858462c2"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
-  "type": "Incorrect docstring",
-  "tags": [
-    "Python"
-  ],
-  "severity": "Moderate",
-  "comment": "Missing parameter url in docstring",
-  "detailsInfo": "Reports mismatched parameters in a docstring. For example, `b` is highlighted, because there is no\nsuch a parameter in the `add` function.\n\n\n        def add(a, c):\n        \"\"\"\n        @param a:\n        @param b:\n        @return:\n        \"\"\"\n        pass\n\nThe inspection does not warn you of missing parameters if none of them is mentioned in a docstring:\n\n\n    def mult(a, c):\n        \"\"\"\n        @return:\n        \"\"\"\n        pass\n",
-  "sources": [
-    {
-      "type": "file",
-      "path": "lava/source.py",
-      "language": "Python",
-      "line": 298,
-      "offset": 29,
-      "length": 8,
-      "code": {
-        "startLine": 296,
-        "length": 8,
-        "offset": 57,
-        "surroundingCode": "        return cid, session\n\n    def get_audio_url(self, url: str):\n        \"\"\"\n        Gets audio URL from a Bilibili video URL"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "PyIncorrectDocstringInspection"
-  },
-  "hash": "9b22860e99bd98e167b574175bcd8f9e0e76b10b0142d3541f98f88c4c7c6d3c"
-},{
-  "tool": "Code Inspection",
-  "category": "Python",
   "type": "Unbound local variables",
   "tags": [
     "Python"

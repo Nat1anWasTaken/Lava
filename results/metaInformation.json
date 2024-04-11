@@ -1,19 +1,19 @@
 {
-  "total": 10,
+  "total": 8,
   "tools inspection": {
-    "Code Inspection": 10
+    "Code Inspection": 8
   },
   "linter": "QDPYC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-        "revisionId": "e0448ed143abb58671ce685676e4876c8ea6d8f3",
+        "revisionId": "582f0b5181e94f40febb49b465e3ca5bb4e9aa26",
         "branch": "refs/heads/115-bug-the-error-occurred-when-playing-the-bilibili-link"
       }
     },
     "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
-    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648282044",
+    "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648372392",
     "repoUrl": "https://github.com/Nat1anWasTaken/Lava"
   }
 }

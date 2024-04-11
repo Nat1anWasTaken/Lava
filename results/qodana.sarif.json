@@ -1651,19 +1651,19 @@
                 ]
               },
               {
-                "id": "PyMethodOverridingInspection",
+                "id": "PoetryPackageVersionsInspection",
                 "shortDescription": {
-                  "text": "Method signature does not match signature of overridden method"
+                  "text": "Poetry package versions"
                 },
                 "fullDescription": {
-                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
-                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
+                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
+                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyMethodOverriding",
+                    "suppressToolId": "PoetryPackageVersions",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -1684,19 +1684,19 @@
                 ]
               },
               {
-                "id": "PoetryPackageVersionsInspection",
+                "id": "PyMethodOverridingInspection",
                 "shortDescription": {
-                  "text": "Poetry package versions"
+                  "text": "Method signature does not match signature of overridden method"
                 },
                 "fullDescription": {
-                  "text": "Reports outdated versions of packages in '[tool.poetry.dependencies]' and '[tool.poetry.dev-dependencies]' sections of 'pyproject.toml'.",
-                  "markdown": "Reports outdated versions of packages in `[tool.poetry.dependencies]` and `[tool.poetry.dev-dependencies]`\nsections of `pyproject.toml`."
+                  "text": "Reports inconsistencies in overriding method signatures. Example: 'class Book:\n    def add_title(self):\n        pass\n\n\nclass Novel(Book):\n    def add_title(self, text):\n        pass' Parameters of the 'add_title' method in the 'Novel' class do not match the method signature specified in the 'Book' class. As a fix, the IDE offers to apply the Change Signature refactoring.",
+                  "markdown": "Reports inconsistencies in overriding method signatures.\n\n**Example:**\n\n\n    class Book:\n        def add_title(self):\n            pass\n\n\n    class Novel(Book):\n        def add_title(self, text):\n            pass\n\nParameters of the `add_title` method in the `Novel` class do not match the method\nsignature specified in the `Book` class. As a fix, the IDE offers to apply the Change Signature\nrefactoring."
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PoetryPackageVersions",
+                    "suppressToolId": "PyMethodOverriding",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -2707,39 +2707,6 @@
                 ]
               },
               {
-                "id": "PyTrailingSemicolonInspection",
-                "shortDescription": {
-                  "text": "Prohibited trailing semicolon in a statement"
-                },
-                "fullDescription": {
-                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
-                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
-                },
-                "defaultConfiguration": {
-                  "enabled": true,
-                  "level": "warning",
-                  "parameters": {
-                    "suppressToolId": "PyTrailingSemicolon",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "Python",
-                      "index": 1,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "PyRedundantParenthesesInspection",
                 "shortDescription": {
                   "text": "Redundant parentheses"
@@ -2773,19 +2740,19 @@
                 ]
               },
               {
-                "id": "PyOldStyleClassesInspection",
+                "id": "PyTrailingSemicolonInspection",
                 "shortDescription": {
-                  "text": "Old-style class contains new-style class features"
+                  "text": "Prohibited trailing semicolon in a statement"
                 },
                 "fullDescription": {
-                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
-                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
+                  "text": "Reports trailing semicolons in statements. Example: 'def my_func(a):\n    c = a ** 2;\n    return c' IDE provides a quick-fix that removes a trailing semicolon. When you apply it, the code changes to: 'def my_func(a):\n    c = a ** 2\n    return c'",
+                  "markdown": "Reports trailing semicolons in statements.\n\n**Example:**\n\n\n    def my_func(a):\n        c = a ** 2;\n        return c\n\nIDE provides a quick-fix that removes a trailing semicolon. When you\napply it, the code changes to:\n\n\n    def my_func(a):\n        c = a ** 2\n        return c\n"
                 },
                 "defaultConfiguration": {
                   "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyOldStyleClasses",
+                    "suppressToolId": "PyTrailingSemicolon",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -2821,6 +2788,39 @@
                     "suppressToolId": "PyAbstractClass",
                     "ideaSeverity": "WEAK WARNING",
                     "qodanaSeverity": "Moderate"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "Python",
+                      "index": 1,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "PyOldStyleClassesInspection",
+                "shortDescription": {
+                  "text": "Old-style class contains new-style class features"
+                },
+                "fullDescription": {
+                  "text": "Reports occurrences of new-style class features in old-style classes. The inspection highlights '__slots__', '__getattribute__', and 'super()' inside old-style classes.",
+                  "markdown": "Reports occurrences of\n[new-style class features](https://www.python.org/doc/newstyle/)\nin old-style classes. The inspection highlights\n`__slots__`, `__getattribute__`, and `super()`\ninside old-style classes."
+                },
+                "defaultConfiguration": {
+                  "enabled": true,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "PyOldStyleClasses",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
                   }
                 },
                 "relationships": [
@@ -3763,19 +3763,19 @@
                 ]
               },
               {
-                "id": "PyprojectInspection",
+                "id": "PyClassicStyleClassInspection",
                 "shortDescription": {
-                  "text": "Depencencies in pyproject.toml"
+                  "text": "Classic style class usage"
                 },
                 "fullDescription": {
-                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
-                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
+                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
+                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
                 },
                 "defaultConfiguration": {
-                  "enabled": true,
+                  "enabled": false,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyprojectInspection",
+                    "suppressToolId": "PyClassicStyleClass",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -3796,19 +3796,19 @@
                 ]
               },
               {
-                "id": "PyClassicStyleClassInspection",
+                "id": "PyprojectInspection",
                 "shortDescription": {
-                  "text": "Classic style class usage"
+                  "text": "Depencencies in pyproject.toml"
                 },
                 "fullDescription": {
-                  "text": "Reports classic style classes usage. This inspection applies only to Python 2. Example: 'class A:\n    pass' With quick-fixes provided by the IDE, this code fragment changes to: 'class A(object):\n    def __init__(self):\n        pass'",
-                  "markdown": "Reports [classic style classes](https://docs.python.org/2/reference/datamodel.html#new-style-and-classic-classes) usage. This inspection applies only to Python 2.\n\n**Example:**\n\n\n    class A:\n        pass\n\nWith quick-fixes provided by the IDE, this code fragment changes to:\n\n\n    class A(object):\n        def __init__(self):\n            pass\n"
+                  "text": "Reports unsatisfied dependencies, declared [project.dependencies] table in pyproject.toml. Shows a quick-fix to install missing packages.",
+                  "markdown": "Reports unsatisfied dependencies, declared \\[project.dependencies\\] table in pyproject.toml.\n\n\nShows a quick-fix to install missing packages."
                 },
                 "defaultConfiguration": {
-                  "enabled": false,
+                  "enabled": true,
                   "level": "warning",
                   "parameters": {
-                    "suppressToolId": "PyClassicStyleClass",
+                    "suppressToolId": "PyprojectInspection",
                     "ideaSeverity": "WARNING",
                     "qodanaSeverity": "High"
                   }
@@ -5338,39 +5338,6 @@
                 ]
               },
               {
-                "id": "RegExpOctalEscape",
-                "shortDescription": {
-                  "text": "Octal escape"
-                },
-                "fullDescription": {
-                  "text": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion. Example: '\\07' After the quick-fix is applied: '\\x07' New in 2017.1",
-                  "markdown": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion.\n\n**Example:**\n\n\n      \\07\n\nAfter the quick-fix is applied:\n\n\n      \\x07\n\nNew in 2017.1"
-                },
-                "defaultConfiguration": {
-                  "enabled": false,
-                  "level": "note",
-                  "parameters": {
-                    "suppressToolId": "RegExpOctalEscape",
-                    "ideaSeverity": "INFORMATION",
-                    "qodanaSeverity": "Info"
-                  }
-                },
-                "relationships": [
-                  {
-                    "target": {
-                      "id": "RegExp",
-                      "index": 6,
-                      "toolComponent": {
-                        "name": "QDPYC"
-                      }
-                    },
-                    "kinds": [
-                      "superset"
-                    ]
-                  }
-                ]
-              },
-              {
                 "id": "HtmlExtraClosingTag",
                 "shortDescription": {
                   "text": "Redundant closing tag"
@@ -5404,28 +5371,28 @@
                 ]
               },
               {
-                "id": "HtmlUnknownAnchorTarget",
+                "id": "RegExpOctalEscape",
                 "shortDescription": {
-                  "text": "Unresolved fragment in a link"
+                  "text": "Octal escape"
                 },
                 "fullDescription": {
-                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
-                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
+                  "text": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion. Example: '\\07' After the quick-fix is applied: '\\x07' New in 2017.1",
+                  "markdown": "Reports octal escapes, which are easily confused with back references. Use hexadecimal escapes to avoid confusion.\n\n**Example:**\n\n\n      \\07\n\nAfter the quick-fix is applied:\n\n\n      \\x07\n\nNew in 2017.1"
                 },
                 "defaultConfiguration": {
                   "enabled": false,
-                  "level": "warning",
+                  "level": "note",
                   "parameters": {
-                    "suppressToolId": "HtmlUnknownAnchorTarget",
-                    "ideaSeverity": "WARNING",
-                    "qodanaSeverity": "High"
+                    "suppressToolId": "RegExpOctalEscape",
+                    "ideaSeverity": "INFORMATION",
+                    "qodanaSeverity": "Info"
                   }
                 },
                 "relationships": [
                   {
                     "target": {
-                      "id": "HTML",
-                      "index": 8,
+                      "id": "RegExp",
+                      "index": 6,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -5459,6 +5426,39 @@
                     "target": {
                       "id": "RELAX NG",
                       "index": 11,
+                      "toolComponent": {
+                        "name": "QDPYC"
+                      }
+                    },
+                    "kinds": [
+                      "superset"
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "HtmlUnknownAnchorTarget",
+                "shortDescription": {
+                  "text": "Unresolved fragment in a link"
+                },
+                "fullDescription": {
+                  "text": "Reports an unresolved last part of an URL after the '#' sign.",
+                  "markdown": "Reports an unresolved last part of an URL after the `#` sign."
+                },
+                "defaultConfiguration": {
+                  "enabled": false,
+                  "level": "warning",
+                  "parameters": {
+                    "suppressToolId": "HtmlUnknownAnchorTarget",
+                    "ideaSeverity": "WARNING",
+                    "qodanaSeverity": "High"
+                  }
+                },
+                "relationships": [
+                  {
+                    "target": {
+                      "id": "HTML",
+                      "index": 8,
                       "toolComponent": {
                         "name": "QDPYC"
                       }
@@ -6675,7 +6675,7 @@
       },
       "invocations": [
         {
-          "startTimeUtc": "2024-04-11T14:19:01.40190832Z",
+          "startTimeUtc": "2024-04-11T14:24:44.05514762Z",
           "exitCode": 0,
           "toolExecutionNotifications": [
             {
@@ -6683,7 +6683,7 @@
                 "text": "Analysis by sanity inspection \"Unresolved references\" was suspended due to high number of problems."
               },
               "level": "error",
-              "timeUtc": "2024-04-11T14:19:07.4308378Z",
+              "timeUtc": "2024-04-11T14:24:49.565763046Z",
               "properties": {
                 "qodanaKind": "sanityFailure"
               }
@@ -6696,7 +6696,7 @@
       "versionControlProvenance": [
         {
           "repositoryUri": "https://github.com/Nat1anWasTaken/Lava.git",
-          "revisionId": "e0448ed143abb58671ce685676e4876c8ea6d8f3",
+          "revisionId": "582f0b5181e94f40febb49b465e3ca5bb4e9aa26",
           "branch": "refs/heads/115-bug-the-error-occurred-when-playing-the-bilibili-link",
           "properties": {
             "repoUrl": "https://github.com/Nat1anWasTaken/Lava",
@@ -6808,116 +6808,6 @@
           ],
           "partialFingerprints": {
             "equalIndicator/v1": "be7606d77e92bcb99f2c7707d3c431b3ef89e217bc6015032fba692d52ca5bea"
-          },
-          "properties": {
-            "ideaSeverity": "WEAK WARNING",
-            "qodanaSeverity": "Moderate",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyIncorrectDocstringInspection",
-          "kind": "fail",
-          "level": "note",
-          "message": {
-            "text": "Unexpected parameter bvid in docstring",
-            "markdown": "Unexpected parameter bvid in docstring"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/source.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 302,
-                  "startColumn": 16,
-                  "charOffset": 9517,
-                  "charLength": 4,
-                  "snippet": {
-                    "text": "bvid"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 300,
-                  "startColumn": 1,
-                  "charOffset": 9452,
-                  "charLength": 128,
-                  "snippet": {
-                    "text": "        Gets audio URL from a Bilibili video URL\n\n        :param bvid: Bilibili video URL\n        :return: audio URL\n        \"\"\""
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "1df26b4552cfe045caf9d5424b1168e99fad4a22d13237e50d69c7ee858462c2"
-          },
-          "properties": {
-            "ideaSeverity": "WEAK WARNING",
-            "qodanaSeverity": "Moderate",
-            "tags": [
-              "Python"
-            ]
-          }
-        },
-        {
-          "ruleId": "PyIncorrectDocstringInspection",
-          "kind": "fail",
-          "level": "note",
-          "message": {
-            "text": "Missing parameter url in docstring",
-            "markdown": "Missing parameter url in docstring"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "lava/source.py",
-                  "uriBaseId": "SRCROOT"
-                },
-                "region": {
-                  "startLine": 298,
-                  "startColumn": 29,
-                  "charOffset": 9429,
-                  "charLength": 8,
-                  "snippet": {
-                    "text": "url: str"
-                  },
-                  "sourceLanguage": "Python"
-                },
-                "contextRegion": {
-                  "startLine": 296,
-                  "startColumn": 1,
-                  "charOffset": 9372,
-                  "charLength": 128,
-                  "snippet": {
-                    "text": "        return cid, session\n\n    def get_audio_url(self, url: str):\n        \"\"\"\n        Gets audio URL from a Bilibili video URL"
-                  },
-                  "sourceLanguage": "Python"
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "project",
-                  "kind": "module"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "equalIndicator/v1": "9b22860e99bd98e167b574175bcd8f9e0e76b10b0142d3541f98f88c4c7c6d3c"
           },
           "properties": {
             "ideaSeverity": "WEAK WARNING",
@@ -7260,9 +7150,9 @@
       ],
       "automationDetails": {
         "id": "project/qodana/2024-04-11",
-        "guid": "fd18d917-011b-482d-a30f-93385c78deed",
+        "guid": "bf8299d6-5031-4497-a718-9f1f9aed9499",
         "properties": {
-          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648282044"
+          "jobUrl": "https://github.com/Nat1anWasTaken/Lava/actions/runs/8648372392"
         }
       },
       "newlineSequences": [
@@ -7846,6 +7736,58 @@
           {
             "ruleId": "PyUnresolvedReferencesInspection",
             "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'getpid'",
+              "markdown": "Unresolved reference 'getpid'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/commands.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 2,
+                    "startColumn": 16,
+                    "charOffset": 25,
+                    "charLength": 6,
+                    "snippet": {
+                      "text": "getpid"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 147,
+                    "snippet": {
+                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "3295fc09f7891bd72944aaa3f7dcf6a24be2b9603bf88418c3dd5264d19ba9b9"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
             "level": "warning",
             "message": {
               "text": "Unused import statement 'import json'",
@@ -7893,110 +7835,6 @@
             "properties": {
               "ideaSeverity": "WARNING",
               "qodanaSeverity": "High"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'VoiceChannel'",
-              "markdown": "Unresolved reference 'VoiceChannel'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 34,
-                    "charOffset": 33,
-                    "charLength": 12,
-                    "snippet": {
-                      "text": "VoiceChannel"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "4cf1318a84233b52f781eea642fb51072f097e48b08c39e0d92808bab326117e"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
-              "text": "Unresolved reference 'VoiceClient'",
-              "markdown": "Unresolved reference 'VoiceClient'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 21,
-                    "charOffset": 20,
-                    "charLength": 11,
-                    "snippet": {
-                      "text": "VoiceClient"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "51d8712e942fce253198977b5c0d98c6b38ec974f9bb936b41afef8b48dadec4"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
             }
           },
           {
@@ -8056,33 +7894,33 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'lavalink'",
-              "markdown": "Unresolved reference 'lavalink'"
+              "text": "Unresolved reference 'disnake'",
+              "markdown": "Unresolved reference 'disnake'"
             },
             "locations": [
               {
                 "physicalLocation": {
                   "artifactLocation": {
-                    "uri": "lava/voice_client.py",
+                    "uri": "lava/cogs/commands.py",
                     "uriBaseId": "SRCROOT"
                   },
                   "region": {
-                    "startLine": 2,
+                    "startLine": 4,
                     "startColumn": 6,
-                    "charOffset": 51,
-                    "charLength": 8,
+                    "charOffset": 38,
+                    "charLength": 7,
                     "snippet": {
-                      "text": "lavalink"
+                      "text": "disnake"
                     },
                     "sourceLanguage": "Python"
                   },
                   "contextRegion": {
-                    "startLine": 1,
+                    "startLine": 2,
                     "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 111,
+                    "charOffset": 10,
+                    "charLength": 207,
                     "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get\n"
+                      "text": "from os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed\nfrom disnake.ext import commands\nfrom disnake.ext.commands import Cog"
                     },
                     "sourceLanguage": "Python"
                   }
@@ -8096,7 +7934,59 @@
               }
             ],
             "partialFingerprints": {
-              "equalIndicator/v1": "84ea173295f4f3aee284ad09db79ba824eccb3016b6f2e0699aeba72f3cb3b99"
+              "equalIndicator/v1": "62e0971836f4b87ebc1043ab47756bea374bf9d4615273788a9d3beb6c68abf8"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "No module named 're'",
+              "markdown": "No module named 're'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/commands.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 1,
+                    "startColumn": 8,
+                    "charOffset": 7,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "re"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 32,
+                    "snippet": {
+                      "text": "import re\nfrom os import getpid\n"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "8921767f551a8a6f02068bc33e9745e52a37d535c3c8e7be947172b70b5329d0"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8160,58 +8050,6 @@
             "kind": "fail",
             "level": "error",
             "message": {
-              "text": "Unresolved reference 'disnake'",
-              "markdown": "Unresolved reference 'disnake'"
-            },
-            "locations": [
-              {
-                "physicalLocation": {
-                  "artifactLocation": {
-                    "uri": "lava/voice_client.py",
-                    "uriBaseId": "SRCROOT"
-                  },
-                  "region": {
-                    "startLine": 1,
-                    "startColumn": 6,
-                    "charOffset": 5,
-                    "charLength": 7,
-                    "snippet": {
-                      "text": "disnake"
-                    },
-                    "sourceLanguage": "Python"
-                  },
-                  "contextRegion": {
-                    "startLine": 1,
-                    "startColumn": 1,
-                    "charOffset": 0,
-                    "charLength": 110,
-                    "snippet": {
-                      "text": "from disnake import VoiceClient, VoiceChannel\nfrom lavalink import DefaultPlayer\nfrom disnake.utils import get"
-                    },
-                    "sourceLanguage": "Python"
-                  }
-                },
-                "logicalLocations": [
-                  {
-                    "fullyQualifiedName": "project",
-                    "kind": "module"
-                  }
-                ]
-              }
-            ],
-            "partialFingerprints": {
-              "equalIndicator/v1": "963fdd45834a0410ffadece9fda1391bf97ee18a54a7b5699fc233102322ed5f"
-            },
-            "properties": {
-              "ideaSeverity": "ERROR",
-              "qodanaSeverity": "Critical"
-            }
-          },
-          {
-            "ruleId": "PyUnresolvedReferencesInspection",
-            "kind": "fail",
-            "level": "error",
-            "message": {
               "text": "Unresolved reference 'logging'",
               "markdown": "Unresolved reference 'logging'"
             },
@@ -8253,6 +8091,58 @@
             ],
             "partialFingerprints": {
               "equalIndicator/v1": "9b0e0f5e4476e44ffde08b245a121f682e6619dd90c409521e1a0141aa8818a5"
+            },
+            "properties": {
+              "ideaSeverity": "ERROR",
+              "qodanaSeverity": "Critical"
+            }
+          },
+          {
+            "ruleId": "PyUnresolvedReferencesInspection",
+            "kind": "fail",
+            "level": "error",
+            "message": {
+              "text": "Unresolved reference 'os'",
+              "markdown": "Unresolved reference 'os'"
+            },
+            "locations": [
+              {
+                "physicalLocation": {
+                  "artifactLocation": {
+                    "uri": "lava/cogs/commands.py",
+                    "uriBaseId": "SRCROOT"
+                  },
+                  "region": {
+                    "startLine": 2,
+                    "startColumn": 6,
+                    "charOffset": 15,
+                    "charLength": 2,
+                    "snippet": {
+                      "text": "os"
+                    },
+                    "sourceLanguage": "Python"
+                  },
+                  "contextRegion": {
+                    "startLine": 1,
+                    "startColumn": 1,
+                    "charOffset": 0,
+                    "charLength": 147,
+                    "snippet": {
+                      "text": "import re\nfrom os import getpid\n\nfrom disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed"
+                    },
+                    "sourceLanguage": "Python"
+                  }
+                },
+                "logicalLocations": [
+                  {
+                    "fullyQualifiedName": "project",
+                    "kind": "module"
+                  }
+                ]
+              }
+            ],
+            "partialFingerprints": {
+              "equalIndicator/v1": "a0cf4ebea2c905ce0207c89de62aba93ea72a7621fd237ffc353e7382a2d01ab"
             },
             "properties": {
               "ideaSeverity": "ERROR",
@@ -8835,9 +8725,9 @@
         "configProfile": "absent",
         "deviceId": "200820300000000-f46c-a99e-6401-ff7b7532c766",
         "qodanaNewResultSummary": {
-          "moderate": 7,
+          "moderate": 5,
           "high": 3,
-          "total": 10
+          "total": 8
         }
       }
     }
