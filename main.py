@@ -5,7 +5,7 @@ import os
 from os import getenv
 
 from colorlog import ColoredFormatter
-from disnake import Intents, Activity, BaseActivity, PartialEmoji
+from disnake import Intents, Activity, BaseActivity
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
