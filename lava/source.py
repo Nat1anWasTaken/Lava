@@ -1,4 +1,3 @@
-import json
 import re
 from logging import getLogger
 from os import getenv
@@ -306,9 +305,9 @@ class BilibiliSource(BaseSource):
             'referer': 'https://www.bilibili.com/',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
         }
-        
+
         bvid = re.search(r"/video/([^/?]+)", url).group(1)
-        
+
         cid, session = self.get_video_info(bvid)
 
         play_url = 'https://api.bilibili.com/x/player/playurl'
@@ -360,6 +359,7 @@ class BilibiliSource(BaseSource):
         audio_url = self.get_audio_url(url)
 
         return audio_url, title, author
+
 
 class YTDLSource(BaseSource):
     def __init__(self):
