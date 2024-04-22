@@ -337,7 +337,6 @@ class BilibiliSource(BaseSource):
         :param url: Bilibili video URL
         :return: Tuple of audio URL, video title, video author.
         """
-
         headers = {
             'Connection': 'Keep-Alive',
             'Accept-Language': 'en-US,en;q=0.8,zh-Hans-CN;q=0.5,zh-Hans;q=0.3',
