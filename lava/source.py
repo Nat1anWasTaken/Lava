@@ -290,7 +290,7 @@ class BilibiliSource(BaseSource):
 
         values = video_html.text
 
-        text = BeautifulSoup(values, features='lxml')
+        text = BeautifulSoup(values, features='html.parser')
 
         title = text.find('title').contents[0].replace(' ', ',').replace('/', ',')
 
