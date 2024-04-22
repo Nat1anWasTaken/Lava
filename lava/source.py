@@ -290,7 +290,7 @@ class BilibiliSource(BaseSource):
         }
         video_index_url = f"https://www.bilibili.com/video/{bvid}"
         resp = requests.get(video_index_url, headers=headers).text
-        cid = re.findall('"cid":(\d+),', resp)[0]
+        cid = re.findall('"cid":(\\d+),', resp)[0]
         session = re.findall('"session":"(.*?)"', resp)[0]
         return cid, session
 
