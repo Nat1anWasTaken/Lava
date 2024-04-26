@@ -10,9 +10,9 @@ from lavalink import LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass,
 from psutil import cpu_percent, virtual_memory, Process
 
 from lava.bot import Bot
+from lava.classes.player import LavaPlayer
 from lava.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
 from lava.errors import UserInDifferentChannel
-from lava.lavalink.player import LavaPlayer
 from lava.utils import ensure_voice, split_list, bytes_to_gb, get_commit_hash, get_upstream_url, \
     get_current_branch
 

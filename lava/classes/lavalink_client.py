@@ -2,8 +2,8 @@ from typing import TYPE_CHECKING
 
 from lavalink import Client
 
-from lava.lavalink.player import LavaPlayer
-from lava.lavalink.player_manager import LavaPlayerManager
+from lava.classes.player import LavaPlayer
+from lava.classes.player_manager import LavaPlayerManager
 
 if TYPE_CHECKING:
     from lava.bot import Bot

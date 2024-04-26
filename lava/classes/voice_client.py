@@ -5,7 +5,6 @@ from disnake.utils import get
 
 if TYPE_CHECKING:
     from lava.bot import Bot
-    from lava.lavalink.lavalink_client import LavalinkClient
 
 
 class LavalinkVoiceClient(VoiceClient):

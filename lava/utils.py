@@ -5,10 +5,11 @@ import youtube_related
 import youtube_search
 from disnake import Interaction
 from disnake.utils import get
+from lavalink import AudioTrack
 
+from lava.classes.player import LavaPlayer
+from lava.classes.voice_client import LavalinkVoiceClient
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
-from lava.lavalink.voice_client import LavalinkVoiceClient
-from lavalink import DefaultPlayer, AudioTrack
 
 
 def get_current_branch() -> str:
@@ -98,7 +99,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
 
-async def get_recommended_tracks(player: DefaultPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
+async def get_recommended_tracks(player: LavaPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
     """
     Get recommended track from the given track.
 

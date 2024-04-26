@@ -5,7 +5,7 @@ from typing import Optional
 from disnake import Locale
 from disnake.ext.commands import Bot as OriginalBot
 
-from lava.lavalink.lavalink_client import LavalinkClient
+from lava.classes.lavalink_client import LavalinkClient
 from lava.source import SourceManager
 
 

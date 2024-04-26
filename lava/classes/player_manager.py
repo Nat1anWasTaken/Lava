@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Optional, Dict
 
 from lavalink import PlayerManager, Node, ClientError, Client
 
-from lava.lavalink.player import LavaPlayer
+from lava.classes.player import LavaPlayer
 
 if TYPE_CHECKING:
     from lava.bot import Bot
