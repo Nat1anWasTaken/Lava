@@ -1,10 +1,11 @@
 import asyncio
 from time import time
-from typing import TYPE_CHECKING, Optional, Union, Dict
+from typing import TYPE_CHECKING, Optional, Union
 
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction, Event
 from disnake.ui import ActionRow, Button
-from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, QueueEndEvent, TrackLoadFailedEvent
+from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestError, PlayerErrorEvent, TrackStuckEvent, \
+    PlayerUpdateEvent, QueueEndEvent, TrackLoadFailedEvent
 
 from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks
@@ -36,8 +37,6 @@ class LavaPlayer(DefaultPlayer):
     async def toggle_autoplay(self):
         """
         Toggle autoplay for the player.
-
-        :param player: The player instance.
         """
         if self.autoplay:
             self.autoplay = False
@@ -77,7 +76,9 @@ class LavaPlayer(DefaultPlayer):
         await asyncio.sleep(delay)
 
         if not self.message and not new_message:
-            raise ValueError("No message found or provided to update the display with")
+            self.bot.logger.warning(
+                "No message to update display for player in guild %s", self.bot.get_guild(self.guild_id)
+            )
 
         if new_message:
             try:
@@ -326,18 +327,44 @@ class LavaPlayer(DefaultPlayer):
         for recommendation in recommendations:
             self.add(requester=0, track=recommendation)
 
-    async def _update_state(self, state: Dict):
-        self._last_update = int(time() * 1000)
-        self._last_position = state.get('position', 0)
-        self.position_timestamp = state.get('time', 0)
+    async def _handle_event(self, event):
+        """
+        Handles the given event as necessary.
 
-        await self.check_autoplay()
+        Parameters
+        ----------
+        event: :class:`Event`
+            The event that will be handled.
+        """
+        if isinstance(event, TrackStuckEvent) or isinstance(event, TrackEndEvent) and event.reason.may_start_next():
+            try:
+                await self.play()
+            except RequestError as error:
+                await self.client._dispatch_event(PlayerErrorEvent(self, error))
+                self.bot.logger.exception(
+                    '[DefaultPlayer:%d] Encountered a request error whilst starting a new track.', self.guild_id
+                )
 
-        await self.update_display()
+        if isinstance(event, PlayerUpdateEvent):
+            self.bot.logger.debug("Received player update event for guild %s", self.bot.get_guild(self.guild_id))
 
-    async def _handle_event(self, event: Event):
-        if isinstance(event, TrackEndEvent):
-            self.bot.logger.info("Received track end event for guild %s", self.guild)
+            if self.autoplay and len(self.queue) <= 5:
+                self.bot.logger.info(
+                    "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(self.guild_id)
+                )
+
+                recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+
+                for recommendation in recommendations:
+                    self.add(requester=0, track=recommendation)
+
+            try:
+                await self.update_display()
+            except ValueError:
+                pass
+
+        elif isinstance(event, TrackEndEvent):
+            self.bot.logger.info("Received track end event for guild %s", self.bot.get_guild(self.guild_id))
 
             try:
                 await self.update_display()
@@ -345,7 +372,7 @@ class LavaPlayer(DefaultPlayer):
                 pass
 
         elif isinstance(event, QueueEndEvent):
-            self.bot.logger.info("Received queue end event for guild %s", self.guild)
+            self.bot.logger.info("Received queue end event for guild %s", self.bot.get_guild(self.guild_id))
 
             try:
                 await self.update_display()
@@ -353,9 +380,7 @@ class LavaPlayer(DefaultPlayer):
                 pass
 
         elif isinstance(event, TrackLoadFailedEvent):
-            self.bot.logger.info(
-                "Received track load failed event for guild %s", self.guild
-            )
+            self.bot.logger.info("Received track load failed event for guild %s", self.bot.get_guild(self.guild_id))
 
             message = await self.message.channel.send(
                 embed=ErrorEmbed(
@@ -367,3 +392,19 @@ class LavaPlayer(DefaultPlayer):
             await self.skip()
 
             await self.update_display(message, delay=5)
+
+    async def _update_state(self, state: dict):
+        """
+        Updates the position of the player.
+
+        Parameters
+        ----------
+        state: :class:`dict`
+            The state that is given to update.
+        """
+        self._last_update = int(time() * 1000)
+        self._last_position = state.get('position', 0)
+        self.position_timestamp = state.get('time', 0)
+
+        _ = self.bot.loop.create_task(self.check_autoplay())
+        _ = self.bot.loop.create_task(self.update_display())
