@@ -4,7 +4,6 @@ from lavalink import DefaultPlayer
 
 from lava.bot import Bot
 
-
 class LavalinkVoiceClient(VoiceClient):
     """
     This is the preferred way to handle external voice sending

@@ -1,23 +1,25 @@
-from typing import Optional, Dict
+from typing import TYPE_CHECKING, Optional, Dict
 
 from lavalink import PlayerManager, Node, ClientError, Client
 
 from lava.classes.player import LavaPlayer
 
+if TYPE_CHECKING:
+    from lava.bot import Bot
 
 class LavaPlayerManager(PlayerManager):
     """
     The custom implemented PlayerManager for Lava
     """
 
-    def __init__(self, bot: "Bot", client: Client):
+    def __init__(self, bot: "Bot", client: Client, player: LavaPlayer):
         """
         Initialize the LavaPlayerManager.
 
         :param bot: The Bot instance.
         :param client: The LavalinkClient instance.
         """
-        super().__init__(client, LavaPlayer)
+        super().__init__(client, player)
 
         self.bot: "Bot" = bot
         self.players: Dict[int, LavaPlayer] = {}
@@ -30,10 +32,18 @@ class LavaPlayerManager(PlayerManager):
             node: Optional[Node] = None) -> LavaPlayer:
         """
         Creates a new LavaPlayer for the given guild.
-        This implement is basically same as the original PlayerManager.create(), but without the unnecessary `cls` parameter.
+
+        This method is basically same as the original PlayerManager.create(), but without the unnecessary `cls` parameter.
 
         :param guild_id: The guild id to create the player for.
-        :param
+        :param region: The region to prioritize when choosing a node to connect to. If not specified,
+            the region is determined from the `endpoint` parameter.
+        :param endpoint: The endpoint to prioritize when choosing a node to connect to.
+            This is useful when the region of the guild is not known.
+        :param node: The node to use to create the player.
+            If not specified, this method will find the best node to use based on the given `region` or `endpoint`.
+        :return: The LavaPlayer instance that was created or already existed.
+        :raise ClientError: If no available nodes are found.
         """
         if guild_id in self.players:
             return self.players[guild_id]

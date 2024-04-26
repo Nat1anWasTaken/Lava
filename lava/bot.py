@@ -32,7 +32,7 @@ class Bot(OriginalBot):
         """
         self.logger.info("Setting up lavalink client...")
 
-        self.lavalink = LavalinkClient(self.user.id, player=LavaPlayer)
+        self.lavalink = LavalinkClient(self, user_id=self.user.id, player=LavaPlayer)
 
         self.logger.info("Loading lavalink nodes...")
 
