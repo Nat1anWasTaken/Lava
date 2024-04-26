@@ -3,8 +3,9 @@ from logging import Logger
 
 from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
-from lavalink import Client
 
+from lava.classes.player import LavaPlayer
+from lava.classes.lavalink_client import LavalinkClient
 from lava.source import SourceManager
 
 
@@ -14,7 +15,7 @@ class Bot(OriginalBot):
 
         self.logger = logger
 
-        self.lavalink: Client = MISSING
+        self.lavalink: LavalinkClient = MISSING
 
         with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
@@ -31,7 +32,7 @@ class Bot(OriginalBot):
         """
         self.logger.info("Setting up lavalink client...")
 
-        self.lavalink = Client(self.user.id)
+        self.lavalink = LavalinkClient(self.user.id, player=LavaPlayer)
 
         self.logger.info("Loading lavalink nodes...")
 
