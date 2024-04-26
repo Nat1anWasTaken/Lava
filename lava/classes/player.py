@@ -1,8 +1,7 @@
 import asyncio
 from typing import TYPE_CHECKING, Optional, Union
 
-from disnake import Message, Interaction, Locale, TextChannel, Thread, NotFound, ButtonStyle, Embed, Colour
-from disnake.abc import GuildChannel
+from disnake import Message, Interaction, Locale, ButtonStyle, Embed, Colour
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
 
@@ -11,71 +10,60 @@ from lava.variables import Variables
 if TYPE_CHECKING:
     from lava.bot import Bot
 
+
 class LavaPlayer(DefaultPlayer):
     def __init__(self, bot: "Bot", guild_id: int, node: Node):
         super().__init__(guild_id, node)
 
         self.bot: Bot = bot
+        self.message: Optional[Message] = None
+        self.locale: Locale = Locale.zh_TW
 
     async def update_display(self,
-                             player: "LavaPlayer",
                              new_message: Optional[Message] = None,
                              delay: int = 0,
-                             interaction: Optional[Interaction] = None,
-                             locale: Optional[Locale] = None) -> None:
+                             interaction: Optional[Interaction] = None) -> None:
         """
         Update the display of the current song.
 
         Note: If new message is provided, Old message will be deleted after 5 seconds
 
-        :param bot: The bot instance.
-        :param player: The player instance.
         :param new_message: The new message to update the display with, None to use the old message.
         :param delay: The delay in seconds before updating the display.
         :param interaction: The interaction to be responded to.
-        :param locale: The locale to use.
         """
         if interaction:
-            player.store("locale", interaction.locale)
-
-        if locale:
-            player.store("locale", locale)
+            self.locale = interaction.locale
 
         self.bot.logger.info(
-            "Updating display for player in guild %s in a %s seconds delay", self.bot.get_guild(player.guild_id), delay
+            "Updating display for player in guild %s in a %s seconds delay", self.bot.get_guild(self.guild_id), delay
         )
 
         await asyncio.sleep(delay)
 
-        # noinspection PyTypeChecker
-        channel: Union[GuildChannel, TextChannel, Thread] = self.bot.get_channel(int(player.fetch('channel')))
-
-        try:
-            message: Message = await channel.fetch_message(int(player.fetch('message')))
-        except (TypeError, NotFound):  # Message not found
-            if not new_message:
-                raise ValueError("No message found or provided to update the display with")
+        if not self.message and not new_message:
+            raise ValueError("No message found or provided to update the display with")
 
         if new_message:
             try:
                 self.bot.logger.debug(
-                    "Deleting old existing display message for player in guild %s", self.bot.get_guild(player.guild_id)
+                    "Deleting old existing display message for player in guild %s", self.bot.get_guild(self.guild_id)
                 )
 
-                self.bot.loop.create_task(message.delete())
+                _ = self.bot.loop.create_task(self.message.delete())
             except (AttributeError, UnboundLocalError):
                 pass
 
-            message = new_message
+            self.message = new_message
 
-        if not player.is_connected or not player.current:
+        if not self.is_connected or not self.current:
             components = []
 
         else:
             components = [
                 ActionRow(
                     Button(
-                        style=ButtonStyle.green if player.shuffle else ButtonStyle.grey,
+                        style=ButtonStyle.green if self.shuffle else ButtonStyle.grey,
                         emoji=self.bot.get_icon('control.shuffle', "🔀"),
                         custom_id="control.shuffle"
                     ),
@@ -88,7 +76,7 @@ class LavaPlayer(DefaultPlayer):
                         style=ButtonStyle.green,
                         emoji=self.bot.get_icon('control.pause', "⏸️"),
                         custom_id="control.pause"
-                    ) if not player.paused else Button(
+                    ) if not self.paused else Button(
                         style=ButtonStyle.red,
                         emoji=self.bot.get_icon('control.resume', "▶️"),
                         custom_id="control.resume"
@@ -99,14 +87,14 @@ class LavaPlayer(DefaultPlayer):
                         custom_id="control.next"
                     ),
                     Button(
-                        style=[ButtonStyle.grey, ButtonStyle.green, ButtonStyle.blurple][player.loop],
+                        style=[ButtonStyle.grey, ButtonStyle.green, ButtonStyle.blurple][self.loop],
                         emoji=self.bot.get_icon('control.repeat', "🔁"),
                         custom_id="control.repeat"
                     )
                 ),
                 ActionRow(
                     Button(
-                        style=ButtonStyle.green if player.fetch("autoplay") else ButtonStyle.grey,
+                        style=ButtonStyle.green if self.fetch("autoplay") else ButtonStyle.grey,
                         emoji=self.bot.get_icon('control.autoplay', "🔥"),
                         custom_id="control.autoplay",
                         disabled=not bool(Variables.SPOTIFY_CLIENT)
@@ -135,117 +123,125 @@ class LavaPlayer(DefaultPlayer):
             ]
 
         if interaction:
-            await interaction.response.edit_message(embed=self.generate_display_embed(self.bot, player), components=components)
+            await interaction.response.edit_message(
+                embed=self.generate_display_embed(), components=components
+            )
 
         else:
-            await message.edit(embed=self.generate_display_embed(self.bot, player), components=components)
+            await self.message.edit(embed=self.generate_display_embed(), components=components)
 
         self.bot.logger.debug(
-            "Updating player in guild %s display message to %s", self.bot.get_guild(player.guild_id), message.id
+            "Updating player in guild %s display message to %s", self.bot.get_guild(self.guild_id), self.message.id
         )
 
-        player.store('message', message.id)
+    def generate_display_embed(self) -> Embed:
+        """
+        Generate the display embed for the player.
 
-    def generate_display_embed(self, bot: "Bot", player: DefaultPlayer) -> Embed:
+        :return: The generated embed
+        """
         embed = Embed()
 
-        locale: str = str(player.fetch("locale", "zh_TW"))
-
-        if player.is_playing:
+        if self.is_playing:
             embed.set_author(
-                name=bot.get_text("display.status.playing", locale, "播放中"),
+                name=self.bot.get_text("display.status.playing", self.locale, "播放中"),
                 icon_url="https://cdn.discordapp.com/emojis/987643956403781692.webp"
             )
 
             embed.colour = Colour.green()
 
-        elif player.paused:
+        elif self.paused:
             embed.set_author(
-                name=bot.get_text("display.status.paused", locale, "已暫停"),
+                name=self.bot.get_text("display.status.paused", self.locale, "已暫停"),
                 icon_url="https://cdn.discordapp.com/emojis/987661771609358366.webp"
             )
 
             embed.colour = Colour.orange()
 
-        elif not player.is_connected:
+        elif not self.is_connected:
             embed.set_author(
-                name=bot.get_text("display.status.disconnected", locale, "已斷線"),
+                name=self.bot.get_text("display.status.disconnected", self.locale, "已斷線"),
                 icon_url="https://cdn.discordapp.com/emojis/987646268094439488.webp"
             )
 
             embed.colour = Colour.red()
 
-        elif not player.current:
+        elif not self.current:
             embed.set_author(
-                name=bot.get_text("display.status.ended", locale, "已結束"),
+                name=self.bot.get_text("display.status.ended", self.locale, "已結束"),
                 icon_url="https://cdn.discordapp.com/emojis/987645074450034718.webp"
             )
 
             embed.colour = Colour.red()
 
         loop_mode_text = {
-            0: bot.get_text('repeat_mode.off', locale, '關閉'),
-            1: bot.get_text('repeat_mode.song', locale, '單曲'),
-            2: bot.get_text('repeat_mode.queue', locale, '整個序列')
+            0: self.bot.get_text('repeat_mode.off', self.locale, '關閉'),
+            1: self.bot.get_text('repeat_mode.song', self.locale, '單曲'),
+            2: self.bot.get_text('repeat_mode.queue', self.locale, '整個序列')
         }
 
-        if player.current:
-            embed.title = player.current.title
-            embed.description = f"`{self.format_time(player.position)}`" \
-                                f" {self.generate_progress_bar(bot, player.current.duration, player.position)} " \
-                                f"`{self.format_time(player.current.duration)}`"
+        if self.current:
+            embed.title = self.current.title
+            embed.description = f"`{self.format_time(self.position)}`" \
+                                f" {self.generate_progress_bar(self.current.duration, self.position)} " \
+                                f"`{self.format_time(self.current.duration)}`"
 
-            embed.add_field(name=bot.get_text("display.author", locale, "👤 作者"), value=player.current.author, inline=True)
             embed.add_field(
-                name=bot.get_text("display.requester", locale, "👥 點播者"),
-                value=bot.get_text(
-                    "display.requester.autoplay", locale, "自動播放"
-                ) if not player.current.requester else f"<@{player.current.requester}>",
+                name=self.bot.get_text("display.author", self.locale, "👤 作者"), value=self.current.author, inline=True
+            )
+            embed.add_field(
+                name=self.bot.get_text("display.requester", self.locale, "👥 點播者"),
+                value=self.bot.get_text(
+                    "display.requester.autoplay", self.locale, "自動播放"
+                ) if not self.current.requester else f"<@{self.current.requester}>",
                 inline=True
             )  # Requester will be 0 if the song is added by autoplay
             embed.add_field(
-                name=bot.get_text("display.repeat_mode", locale, "🔁 重複播放模式"), value=loop_mode_text[player.loop],
+                name=self.bot.get_text("display.repeat_mode", self.locale, "🔁 重複播放模式"),
+                value=loop_mode_text[self.loop],
                 inline=True
             )
-
             embed.add_field(
-                name=bot.get_text("display.queue", locale, "📃 播放序列"),
+                name=self.bot.get_text("display.queue", self.locale, "📃 播放序列"),
                 value=('\n'.join(
                     [
                         f"**[{index + 1}]** {track.title}"
-                        for index, track in enumerate(player.queue[:5])
+                        for index, track in enumerate(self.queue[:5])
                     ]
-                ) + (f"\n{bot.get_text('display.queue.more', locale, '還有更多...')}" if len(player.queue) > 5 else "")) or
-                    bot.get_text("empty", locale, "空"),
+                ) + (f"\n{self.bot.get_text('display.queue.more', self.locale, '還有更多...')}" if len(
+                    self.queue
+                ) > 5 else "")) or
+                      self.bot.get_text("empty", self.locale, "空"),
                 inline=True
             )
             embed.add_field(
-                name=bot.get_text("display.filters", locale, "⚙️ 已啟用效果器"),
-                value=', '.join([key.capitalize() for key in player.filters]) or bot.get_text("none", locale, "無"),
+                name=self.bot.get_text("display.filters", self.locale, "⚙️ 已啟用效果器"),
+                value=', '.join([key.capitalize() for key in self.filters]) or
+                      self.bot.get_text("none", self.locale, "無"),
                 inline=True
             )
             embed.add_field(
-                name=bot.get_text("display.shuffle", locale, "🔀 隨機播放"),
-                value=bot.get_text("display.enable", locale, "開啟")
-                if player.shuffle else bot.get_text("display.disable", locale, "關閉"),
+                name=self.bot.get_text("display.shuffle", self.locale, "🔀 隨機播放"),
+                value=self.bot.get_text("display.enable", self.locale, "開啟")
+                if self.shuffle else self.bot.get_text("display.disable", self.locale, "關閉"),
                 inline=True
             )
 
             embed.set_footer(
-                text=bot.get_text(
-                    "display.footer", locale, "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
+                text=self.bot.get_text(
+                    "display.footer", self.locale, "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
                 )
             )
 
         else:
-            embed.title = bot.get_text("error.nothing_playing", locale, "沒有正在播放的音樂")
+            embed.title = self.bot.get_text("error.nothing_playing", self.locale, "沒有正在播放的音樂")
 
         return embed
-
 
     def format_time(self, time: Union[float, int]) -> str:
         """
         Formats the time into DD:HH:MM:SS
+
         :param time: Time in milliseconds
         :return: Formatted time
         """
@@ -255,12 +251,10 @@ class LavaPlayer(DefaultPlayer):
 
         return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
 
-
-    def generate_progress_bar(self, bot: "Bot", duration: Union[float, int], position: Union[float, int]):
+    def generate_progress_bar(self, duration: Union[float, int], position: Union[float, int]):
         """
         Generate a progress bar.
 
-        :param bot: The bot instance.
         :param duration: The duration of the song.
         :param position: The current position of the song.
         :return: The progress bar.
@@ -273,8 +267,8 @@ class LavaPlayer(DefaultPlayer):
 
         percentage = position / duration
 
-        return f"{bot.get_icon('progress.start_point', 'ST|')}" \
-            f"{bot.get_icon('progress.start_fill', 'SF|') * round(percentage * 10)}" \
-            f"{bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else bot.get_icon('progress.start_fill', 'SF|')}" \
-            f"{bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
-            f"{bot.get_icon('progress.end', 'ED|') if percentage != 1 else bot.get_icon('progress.end_point', 'EP')}"
+        return f"{self.bot.get_icon('progress.start_point', 'ST|')}" \
+               f"{self.bot.get_icon('progress.start_fill', 'SF|') * round(percentage * 10)}" \
+               f"{self.bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else self.bot.get_icon('progress.start_fill', 'SF|')}" \
+               f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
+               f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"

@@ -1,14 +1,15 @@
 import subprocess
-from typing import TYPE_CHECKING, Union, Iterable, Optional
+from typing import Iterable, Optional
 
 import youtube_related
 import youtube_search
-
-from disnake import Interaction, Embed, Colour
+from disnake import Interaction
 from disnake.utils import get
-from lavalink import DefaultPlayer, parse_time, AudioTrack
+from lavalink import DefaultPlayer, AudioTrack
 
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
+from lava.voice_client import LavalinkVoiceClient
+
 
 def get_current_branch() -> str:
     """
@@ -64,7 +65,6 @@ def split_list(input_list, chunk_size) -> Iterable[list]:
     if length % chunk_size != 0:
         yield input_list[num_sublists * chunk_size:]
 
-from lava.voice_client import LavalinkVoiceClient
 
 async def ensure_voice(interaction: Interaction, should_connect: bool) -> LavalinkVoiceClient:
     """
@@ -73,14 +73,12 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     :param interaction: The interaction that triggered the command.
     :param should_connect: Should the bot connect to the channel if not connected.s
     """
-    player = interaction.bot.lavalink.player_manager.create(interaction.author.guild.id)
-
     if not interaction.author.voice or not interaction.author.voice.channel:
         raise UserNotInVoice('Please join a voice channel first')
 
-    v_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
+    voice_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
 
-    if not v_client:
+    if not voice_client:
         if not should_connect:
             raise BotNotInVoice('Bot is not in a voice channel.')
 
@@ -91,14 +89,12 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         if not permissions.connect or not permissions.speak:  # Check user limit too?
             raise MissingVoicePermissions('Connect and Speak permissions is required in order to play music')
 
-        player.store('channel', interaction.channel.id)
-
         # noinspection PyTypeChecker
         return await interaction.author.voice.channel.connect(cls=LavalinkVoiceClient)
 
-    if v_client.channel.id != interaction.author.voice.channel.id:
+    if voice_client.channel.id != interaction.author.voice.channel.id:
         raise UserInDifferentChannel(
-            v_client.channel, "User must be in the same voice channel as the bot"
+            voice_client.channel, "User must be in the same voice channel as the bot"
         )
 
 
@@ -133,7 +129,8 @@ async def get_recommended_tracks(player: DefaultPlayer, track: AudioTrack, max_r
         search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
 
         results_from_youtube = await youtube_related.async_fetch(
-            f"https://youtube.com/watch?v={search_results[0]['id']}")
+            f"https://youtube.com/watch?v={search_results[0]['id']}"
+        )
 
     results: list[AudioTrack] = []
 
