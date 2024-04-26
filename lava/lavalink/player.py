@@ -79,6 +79,7 @@ class LavaPlayer(DefaultPlayer):
             self.bot.logger.warning(
                 "No message to update display for player in guild %s", self.bot.get_guild(self.guild_id)
             )
+            return
 
         if new_message:
             try:
