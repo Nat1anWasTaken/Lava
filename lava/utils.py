@@ -1,5 +1,5 @@
 import subprocess
-from typing import Iterable, Optional
+from typing import Iterable, Optional, TYPE_CHECKING
 
 import youtube_related
 import youtube_search
@@ -7,9 +7,11 @@ from disnake import Interaction
 from disnake.utils import get
 from lavalink import AudioTrack
 
-from lava.classes.player import LavaPlayer
 from lava.classes.voice_client import LavalinkVoiceClient
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
+
+if TYPE_CHECKING:
+    from lava.classes.player import LavaPlayer
 
 
 def get_current_branch() -> str:
@@ -99,7 +101,7 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
 
-async def get_recommended_tracks(player: LavaPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
+async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_results: int) -> list[AudioTrack]:
     """
     Get recommended track from the given track.
 
