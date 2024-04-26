@@ -2,24 +2,25 @@ from typing import TYPE_CHECKING, Optional, Dict
 
 from lavalink import PlayerManager, Node, ClientError, Client
 
-from lava.classes.player import LavaPlayer
+from lava.lavalink.player import LavaPlayer
 
 if TYPE_CHECKING:
     from lava.bot import Bot
+
 
 class LavaPlayerManager(PlayerManager):
     """
     The custom implemented PlayerManager for Lava
     """
 
-    def __init__(self, bot: "Bot", client: Client, player: LavaPlayer):
+    def __init__(self, bot: "Bot", client: Client):
         """
         Initialize the LavaPlayerManager.
 
         :param bot: The Bot instance.
         :param client: The LavalinkClient instance.
         """
-        super().__init__(client, player)
+        super().__init__(client, LavaPlayer)
 
         self.bot: "Bot" = bot
         self.players: Dict[int, LavaPlayer] = {}
@@ -61,3 +62,12 @@ class LavaPlayerManager(PlayerManager):
         self.bot.logger.debug('Created player with GuildId %d on node \'%s\'', guild_id, best_node.name)
 
         return player
+
+    def get(self, guild_id: int) -> Optional[LavaPlayer]:
+        """
+        Get the player for specific guild.
+
+        :param guild_id: The guild id that the player belongs to.
+        :return: The found LavaPlayer instance if found
+        """
+        return self.players.get(guild_id)

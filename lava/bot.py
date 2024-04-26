@@ -1,12 +1,11 @@
 import json
 from logging import Logger
+from typing import Optional
 
 from disnake import Locale
-from disnake.abc import MISSING
 from disnake.ext.commands import Bot as OriginalBot
 
-from lava.classes.player import LavaPlayer
-from lava.classes.lavalink_client import LavalinkClient
+from lava.lavalink.lavalink_client import LavalinkClient
 from lava.source import SourceManager
 
 
@@ -16,7 +15,7 @@ class Bot(OriginalBot):
 
         self.logger = logger
 
-        self.lavalink: LavalinkClient = MISSING
+        self._lavalink: Optional[LavalinkClient] = None
 
         with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
@@ -26,6 +25,16 @@ class Bot(OriginalBot):
 
         self.__setup_lavalink_client()
 
+    @property
+    def lavalink(self) -> LavalinkClient:
+        if not self.is_ready():
+            raise RuntimeError("The bot is not ready yet!")
+
+        if self._lavalink is None:
+            self.__setup_lavalink_client()
+
+        return self._lavalink
+
     def __setup_lavalink_client(self):
         """
         Sets up the lavalink client for the bot
@@ -33,7 +42,7 @@ class Bot(OriginalBot):
         """
         self.logger.info("Setting up lavalink client...")
 
-        self.lavalink = LavalinkClient(self, user_id=self.user.id, player=LavaPlayer)
+        self._lavalink = LavalinkClient(self, user_id=self.user.id)
 
         self.logger.info("Loading lavalink nodes...")
 

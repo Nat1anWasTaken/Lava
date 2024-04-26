@@ -1,10 +1,13 @@
 import asyncio
-from typing import TYPE_CHECKING, Optional, Union
+from time import time
+from typing import TYPE_CHECKING, Optional, Union, Dict
 
-from disnake import Message, Interaction, Locale, ButtonStyle, Embed, Colour
+from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction, Event
 from disnake.ui import ActionRow, Button
-from lavalink import DefaultPlayer, Node, parse_time
+from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, QueueEndEvent, TrackLoadFailedEvent
 
+from lava.embeds import ErrorEmbed
+from lava.utils import get_recommended_tracks
 from lava.variables import Variables
 
 if TYPE_CHECKING:
@@ -19,10 +22,38 @@ class LavaPlayer(DefaultPlayer):
         self.message: Optional[Message] = None
         self.locale: Locale = Locale.zh_TW
 
+        self._guild: Optional[Guild] = None
+
+        self.autoplay: bool = False
+
+    @property
+    def guild(self) -> Optional[Guild]:
+        if not self._guild:
+            self._guild = self.bot.get_guild(self.guild_id)
+
+        return self._guild
+
+    async def toggle_autoplay(self):
+        """
+        Toggle autoplay for the player.
+
+        :param player: The player instance.
+        """
+        if self.autoplay:
+            self.autoplay = False
+
+            for item in self.queue:  # Remove songs added by autoplay
+                if item.requester == 0:
+                    self.queue.remove(item)
+
+        else:
+            self.autoplay = True
+
     async def update_display(self,
                              new_message: Optional[Message] = None,
                              delay: int = 0,
-                             interaction: Optional[Interaction] = None) -> None:
+                             interaction: Optional[Interaction] = None,
+                             locale: Optional[Locale] = None) -> None:
         """
         Update the display of the current song.
 
@@ -31,9 +62,13 @@ class LavaPlayer(DefaultPlayer):
         :param new_message: The new message to update the display with, None to use the old message.
         :param delay: The delay in seconds before updating the display.
         :param interaction: The interaction to be responded to.
+        :param locale: The locale to use for the display
         """
         if interaction:
             self.locale = interaction.locale
+
+        if locale:
+            self.locale = locale
 
         self.bot.logger.info(
             "Updating display for player in guild %s in a %s seconds delay", self.bot.get_guild(self.guild_id), delay
@@ -124,17 +159,17 @@ class LavaPlayer(DefaultPlayer):
 
         if interaction:
             await interaction.response.edit_message(
-                embed=self.generate_display_embed(), components=components
+                embed=self.__generate_display_embed(), components=components
             )
 
         else:
-            await self.message.edit(embed=self.generate_display_embed(), components=components)
+            await self.message.edit(embed=self.__generate_display_embed(), components=components)
 
         self.bot.logger.debug(
             "Updating player in guild %s display message to %s", self.bot.get_guild(self.guild_id), self.message.id
         )
 
-    def generate_display_embed(self) -> Embed:
+    def __generate_display_embed(self) -> Embed:
         """
         Generate the display embed for the player.
 
@@ -182,9 +217,9 @@ class LavaPlayer(DefaultPlayer):
 
         if self.current:
             embed.title = self.current.title
-            embed.description = f"`{self.format_time(self.position)}`" \
-                                f" {self.generate_progress_bar(self.current.duration, self.position)} " \
-                                f"`{self.format_time(self.current.duration)}`"
+            embed.description = f"`{self.__format_time(self.position)}`" \
+                                f" {self.__generate_progress_bar(self.current.duration, self.position)} " \
+                                f"`{self.__format_time(self.current.duration)}`"
 
             embed.add_field(
                 name=self.bot.get_text("display.author", self.locale, "👤 作者"), value=self.current.author, inline=True
@@ -238,7 +273,7 @@ class LavaPlayer(DefaultPlayer):
 
         return embed
 
-    def format_time(self, time: Union[float, int]) -> str:
+    def __format_time(self, time: Union[float, int]) -> str:
         """
         Formats the time into DD:HH:MM:SS
 
@@ -251,7 +286,7 @@ class LavaPlayer(DefaultPlayer):
 
         return f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
 
-    def generate_progress_bar(self, duration: Union[float, int], position: Union[float, int]):
+    def __generate_progress_bar(self, duration: Union[float, int], position: Union[float, int]):
         """
         Generate a progress bar.
 
@@ -272,3 +307,63 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else self.bot.get_icon('progress.start_fill', 'SF|')}" \
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
+
+    async def check_autoplay(self) -> bool:
+        """
+        Check the autoplay status and add recommended tracks if enabled.
+
+        :return: True if tracks were added, False otherwise.
+        """
+        if not self.autoplay and len(self.queue) <= 5:
+            return False
+
+        self.bot.logger.info(
+            "Queue is empty, adding recommended track for guild %s...", self.guild
+        )
+
+        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+
+        for recommendation in recommendations:
+            self.add(requester=0, track=recommendation)
+
+    async def _update_state(self, state: Dict):
+        self._last_update = int(time() * 1000)
+        self._last_position = state.get('position', 0)
+        self.position_timestamp = state.get('time', 0)
+
+        await self.check_autoplay()
+
+        await self.update_display()
+
+    async def _handle_event(self, event: Event):
+        if isinstance(event, TrackEndEvent):
+            self.bot.logger.info("Received track end event for guild %s", self.guild)
+
+            try:
+                await self.update_display()
+            except ValueError:
+                pass
+
+        elif isinstance(event, QueueEndEvent):
+            self.bot.logger.info("Received queue end event for guild %s", self.guild)
+
+            try:
+                await self.update_display()
+            except ValueError:
+                pass
+
+        elif isinstance(event, TrackLoadFailedEvent):
+            self.bot.logger.info(
+                "Received track load failed event for guild %s", self.guild
+            )
+
+            message = await self.message.channel.send(
+                embed=ErrorEmbed(
+                    f"{self.bot.get_text('error.play_failed', self.locale, '無法播放歌曲')}: {event.track['title']}",
+                    f"{self.bot.get_text('reason', self.locale, '原因')}: `{event.original or 'Unknown'}`"
+                )
+            )
+
+            await self.skip()
+
+            await self.update_display(message, delay=5)

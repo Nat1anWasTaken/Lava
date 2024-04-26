@@ -5,10 +5,10 @@ import youtube_related
 import youtube_search
 from disnake import Interaction
 from disnake.utils import get
-from lavalink import DefaultPlayer, AudioTrack
 
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
-from lava.voice_client import LavalinkVoiceClient
+from lava.lavalink.voice_client import LavalinkVoiceClient
+from lavalink import DefaultPlayer, AudioTrack
 
 
 def get_current_branch() -> str:
@@ -96,23 +96,6 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         raise UserInDifferentChannel(
             voice_client.channel, "User must be in the same voice channel as the bot"
         )
-
-
-def toggle_autoplay(player: DefaultPlayer) -> None:
-    """
-    Toggle autoplay for the player.
-
-    :param player: The player instance.
-    """
-    if player.fetch("autoplay"):
-        player.delete("autoplay")
-
-        for item in player.queue:  # Remove songs added by autoplay
-            if item.requester == 0:
-                player.queue.remove(item)
-
-    else:
-        player.store("autoplay", "1")
 
 
 async def get_recommended_tracks(player: DefaultPlayer, track: AudioTrack, max_results: int) -> list[AudioTrack]:
