@@ -32,7 +32,8 @@ class LavaPlayerManager(PlayerManager):
         """
         Creates a new LavaPlayer for the given guild.
 
-        This method is basically same as the original PlayerManager.create(), but without the unnecessary `cls` parameter.
+        This method is basically same as the original PlayerManager.create(),
+        but without the unnecessary `cls` parameter.
 
         :param guild_id: The guild id to create the player for.
         :param region: The region to prioritize when choosing a node to connect to. If not specified,
