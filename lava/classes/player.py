@@ -26,6 +26,10 @@ class LavaPlayer(DefaultPlayer):
 
         self.autoplay: bool = False
 
+        self._last_update: int = 0
+        self._last_position = 0
+        self.position_timestamp = 0
+
     @property
     def guild(self) -> Optional[Guild]:
         if not self._guild:
