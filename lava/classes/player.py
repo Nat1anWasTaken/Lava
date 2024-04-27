@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestError, PlayerErrorEvent, TrackStuckEvent, \
-    PlayerUpdateEvent, QueueEndEvent, TrackLoadFailedEvent
+    QueueEndEvent, TrackLoadFailedEvent
 
 from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks
@@ -344,25 +344,7 @@ class LavaPlayer(DefaultPlayer):
                     '[DefaultPlayer:%d] Encountered a request error whilst starting a new track.', self.guild_id
                 )
 
-        if isinstance(event, PlayerUpdateEvent):
-            self.bot.logger.debug("Received player update event for guild %s", self.bot.get_guild(self.guild_id))
-
-            if not self.autoplay or len(self.queue) >= 5:
-                self.bot.logger.info(
-                    "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(self.guild_id)
-                )
-
-                recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
-
-                for recommendation in recommendations:
-                    self.add(requester=0, track=recommendation)
-
-            try:
-                await self.update_display()
-            except ValueError:
-                pass
-
-        elif isinstance(event, TrackEndEvent):
+        if isinstance(event, TrackEndEvent):
             self.bot.logger.info("Received track end event for guild %s", self.bot.get_guild(self.guild_id))
 
             try:
