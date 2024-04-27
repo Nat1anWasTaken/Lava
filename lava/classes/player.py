@@ -339,7 +339,7 @@ class LavaPlayer(DefaultPlayer):
             try:
                 await self.play()
             except RequestError as error:
-                await self.client._dispatch_event(PlayerErrorEvent(self, error))
+                await self.client._dispatch_event(PlayerErrorEvent(self, error))  # skipcq: PYL-W0212
                 self.bot.logger.exception(
                     '[DefaultPlayer:%d] Encountered a request error whilst starting a new track.', self.guild_id
                 )
