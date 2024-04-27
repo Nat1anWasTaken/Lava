@@ -315,7 +315,8 @@ class LavaPlayer(DefaultPlayer):
 
         days, hours, minutes, seconds = map(round, (days, hours, minutes, seconds))
 
-        return f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+        return ((f"{str(hours).zfill(2)}:" if hours else "")
+                + f"{str(minutes).zfill(2)}:{str(seconds).zfill(2)}")
 
     def __generate_progress_bar(self, duration: Union[float, int], position: Union[float, int]):
         """
