@@ -1,7 +1,11 @@
-from disnake import VoiceClient, abc
-from lavalink import DefaultPlayer
+from typing import TYPE_CHECKING
 
-from core.bot import Bot
+from disnake import VoiceClient, VoiceChannel
+from disnake.utils import get
+
+if TYPE_CHECKING:
+    from lava.bot import Bot
+    from lava.classes.lavalink_client import LavalinkClient
 
 
 class LavalinkVoiceClient(VoiceClient):
@@ -12,11 +16,10 @@ class LavalinkVoiceClient(VoiceClient):
     https://discordpy.readthedocs.io/en/latest/api.html#voiceprotocol
     """
 
-    def __init__(self, bot: Bot, channel: abc.Connectable):
+    def __init__(self, bot: "Bot", channel: VoiceChannel):
         self.bot = bot
         self.channel = channel
-        self.lavalink = bot.lavalink
-
+        self.lavalink: "LavalinkClient" = bot.lavalink
         super().__init__(bot, channel)
 
     async def on_voice_server_update(self, data):
@@ -31,9 +34,13 @@ class LavalinkVoiceClient(VoiceClient):
             't': 'VOICE_STATE_UPDATE',
             'd': data
         }
-        await self.lavalink.voice_update_handler(lavalink_data)
 
-        if not data['channel_id']:
+        if data['channel_id']:
+            channel = get(self.channel.guild.voice_channels, id=int(data['channel_id']))
+            self.channel = channel
+            await self.lavalink.voice_update_handler(lavalink_data)
+        else:
+            await self.channel.guild.change_voice_state(channel=None)
             self.cleanup()
 
     async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,
@@ -42,7 +49,7 @@ class LavalinkVoiceClient(VoiceClient):
         Connect the bot to the voice channel and create a player_manager
         if it doesn't exist yet.
         """
-        self.lavalink.player_manager.create(guild_id=self.channel.guild.id)
+        self.lavalink.player_manager.new(guild_id=self.channel.guild.id)
         await self.channel.guild.change_voice_state(channel=self.channel, self_mute=self_mute, self_deaf=self_deaf)
 
     async def disconnect(self, *, force: bool = False) -> None:
@@ -50,7 +57,7 @@ class LavalinkVoiceClient(VoiceClient):
         Handles the disconnect.
         Cleans up running player and leaves the voice client.
         """
-        player: DefaultPlayer = self.lavalink.player_manager.get(self.channel.guild.id)
+        player = self.lavalink.player_manager.get(self.channel.guild.id)
 
         if not force and not player.is_connected:
             return

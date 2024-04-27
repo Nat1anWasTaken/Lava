@@ -55,4 +55,4 @@ class ErrorEmbed(Embed):
         if isinstance(description, Localized):
             description = description.string
 
-        super().__init__(title="❌ | " + title, description=description, color=0xdb4437, **kwargs)
+        super().__init__(title=" | " + title, description=description, color=0xdb4437, **kwargs)

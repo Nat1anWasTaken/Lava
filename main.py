@@ -5,15 +5,15 @@ import os
 from os import getenv
 
 from colorlog import ColoredFormatter
-from disnake import Intents
+from disnake import Intents, Activity, BaseActivity
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
-from core.bot import Bot
+from lava.bot import Bot
 
 
 def main():
-    load_dotenv()
+    load_dotenv("stack.env")
 
     setup_logging()
 
@@ -23,8 +23,11 @@ def main():
 
     bot = Bot(
         logger=main_logger,
-        command_prefix=getenv("PREFIX", "l!"), intents=Intents.all(), loop=loop,
-        command_sync_flags=CommandSyncFlags.default()
+        command_prefix=getenv("PREFIX", "l!"),
+        intents=Intents.all(),
+        loop=loop,
+        activity=get_activity(),
+        command_sync_flags=CommandSyncFlags.default(),
     )
 
     bot.i18n.load("locale/")
@@ -32,6 +35,13 @@ def main():
     load_extensions(bot)
 
     bot.run(os.environ["TOKEN"])
+
+
+def get_activity() -> BaseActivity:
+    with open("configs/activity.json", "r") as f:
+        activity = json.load(f)
+
+    return Activity(**activity)
 
 
 def setup_logging():
