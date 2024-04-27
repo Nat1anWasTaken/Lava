@@ -286,6 +286,8 @@ class LavaPlayer(DefaultPlayer):
                 inline=True
             )
 
+            embed.set_thumbnail(url=self.current.artwork_url)
+
             embed.set_footer(
                 text=self.bot.get_text(
                     "display.footer", self.locale, "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
