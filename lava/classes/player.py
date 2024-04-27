@@ -2,7 +2,7 @@ import asyncio
 from time import time
 from typing import TYPE_CHECKING, Optional, Union
 
-from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction, Event
+from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestError, PlayerErrorEvent, TrackStuckEvent, \
     PlayerUpdateEvent, QueueEndEvent, TrackLoadFailedEvent
