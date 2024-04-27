@@ -64,7 +64,7 @@
     "command.repeat.option.mode": "重複播放模式",
     "command.volume.name": "volume",
     "command.volume.description": "調整歌曲音量",
-    "command.volume.success": "已設定音量為",
+    "command.volume.success": "已設定音量為 ",
     "repeat_mode.off": "關閉",
     "repeat_mode.song": "單曲",
     "repeat_mode.queue": "整個序列",

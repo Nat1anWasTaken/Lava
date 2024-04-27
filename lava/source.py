@@ -11,7 +11,6 @@ from yt_dlp import YoutubeDL
 from yt_dlp.utils import UnsupportedError, DownloadError
 
 from lava.errors import LoadError
-from lava.variables import Variables
 
 
 class BaseSource:
@@ -40,6 +39,11 @@ class BaseSource:
 
 
 class SpotifyAudioTrack(DeferredAudioTrack):
+    def __init__(self, track, requester, **extra):
+        super().__init__(track, requester, **extra)
+
+        self.track = None
+
     async def load(self, client):  # skipcq: PYL-W0201
         getLogger('lava.sources').info("Loading spotify track %s...", self.title)
 
@@ -73,7 +77,7 @@ class SpotifySource(BaseSource):
             client_secret=spotify_client_secret
         )
 
-        Variables.SPOTIFY_CLIENT = Spotify(auth_manager=credentials)
+        self.spotify_client = Spotify(auth_manager=credentials)
 
     def check_query(self, query: str) -> bool:
         spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
@@ -112,7 +116,7 @@ class SpotifySource(BaseSource):
         if not track_id:
             return None
 
-        track = Variables.SPOTIFY_CLIENT.track(track_id)
+        track = self.spotify_client.track(track_id)
 
         if track:
             return SpotifyAudioTrack(
@@ -140,7 +144,7 @@ class SpotifySource(BaseSource):
         if not playlist_id:
             return [], None
 
-        playlist = Variables.SPOTIFY_CLIENT.playlist(playlist_id)
+        playlist = self.spotify_client.playlist(playlist_id)
 
         playlist_info = PlaylistInfo(playlist['name'], -1)
 
@@ -177,7 +181,7 @@ class SpotifySource(BaseSource):
         if not album_id:
             return [], None
 
-        album = Variables.SPOTIFY_CLIENT.album(album_id)
+        album = self.spotify_client.album(album_id)
 
         playlist_info = PlaylistInfo(album['name'], -1)
 
