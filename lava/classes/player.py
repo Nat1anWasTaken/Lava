@@ -286,8 +286,6 @@ class LavaPlayer(DefaultPlayer):
                 inline=True
             )
 
-            embed.set_thumbnail(url=self.current.artwork_url)
-
             embed.set_footer(
                 text=self.bot.get_text(
                     "display.footer", self.locale, "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
@@ -296,6 +294,9 @@ class LavaPlayer(DefaultPlayer):
 
             if self.current.artwork_url:
                 embed.set_image(url=self.current.artwork_url)
+
+            if self.bot.user.avatar:
+                embed.set_thumbnail(self.bot.user.avatar)
 
         else:
             embed.title = self.bot.get_text("error.nothing_playing", self.locale, "沒有正在播放的音樂")
