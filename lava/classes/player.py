@@ -245,6 +245,7 @@ class LavaPlayer(DefaultPlayer):
             embed.add_field(
                 name=self.bot.get_text("display.author", self.locale, "👤 作者"), value=self.current.author, inline=True
             )
+
             embed.add_field(
                 name=self.bot.get_text("display.requester", self.locale, "👥 點播者"),
                 value=self.bot.get_text(
@@ -252,30 +253,32 @@ class LavaPlayer(DefaultPlayer):
                 ) if not self.current.requester else f"<@{self.current.requester}>",
                 inline=True
             )  # Requester will be 0 if the song is added by autoplay
+
             embed.add_field(
                 name=self.bot.get_text("display.repeat_mode", self.locale, "🔁 重複播放模式"),
                 value=loop_mode_text[self.loop],
                 inline=True
             )
+
+            queue_titles = [f"**[{index + 1}]** {track.title}" for index, track in enumerate(self.queue[:5])]
+            queue_display = '\n'.join(queue_titles)
+
+            if len(self.queue) > 5:
+                queue_display += f"\n{self.bot.get_text('display.queue.more', self.locale, '還有更多...')}"
+
             embed.add_field(
                 name=self.bot.get_text("display.queue", self.locale, "📃 播放序列"),
-                value=('\n'.join(
-                    [
-                        f"**[{index + 1}]** {track.title}"
-                        for index, track in enumerate(self.queue[:5])
-                    ]
-                ) + (f"\n{self.bot.get_text('display.queue.more', self.locale, '還有更多...')}" if len(
-                    self.queue
-                ) > 5 else "")) or
-                      self.bot.get_text("empty", self.locale, "空"),
+                value=queue_display or self.bot.get_text("empty", self.locale, "空"),
                 inline=True
             )
+
             embed.add_field(
                 name=self.bot.get_text("display.filters", self.locale, "⚙️ 已啟用效果器"),
                 value=', '.join([key.capitalize() for key in self.filters]) or
                       self.bot.get_text("none", self.locale, "無"),
                 inline=True
             )
+
             embed.add_field(
                 name=self.bot.get_text("display.shuffle", self.locale, "🔀 隨機播放"),
                 value=self.bot.get_text("display.enable", self.locale, "開啟")
