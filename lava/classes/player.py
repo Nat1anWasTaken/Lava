@@ -37,6 +37,23 @@ class LavaPlayer(DefaultPlayer):
 
         return self._guild
 
+    async def check_autoplay(self) -> bool:
+        """
+        Check the autoplay status and add recommended tracks if enabled.
+
+        :return: True if tracks were added, False otherwise.
+        """
+        if not self.autoplay or len(self.queue) >= 5:
+            return False
+        self.bot.logger.info(
+            "Queue is empty, adding recommended track for guild %s...", self.guild
+        )
+
+        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+
+        for recommendation in recommendations:
+            self.add(requester=0, track=recommendation)
+
     async def toggle_autoplay(self):
         """
         Toggle autoplay for the player.
@@ -313,22 +330,21 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
 
-    async def check_autoplay(self) -> bool:
+    async def _update_state(self, state: dict):
         """
-        Check the autoplay status and add recommended tracks if enabled.
+        Updates the position of the player.
 
-        :return: True if tracks were added, False otherwise.
+        Parameters
+        ----------
+        state: :class:`dict`
+            The state that is given to update.
         """
-        if not self.autoplay or len(self.queue) >= 5:
-            return False
-        self.bot.logger.info(
-            "Queue is empty, adding recommended track for guild %s...", self.guild
-        )
+        self._last_update = int(time() * 1000)
+        self._last_position = state.get('position', 0)
+        self.position_timestamp = state.get('time', 0)
 
-        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
-
-        for recommendation in recommendations:
-            self.add(requester=0, track=recommendation)
+        _ = self.bot.loop.create_task(self.check_autoplay())
+        _ = self.bot.loop.create_task(self.update_display())
 
     async def _handle_event(self, event):
         if isinstance(event, TrackStuckEvent) or isinstance(event, TrackEndEvent) and event.reason.may_start_next():
@@ -373,19 +389,3 @@ class LavaPlayer(DefaultPlayer):
         )
         await self.skip()
         await self.update_display(message, delay=5)
-
-    async def _update_state(self, state: dict):
-        """
-        Updates the position of the player.
-
-        Parameters
-        ----------
-        state: :class:`dict`
-            The state that is given to update.
-        """
-        self._last_update = int(time() * 1000)
-        self._last_position = state.get('position', 0)
-        self.position_timestamp = state.get('time', 0)
-
-        _ = self.bot.loop.create_task(self.check_autoplay())
-        _ = self.bot.loop.create_task(self.update_display())
