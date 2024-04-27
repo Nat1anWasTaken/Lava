@@ -9,7 +9,7 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLA
 
 RUN apt-get update && \
   apt-get install -y git curl jq openjdk-17-jre-headless xz-utils \
-  gcc g++ python3-dev libffi-dev build-essential cmake && \
+  gcc g++ python3-dev libffi-dev build-essential cmake libjpeg-dev && \
   apt-get clean && \
   tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
   tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz && \
