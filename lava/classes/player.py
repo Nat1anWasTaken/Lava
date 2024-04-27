@@ -37,15 +37,15 @@ class LavaPlayer(DefaultPlayer):
         """
         Toggle autoplay for the player.
         """
-        if self.autoplay:
-            self.autoplay = False
-
-            for item in self.queue:  # Remove songs added by autoplay
-                if item.requester == 0:
-                    self.queue.remove(item)
-
-        else:
+        if not self.autoplay:
             self.autoplay = True
+            return
+
+        self.autoplay = False
+
+        for item in self.queue:  # Remove songs added by autoplay
+            if item.requester == 0:
+                self.queue.remove(item)
 
     async def update_display(self,
                              new_message: Optional[Message] = None,
