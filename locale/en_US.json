@@ -64,7 +64,7 @@
     "command.repeat.option.mode": "Repeat Mode",
     "command.volume.name": "volume",
     "command.volume.description": "調整歌曲音量",
-    "command.volume.success": "已設定音量為",
+    "command.volume.success": "已設定音量為 ",
     "repeat_mode.off": "Off",
     "repeat_mode.song": "Single Track",
     "repeat_mode.queue": "Entire queue",
