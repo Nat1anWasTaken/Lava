@@ -183,7 +183,7 @@ class LavaPlayer(DefaultPlayer):
 
         if interaction:
             await interaction.response.edit_message(
-                embed=self.__generate_display_embed(), components=components
+                embed=await self.__generate_display_embed(), components=components
             )
 
         else:
