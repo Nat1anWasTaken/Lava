@@ -144,12 +144,11 @@ async def get_image_size(url: str) -> Optional[Tuple[int, int]]:
     :param url: The URL of the image.
     :return The width and height of the image. If the image is not found, return None.
     """
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status != 200:
-                return None
+    async with aiohttp.ClientSession() as session, session.get(url) as response:
+        if response.status != 200:
+            return None
 
-            data = await response.read()
-            img = imageio.imread(BytesIO(data))
+        data = await response.read()
+        img = imageio.imread(BytesIO(data))
 
-            return img.shape[1], img.shape[0]
+        return img.shape[1], img.shape[0]
