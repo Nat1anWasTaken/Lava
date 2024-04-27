@@ -65,13 +65,14 @@ class Events(Cog):
         ):
             player = self.bot.lavalink.player_manager.get(member.guild.id)
 
-            await player.stop()
-            player.queue.clear()
+            if player is not None:
+                await player.stop()
+                player.queue.clear()
 
-            try:
-                await player.update_display()
-            except ValueError:  # There's no message to update
-                pass
+                try:
+                    await player.update_display()
+                except ValueError:  # There's no message to update
+                    pass
 
     @commands.Cog.listener(name="on_message_interaction")
     async def on_message_interaction(self, interaction: MessageInteraction):
