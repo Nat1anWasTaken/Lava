@@ -425,7 +425,7 @@ class Commands(Cog):
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(
-                self.bot.get_text("command.volume.success", interaction.locale, f"已設定音量為 `{value}`")
+                self.bot.get_text("command.volume.success", interaction.locale, "已設定音量為 ") + f"`{value}`"
             )
         )
 
