@@ -294,6 +294,9 @@ class LavaPlayer(DefaultPlayer):
                 )
             )
 
+            if self.current.artwork_url:
+                embed.set_image(url=self.current.artwork_url)
+
         else:
             embed.title = self.bot.get_text("error.nothing_playing", self.locale, "沒有正在播放的音樂")
 

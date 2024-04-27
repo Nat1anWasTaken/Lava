@@ -127,7 +127,8 @@ class SpotifySource(BaseSource):
                     'length': track['duration_ms'],
                     'isStream': False,
                     'title': track['name'],
-                    'uri': f"https://open.spotify.com/track/{track['id']}"
+                    'uri': f"https://open.spotify.com/track/{track['id']}",
+                    'artworkUrl': track['album']['images'][0]['url']
                 },
                 requester=0
             )
@@ -161,7 +162,8 @@ class SpotifySource(BaseSource):
                             'length': track['track']['duration_ms'],
                             'isStream': False,
                             'title': track['track']['name'],
-                            'uri': f"https://open.spotify.com/track/{track['track']['id']}"
+                            'uri': f"https://open.spotify.com/track/{track['track']['id']}",
+                            'artworkUrl': track['track']['images'][0]['url']
                         },
                         requester=0
                     )
@@ -198,7 +200,8 @@ class SpotifySource(BaseSource):
                             'length': track['duration_ms'],
                             'isStream': False,
                             'title': track['name'],
-                            'uri': f"https://open.spotify.com/track/{track['id']}"
+                            'uri': f"https://open.spotify.com/track/{track['id']}",
+                            'artworkUrl': album['images'][0]['url']
                         },
                         requester=0
                     )
