@@ -8,7 +8,7 @@ from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestErro
     QueueEndEvent, TrackLoadFailedEvent
 
 from lava.embeds import ErrorEmbed
-from lava.utils import get_recommended_tracks
+from lava.utils import get_recommended_tracks, get_image_size
 
 if TYPE_CHECKING:
     from lava.bot import Bot
@@ -29,6 +29,9 @@ class LavaPlayer(DefaultPlayer):
         self._last_update: int = 0
         self._last_position = 0
         self.position_timestamp = 0
+
+        self.__display_image_as_wide: Optional[bool] = None
+        self.__last_image_url: str = ""
 
     @property
     def guild(self) -> Optional[Guild]:
@@ -184,13 +187,13 @@ class LavaPlayer(DefaultPlayer):
             )
 
         else:
-            await self.message.edit(embed=self.__generate_display_embed(), components=components)
+            await self.message.edit(embed=(await self.__generate_display_embed()), components=components)
 
         self.bot.logger.debug(
             "Updating player in guild %s display message to %s", self.bot.get_guild(self.guild_id), self.message.id
         )
 
-    def __generate_display_embed(self) -> Embed:
+    async def __generate_display_embed(self) -> Embed:
         """
         Generate the display embed for the player.
 
@@ -293,10 +296,10 @@ class LavaPlayer(DefaultPlayer):
             )
 
             if self.current.artwork_url:
-                embed.set_image(url=self.current.artwork_url)
-
-            if self.bot.user.avatar:
-                embed.set_thumbnail(self.bot.user.avatar)
+                if await self.is_current_artwork_wide():
+                    embed.set_image(self.current.artwork_url)
+                else:
+                    embed.set_thumbnail(self.current.artwork_url)
 
         else:
             embed.title = self.bot.get_text("error.nothing_playing", self.locale, "沒有正在播放的音樂")
@@ -339,6 +342,27 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else self.bot.get_icon('progress.start_fill', 'SF|')}" \
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
+
+    async def is_current_artwork_wide(self) -> bool:
+        """
+        Check if the current playing track's artwork is wide.
+        """
+        if not self.current:
+            return False
+
+        if not self.current.artwork_url:
+            return False
+
+        if self.__last_image_url == self.current.artwork_url:
+            return self.__display_image_as_wide
+
+        self.__last_image_url = self.current.artwork_url
+
+        width, height = await get_image_size(self.current.artwork_url)
+
+        self.__display_image_as_wide = width > height
+
+        return self.__display_image_as_wide
 
     async def _update_state(self, state: dict):
         """

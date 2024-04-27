@@ -1,6 +1,9 @@
 import subprocess
-from typing import Iterable, Optional, TYPE_CHECKING
+from io import BytesIO
+from typing import Iterable, Optional, TYPE_CHECKING, Tuple
 
+import aiohttp
+import imageio
 import youtube_related
 import youtube_search
 from disnake import Interaction
@@ -132,3 +135,21 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
         results.append(track)
 
     return results
+
+
+async def get_image_size(url: str) -> Optional[Tuple[int, int]]:
+    """
+    Get the size of the image from the given URL.
+
+    :param url: The URL of the image.
+    :return The width and height of the image. If the image is not found, return None.
+    """
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status != 200:
+                return None
+
+            data = await response.read()
+            img = imageio.imread(BytesIO(data))
+
+            return img.shape[1], img.shape[0]
