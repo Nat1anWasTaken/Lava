@@ -34,9 +34,7 @@ class LavaPlayer(DefaultPlayer):
         return self._guild
 
     async def toggle_autoplay(self):
-        """
-        Toggle autoplay for the player.
-        """
+        """Toggle autoplay for the player."""
         if not self.autoplay:
             self.autoplay = True
             return
@@ -273,7 +271,8 @@ class LavaPlayer(DefaultPlayer):
 
         return embed
 
-    def __format_time(self, time: Union[float, int]) -> str:
+    @staticmethod
+    def __format_time(time: Union[float, int]) -> str:
         """
         Formats the time into DD:HH:MM:SS
 
@@ -316,15 +315,14 @@ class LavaPlayer(DefaultPlayer):
         """
         if not self.autoplay or len(self.queue) >= 5:
             return False
-        else:
-            self.bot.logger.info(
-                "Queue is empty, adding recommended track for guild %s...", self.guild
-            )
+        self.bot.logger.info(
+            "Queue is empty, adding recommended track for guild %s...", self.guild
+        )
 
-            recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
 
-            for recommendation in recommendations:
-                self.add(requester=0, track=recommendation)
+        for recommendation in recommendations:
+            self.add(requester=0, track=recommendation)
 
     async def _handle_event(self, event):
         """

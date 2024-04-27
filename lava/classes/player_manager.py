@@ -9,9 +9,7 @@ if TYPE_CHECKING:
 
 
 class LavaPlayerManager(PlayerManager):
-    """
-    The custom implemented PlayerManager for Lava
-    """
+    """The custom implemented PlayerManager for Lava"""
 
     def __init__(self, bot: "Bot", client: Client):
         """
