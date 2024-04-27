@@ -39,6 +39,11 @@ class BaseSource:
 
 
 class SpotifyAudioTrack(DeferredAudioTrack):
+    def __init__(self, track, requester, **extra):
+        super().__init__(track, requester, **extra)
+
+        self.track = None
+
     async def load(self, client):  # skipcq: PYL-W0201
         getLogger('lava.sources').info("Loading spotify track %s...", self.title)
 
