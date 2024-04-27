@@ -34,7 +34,9 @@ class LavaPlayer(DefaultPlayer):
         return self._guild
 
     async def toggle_autoplay(self):
-        """Toggle autoplay for the player."""
+        """
+        Toggle autoplay for the player.
+        """
         if not self.autoplay:
             self.autoplay = True
             return
@@ -272,14 +274,14 @@ class LavaPlayer(DefaultPlayer):
         return embed
 
     @staticmethod
-    def __format_time(time: Union[float, int]) -> str:
+    def __format_time(time_ms: Union[float, int]) -> str:
         """
         Formats the time into DD:HH:MM:SS
 
-        :param time: Time in milliseconds
+        :param time_ms: Time in milliseconds
         :return: Formatted time
         """
-        days, hours, minutes, seconds = parse_time(round(time))
+        days, hours, minutes, seconds = parse_time(round(time_ms))
 
         days, hours, minutes, seconds = map(round, (days, hours, minutes, seconds))
 
