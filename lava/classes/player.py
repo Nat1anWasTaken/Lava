@@ -40,6 +40,7 @@ class LavaPlayer(DefaultPlayer):
         """
         if self.autoplay:
             self.autoplay = False
+            self.store("autoplay", False)
 
             for item in self.queue:  # Remove songs added by autoplay
                 if item.requester == 0:
@@ -47,6 +48,7 @@ class LavaPlayer(DefaultPlayer):
 
         else:
             self.autoplay = True
+            self.store("autoplay", True)
 
     async def update_display(self,
                              new_message: Optional[Message] = None,
@@ -316,17 +318,17 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay and len(self.queue) <= 5:
+        if not self.autoplay or len(self.queue) >= 5:
             return False
+        else:
+            self.bot.logger.info(
+                "Queue is empty, adding recommended track for guild %s...", self.guild
+            )
 
-        self.bot.logger.info(
-            "Queue is empty, adding recommended track for guild %s...", self.guild
-        )
+            recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
 
-        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
-
-        for recommendation in recommendations:
-            self.add(requester=0, track=recommendation)
+            for recommendation in recommendations:
+                self.add(requester=0, track=recommendation)
 
     async def _handle_event(self, event):
         """
@@ -349,7 +351,7 @@ class LavaPlayer(DefaultPlayer):
         if isinstance(event, PlayerUpdateEvent):
             self.bot.logger.debug("Received player update event for guild %s", self.bot.get_guild(self.guild_id))
 
-            if self.autoplay and len(self.queue) <= 5:
+            if not self.autoplay or len(self.queue) >= 5:
                 self.bot.logger.info(
                     "Queue is empty, adding recommended track for guild %s...", self.bot.get_guild(self.guild_id)
                 )
