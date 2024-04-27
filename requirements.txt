@@ -6,6 +6,8 @@ psutil==5.9.8
 disnake==2.9.1
 python-dotenv==1.0.1
 yt-dlp==2024.4.9
+aiohttp>=3.7.0,<4.0
+imageio==2.34.1
 colorlog
 youtube-related
 youtube-search
