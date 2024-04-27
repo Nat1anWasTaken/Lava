@@ -9,7 +9,6 @@ from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestErro
 
 from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks
-from lava.variables import Variables
 
 if TYPE_CHECKING:
     from lava.bot import Bot
@@ -40,7 +39,6 @@ class LavaPlayer(DefaultPlayer):
         """
         if self.autoplay:
             self.autoplay = False
-            self.store("autoplay", False)
 
             for item in self.queue:  # Remove songs added by autoplay
                 if item.requester == 0:
@@ -48,7 +46,6 @@ class LavaPlayer(DefaultPlayer):
 
         else:
             self.autoplay = True
-            self.store("autoplay", True)
 
     async def update_display(self,
                              new_message: Optional[Message] = None,
@@ -133,10 +130,9 @@ class LavaPlayer(DefaultPlayer):
                 ),
                 ActionRow(
                     Button(
-                        style=ButtonStyle.green if self.fetch("autoplay") else ButtonStyle.grey,
+                        style=ButtonStyle.green if self.autoplay else ButtonStyle.grey,
                         emoji=self.bot.get_icon('control.autoplay', "🔥"),
-                        custom_id="control.autoplay",
-                        disabled=not bool(Variables.SPOTIFY_CLIENT)
+                        custom_id="control.autoplay"
                     ),
                     Button(
                         style=ButtonStyle.blurple,
