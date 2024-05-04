@@ -101,7 +101,7 @@ class Events(Cog):
                     player.queue.clear()
 
                 case "control.previous":
-                    await player.seek(0)
+                    await player.previous()
 
                 case "control.next":
                     await player.skip()

@@ -1,11 +1,14 @@
 import asyncio
 from time import time
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union, List, Dict
+from random import randrange
 
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestError, PlayerErrorEvent, TrackStuckEvent, \
-    QueueEndEvent, TrackLoadFailedEvent
+    QueueEndEvent, TrackLoadFailedEvent, AudioTrack, DeferredAudioTrack
+
+from lavalink.common import MISSING
 
 from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size
@@ -33,12 +36,115 @@ class LavaPlayer(DefaultPlayer):
         self.__display_image_as_wide: Optional[bool] = None
         self.__last_image_url: str = ""
 
+        self.queue: List[AudioTrack] = []
+
     @property
     def guild(self) -> Optional[Guild]:
         if not self._guild:
             self._guild = self.bot.get_guild(self.guild_id)
 
         return self._guild
+    
+    async def play(self,
+                   track: Optional[Union[AudioTrack, 'DeferredAudioTrack', Dict[str, Union[Optional[str], bool, int]]]] = None,
+                   start_time: int = 0,
+                   end_time: int = MISSING,
+                   no_replace: bool = MISSING,
+                   volume: int = MISSING,
+                   pause: bool = False,
+                   **kwargs):
+        """|coro|
+
+        Plays the given track.
+
+        This method is basically same as the original DefaultPlayer.play(),
+        but changed the way the songs are played.
+
+        Parameters
+        ----------
+        track: Optional[Union[:class:`DeferredAudioTrack`, :class:`AudioTrack`, Dict[str, Union[Optional[str], bool, int]]]]
+            The track to play. If left unspecified, this will default to the first track in the queue. Defaults to ``None``
+            which plays the next song in queue. Accepts either an AudioTrack or a dict representing a track
+            returned from Lavalink.
+        start_time: :class:`int`
+            The number of milliseconds to offset the track by.
+            If left unspecified, the track will start from the beginning.
+        end_time: :class:`int`
+            The position at which the track should stop playing.
+            This is an absolute position, so if you want the track to stop at 1 minute, you would pass 60000.
+            If left unspecified, the track will play through to the end.
+        no_replace: :class:`bool`
+            If set to true, operation will be ignored if the player already has a current track.
+            If left unspecified, the currently playing track will always be replaced.
+        volume: :class:`int`
+            The initial volume to set. This is useful for changing the volume between tracks etc.
+            If left unspecified, the volume will remain at its current setting.
+        pause: :class:`bool`
+            Whether to immediately pause the track after loading it. Defaults to ``False``.
+        **kwargs: Any
+            The kwargs to use when playing. You can specify any extra parameters that may be
+            used by plugins, which offer extra features not supported out-of-the-box by Lavalink.py.
+
+        Raises
+        ------
+        :class:`ValueError`
+            If invalid values were provided for ``start_time`` or ``end_time``.
+        :class:`TypeError`
+            If wrong types were provided for ``no_replace``, ``volume`` or ``pause``.
+        """
+        if isinstance(no_replace, bool) and no_replace and self.is_playing:
+            return
+
+        if track is not None and isinstance(track, dict):
+            track = AudioTrack(track, 0)
+
+        if self.loop > 0 and self.current:
+            if self.loop == 1:
+                if track is not None:
+                    self.queue.insert(0, self.current)
+                else:
+                    track = self.current
+            elif self.loop == 2:
+                self.queue.append(self.current)
+
+        self._last_position = 0
+        self.position_timestamp = 0
+        self.paused = pause
+
+        if not track:
+            if not self.queue:
+                await self.stop()  # Also sets current to None.
+                await self.client._dispatch_event(QueueEndEvent(self))
+                return
+            elif self.is_playing and self.current == self.queue[-1]:
+                await self.stop()  # Also sets current to None.
+                await self.client._dispatch_event(QueueEndEvent(self))
+                return 
+
+            if not self.current or len(self.queue) <= 1:
+                track_at = randrange(len(self.queue)) if self.shuffle else 0
+            else:
+                track_at = randrange(len(self.queue)) if self.shuffle else (self.queue.index(self.current) + 1)
+
+            track = self.queue[track_at]
+
+        if start_time is not MISSING:
+            if not isinstance(start_time, int) or not 0 <= start_time < track.duration:
+                raise ValueError('start_time must be an int with a value equal to, or greater than 0, and less than the track duration')
+
+        if end_time is not MISSING:
+            if not isinstance(end_time, int) or not 1 <= end_time <= track.duration:
+                raise ValueError('end_time must be an int with a value equal to, or greater than 1, and less than, or equal to the track duration')
+
+        await self.play_track(track, start_time, end_time, no_replace, volume, pause, **kwargs)
+
+    async def previous(self):
+        """
+        Plays the previous track in the queue.
+        """
+        if len(self.queue) > 1 and (self.queue.index(self.current) - 1) != -1:
+            await self.play(self.queue[self.queue.index(self.current) - 1])
+            return
 
     async def check_autoplay(self) -> bool:
         """
@@ -183,7 +289,7 @@ class LavaPlayer(DefaultPlayer):
 
         if interaction:
             await interaction.response.edit_message(
-                embed=await self.__generate_display_embed(), components=components
+                embed=(await self.__generate_display_embed()), components=components
             )
 
         else:
@@ -263,7 +369,7 @@ class LavaPlayer(DefaultPlayer):
                 inline=True
             )
 
-            queue_titles = [f"**[{index + 1}]** {track.title}" for index, track in enumerate(self.queue[:5])]
+            queue_titles = [f"**[{index + 1}]** {track.title}" for index, track in enumerate(self.queue[:6])]
             queue_display = '\n'.join(queue_titles)
 
             if len(self.queue) > 5:
