@@ -337,6 +337,8 @@ class BilibiliSource(BaseSource):
             if audio_url.startswith("https://upos-hz-mirrorakam.akamaized.net/"):
                 return audio_url
 
+        return None
+
     def get_audio(self, url: str) -> Tuple[str, str, str]:
         """
         Gets audio from a Bilibili video URL
