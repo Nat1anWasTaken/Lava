@@ -52,8 +52,6 @@
     "command.connect.error.already_in_channel.description": "机器人已经在一个频道中了，继续移动将会中断对方的音乐播放，是否要继续?",
     "command.connect.error.already_in_channel.continue": "继续",
     "command.connect.error.already_in_channel.cancel": "已取消",
-    "command.disconnect.name": "disconnect",
-    "command.disconnect.description": "断开与语音频道的连接",
     "command.queue.name": "queue",
     "command.queue.description": "显示播放序列",
     "command.queue.error.empty": "播放序列为空",
