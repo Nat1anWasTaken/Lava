@@ -31,7 +31,7 @@ class Events(Cog):
     async def on_track_end(self, event: TrackEndEvent):
         player: LavaPlayer = event.player
 
-        self.bot.logger.info("Received track end event for guild %s", self.bot.get_guild(player.guild_id))
+        self.bot.logger.info("Received track end event for guild %s", player.guild)
 
         try:
             await player.update_display()
@@ -41,7 +41,10 @@ class Events(Cog):
     async def on_queue_end(self, event: QueueEndEvent):
         player: LavaPlayer = event.player
 
-        self.bot.logger.info("Received queue end event for guild %s", self.bot.get_guild(player.guild_id))
+        self.bot.logger.info("Received queue end event for guild %s", player.guild)
+
+        if player.guild.voice_client:
+            await player.guild.voice_client.disconnect(force=False)
 
         try:
             await player.update_display()
@@ -51,7 +54,7 @@ class Events(Cog):
     async def on_track_load_failed(self, event: TrackLoadFailedEvent):
         player: LavaPlayer = event.player
 
-        self.bot.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
+        self.bot.logger.info("Received track load failed event for guild %s", player.guild)
 
         message = await player.message.channel.send(
             embed=ErrorEmbed(
