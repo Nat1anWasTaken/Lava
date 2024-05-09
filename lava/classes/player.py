@@ -4,10 +4,8 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
 from disnake.ui import ActionRow, Button
-from lavalink import DefaultPlayer, Node, parse_time, TrackEndEvent, RequestError, PlayerErrorEvent, TrackStuckEvent, \
-    QueueEndEvent, TrackLoadFailedEvent
+from lavalink import DefaultPlayer, Node, parse_time
 
-from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size
 
 if TYPE_CHECKING:
