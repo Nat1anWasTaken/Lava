@@ -4,8 +4,10 @@ from disnake import InteractionResponded, ApplicationCommandInteraction, \
     MessageInteraction
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
+from lavalink import TrackEndEvent, TrackLoadFailedEvent, QueueEndEvent
 
 from lava.bot import Bot
+from lava.classes.player import LavaPlayer
 from lava.embeds import ErrorEmbed
 from lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from lava.utils import ensure_voice
@@ -19,6 +21,46 @@ class Events(Cog):
 
     async def cog_load(self):
         await self.bot.wait_until_ready()
+
+    @Cog.listener(name="on_ready")
+    async def on_ready(self):
+        self.bot.lavalink.add_event_hook(self.on_track_end, event=TrackEndEvent)
+        self.bot.lavalink.add_event_hook(self.on_queue_end, event=QueueEndEvent)
+        self.bot.lavalink.add_event_hook(self.on_track_load_failed, event=TrackLoadFailedEvent)
+
+    async def on_track_end(self, event: TrackEndEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received track end event for guild %s", self.bot.get_guild(player.guild_id))
+
+        try:
+            await player.update_display()
+        except ValueError:
+            pass
+
+    async def on_queue_end(self, event: QueueEndEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received queue end event for guild %s", self.bot.get_guild(player.guild_id))
+
+        try:
+            await player.update_display()
+        except ValueError:
+            pass
+
+    async def on_track_load_failed(self, event: TrackLoadFailedEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received track load failed event for guild %s", self.bot.get_guild(player.guild_id))
+
+        message = await player.message.channel.send(
+            embed=ErrorEmbed(
+                f"{player.bot.get_text('error.play_failed', player.locale, '無法播放歌曲')}: {event.track['title']}",
+                f"{player.bot.get_text('reason', player.locale, '原因')}: `{event.original or 'Unknown'}`"
+            )
+        )
+        await player.skip()
+        await player.update_display(message, delay=5)
 
     @commands.Cog.listener(name="on_slash_command_error")
     async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
