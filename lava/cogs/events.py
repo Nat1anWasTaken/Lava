@@ -144,6 +144,7 @@ class Events(Cog):
                 case "control.stop":
                     await player.stop()
                     player.queue.clear()
+                    await interaction.guild.voice_client.disconnect(force=False)
 
                 case "control.previous":
                     await player.seek(0)
