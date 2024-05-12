@@ -1,4 +1,5 @@
 import asyncio
+from asyncio import Task
 from time import time
 from typing import TYPE_CHECKING, Optional, Union
 
@@ -30,6 +31,8 @@ class LavaPlayer(DefaultPlayer):
 
         self.__display_image_as_wide: Optional[bool] = None
         self.__last_image_url: str = ""
+
+        self.timeout_task: Optional[Task] = None
 
     @property
     def guild(self) -> Optional[Guild]:
@@ -340,6 +343,24 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.mid_point', 'MP|') if percentage != 1 else self.bot.get_icon('progress.start_fill', 'SF|')}" \
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
+
+    def cleanup(self):
+        if self.timeout_task:
+            self.timeout_task.cancel()
+
+    async def disconnect_timeout(self):
+        """
+        Disconnect the player if it has been inactive for 5 minutes.
+        """
+        self.timeout_task = self.bot.loop.create_task(self.__disconnect_timeout())
+
+    async def __disconnect_timeout(self):
+        try:
+            _ = await self.bot.wait_for("play_or_resume", check=lambda p: p == self)
+        except asyncio.TimeoutError:
+            await self.guild.voice_client.disconnect(force=False)
+
+        return
 
     async def is_current_artwork_wide(self) -> bool:
         """

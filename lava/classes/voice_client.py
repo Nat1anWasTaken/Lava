@@ -66,4 +66,6 @@ class LavalinkVoiceClient(VoiceClient):
 
         player.channel_id = None
 
+        player.cleanup()
+
         self.cleanup()
