@@ -7,6 +7,7 @@ from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interact
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
 
+from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size
 
 if TYPE_CHECKING:
@@ -359,6 +360,13 @@ class LavaPlayer(DefaultPlayer):
             _ = await self.bot.wait_for("play_or_resume", check=lambda p: p == self, timeout=180)
         except asyncio.TimeoutError:
             await self.guild.voice_client.disconnect(force=False)
+
+        if self.message:
+            await self.message.channel.send(
+                embed=ErrorEmbed(
+                    self.bot.get_text("timeout.disconnect", self.locale, "因為閒置超過 3 分鐘，已自動斷線")
+                )
+            )
 
         return
 
