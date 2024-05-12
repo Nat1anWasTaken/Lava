@@ -345,10 +345,6 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
 
-    def cleanup(self):
-        if self.timeout_task:
-            self.timeout_task.cancel()
-
     def enter_disconnect_timeout(self):
         """
         Disconnect the player if it has been inactive for 5 minutes.
