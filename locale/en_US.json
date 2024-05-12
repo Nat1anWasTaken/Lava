@@ -103,6 +103,7 @@
     "error.bot_not_in_voice": "I'm not connected to a voice channel",
     "error.user_not_in_voice": "You're not connected to a voice channel",
     "error.must_in_same_voice": "You must be in the same voice channel with me",
+    "timeout.disconnect": "因為閒置超過 3 分鐘，已自動斷線",
     "display.status.playing": "Playing",
     "display.status.paused": "Paused",
     "display.status.disconnected": "Disconnected",
