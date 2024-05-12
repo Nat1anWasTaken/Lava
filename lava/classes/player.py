@@ -362,8 +362,7 @@ class LavaPlayer(DefaultPlayer):
             self.timeout_task.cancel()
 
     async def __disconnect_timeout(self):
-        except asyncio.TimeoutError:
-        await asyncio.sleep(10)
+        await asyncio.sleep(180)
 
         if self.message:
             await self.message.channel.send(
@@ -372,7 +371,7 @@ class LavaPlayer(DefaultPlayer):
                 )
             )
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(30)
 
         await self.guild.voice_client.disconnect(force=False)
 
