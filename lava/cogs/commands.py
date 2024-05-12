@@ -526,6 +526,8 @@ class Commands(Cog):
             )
 
         finally:
+            player.enter_disconnect_timeout()
+            
             await player.update_display(
                 new_message=await interaction.original_response(),
                 delay=5,

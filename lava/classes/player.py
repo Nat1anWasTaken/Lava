@@ -349,7 +349,7 @@ class LavaPlayer(DefaultPlayer):
         if self.timeout_task:
             self.timeout_task.cancel()
 
-    async def disconnect_timeout(self):
+    def enter_disconnect_timeout(self):
         """
         Disconnect the player if it has been inactive for 5 minutes.
         """

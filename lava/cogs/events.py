@@ -43,8 +43,7 @@ class Events(Cog):
 
         self.bot.logger.info("Received queue end event for guild %s", player.guild)
 
-        if player.guild.voice_client:
-            await player.guild.voice_client.disconnect(force=False)
+        player.enter_disconnect_timeout()
 
         try:
             await player.update_display()
