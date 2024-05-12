@@ -353,13 +353,21 @@ class LavaPlayer(DefaultPlayer):
         """
         Disconnect the player if it has been inactive for 5 minutes.
         """
+        if self.timeout_task and not self.timeout_task.done():
+            return
+
         self.timeout_task = self.bot.loop.create_task(self.__disconnect_timeout())
 
+    def stop_disconnect_timeout(self):
+        """
+        Stop the disconnect timeout if it is running.
+        """
+        if self.timeout_task:
+            self.timeout_task.cancel()
+
     async def __disconnect_timeout(self):
-        try:
-            _ = await self.bot.wait_for("play_or_resume", check=lambda p: p == self, timeout=180)
         except asyncio.TimeoutError:
-            await self.guild.voice_client.disconnect(force=False)
+        await asyncio.sleep(10)
 
         if self.message:
             await self.message.channel.send(
@@ -367,6 +375,10 @@ class LavaPlayer(DefaultPlayer):
                     self.bot.get_text("timeout.disconnect", self.locale, "因為閒置超過 3 分鐘，已自動斷線")
                 )
             )
+
+        await asyncio.sleep(10)
+
+        await self.guild.voice_client.disconnect(force=False)
 
         return
 
@@ -406,3 +418,8 @@ class LavaPlayer(DefaultPlayer):
 
         _ = self.bot.loop.create_task(self.check_autoplay())
         _ = self.bot.loop.create_task(self.update_display())
+
+        if self.is_playing and not self.paused:
+            self.stop_disconnect_timeout()
+        else:
+            self.enter_disconnect_timeout()
