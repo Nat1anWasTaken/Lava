@@ -233,6 +233,8 @@ class Commands(Cog):
         if not player.is_playing:
             await player.play()
 
+        self.bot.dispatch("play_or_resume", player=player)
+
         await player.update_display(await interaction.original_response(), delay=5, locale=interaction.locale)
 
     @commands.slash_command(
@@ -393,6 +395,8 @@ class Commands(Cog):
             )
 
         await player.set_pause(False)
+
+        self.bot.dispatch("play_or_resume", player=player)
 
         await interaction.edit_original_response(
             embed=SuccessEmbed(self.bot.get_text("command.resume.success", interaction.locale, "已繼續歌曲"))

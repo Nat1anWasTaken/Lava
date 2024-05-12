@@ -137,6 +137,7 @@ class Events(Cog):
             match interaction.data.custom_id:
                 case "control.resume":
                     await player.set_pause(False)
+                    self.bot.dispatch("play_or_resume", player=player)
 
                 case "control.pause":
                     await player.set_pause(True)
