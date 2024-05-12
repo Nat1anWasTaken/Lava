@@ -103,6 +103,7 @@
     "error.bot_not_in_voice": "我沒有連接到一個語音頻道",
     "error.user_not_in_voice": "你沒有連接到一個語音頻道",
     "error.must_in_same_voice": "你必須與我在同一個語音頻道",
+    "timeout.disconnect": "因為閒置超過 3 分鐘，已自動斷線",
     "display.status.playing": "播放中",
     "display.status.paused": "已暫停",
     "display.status.disconnected": "已斷線",
