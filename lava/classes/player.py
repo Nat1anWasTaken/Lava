@@ -356,7 +356,7 @@ class LavaPlayer(DefaultPlayer):
 
     async def __disconnect_timeout(self):
         try:
-            _ = await self.bot.wait_for("play_or_resume", check=lambda p: p == self)
+            _ = await self.bot.wait_for("play_or_resume", check=lambda p: p == self, timeout=180)
         except asyncio.TimeoutError:
             await self.guild.voice_client.disconnect(force=False)
 
