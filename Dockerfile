@@ -25,7 +25,7 @@ COPY --chown=1200:1200 . /lava
 WORKDIR /lava
 USER lava
 RUN rm ./docker -r && \
-  curl -fsSL https://github.com/Nat1anWasTaken/Lavalink/releases/download/4.0.6/Lavalink.jar -o /lava/lavalink.jar
+  curl -fsSL https://github.com/lavalink-devs/Lavalink/releases/download/${LAVALINK_VERSION}/Lavalink.jar -o /lava/lavalink.jar
 
 USER root
 ENV S6_VERBOSITY=1 \
