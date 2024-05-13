@@ -15,7 +15,7 @@ services:
       - lava
 
   lavalink:
-    image: ghcr.io/lavalink-devs/lavalink:latest
+    image: fredboat/lavalink:latest
     volumes:
       - "./configs/application.yml:/opt/Lavalink/application.yml"
     hostname: lavalink
