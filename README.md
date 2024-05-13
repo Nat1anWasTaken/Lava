@@ -117,14 +117,25 @@ docker-compose up
 docker pull ghcr.io/nat1anwastaken/lava:latest
 ```
 
+2. 設置好你的 Lavalink 節點，並將其 IP 和 Port 填入 `configs/lavalink.json`，如果你懶得架設 Lavalink，請使用 Docker Compose
+```json
+{
+    "host": "Lavalink 節點 IP",
+    "port": "Lavalink 節點 Port"
+}
+```
+
+3. 創建一個 `stac.env` 檔案，並填入以下內容
+```env
+TOKEN=機器人 Token
+SPOTIFY_CLIENT_ID=Spotify client id
+SPOTIFY_CLIENT_SECRET=Spotify client secret
+``` 
+
 4. 啟動機器人
 ```bash
 docker run -it \
   --name ghcr.io/nat1anwastaken/lava:latest \
-  -e TOKEN="機器人 Token" \
-  -e LAVALINK_SERVER="true" \ # 啟動內建 Lavalink 伺服器
-  -e SPOTIFY_CLIENT_ID="Spotify client id" \
-  -e SPOTIFY_CLIENT_SECRET="Spotify client secret" \
   --restart unless-stopped \
   lava
 ```
