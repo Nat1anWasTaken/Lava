@@ -1,10 +1,26 @@
-FROM python:3.10.9-slim as base
+FROM python:3.10.9-slim as builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
-
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    xz-utils \
+    gcc \
+    g++ \
+    libffi-dev \
+    build-essential \
+    cmake \
+    libjpeg-dev
+
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install -r requirements.txt --prefix=/install
+
+FROM python:3.10.9-slim as runtime
 
 ARG UID=10001
 RUN adduser \
@@ -16,11 +32,14 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-RUN apt-get update && apt-get install -y git curl xz-utils gcc g++ libffi-dev build-essential cmake libjpeg-dev
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install -r requirements.txt
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y git
+
+COPY --from=builder /install /usr/local
 
 COPY . .
 
@@ -28,4 +47,4 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD python main.py
+CMD ["python", "main.py"]
