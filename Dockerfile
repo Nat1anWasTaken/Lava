@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     xz-utils \
     gcc \
     g++ \
+    zlib1g-dev \
     libffi-dev \
     build-essential \
     cmake \
