@@ -1,38 +1,31 @@
-FROM python:3.12.3-slim-bookworm
+FROM python:3.12.3-slim as base
 
-ARG S6_OVERLAY_VERSION=3.1.6.2 LAVALINK_VERSION=4.0.4 DEBIAN_FRONTEND="noninteractive"
+ENV PYTHONDONTWRITEBYTECODE=1
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-noarch.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-arch.tar.xz /tmp
+ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && \
-  apt-get install -y git curl jq openjdk-17-jre-headless xz-utils \
-  gcc g++ python3-dev libffi-dev build-essential cmake libjpeg-dev && \
-  apt-get clean && \
-  tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-symlinks-arch.tar.xz && \
-  rm -rf /tmp/* && \
-  groupadd -g 1200 lava && \
-  useradd lava --system --gid 1200 --uid 1200 --create-home && \
-  mkdir /lava && \
-  chown 1200:1200 /lava
+WORKDIR /app
 
-COPY --chown=1200:1200 . /lava
-WORKDIR /lava
-USER lava
-RUN rm ./docker -r && \
-  curl -fsSL https://github.com/lavalink-devs/Lavalink/releases/download/${LAVALINK_VERSION}/Lavalink.jar -o /lava/lavalink.jar
+ARG UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
 
-USER root
-ENV S6_VERBOSITY=1 \
-  S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
-  SHELL=/bin/bash
-COPY --chmod=755 ./docker /
-RUN python -m pip install -r /lava/requirements.txt
+RUN apt-get update && apt-get install -y git
 
-ENTRYPOINT ["/init"]
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    python -m pip install -r requirements.txt
+
+COPY . .
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+CMD python main.py
