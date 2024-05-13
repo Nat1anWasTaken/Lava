@@ -8,7 +8,7 @@ services:
     env_file:
       - stack.env
     volumes:
-      - "./configs:/lava/configs"
+      - "./configs:/app/configs"
     depends_on:
       - lavalink
     networks:
