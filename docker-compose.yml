@@ -9,3 +9,18 @@ services:
       - stack.env
     volumes:
       - "./configs:/lava/configs"
+    depends_on:
+      - lavalink
+    networks:
+      - lava
+
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:latest
+    volumes:
+      - "./configs/application.yml:/opt/Lavalink/application.yml"
+    hostname: lavalink
+    networks:
+      - lava
+
+networks:
+  lava:
