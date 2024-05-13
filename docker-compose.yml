@@ -18,6 +18,7 @@ services:
     image: fredboat/lavalink:latest
     volumes:
       - "./configs/application.yml:/opt/Lavalink/application.yml"
+      - "./plugins/:/opt/Lavalink/plugins/"
     hostname: lavalink
     networks:
       - lava
