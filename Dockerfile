@@ -1,4 +1,4 @@
-FROM python:3.10.9-slim as builder
+FROM python:3.12.3-slim as builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -21,7 +21,7 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt --prefix=/install
 
-FROM python:3.10.9-slim as runtime
+FROM python:3.12.3-slim as runtime
 
 ARG UID=10001
 RUN adduser \
