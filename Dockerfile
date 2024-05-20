@@ -1,27 +1,27 @@
-FROM python:3.12.3-slim as builder
+FROM python:3.12.3-alpine as builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
+RUN apk update && apk add --no-cache \
     git \
     curl \
-    xz-utils \
+    xz \
     gcc \
     g++ \
-    zlib1g-dev \
+    zlib-dev \
     libffi-dev \
-    build-essential \
+    build-base \
     cmake \
-    libjpeg-dev
+    jpeg-dev
 
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt --prefix=/install
 
-FROM python:3.12.3-slim as runtime
+FROM python:3.12.3-alpine as runtime
 
 ARG UID=10001
 RUN adduser \
@@ -38,7 +38,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y git
+RUN apk update && apk add --no-cache git
 
 COPY --from=builder /install /usr/local
 
