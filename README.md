@@ -103,7 +103,7 @@ mv example.stack.env stack.env
 
 4. 啟動
 ```bash
-docker-compose up
+docker compose up
 ```
 </details>
 
