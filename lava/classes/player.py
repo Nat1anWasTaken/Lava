@@ -7,7 +7,6 @@ from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interact
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
 
-from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size
 
 if TYPE_CHECKING:
@@ -345,38 +344,6 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.end_fill', 'EF|') * round((1 - percentage) * 10)}" \
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
 
-    def enter_disconnect_timeout(self):
-        """
-        Disconnect the player if it has been inactive for 5 minutes.
-        """
-        if self.timeout_task and not self.timeout_task.done():
-            return
-
-        self.timeout_task = self.bot.loop.create_task(self.__disconnect_timeout())
-
-    def stop_disconnect_timeout(self):
-        """
-        Stop the disconnect timeout if it is running.
-        """
-        if self.timeout_task:
-            self.timeout_task.cancel()
-
-    async def __disconnect_timeout(self):
-        await asyncio.sleep(180)
-
-        if self.message:
-            await self.message.channel.send(
-                embed=ErrorEmbed(
-                    self.bot.get_text("timeout.disconnect", self.locale, "因為閒置超過 3 分鐘，已自動斷線")
-                )
-            )
-
-        await asyncio.sleep(30)
-
-        await self.guild.voice_client.disconnect(force=False)
-
-        return
-
     async def is_current_artwork_wide(self) -> bool:
         """
         Check if the current playing track's artwork is wide.
@@ -413,8 +380,3 @@ class LavaPlayer(DefaultPlayer):
 
         _ = self.bot.loop.create_task(self.check_autoplay())
         _ = self.bot.loop.create_task(self.update_display())
-
-        if self.is_playing and not self.paused:
-            self.stop_disconnect_timeout()
-        else:
-            self.enter_disconnect_timeout()
