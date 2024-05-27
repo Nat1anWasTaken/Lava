@@ -3,8 +3,6 @@ from logging import getLogger
 from os import getenv
 from typing import Union, Tuple, Optional
 
-import requests
-from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack
 from spotipy import Spotify, SpotifyClientCredentials
 from yt_dlp import YoutubeDL
@@ -296,7 +294,7 @@ class BilibiliSource(BaseSource):
         :return: Tuple of audio URL, video title, video author, video thi,
         """
         info = self.ytdl.extract_info(url, download=False)
-        
+
         audio_url = info['formats'][1]['url']
 
         author = info.get('uploader', None)
@@ -304,8 +302,9 @@ class BilibiliSource(BaseSource):
         thumbnail = info.get('thumbnail', None)
 
         title = info.get('fulltitle', None)
-        
+
         return audio_url, title, author, thumbnail
+
 
 class YTDLSource(BaseSource):
     def __init__(self):
