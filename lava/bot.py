@@ -6,6 +6,7 @@ from disnake import Locale
 from disnake.ext.commands import Bot as OriginalBot
 
 from lava.classes.lavalink_client import LavalinkClient
+from lava.classes.game_manager import GameManager
 from lava.source import SourceManager
 
 
@@ -16,6 +17,7 @@ class Bot(OriginalBot):
         self.logger = logger
 
         self._lavalink: Optional[LavalinkClient] = None
+        self.game_manager: GameManager = GameManager(self)
 
         with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
