@@ -1,12 +1,11 @@
 import re
-from os import getpid
-
 from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
 from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.ui import Button
 from disnake_ext_paginator import Paginator
 from lavalink import DefaultPlayer, LoadResult, LoadType, Timescale, Tremolo, Vibrato, LowPass, Rotation, Equalizer
+from os import getpid
 from psutil import cpu_percent, virtual_memory, Process
 
 from lava.bot import Bot
@@ -34,7 +33,9 @@ class Commands(Cog):
         description=Localized("播放 Lofi Radio", key="command.lofi.description")
     )
     async def lofi(self, interaction: ApplicationCommandInteraction):
-        await self.play(interaction, query="https://www.youtube.com/watch?v=jfKfPfyJRdk")
+        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+
+        await self.play(interaction, query=result.tracks[0].uri)
 
     @commands.slash_command(
         name=Localized("info", key="command.info.name"),
