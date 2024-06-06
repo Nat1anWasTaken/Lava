@@ -33,7 +33,7 @@ class Commands(Cog):
         description=Localized("播放 Lofi Radio", key="command.lofi.description")
     )
     async def lofi(self, interaction: ApplicationCommandInteraction):
-        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+        result = await self.bot.lavalink.get_tracks(f"ytsearch:lofi radio")
 
         await self.play(interaction, query=result.tracks[0].uri)
 
