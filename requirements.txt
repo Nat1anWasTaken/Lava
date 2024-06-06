@@ -6,11 +6,12 @@ psutil==5.9.8
 disnake==2.9.2
 python-dotenv==1.0.1
 yt-dlp==2024.5.27
+lavalink==5.4.0
 aiohttp>=3.7.0,<4.0
 imageio==2.34.1
 syncedlyrics==0.10.1
+pylrc==0.1.2
 colorlog
 youtube-related
 youtube-search
-git+https://github.com/Nat1anWasTaken/Lavalink.py.git
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
