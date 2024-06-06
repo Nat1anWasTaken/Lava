@@ -8,6 +8,7 @@ python-dotenv==1.0.1
 yt-dlp==2024.5.27
 aiohttp>=3.7.0,<4.0
 imageio==2.34.1
+syncedlyrics==0.10.1
 colorlog
 youtube-related
 youtube-search
