@@ -1,8 +1,11 @@
+from typing import TYPE_CHECKING
+
 from disnake import VoiceClient, VoiceChannel
-from lavalink import DefaultPlayer
 from disnake.utils import get
 
-from lava.bot import Bot
+if TYPE_CHECKING:
+    from lava.bot import Bot
+    from lava.classes.lavalink_client import LavalinkClient
 
 
 class LavalinkVoiceClient(VoiceClient):
@@ -13,10 +16,10 @@ class LavalinkVoiceClient(VoiceClient):
     https://discordpy.readthedocs.io/en/latest/api.html#voiceprotocol
     """
 
-    def __init__(self, bot: Bot, channel: VoiceChannel):
+    def __init__(self, bot: "Bot", channel: VoiceChannel):
         self.bot = bot
         self.channel = channel
-        self.lavalink = bot.lavalink
+        self.lavalink: "LavalinkClient" = bot.lavalink
         super().__init__(bot, channel)
 
     async def on_voice_server_update(self, data):
@@ -46,7 +49,7 @@ class LavalinkVoiceClient(VoiceClient):
         Connect the bot to the voice channel and create a player_manager
         if it doesn't exist yet.
         """
-        self.lavalink.player_manager.create(guild_id=self.channel.guild.id)
+        self.lavalink.player_manager.new(guild_id=self.channel.guild.id)
         await self.channel.guild.change_voice_state(channel=self.channel, self_mute=self_mute, self_deaf=self_deaf)
 
     async def disconnect(self, *, force: bool = False) -> None:
@@ -54,13 +57,16 @@ class LavalinkVoiceClient(VoiceClient):
         Handles the disconnect.
         Cleans up running player and leaves the voice client.
         """
-        player: DefaultPlayer = self.lavalink.player_manager.get(self.channel.guild.id)
+        player = self.lavalink.player_manager.get(self.channel.guild.id)
 
         if not force and not player.is_connected:
             return
 
         await self.channel.guild.change_voice_state(channel=None)
 
-        player.channel_id = None
+        await player.stop()
+        await player.update_display()
+
+        await player.destroy()
 
         self.cleanup()

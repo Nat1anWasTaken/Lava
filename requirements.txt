@@ -1,11 +1,13 @@
 PyNaCl==1.5.0
 spotipy==2.23.0
-requests==2.31.0
+requests==2.32.2
 beautifulsoup4==4.12.3
 psutil==5.9.8
-disnake==2.9.1
+disnake==2.9.2
 python-dotenv==1.0.1
-yt-dlp==2023.12.30
+yt-dlp==2024.5.27
+aiohttp>=3.7.0,<4.0
+imageio==2.34.1
 colorlog
 youtube-related
 youtube-search

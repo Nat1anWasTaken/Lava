@@ -1,18 +1,14 @@
-import json
 import re
 from logging import getLogger
 from os import getenv
 from typing import Union, Tuple, Optional
 
-import requests
-from bs4 import BeautifulSoup
 from lavalink import Source, Client, LoadResult, LoadType, PlaylistInfo, DeferredAudioTrack
 from spotipy import Spotify, SpotifyClientCredentials
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import UnsupportedError, DownloadError
 
 from lava.errors import LoadError
-from lava.variables import Variables
 
 
 class BaseSource:
@@ -41,6 +37,11 @@ class BaseSource:
 
 
 class SpotifyAudioTrack(DeferredAudioTrack):
+    def __init__(self, track, requester, **extra):
+        super().__init__(track, requester, **extra)
+
+        self.track = None
+
     async def load(self, client):  # skipcq: PYL-W0201
         getLogger('lava.sources').info("Loading spotify track %s...", self.title)
 
@@ -74,7 +75,7 @@ class SpotifySource(BaseSource):
             client_secret=spotify_client_secret
         )
 
-        Variables.SPOTIFY_CLIENT = Spotify(auth_manager=credentials)
+        self.spotify_client = Spotify(auth_manager=credentials)
 
     def check_query(self, query: str) -> bool:
         spotify_url_rx = r'^(https://open\.spotify\.com/)(track|album|playlist)/([a-zA-Z0-9]+)(.*)$'
@@ -113,7 +114,7 @@ class SpotifySource(BaseSource):
         if not track_id:
             return None
 
-        track = Variables.SPOTIFY_CLIENT.track(track_id)
+        track = self.spotify_client.track(track_id)
 
         if track:
             return SpotifyAudioTrack(
@@ -124,7 +125,8 @@ class SpotifySource(BaseSource):
                     'length': track['duration_ms'],
                     'isStream': False,
                     'title': track['name'],
-                    'uri': f"https://open.spotify.com/track/{track['id']}"
+                    'uri': f"https://open.spotify.com/track/{track['id']}",
+                    'artworkUrl': track['album']['images'][0]['url']
                 },
                 requester=0
             )
@@ -141,7 +143,7 @@ class SpotifySource(BaseSource):
         if not playlist_id:
             return [], None
 
-        playlist = Variables.SPOTIFY_CLIENT.playlist(playlist_id)
+        playlist = self.spotify_client.playlist(playlist_id)
 
         playlist_info = PlaylistInfo(playlist['name'], -1)
 
@@ -158,7 +160,9 @@ class SpotifySource(BaseSource):
                             'length': track['track']['duration_ms'],
                             'isStream': False,
                             'title': track['track']['name'],
-                            'uri': f"https://open.spotify.com/track/{track['track']['id']}"
+                            'uri': f"https://open.spotify.com/track/{track['track']['id']}",
+                            'artworkUrl': track['track']['album']['images'][0]['url']
+                            if track['track']['album'].get('images') else None
                         },
                         requester=0
                     )
@@ -178,7 +182,7 @@ class SpotifySource(BaseSource):
         if not album_id:
             return [], None
 
-        album = Variables.SPOTIFY_CLIENT.album(album_id)
+        album = self.spotify_client.album(album_id)
 
         playlist_info = PlaylistInfo(album['name'], -1)
 
@@ -195,7 +199,8 @@ class SpotifySource(BaseSource):
                             'length': track['duration_ms'],
                             'isStream': False,
                             'title': track['name'],
-                            'uri': f"https://open.spotify.com/track/{track['id']}"
+                            'uri': f"https://open.spotify.com/track/{track['id']}",
+                            'artworkUrl': album['images'][0]['url'] if album.get('images') else None
                         },
                         requester=0
                     )
@@ -259,17 +264,21 @@ class BilibiliSource(BaseSource):
         super().__init__()
 
         self.priority = 5
+        self.ytdl = YoutubeDL(
+            {"format": "bestaudio"}
+        )
 
     def check_query(self, query: str) -> bool:
         return query.startswith('https://www.bilibili.com/video/') or query.startswith('https://b23.tv/')
 
     async def load_item(self, client: Client, query: str) -> Optional[LoadResult]:
-        audio_url, title = self.get_audio(query)
+        audio_url, title, author, thumbnail = self.get_audio(query)
 
         track = (await client.get_tracks(audio_url, check_local=False)).tracks[0]
 
         track.title = title
-        track.author = f'Unknown / [Bilibili]({query})'
+        track.author = f'{author} / [Bilibili]({query})'
+        track.artwork_url = thumbnail
 
         return LoadResult(
             load_type=LoadType.TRACK,
@@ -277,32 +286,24 @@ class BilibiliSource(BaseSource):
             playlist_info=None
         )
 
-    @staticmethod
-    def get_audio(url: str) -> Tuple[str, str]:
+    def get_audio(self, url: str) -> Tuple[str, str, str, str]:
         """
-        Gets audio URL from a Bilibili video URL
+        Gets audio from a Bilibili video URL
 
-        Code referenced from https://www.bilibili.com/read/cv16789932
         :param url: Bilibili video URL
-        :return: Tuple of audio URL and video title
+        :return: Tuple of audio URL, video title, video author, video thi,
         """
-        video_html = requests.get(url)
+        info = self.ytdl.extract_info(url, download=False)
 
-        values = video_html.text
+        audio_url = info['formats'][1]['url']
 
-        text = BeautifulSoup(values, features='lxml')
+        author = info.get('uploader', None)
 
-        title = text.find('title').contents[0].replace(' ', ',').replace('/', ',')
+        thumbnail = info.get('thumbnail', None)
 
-        items = text.find_all('script')[2]
+        title = info.get('fulltitle', None)
 
-        items = items.contents[0].replace('window.__playinfo__=', '')
-
-        obj = json.loads(items)
-
-        audio_url = obj["data"]["dash"]["audio"][0]["baseUrl"]
-
-        return audio_url, title
+        return audio_url, title, author, thumbnail
 
 
 class YTDLSource(BaseSource):

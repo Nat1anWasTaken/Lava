@@ -1,38 +1,51 @@
-FROM python:3.12.1-slim-bookworm
+FROM python:3.12.3-alpine as builder
 
-ARG S6_OVERLAY_VERSION=3.1.6.2 LAVALINK_VERSION=4.0.0 DEBIAN_FRONTEND="noninteractive"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-noarch.tar.xz /tmp
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-symlinks-arch.tar.xz /tmp
+WORKDIR /app
 
-RUN apt-get update && \
-  apt-get install -y git curl jq openjdk-17-jre-headless xz-utils \
-  gcc g++ python3-dev libffi-dev build-essential && \
-  apt-get clean && \
-  tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz && \
-  tar -C / -Jxpf /tmp/s6-overlay-symlinks-arch.tar.xz && \
-  rm -rf /tmp/* && \
-  groupadd -g 1200 lava && \
-  useradd lava --system --gid 1200 --uid 1200 --create-home && \
-  mkdir /lava && \
-  chown 1200:1200 /lava
+RUN apk update && apk add --no-cache \
+    git \
+    curl \
+    xz \
+    gcc \
+    g++ \
+    zlib-dev \
+    libffi-dev \
+    build-base \
+    cmake \
+    jpeg-dev
 
-COPY --chown=1200:1200 . /lava
-WORKDIR /lava
-USER lava
-RUN rm ./docker -r && \
-  curl -fsSL https://github.com/lavalink-devs/Lavalink/releases/download/${LAVALINK_VERSION}/Lavalink.jar -o /lava/lavalink.jar
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install -r requirements.txt --prefix=/install
 
-USER root
-ENV S6_VERBOSITY=1 \
-  S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-  S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
-  SHELL=/bin/bash
-COPY --chmod=755 ./docker /
-RUN python -m pip install -r /lava/requirements.txt
+FROM python:3.12.3-alpine as runtime
 
-ENTRYPOINT ["/init"]
+ARG UID=10001
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    appuser
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apk update && apk add --no-cache git
+
+COPY --from=builder /install /usr/local
+
+COPY . .
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+CMD ["python", "main.py"]
