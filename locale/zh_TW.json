@@ -1,4 +1,6 @@
 {
+    "command.lofi.name": "lofi",
+    "command.lofi.description": "播放 Lofi Radio",
     "command.info.name": "info",
     "command.info.description": "顯示機器人的資訊",
     "command.info.embed.title": "機器人資訊",

@@ -1,6 +1,4 @@
 import re
-from os import getpid
-
 from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
 from disnake.ext import commands
 from disnake.ext.commands import Cog
@@ -29,6 +27,15 @@ allowed_filters = {
 class Commands(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
+
+    @commands.slash_command(
+        name=Localized("lofi", key="command.lofi.name"),
+        description=Localized("播放 Lofi Radio", key="command.lofi.description")
+    )
+    async def lofi(self, interaction: ApplicationCommandInteraction):
+        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+
+        await self.play(interaction, query=result.tracks[0].uri)
 
     @commands.slash_command(
         name=Localized("info", key="command.info.name"),
