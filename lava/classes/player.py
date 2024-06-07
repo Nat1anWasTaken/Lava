@@ -89,9 +89,13 @@ class LavaPlayer(DefaultPlayer):
         """
         if not self.autoplay:
             self.autoplay = True
+            self.bot.loop.create_task(self.check_autoplay())
             return
 
         self.autoplay = False
+        for task in asyncio.all_tasks(self.bot.loop):
+            if task.get_name() == "check_autoplay":
+                task.cancel()
 
         for item in self.queue:  # Remove songs added by autoplay
             if item.requester == 0:
@@ -448,5 +452,3 @@ class LavaPlayer(DefaultPlayer):
         self._last_update = int(time() * 1000)
         self._last_position = state.get('position', 0)
         self.position_timestamp = state.get('time', 0)
-
-        _ = self.bot.loop.create_task(self.check_autoplay())
