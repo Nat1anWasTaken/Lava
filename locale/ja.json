@@ -122,5 +122,7 @@
     "display.shuffle": "🔀 隨機播放",
     "display.enable": "有効",
     "display.disable": "無効",
-    "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區"
+    "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區",
+    "display.lyrics.title": "🎤 | 歌詞",
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
 }
