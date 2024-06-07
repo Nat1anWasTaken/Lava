@@ -97,6 +97,12 @@ class LavaPlayer(DefaultPlayer):
             if item.requester == 0:
                 self.queue.remove(item)
 
+    def reset_lyrics(self):
+        """
+        Reset the lyrics cache.
+        """
+        self._lyrics = None
+
     async def toggle_lyrics(self):
         """
         Toggle lyrics display for the player.
