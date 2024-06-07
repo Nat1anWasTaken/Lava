@@ -25,6 +25,7 @@ class Events(Cog):
     @Cog.listener(name="on_ready")
     async def on_ready(self):
         self.bot.lavalink.add_event_hook(self.on_player_update, event=PlayerUpdateEvent)
+        self.bot.lavalink.add_event_hook(self.on_track_start, event=TrackStartEvent)
         self.bot.lavalink.add_event_hook(self.on_track_end, event=TrackEndEvent)
         self.bot.lavalink.add_event_hook(self.on_queue_end, event=QueueEndEvent)
         self.bot.lavalink.add_event_hook(self.on_track_load_failed, event=TrackLoadFailedEvent)
@@ -33,6 +34,18 @@ class Events(Cog):
         player: LavaPlayer = event.player
 
         self.bot.logger.info("Received player update event for guild %s", player.guild)
+
+        try:
+            await player.update_display()
+        except ValueError:
+            pass
+
+    async def on_track_start(self, event: TrackStartEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received track start event for guild %s", player.guild)
+
+        player._lyrics = None  # Reset the lyrics cache
 
         try:
             await player.update_display()

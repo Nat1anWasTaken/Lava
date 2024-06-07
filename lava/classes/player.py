@@ -3,11 +3,15 @@ from asyncio import Task
 from time import time
 from typing import TYPE_CHECKING, Optional, Union
 
+import pylrc
+import syncedlyrics
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
+from disnake.abc import MISSING
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
+from pylrc.classes import Lyrics, LyricLine
 
-from lava.utils import get_recommended_tracks, get_image_size
+from lava.utils import get_recommended_tracks, get_image_size, find_lyrics_within_range
 
 if TYPE_CHECKING:
     from lava.bot import Bot
@@ -32,7 +36,27 @@ class LavaPlayer(DefaultPlayer):
         self.__display_image_as_wide: Optional[bool] = None
         self.__last_image_url: str = ""
 
+        self._lyrics: Union[Lyrics[LyricLine], None] = None
+
         self.timeout_task: Optional[Task] = None
+
+    @property
+    def lyrics(self) -> Union[Lyrics[LyricLine], None]:
+        if self._lyrics == MISSING:
+            return MISSING
+
+        if self._lyrics is not None:
+            return self._lyrics
+
+        lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+
+        if not lrc:
+            self._lyrics = MISSING
+            return self._lyrics
+
+        self._lyrics = pylrc.parse(lrc)
+
+        return self._lyrics
 
     @property
     def guild(self) -> Optional[Guild]:
@@ -182,16 +206,46 @@ class LavaPlayer(DefaultPlayer):
                 )
             ]
 
+        embeds = [await self.__generate_display_embed()]
+
+        if self.is_playing:
+            embeds.append(await self.__generate_lyrics_embed())
+
         if interaction:
             await interaction.response.edit_message(
-                embed=await self.__generate_display_embed(), components=components
+                embeds=embeds,
+                components=components
             )
 
         else:
-            await self.message.edit(embed=(await self.__generate_display_embed()), components=components)
+            await self.message.edit(
+                embeds=embeds,
+                components=components
+            )
 
         self.bot.logger.debug(
             "Updating player in guild %s display message to %s", self.bot.get_guild(self.guild_id), self.message.id
+        )
+
+    async def __generate_lyrics_embed(self) -> Embed:
+        """
+        Generate the lyrics embed for the player.
+        """
+        # TODO: i18n for this
+        if self.lyrics is MISSING:
+            return Embed(title="🎤 | 歌詞", description="*你得自己唱出這首歌的歌詞*", color=Colour.red())
+
+        lyrics_in_range = find_lyrics_within_range(self.lyrics, (self.position / 1000), 5.0)
+
+        lyrics_text = '\n'.join(
+            [
+                lyric.text
+                for lyric in lyrics_in_range
+            ]
+        ) or "..."
+
+        return Embed(
+            title="🎤 | 歌詞", description=lyrics_text, color=Colour.blurple()
         )
 
     async def __generate_display_embed(self) -> Embed:
