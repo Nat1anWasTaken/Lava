@@ -3,11 +3,15 @@ from asyncio import Task
 from time import time
 from typing import TYPE_CHECKING, Optional, Union
 
+import pylrc
+import syncedlyrics
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
+from disnake.abc import MISSING
 from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
+from pylrc.classes import Lyrics, LyricLine
 
-from lava.utils import get_recommended_tracks, get_image_size
+from lava.utils import get_recommended_tracks, get_image_size, find_lyrics_within_range
 
 if TYPE_CHECKING:
     from lava.bot import Bot
@@ -24,6 +28,7 @@ class LavaPlayer(DefaultPlayer):
         self._guild: Optional[Guild] = None
 
         self.autoplay: bool = False
+        self.show_lyrics: bool = True
 
         self._last_update: int = 0
         self._last_position = 0
@@ -32,7 +37,27 @@ class LavaPlayer(DefaultPlayer):
         self.__display_image_as_wide: Optional[bool] = None
         self.__last_image_url: str = ""
 
+        self._lyrics: Union[Lyrics[LyricLine], None] = None
+
         self.timeout_task: Optional[Task] = None
+
+    @property
+    def lyrics(self) -> Union[Lyrics[LyricLine], None]:
+        if self._lyrics == MISSING:
+            return MISSING
+
+        if self._lyrics is not None:
+            return self._lyrics
+
+        lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+
+        if not lrc:
+            self._lyrics = MISSING
+            return self._lyrics
+
+        self._lyrics = pylrc.parse(lrc)
+
+        return self._lyrics
 
     @property
     def guild(self) -> Optional[Guild]:
@@ -71,6 +96,18 @@ class LavaPlayer(DefaultPlayer):
         for item in self.queue:  # Remove songs added by autoplay
             if item.requester == 0:
                 self.queue.remove(item)
+
+    def reset_lyrics(self):
+        """
+        Reset the lyrics cache.
+        """
+        self._lyrics = None
+
+    async def toggle_lyrics(self):
+        """
+        Toggle lyrics display for the player.
+        """
+        self.show_lyrics = not self.show_lyrics
 
     async def update_display(self,
                              new_message: Optional[Message] = None,
@@ -175,23 +212,57 @@ class LavaPlayer(DefaultPlayer):
                         custom_id="control.forward"
                     ),
                     Button(
-                        style=ButtonStyle.grey,
-                        emoji=self.bot.get_icon('empty', "⬛"),
-                        custom_id="control.empty"
+                        style=ButtonStyle.green if self.show_lyrics else ButtonStyle.grey,
+                        emoji=self.bot.get_icon('lyrics', "💬"),
+                        custom_id="control.lyrics"
                     )
                 )
             ]
 
+        embeds = [await self.__generate_display_embed()]
+
+        if self.is_playing and self.show_lyrics:
+            embeds.append(await self.__generate_lyrics_embed())
+
         if interaction:
             await interaction.response.edit_message(
-                embed=await self.__generate_display_embed(), components=components
+                embeds=embeds,
+                components=components
             )
 
         else:
-            await self.message.edit(embed=(await self.__generate_display_embed()), components=components)
+            await self.message.edit(
+                embeds=embeds,
+                components=components
+            )
 
         self.bot.logger.debug(
             "Updating player in guild %s display message to %s", self.bot.get_guild(self.guild_id), self.message.id
+        )
+
+    async def __generate_lyrics_embed(self) -> Embed:
+        """
+        Generate the lyrics embed for the player.
+        """
+        if self.lyrics is MISSING:
+            return Embed(
+                title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
+                description=self.bot.get_text('display.lyrics.not_found', self.locale, '*你得自己唱出這首歌的歌詞*'),
+                color=Colour.red()
+            )
+
+        lyrics_in_range = find_lyrics_within_range(self.lyrics, (self.position / 1000), 5.0)
+
+        lyrics_text = '\n'.join(
+            [
+                f"## {lyric.text}"
+                for lyric in lyrics_in_range
+            ]
+        ) or "## ..."
+
+        return Embed(
+            title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'), description=lyrics_text,
+            color=Colour.blurple()
         )
 
     async def __generate_display_embed(self) -> Embed:
@@ -379,4 +450,3 @@ class LavaPlayer(DefaultPlayer):
         self.position_timestamp = state.get('time', 0)
 
         _ = self.bot.loop.create_task(self.check_autoplay())
-        _ = self.bot.loop.create_task(self.update_display())

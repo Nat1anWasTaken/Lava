@@ -4,7 +4,7 @@ from disnake import InteractionResponded, ApplicationCommandInteraction, \
     MessageInteraction
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import TrackEndEvent, TrackLoadFailedEvent, QueueEndEvent
+from lavalink import TrackEndEvent, TrackLoadFailedEvent, QueueEndEvent, TrackStartEvent, PlayerUpdateEvent
 
 from lava.bot import Bot
 from lava.classes.player import LavaPlayer
@@ -24,9 +24,34 @@ class Events(Cog):
 
     @Cog.listener(name="on_ready")
     async def on_ready(self):
+        self.bot.lavalink.add_event_hook(self.on_player_update, event=PlayerUpdateEvent)
+        self.bot.lavalink.add_event_hook(self.on_track_start, event=TrackStartEvent)
         self.bot.lavalink.add_event_hook(self.on_track_end, event=TrackEndEvent)
         self.bot.lavalink.add_event_hook(self.on_queue_end, event=QueueEndEvent)
         self.bot.lavalink.add_event_hook(self.on_track_load_failed, event=TrackLoadFailedEvent)
+
+    async def on_player_update(self, event: PlayerUpdateEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received player update event for guild %s", player.guild)
+
+        try:
+            await player.update_display()
+        except ValueError:
+            pass
+
+    async def on_track_start(self, event: TrackStartEvent):
+        player: LavaPlayer = event.player
+
+        self.bot.logger.info("Received track start event for guild %s", player.guild)
+
+        player.reset_lyrics()
+        _ = player.lyrics  # Fetch the lyrics
+
+        try:
+            await player.update_display()
+        except ValueError:
+            pass
 
     async def on_track_end(self, event: TrackEndEvent):
         player: LavaPlayer = event.player
@@ -165,6 +190,9 @@ class Events(Cog):
 
                 case "control.autoplay":
                     await player.toggle_autoplay()
+
+                case "control.lyrics":
+                    await player.toggle_lyrics()
 
             await player.update_display(interaction=interaction)
 
