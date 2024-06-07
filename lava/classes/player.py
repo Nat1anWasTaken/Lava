@@ -238,7 +238,6 @@ class LavaPlayer(DefaultPlayer):
         """
         Generate the lyrics embed for the player.
         """
-        # TODO: i18n and toggle for this
         if self.lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
