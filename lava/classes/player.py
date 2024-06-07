@@ -231,7 +231,7 @@ class LavaPlayer(DefaultPlayer):
         """
         Generate the lyrics embed for the player.
         """
-        # TODO: i18n for this
+        # TODO: i18n and toggle for this
         if self.lyrics is MISSING:
             return Embed(title="🎤 | 歌詞", description="*你得自己唱出這首歌的歌詞*", color=Colour.red())
 
@@ -239,10 +239,10 @@ class LavaPlayer(DefaultPlayer):
 
         lyrics_text = '\n'.join(
             [
-                lyric.text
+                f"## {lyric.text}"
                 for lyric in lyrics_in_range
             ]
-        ) or "..."
+        ) or "## ..."
 
         return Embed(
             title="🎤 | 歌詞", description=lyrics_text, color=Colour.blurple()
