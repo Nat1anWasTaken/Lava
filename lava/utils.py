@@ -1,4 +1,3 @@
-import bisect
 import subprocess
 from bisect import bisect_left
 from io import BytesIO
@@ -11,7 +10,7 @@ import youtube_search
 from disnake import Interaction
 from disnake.utils import get
 from lavalink import AudioTrack
-from pylrc.classes import Lyrics, LyricLine
+from pylrc.classes import LyricLine
 
 from lava.classes.voice_client import LavalinkVoiceClient
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
@@ -157,18 +156,6 @@ async def get_image_size(url: str) -> Optional[Tuple[int, int]]:
         return img.shape[1], img.shape[0]
 
 
-def find_lyrics_within_range(lyrics: Lyrics[LyricLine], target_seconds: float, range_seconds: float) -> list[LyricLine]:
-    """
-    Find lyrics within a range of the target time.
-    :param lyrics: The lyrics to search from.
-    :param target_seconds: The target time in seconds.
-    :param range_seconds: The range in seconds.
-    :return: The lyrics within the range and the index of the closest lyric.
-    """
-    rimport
-    bisect
-
-
 def find_lyrics_within_range(lyrics: list[LyricLine], target_seconds: float, range_seconds: float) -> list[LyricLine]:
     """
     Find lyrics within a range of the target time.
@@ -182,6 +169,7 @@ def find_lyrics_within_range(lyrics: list[LyricLine], target_seconds: float, ran
     start_index = bisect_left([lyric.time for lyric in lyrics], target_seconds)
 
     result = []
+
     for i in range(start_index, len(lyrics)):
         if lyrics[i].time - target_seconds > range_seconds:
             break
