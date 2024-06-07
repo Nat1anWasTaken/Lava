@@ -241,7 +241,7 @@ class LavaPlayer(DefaultPlayer):
         # TODO: i18n and toggle for this
         if self.lyrics is MISSING:
             return Embed(
-                title=f"🎤 | {self.bot.get_text('display.lyrics.title', self.locale, '歌詞')}",
+                title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
                 description=self.bot.get_text('display.lyrics.not_found', self.locale, '*你得自己唱出這首歌的歌詞*'),
                 color=Colour.red()
             )
@@ -256,7 +256,7 @@ class LavaPlayer(DefaultPlayer):
         ) or "## ..."
 
         return Embed(
-            title=self.bot.get_text('display.lyrics.title', self.locale, '歌詞'), description=lyrics_text,
+            title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'), description=lyrics_text,
             color=Colour.blurple()
         )
 
