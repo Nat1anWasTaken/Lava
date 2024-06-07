@@ -122,5 +122,7 @@
     "display.shuffle": "🔀 Shuffle",
     "display.enable": "ON",
     "display.disable": "OFF",
-    "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help"
+    "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help",
+    "display.lyrics.title": "🎤 | 歌詞",
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
 }
