@@ -28,6 +28,7 @@ class LavaPlayer(DefaultPlayer):
         self._guild: Optional[Guild] = None
 
         self.autoplay: bool = False
+        self.show_lyrics: bool = True
 
         self._last_update: int = 0
         self._last_position = 0
@@ -95,6 +96,12 @@ class LavaPlayer(DefaultPlayer):
         for item in self.queue:  # Remove songs added by autoplay
             if item.requester == 0:
                 self.queue.remove(item)
+
+    async def toggle_lyrics(self):
+        """
+        Toggle lyrics display for the player.
+        """
+        self.show_lyrics = not self.show_lyrics
 
     async def update_display(self,
                              new_message: Optional[Message] = None,
@@ -199,16 +206,16 @@ class LavaPlayer(DefaultPlayer):
                         custom_id="control.forward"
                     ),
                     Button(
-                        style=ButtonStyle.grey,
-                        emoji=self.bot.get_icon('empty', "⬛"),
-                        custom_id="control.empty"
+                        style=ButtonStyle.green if self.show_lyrics else ButtonStyle.grey,
+                        emoji=self.bot.get_icon('lyrics', "💬"),
+                        custom_id="control.lyrics"
                     )
                 )
             ]
 
         embeds = [await self.__generate_display_embed()]
 
-        if self.is_playing:
+        if self.is_playing and self.show_lyrics:
             embeds.append(await self.__generate_lyrics_embed())
 
         if interaction:

@@ -190,6 +190,9 @@ class Events(Cog):
                 case "control.autoplay":
                     await player.toggle_autoplay()
 
+                case "control.lyrics":
+                    await player.toggle_lyrics()
+
             await player.update_display(interaction=interaction)
 
 
