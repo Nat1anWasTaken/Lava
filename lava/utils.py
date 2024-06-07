@@ -1,4 +1,6 @@
+import bisect
 import subprocess
+from bisect import bisect_left
 from io import BytesIO
 from typing import Iterable, Optional, TYPE_CHECKING, Tuple
 
@@ -163,10 +165,27 @@ def find_lyrics_within_range(lyrics: Lyrics[LyricLine], target_seconds: float, r
     :param range_seconds: The range in seconds.
     :return: The lyrics within the range and the index of the closest lyric.
     """
-    result = []
+    rimport
+    bisect
 
-    for lyric in lyrics:
-        if 0 <= lyric.time - target_seconds <= range_seconds:
-            result.append(lyric)
+
+def find_lyrics_within_range(lyrics: list[LyricLine], target_seconds: float, range_seconds: float) -> list[LyricLine]:
+    """
+    Find lyrics within a range of the target time.
+    :param lyrics: The lyrics to search from.
+    :param target_seconds: The target time in seconds.
+    :param range_seconds: The range in seconds.
+    :return: The lyrics within the range and the index of the closest lyric.
+    """
+    lyrics.sort(key=lambda x: x.time)
+
+    start_index = bisect_left([lyric.time for lyric in lyrics], target_seconds)
+
+    result = []
+    for i in range(start_index, len(lyrics)):
+        if lyrics[i].time - target_seconds > range_seconds:
+            break
+        if 0 <= lyrics[i].time - target_seconds <= range_seconds:
+            result.append(lyrics[i])
 
     return result
