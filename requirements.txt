@@ -13,4 +13,5 @@ pylrc==0.1.2
 colorlog
 youtube-related
 youtube-search
+git+https://github.com/Nat1anWasTaken/Lavalink.py.git
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
