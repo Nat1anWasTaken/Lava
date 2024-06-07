@@ -49,7 +49,10 @@ class LavaPlayer(DefaultPlayer):
         if self._lyrics is not None:
             return self._lyrics
 
-        lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+        try:
+            lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+        except Exception:
+            return MISSING
 
         if not lrc:
             self._lyrics = MISSING
