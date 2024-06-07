@@ -38,7 +38,9 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache \
+    git \
+    ca-certificates
 
 COPY --from=builder /install /usr/local
 
