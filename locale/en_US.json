@@ -8,11 +8,11 @@
     "command.info.embed.commit_hash": "版本資訊",
     "command.info.embed.cpu": "CPU",
     "command.info.embed.ram": "RAM",
-    "command.info.embed.guilds": "Server count",
-    "command.info.embed.players": "Player count",
+    "command.info.embed.guilds": "伺服器數量",
+    "command.info.embed.players": "播放器數量",
     "command.ping.name": "ping",
-    "command.ping.description": "Check bot latency",
-    "command.ping.title": "Pong!",
+    "command.ping.description": "查看機器人延遲",
+    "command.ping.title": "機器人延遲",
     "command.nowplaying.name": "nowplaying",
     "command.nowplaying.description": "Display current playing track",
     "command.play.name": "play",
@@ -123,6 +123,6 @@
     "display.enable": "ON",
     "display.disable": "OFF",
     "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help",
-    "display.lyrics.title": "🎤 | 歌詞",
-    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
+    "display.lyrics.title": "🎤 | Live Lyrics",
+    "display.lyrics.not_found": "*You must figure out the lyrics yourself.*"
 }
