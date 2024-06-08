@@ -1,4 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-cd /lava
-python main.py

@@ -64,6 +64,9 @@ class LavalinkVoiceClient(VoiceClient):
 
         await self.channel.guild.change_voice_state(channel=None)
 
-        player.channel_id = None
+        await player.stop()
+        await player.update_display()
+
+        await player.destroy()
 
         self.cleanup()

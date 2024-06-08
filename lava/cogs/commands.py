@@ -31,6 +31,15 @@ class Commands(Cog):
         self.bot = bot
 
     @commands.slash_command(
+        name=Localized("lofi", key="command.lofi.name"),
+        description=Localized("播放 Lofi Radio", key="command.lofi.description")
+    )
+    async def lofi(self, interaction: ApplicationCommandInteraction):
+        result = await self.bot.lavalink.get_tracks("ytsearch:lofi radio")
+
+        await self.play(interaction, query=result.tracks[0].uri)
+
+    @commands.slash_command(
         name=Localized("info", key="command.info.name"),
         description=Localized("顯示機器人資訊", key="command.info.description")
     )
@@ -447,6 +456,8 @@ class Commands(Cog):
         await player.stop()
         player.queue.clear()
 
+        await interaction.guild.voice_client.disconnect(force=False)
+
         await player.update_display(await interaction.original_response(), locale=interaction.locale)
 
     @commands.slash_command(
@@ -525,28 +536,6 @@ class Commands(Cog):
                 delay=5,
                 locale=interaction.locale
             )
-
-    @commands.slash_command(
-        name=Localized("disconnect", key="command.disconnect.name"),
-        description=Localized(
-            "斷開與語音頻道的連接", key="command.disconnect.description"
-        )
-    )
-    async def disconnect(self, interaction: ApplicationCommandInteraction):
-        await interaction.response.defer()
-
-        await ensure_voice(interaction, should_connect=False)
-
-        player: LavaPlayer = self.bot.lavalink.player_manager.get(
-            interaction.guild.id
-        )
-
-        await player.stop()
-        player.queue.clear()
-
-        await interaction.guild.voice_client.disconnect(force=False)
-
-        await player.update_display(await interaction.original_response(), locale=interaction.locale)
 
     @commands.slash_command(
         name=Localized("queue", key="command.queue.name"),
@@ -675,7 +664,7 @@ class Commands(Cog):
 
         choices = []
 
-        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+        result = await self.bot.lavalink.get_tracks(f"ytmsearch:{query}")
 
         for track in result.tracks:
             choices.append(
