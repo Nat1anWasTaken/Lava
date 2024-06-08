@@ -664,7 +664,7 @@ class Commands(Cog):
 
         choices = []
 
-        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+        result = await self.bot.lavalink.get_tracks(f"ytmsearch:{query}")
 
         for track in result.tracks:
             choices.append(
