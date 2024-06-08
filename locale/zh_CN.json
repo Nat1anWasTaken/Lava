@@ -1,4 +1,6 @@
 {
+    "command.lofi.name": "lofi",
+    "command.lofi.description": "播放 Lofi Radio",
     "command.info.name": "info",
     "command.info.description": "顯示機器人的資訊",
     "command.info.embed.title": "機器人資訊",
@@ -8,6 +10,9 @@
     "command.info.embed.ram": "RAM",
     "command.info.embed.guilds": "伺服器數量",
     "command.info.embed.players": "播放器數量",
+    "command.ping.name": "ping",
+    "command.ping.description": "查看機器人延遲",
+    "command.ping.title": "機器人延遲",
     "command.nowplaying.name": "nowplaying",
     "command.nowplaying.description": "显示目前正在播放的歌曲",
     "command.play.name": "play",
@@ -49,8 +54,6 @@
     "command.connect.error.already_in_channel.description": "机器人已经在一个频道中了，继续移动将会中断对方的音乐播放，是否要继续?",
     "command.connect.error.already_in_channel.continue": "继续",
     "command.connect.error.already_in_channel.cancel": "已取消",
-    "command.disconnect.name": "disconnect",
-    "command.disconnect.description": "断开与语音频道的连接",
     "command.queue.name": "queue",
     "command.queue.description": "显示播放序列",
     "command.queue.error.empty": "播放序列为空",
@@ -59,6 +62,9 @@
     "command.repeat.name": "repeat",
     "command.repeat.description": "更改重复播放模式",
     "command.repeat.option.mode": "重复播放模式",
+    "command.volume.name": "volume",
+    "command.volume.description": "調整歌曲音量",
+    "command.volume.success": "已設定音量為 ",
     "repeat_mode.off": "关闭",
     "repeat_mode.song": "单曲",
     "repeat_mode.queue": "整个序列",
@@ -99,6 +105,7 @@
     "error.bot_not_in_voice": "我没有连接到一个语音频道",
     "error.user_not_in_voice": "你没有连接到一个语音频道",
     "error.must_in_same_voice": "你必须与我在同一个语音频道",
+    "timeout.disconnect": "因為閒置超過 3 分鐘，已自動斷線",
     "display.status.playing": "播放中",
     "display.status.paused": "已暂停",
     "display.status.disconnected": "已断线",
@@ -115,5 +122,7 @@
     "display.shuffle": "🔀 随机播放",
     "display.enable": "开启",
     "display.disable": "关闭",
-    "display.footer": "如果你觉得音乐怪怪的，可以试着检查看看效果器设定或是切换语音频道地区"
+    "display.footer": "如果你觉得音乐怪怪的，可以试着检查看看效果器设定或是切换语音频道地区",
+    "display.lyrics.title": "🎤 | 歌詞",
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
 }
