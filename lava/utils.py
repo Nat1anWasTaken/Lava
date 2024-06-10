@@ -129,8 +129,8 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
         if skip_first:
             skip_first = False
             continue
-        
-        if result_track.identifier in [t.identifier for t in results]: # Don't add duplicate songs
+
+        if result_track.identifier in [t.identifier for t in results]:  # Don't add duplicate songs
             continue
 
         if len(results) >= max_results:
