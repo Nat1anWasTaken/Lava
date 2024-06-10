@@ -5,12 +5,11 @@ from typing import Iterable, Optional, TYPE_CHECKING, Tuple
 
 import aiohttp
 import imageio
-import youtube_related
-import youtube_search
 from disnake import Interaction
 from disnake.utils import get
-from lavalink import AudioTrack
+from lavalink import AudioTrack, LoadResult
 from pylrc.classes import LyricLine
+from youtubesearchpython import VideosSearch
 
 from lava.classes.voice_client import LavalinkVoiceClient
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
@@ -114,6 +113,12 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     :param track: The seed tracks to get recommended tracks from.
     :param max_results: The max amount of tracks to get.
     """
+    results_from_yt: LoadResult = None
+
+    if track.source_name != "youtube":
+        videosSearch = VideosSearch(f"{track.title} by {track.author}", limit=1)
+        track.identifier = videosSearch.result()['result'][0]['id']
+
     results_from_yt = await player.node.get_tracks(f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}")
 
     results: list[AudioTrack] = []

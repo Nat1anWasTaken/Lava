@@ -40,6 +40,7 @@ class LavaPlayer(DefaultPlayer):
         self._lyrics: Union[Lyrics[LyricLine], None] = None
 
         self.timeout_task: Optional[Task] = None
+        self.autoplay_task: Optional[Task] = None
 
     @property
     def lyrics(self) -> Union[Lyrics[LyricLine], None]:
@@ -72,16 +73,19 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay or len(self.queue) >= 5:
-            return False
-        self.bot.logger.info(
-            "Queue is empty, adding recommended track for guild %s...", self.guild
-        )
+        while True:
+            if not self.autoplay or len(self.queue) >= 5:
+                await asyncio.sleep(1)
+                continue
 
-        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+            self.bot.logger.info(
+                "Queue is empty, adding recommended track for guild %s...", self.guild
+            )
 
-        for recommendation in recommendations:
-            self.add(requester=0, track=recommendation)
+            recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+
+            for recommendation in recommendations:
+                self.add(requester=0, track=recommendation)
 
     async def toggle_autoplay(self):
         """
@@ -89,13 +93,11 @@ class LavaPlayer(DefaultPlayer):
         """
         if not self.autoplay:
             self.autoplay = True
-            self.bot.loop.create_task(self.check_autoplay())
+            self.autoplay_task = self.bot.loop.create_task(self.check_autoplay())
             return
 
         self.autoplay = False
-        for task in asyncio.all_tasks(self.bot.loop):
-            if task.get_name() == "check_autoplay":
-                task.cancel()
+        self.autoplay_task.cancel()
 
         for item in self.queue:  # Remove songs added by autoplay
             if item.requester == 0:
