@@ -1,4 +1,4 @@
-FROM python:3.10.4-alpine as builder
+FROM python:3.12.4-alpine as builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -21,7 +21,7 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install -r requirements.txt --prefix=/install
 
-FROM python:3.10.4-alpine as runtime
+FROM python:3.12.4-alpine as runtime
 
 ARG UID=10001
 RUN adduser \
@@ -38,7 +38,9 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache \
+    git \
+    ca-certificates
 
 COPY --from=builder /install /usr/local
 

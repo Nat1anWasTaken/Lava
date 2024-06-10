@@ -46,7 +46,7 @@ class SpotifyAudioTrack(DeferredAudioTrack):
         getLogger('lava.sources').info("Loading spotify track %s...", self.title)
 
         result: LoadResult = await client.get_tracks(
-            f'ytsearch:{self.title} {self.author}'
+            f'ytmsearch:{self.title} {self.author}'
         )
 
         if result.load_type != LoadType.SEARCH or not result.tracks:

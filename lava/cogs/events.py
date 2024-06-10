@@ -35,6 +35,8 @@ class Events(Cog):
 
         self.bot.logger.info("Received player update event for guild %s", player.guild)
 
+        _ = self.bot.loop.create_task(player.check_autoplay())
+
         try:
             await player.update_display()
         except ValueError:

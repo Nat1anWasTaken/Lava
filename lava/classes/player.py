@@ -1,6 +1,5 @@
 import asyncio
 from asyncio import Task
-from time import time
 from typing import TYPE_CHECKING, Optional, Union
 
 import pylrc
@@ -30,8 +29,8 @@ class LavaPlayer(DefaultPlayer):
         self.autoplay: bool = False
         self.show_lyrics: bool = True
 
-        self._last_update: int = 0
-        self._last_position = 0
+        self.last_update: int = 0
+        self.last_position = 0
         self.position_timestamp = 0
 
         self.__display_image_as_wide: Optional[bool] = None
@@ -50,7 +49,10 @@ class LavaPlayer(DefaultPlayer):
         if self._lyrics is not None:
             return self._lyrics
 
-        lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+        try:
+            lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+        except Exception:
+            return MISSING
 
         if not lrc:
             self._lyrics = MISSING
@@ -441,16 +443,3 @@ class LavaPlayer(DefaultPlayer):
         self.__display_image_as_wide = width > height
 
         return self.__display_image_as_wide
-
-    async def _update_state(self, state: dict):
-        """
-        Updates the position of the player.
-
-        Parameters
-        ----------
-        state: :class:`dict`
-            The state that is given to update.
-        """
-        self._last_update = int(time() * 1000)
-        self._last_position = state.get('position', 0)
-        self.position_timestamp = state.get('time', 0)

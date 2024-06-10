@@ -1,4 +1,6 @@
 import re
+from os import getpid
+
 from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
 from disnake.ext import commands
 from disnake.ext.commands import Cog
@@ -155,12 +157,12 @@ class Commands(Cog):
             interaction.guild.id
         )
 
-        results: LoadResult = await player.node.get_tracks(query)
+        results: LoadResult = await self.bot.lavalink.get_local_tracks(query)
 
         # Check locals
         if not results or not results.tracks:
-            self.bot.logger.info("No results found with lavalink for query %s, checking local sources", query)
-            results: LoadResult = await self.bot.lavalink.get_local_tracks(query)
+            self.bot.logger.info("No results found with local sources for query %s, checking on lavalink", query)
+            results: LoadResult = await player.node.get_tracks(query)
 
         if not results or not results.tracks:  # If nothing was found
             return await interaction.edit_original_response(
@@ -662,7 +664,7 @@ class Commands(Cog):
 
         choices = []
 
-        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
+        result = await self.bot.lavalink.get_tracks(f"ytmsearch:{query}")
 
         for track in result.tracks:
             choices.append(
