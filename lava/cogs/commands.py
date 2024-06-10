@@ -145,10 +145,17 @@ class Commands(Cog):
                 description=Localized("要將歌曲放置於當前播放序列的位置", key="command.play.option.index"),
                 type=OptionType.integer,
                 required=False
+            ),
+            Option(
+                name="shuffle",
+                description=Localized("是否開啟隨機播放模式", key="command.play.option.shuffle"),
+                type=OptionType.boolean,
+                required=False
             )
         ]
     )
-    async def play(self, interaction: ApplicationCommandInteraction, query: str, index: int = None):
+    async def play(self, interaction: ApplicationCommandInteraction, query: str,
+                   index: int = None, shuffle: bool = False):
         await interaction.response.defer()
 
         await ensure_voice(interaction, should_connect=True)
@@ -241,6 +248,8 @@ class Commands(Cog):
         # If the player isn't already playing, start it.
         if not player.is_playing:
             await player.play()
+
+        player.set_shuffle(shuffle=shuffle)
 
         await player.update_display(await interaction.original_response(), delay=5, locale=interaction.locale)
 
