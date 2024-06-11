@@ -1,4 +1,10 @@
 import re
+import base64
+import json
+import requests
+import urllib.parse
+
+from datetime import datetime, timezone
 from logging import getLogger
 from os import getenv
 from typing import Union, Tuple, Optional
@@ -34,6 +40,143 @@ class BaseSource:
         :return: The load result as LoadResult
         """
         raise NotImplementedError
+
+class AppleMusicAudioTrack(DeferredAudioTrack):
+    def __init__(self, data: dict, requester: int = 0, **extra):
+        super().__init__(data, requester, **extra)
+        
+        self.data = data
+    
+    async def load(self, client):  # skipcq: PYL-W0201
+        print(self.data)    
+
+class AppleMusicSourceManager(BaseSource):
+    def __init__(self):
+        super().__init__()
+        self.token = getenv("APPLE_MUSIC_TOKEN")
+        self.token_expire = None
+        self.origin = None
+        self.countryCode = "us"
+
+        self.API_BASE = "https://api.music.apple.com/v1/"
+        self.SEARCH_PREFIX = r'(https?://)?(www\.)?music\.apple\.com/((?P<countrycode>[a-zA-Z]{2})/)?(?P<type>album|playlist|artist|song)(/[a-zA-Z\w\-]+)?/(?P<identifier>[a-zA-Z\d\-.]+)(\?i=(?P<identifier2>\d+))?'
+
+    def check_query(self, query: str) -> bool:
+        if re.match(self.SEARCH_PREFIX, query):
+            return True
+
+        return False
+
+    def parse_token_data(self):
+        payload = self.token.split('.')[1]
+        decoded_payload = base64.urlsafe_b64decode(payload + '==').decode('utf-8')
+
+        json_data = json.loads(decoded_payload)
+        
+        print(json_data)
+
+        exp = json_data.get('exp', 0)
+        self.token_expire = datetime.fromtimestamp(exp, timezone.utc)
+
+        self.origin = json_data.get('root_https_origin', [None])[0]
+
+    def get_token(self):
+        if self.token_expire is None:
+            raise ValueError("Token expiration date has not been set. Call parse_token_data() first.")
+        if self.token_expire < datetime.now(timezone.utc):
+            raise Exception("Apple Music API token is expired")
+        return self.token
+
+    async def load_item(self, client: Client, query: str):
+        matcher = re.match(self.SEARCH_PREFIX, query)
+
+        if not matcher:
+            return None
+
+        countryCode = matcher.group("countrycode")
+        identifier = matcher.group("identifier")
+
+        self.parse_token_data()
+
+        match (matcher.group("type")):
+            case "song":
+                return self.getSong(identifier, countryCode)
+            case "album":
+                id2 = matcher.group("identifier2")
+                if id2 is None:
+                    return self.getAlbum()
+                return self.getSong(id2, countryCode)
+
+    def parseTrack(self, data: dict, artistArtwork: dict):
+        print(data)
+        attributes = data.get("attributes")
+        trackUrl = urllib.parse.unquote(attributes.get("url"))
+        artistUrl = attributes.get("artistUrl")
+        if artistUrl is not None and (not artistUrl) or artistUrl.startswith("https://music.apple.com/WebObjects/MZStore.woa/wa/viewCollaboration"):
+            artistUrl = None
+        return AppleMusicAudioTrack(
+            {
+                'identifier': data.get('id'),
+                'isSeekable': True,
+                'author': attributes.get("artistName"),
+                'length': attributes.get("durationInMillis"),
+                'isStream': False,
+                'title': attributes.get("Name"),
+                'uri': trackUrl,
+                'artworkUrl': artistArtwork.get(data.get('id')),
+            }
+        )
+
+    def getAlbum(self):
+        ...
+    
+    def getSong(self, identifier: str, countryCode: str) -> AppleMusicAudioTrack:
+        data = self.getJson(self.API_BASE + "catalog/" + countryCode + "/songs/" + identifier + "?extend=artistUrl")
+        print(data)
+        if data is None:
+            return None
+
+        artistId = self.parseArtistId(data)
+        artistArtwork = None
+        
+        if artistId is not None:
+            artistArtwork = self.getArtistCover(artistId)
+
+        return self.parseTrack(data.get("data")[0], artistArtwork)
+
+    def getJson(self, url: str) -> dict:
+        headers = {"Authorization": "Bearer " + self.get_token()}
+        if self.origin != None:
+            headers.update({"Origin": "https://" + self.origin})
+        r = requests.get(url, headers=headers)
+        return r.json()
+
+    def parseArtistId(self, data: dict) -> str:
+        url = data.get("data", [{}])[0].get("attributes", {}).get("artistUrl", "")
+
+        if not url:
+            return None
+
+        if url.startswith("https://music.apple.com/WebObjects/MZStore.woa/wa/viewCollaboration"):
+            return None
+
+        return url.rsplit('/', 1)[-1]
+
+    def parseArtworkUrl(self, data: dict):
+        text = data.get("url")
+        if text is None:
+            return None
+        return text.replace("{w}", str(data.get("width"))).replace("{h}", str(data.get("height")))
+    
+    def getArtistCover(self, id: str):
+        if not id:
+            return {}
+        data = self.getJson(self.API_BASE + "catalog/" + self.countryCode + "/artists?ids=" + id)
+        output = {}
+        artist = data["data"][0]
+        artwork = artist.get("attributes", {}).get("artwork", {})
+        output[artist.get("id")] = self.parseArtworkUrl(artwork)
+        return output
 
 
 class SpotifyAudioTrack(DeferredAudioTrack):
