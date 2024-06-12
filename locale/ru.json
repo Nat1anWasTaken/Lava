@@ -19,6 +19,7 @@
     "command.play.description": "播放音樂",
     "command.play.option.query": "歌曲名稱或網址，支援 YouTube, YouTube Music, SoundCloud, Spotify",
     "command.play.option.index": "要將歌曲放置於當前播放序列的位置",
+    "command.play.option.shuffle": "是否開啟隨機播放模式",
     "command.play.error.no_results.title": "沒有找到任何歌曲",
     "command.play.error.no_results.description": "如果你想要使用關鍵字搜尋，請在輸入關鍵字後等待幾秒，搜尋結果將會自動顯示在上方",
     "command.play.filter_warning.title": "提醒",
@@ -124,5 +125,16 @@
     "display.disable": "關閉",
     "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區",
     "display.lyrics.title": "🎤 | 歌詞",
-    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*",
+    "display.control.pause": "暫停",
+    "display.control.resume": "繼續",
+    "display.control.previous": "重新開始",
+    "display.control.next": "跳過",
+    "display.control.stop": "停止",
+    "display.control.rewind": "倒帶十秒",
+    "display.control.forward": "快進十秒",
+    "display.control.shuffle": "隨機播放",
+    "display.control.repeat": "重複播放",
+    "display.control.autoplay": "自動播放",
+    "display.control.lyrics": "歌詞顯示"
 }

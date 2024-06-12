@@ -19,6 +19,7 @@
     "command.play.description": "Play music",
     "command.play.option.query": "Song name or URL, supports YouTube, YouTube Music, SoundCloud, Spotify",
     "command.play.option.index": "The queue index where track should be inserted to",
+    "command.play.option.shuffle": "Whether to enable shuffle when playing",
     "command.play.error.no_results.title": "No results found.:(",
     "command.play.error.no_results.description": "If you want to search by keyword, please wait a few seconds after entering the keyword, and the search results will automatically display above",
     "command.play.filter_warning.title": "Warning",
@@ -124,5 +125,16 @@
     "display.disable": "OFF",
     "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help",
     "display.lyrics.title": "🎤 | Lyrics",
-    "display.lyrics.not_found": "*You need to sing the lyrics of this song yourself*"
+    "display.lyrics.not_found": "*You need to sing the lyrics of this song yourself*",
+    "display.control.pause": "Pause",
+    "display.control.resume": "Resume",
+    "display.control.previous": "Restart",
+    "display.control.next": "Skip",
+    "display.control.stop": "Stop",
+    "display.control.rewind": "Rewind 10s",
+    "display.control.forward": "Forward 10s",
+    "display.control.shuffle": "Shuffle",
+    "display.control.repeat": "Repeat",
+    "display.control.autoplay": "Autoplay",
+    "display.control.lyrics": "Show Lyrics"
 }
