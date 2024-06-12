@@ -125,5 +125,16 @@
     "display.disable": "關閉",
     "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區",
     "display.lyrics.title": "🎤 | 歌詞",
-    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*",
+    "display.control.pause": "暫停",
+    "display.control.resume": "繼續",
+    "display.control.previous": "重新開始",
+    "display.control.next": "跳過",
+    "display.control.stop": "停止",
+    "display.control.rewind": "倒帶十秒",
+    "display.control.forward": "快進十秒",
+    "display.control.shuffle": "隨機播放",
+    "display.control.repeat": "重複播放",
+    "display.control.autoplay": "自動播放",
+    "display.control.lyrics": "歌詞顯示"
 }
