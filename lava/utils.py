@@ -7,7 +7,7 @@ import aiohttp
 import imageio
 import youtube_related
 import youtube_search
-from disnake import Interaction
+from disnake import Interaction, SlashCommand, Locale, Embed
 from disnake.utils import get
 from lavalink import AudioTrack
 from pylrc.classes import LyricLine

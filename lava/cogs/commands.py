@@ -1,7 +1,7 @@
 import re
 from os import getpid
 
-from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed
+from disnake import Option, ApplicationCommandInteraction, OptionType, OptionChoice, ButtonStyle, Localized, Embed, SelectOption
 from disnake.ext import commands
 from disnake.ext.commands import Cog
 from disnake.ui import Button
@@ -11,6 +11,7 @@ from psutil import cpu_percent, virtual_memory, Process
 
 from lava.bot import Bot
 from lava.classes.player import LavaPlayer
+from lava.classes.help_dropdown import DropDownView
 from lava.embeds import ErrorEmbed, SuccessEmbed, InfoEmbed, WarningEmbed
 from lava.errors import UserInDifferentChannel
 from lava.utils import ensure_voice, split_list, bytes_to_gb, get_commit_hash, get_upstream_url, \
@@ -31,12 +32,26 @@ class Commands(Cog):
         self.bot = bot
 
     @commands.slash_command(
+        name=Localized("help", key="command.help.name"),
+        description=Localized("取得指令的使用方法幫助", key="command.help.description")
+    )
+    async def help(self, interaction: ApplicationCommandInteraction):
+        embed = Embed(
+            title=self.bot.get_text('display.help.title', interaction.locale, '指令列表'),
+            color=0x2b2d31
+        )
+
+        embed.description = "這是一個酷酷的指令列表"
+
+        await interaction.response.send_message(embed=embed, view=DropDownView(self.bot))
+            
+
+    @commands.slash_command(
         name=Localized("lofi", key="command.lofi.name"),
         description=Localized("播放 Lofi Radio", key="command.lofi.description")
     )
     async def lofi(self, interaction: ApplicationCommandInteraction):
         result = await self.bot.lavalink.get_tracks("ytsearch:lofi radio")
-
         await self.play(interaction, query=result.tracks[0].uri)
 
     @commands.slash_command(

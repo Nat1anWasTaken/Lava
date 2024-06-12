@@ -11,6 +11,7 @@ from lava.classes.player import LavaPlayer
 from lava.embeds import ErrorEmbed
 from lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
 from lava.utils import ensure_voice
+from lava.classes.help_dropdown import DropDownView
 
 
 class Events(Cog):
@@ -29,6 +30,8 @@ class Events(Cog):
         self.bot.lavalink.add_event_hook(self.on_track_end, event=TrackEndEvent)
         self.bot.lavalink.add_event_hook(self.on_queue_end, event=QueueEndEvent)
         self.bot.lavalink.add_event_hook(self.on_track_load_failed, event=TrackLoadFailedEvent)
+        self.bot.add_view(DropDownView(self.bot))
+        
 
     async def on_player_update(self, event: PlayerUpdateEvent):
         player: LavaPlayer = event.player
