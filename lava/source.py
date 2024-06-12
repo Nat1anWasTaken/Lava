@@ -42,13 +42,28 @@ class BaseSource:
         raise NotImplementedError
 
 class AppleMusicAudioTrack(DeferredAudioTrack):
-    def __init__(self, data: dict, requester: int = 0, **extra):
-        super().__init__(data, requester, **extra)
+    def __init__(self, track, requester: int = 0, **extra):
+        super().__init__(track, requester, **extra)
         
-        self.data = data
+        self.track = None
     
     async def load(self, client):  # skipcq: PYL-W0201
-        print(self.data)    
+        getLogger('lava.sources').info("Loading AppleMusic track %s...", self.title)
+
+        result: LoadResult = await client.get_tracks(
+            f'ytmsearch:{self.title} {self.author}'
+        )
+
+        if result.load_type != LoadType.SEARCH or not result.tracks:
+            raise LoadError
+
+        first_track = result.tracks[0]
+        base64 = first_track.track
+        self.track = base64
+
+        getLogger('lava.sources').info("Loaded AppleMusic track %s", self.title)
+
+        return base64    
 
 class AppleMusicSourceManager(BaseSource):
     def __init__(self):
@@ -72,8 +87,6 @@ class AppleMusicSourceManager(BaseSource):
         decoded_payload = base64.urlsafe_b64decode(payload + '==').decode('utf-8')
 
         json_data = json.loads(decoded_payload)
-        
-        print(json_data)
 
         exp = json_data.get('exp', 0)
         self.token_expire = datetime.fromtimestamp(exp, timezone.utc)
@@ -100,15 +113,16 @@ class AppleMusicSourceManager(BaseSource):
 
         match (matcher.group("type")):
             case "song":
-                return self.getSong(identifier, countryCode)
+                track = self.getSong(identifier, countryCode)
+                return LoadResult(LoadType.TRACK, [track], PlaylistInfo.none())
             case "album":
                 id2 = matcher.group("identifier2")
                 if id2 is None:
                     return self.getAlbum()
-                return self.getSong(id2, countryCode)
+                track = self.getSong(id2, countryCode)
+                return LoadResult(LoadType.TRACK, [track], PlaylistInfo.none())
 
-    def parseTrack(self, data: dict, artistArtwork: dict):
-        print(data)
+    def parseTrack(self, data: dict):
         attributes = data.get("attributes")
         trackUrl = urllib.parse.unquote(attributes.get("url"))
         artistUrl = attributes.get("artistUrl")
@@ -121,9 +135,9 @@ class AppleMusicSourceManager(BaseSource):
                 'author': attributes.get("artistName"),
                 'length': attributes.get("durationInMillis"),
                 'isStream': False,
-                'title': attributes.get("Name"),
+                'title': attributes.get("albumName"),
                 'uri': trackUrl,
-                'artworkUrl': artistArtwork.get(data.get('id')),
+                'artworkUrl': self.parseArtworkUrl(attributes.get("artwork")),
             }
         )
 
@@ -132,17 +146,10 @@ class AppleMusicSourceManager(BaseSource):
     
     def getSong(self, identifier: str, countryCode: str) -> AppleMusicAudioTrack:
         data = self.getJson(self.API_BASE + "catalog/" + countryCode + "/songs/" + identifier + "?extend=artistUrl")
-        print(data)
         if data is None:
             return None
 
-        artistId = self.parseArtistId(data)
-        artistArtwork = None
-        
-        if artistId is not None:
-            artistArtwork = self.getArtistCover(artistId)
-
-        return self.parseTrack(data.get("data")[0], artistArtwork)
+        return self.parseTrack(data.get("data")[0])
 
     def getJson(self, url: str) -> dict:
         headers = {"Authorization": "Bearer " + self.get_token()}
@@ -162,22 +169,11 @@ class AppleMusicSourceManager(BaseSource):
 
         return url.rsplit('/', 1)[-1]
 
-    def parseArtworkUrl(self, data: dict):
+    def parseArtworkUrl(self, data: dict) -> str:
         text = data.get("url")
         if text is None:
             return None
         return text.replace("{w}", str(data.get("width"))).replace("{h}", str(data.get("height")))
-    
-    def getArtistCover(self, id: str):
-        if not id:
-            return {}
-        data = self.getJson(self.API_BASE + "catalog/" + self.countryCode + "/artists?ids=" + id)
-        output = {}
-        artist = data["data"][0]
-        artwork = artist.get("attributes", {}).get("artwork", {})
-        output[artist.get("id")] = self.parseArtworkUrl(artwork)
-        return output
-
 
 class SpotifyAudioTrack(DeferredAudioTrack):
     def __init__(self, track, requester, **extra):
