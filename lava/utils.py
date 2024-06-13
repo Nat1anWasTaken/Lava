@@ -116,8 +116,8 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     results_from_yt: LoadResult = None
 
     if track.source_name != "youtube":
-        videosSearch = VideosSearch(f"{track.title} by {track.author}", limit=1)
-        track.identifier = videosSearch.result()['result'][0]['id']
+        videos_Search = VideosSearch(f"{track.title} by {track.author}", limit=1)
+        track.identifier = videos_Search.result()['result'][0]['id']
 
     results_from_yt = await player.node.get_tracks(f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}")
 
