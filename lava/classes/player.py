@@ -27,6 +27,7 @@ class LavaPlayer(DefaultPlayer):
         self._guild: Optional[Guild] = None
 
         self.autoplay: bool = False
+        self.add_song: bool = False  # This variable is to ensure that the call function is not repeated
         self.show_lyrics: bool = True
 
         self.last_update: int = 0
@@ -37,9 +38,6 @@ class LavaPlayer(DefaultPlayer):
         self.__last_image_url: str = ""
 
         self._lyrics: Union[Lyrics[LyricLine], None] = None
-
-        self.timeout_task: Optional[Task] = None
-        self.autoplay_task: Optional[Task] = None
 
     @property
     def lyrics(self) -> Union[Lyrics[LyricLine], None]:
@@ -75,19 +73,21 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        while True:
-            if not self.autoplay or len(self.queue) >= 5:
-                await asyncio.sleep(1)
-                continue
+        if not self.autoplay or self.add_song or len(self.queue) >= 5:
+            return
 
-            self.bot.logger.info(
-                "Queue is empty, adding recommended track for guild %s...", self.guild
-            )
+        self.add_song = True
 
-            recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+        self.bot.logger.info(
+            "Queue is empty, adding recommended track for guild %s...", self.guild
+        )
 
-            for recommendation in recommendations:
-                self.add(requester=0, track=recommendation)
+        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+
+        for recommendation in recommendations:
+            self.add(requester=0, track=recommendation)
+
+        self.add_song = False
 
     async def toggle_autoplay(self):
         """
@@ -95,11 +95,9 @@ class LavaPlayer(DefaultPlayer):
         """
         if not self.autoplay:
             self.autoplay = True
-            self.autoplay_task = self.bot.loop.create_task(self.check_autoplay())
             return
 
         self.autoplay = False
-        self.autoplay_task.cancel()
 
         for item in self.queue:  # Remove songs added by autoplay
             if item.requester == 0:
