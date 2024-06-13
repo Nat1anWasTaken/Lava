@@ -26,7 +26,7 @@ class LavaPlayer(DefaultPlayer):
         self._guild: Optional[Guild] = None
 
         self.autoplay: bool = False
-        self.add_song: bool = False  # This variable is to ensure that the call function is not repeated
+        self.is_adding_song: bool = False
         self.show_lyrics: bool = True
 
         self.last_update: int = 0
@@ -72,7 +72,7 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay or self.add_song or len(self.queue) >= 5:
+        if not self.autoplay or self.is_adding_song or len(self.queue) >= 5:
             return
 
         self.add_song = True
