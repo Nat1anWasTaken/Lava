@@ -1,5 +1,4 @@
 import asyncio
-from asyncio import Task
 from typing import TYPE_CHECKING, Optional, Union
 
 import pylrc
@@ -247,9 +246,7 @@ class LavaPlayer(DefaultPlayer):
         )
 
     async def __generate_lyrics_embed(self) -> Embed:
-        """
-        Generate the lyrics embed for the player.
-        """
+        """Generate the lyrics embed for the player."""
         if self.lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
@@ -422,9 +419,7 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
 
     async def is_current_artwork_wide(self) -> bool:
-        """
-        Check if the current playing track's artwork is wide.
-        """
+        """Check if the current playing track's artwork is wide."""
         if not self.current:
             return False
 
