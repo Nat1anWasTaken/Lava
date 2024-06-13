@@ -75,7 +75,7 @@ class LavaPlayer(DefaultPlayer):
         if not self.autoplay or self.is_adding_song or len(self.queue) >= 5:
             return
 
-        self.add_song = True
+        self.is_adding_song = True
 
         self.bot.logger.info(
             "Queue is empty, adding recommended track for guild %s...", self.guild
@@ -86,7 +86,7 @@ class LavaPlayer(DefaultPlayer):
         for recommendation in recommendations:
             self.add(requester=0, track=recommendation)
 
-        self.add_song = False
+        self.is_adding_song = False
 
     async def toggle_autoplay(self):
         """
