@@ -184,60 +184,75 @@ class LavaPlayer(DefaultPlayer):
             components = [
                 ActionRow(
                     Button(
-                        style=ButtonStyle.green if self.shuffle else ButtonStyle.grey,
-                        emoji=self.bot.get_icon('control.shuffle', "🔀"),
-                        custom_id="control.shuffle"
+                        style=ButtonStyle.green,
+                        emoji=self.bot.get_icon('control.pause', "⏸️"),
+                        custom_id="control.pause",
+                        label=self.bot.get_text("display.control.pause", self.locale, "暫停")
+                    ) if not self.paused else Button(
+                        style=ButtonStyle.red,
+                        emoji=self.bot.get_icon('control.resume', "▶️"),
+                        custom_id="control.resume",
+                        label=self.bot.get_text("display.control.resume", self.locale, "繼續")
                     ),
                     Button(
                         style=ButtonStyle.blurple,
                         emoji=self.bot.get_icon('control.previous', "⏮️"),
-                        custom_id="control.previous"
-                    ),
-                    Button(
-                        style=ButtonStyle.green,
-                        emoji=self.bot.get_icon('control.pause', "⏸️"),
-                        custom_id="control.pause"
-                    ) if not self.paused else Button(
-                        style=ButtonStyle.red,
-                        emoji=self.bot.get_icon('control.resume', "▶️"),
-                        custom_id="control.resume"
+                        custom_id="control.previous",
+                        label=self.bot.get_text("display.control.previous", self.locale, "重新開始")
                     ),
                     Button(
                         style=ButtonStyle.blurple,
                         emoji=self.bot.get_icon('control.next', "⏭️"),
-                        custom_id="control.next"
+                        custom_id="control.next",
+                        label=self.bot.get_text("display.control.next", self.locale, "跳過")
+                    )
+                ),
+                ActionRow(
+                    Button(
+                        style=ButtonStyle.red,
+                        emoji=self.bot.get_icon('control.stop', "⏹️"),
+                        custom_id="control.stop",
+                        label=self.bot.get_text("display.control.stop", self.locale, "停止")
+                    ),
+                    Button(
+                        style=ButtonStyle.blurple,
+                        emoji=self.bot.get_icon('control.rewind', "⏪"),
+                        custom_id="control.rewind",
+                        label=self.bot.get_text("display.control.rewind", self.locale, "倒帶十秒")
+                    ),
+                    Button(
+                        style=ButtonStyle.blurple,
+                        emoji=self.bot.get_icon('control.forward', "⏩"),
+                        custom_id="control.forward",
+                        label=self.bot.get_text("display.control.forward", self.locale, "快進十秒")
+                    )
+                ),
+                ActionRow(
+                    Button(
+                        style=ButtonStyle.green if self.shuffle else ButtonStyle.grey,
+                        emoji=self.bot.get_icon('control.shuffle', "🔀"),
+                        custom_id="control.shuffle",
+                        label=self.bot.get_text("display.control.shuffle", self.locale, "隨機播放")
                     ),
                     Button(
                         style=[ButtonStyle.grey, ButtonStyle.green, ButtonStyle.blurple][self.loop],
                         emoji=self.bot.get_icon('control.repeat', "🔁"),
-                        custom_id="control.repeat"
+                        custom_id="control.repeat",
+                        label=self.bot.get_text("display.control.repeat", self.locale, "重複播放")
                     )
                 ),
                 ActionRow(
                     Button(
                         style=ButtonStyle.green if self.autoplay else ButtonStyle.grey,
-                        emoji=self.bot.get_icon('control.autoplay', "🔥"),
-                        custom_id="control.autoplay"
-                    ),
-                    Button(
-                        style=ButtonStyle.blurple,
-                        emoji=self.bot.get_icon('control.rewind', "⏪"),
-                        custom_id="control.rewind"
-                    ),
-                    Button(
-                        style=ButtonStyle.red,
-                        emoji=self.bot.get_icon('control.stop', "⏹️"),
-                        custom_id="control.stop"
-                    ),
-                    Button(
-                        style=ButtonStyle.blurple,
-                        emoji=self.bot.get_icon('control.forward', "⏩"),
-                        custom_id="control.forward"
+                        emoji=self.bot.get_icon('control.autoplay', "🎶"),
+                        custom_id="control.autoplay",
+                        label=self.bot.get_text("display.control.autoplay", self.locale, "自動播放")
                     ),
                     Button(
                         style=ButtonStyle.green if self.show_lyrics else ButtonStyle.grey,
-                        emoji=self.bot.get_icon('lyrics', "💬"),
-                        custom_id="control.lyrics"
+                        emoji=self.bot.get_icon('control.lyrics', "🎤"),
+                        custom_id="control.lyrics",
+                        label=self.bot.get_text("display.control.lyrics", self.locale, "歌詞顯示")
                     )
                 )
             ]
