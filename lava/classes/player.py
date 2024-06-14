@@ -9,6 +9,7 @@ from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
 from pylrc.classes import Lyrics, LyricLine
 
+from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size, find_lyrics_within_range
 
 if TYPE_CHECKING:
@@ -72,8 +73,8 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay or self.is_adding_song or len(self.queue) >= 5:
-            return
+        if not self.autoplay or self.is_adding_song or len(self.queue) >= 30:
+            return False
 
         self.is_adding_song = True
 
@@ -81,7 +82,24 @@ class LavaPlayer(DefaultPlayer):
             "Queue is empty, adding recommended track for guild %s...", self.guild
         )
 
-        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+        recommendations = await get_recommended_tracks(self, self.current, 30 - len(self.queue))
+
+        if not recommendations:
+            self.is_adding_song = False
+            self.autoplay = False
+
+            if self.message:
+                message = await self.message.channel.send(
+                    embed=ErrorEmbed(
+                        self.bot.get_text(
+                            'error.autoplay_failed', self.locale, '我找不到任何推薦的歌曲，所以我停止了自動播放'
+                        ),
+                    )
+                )
+
+                await self.update_display(message, delay=5)
+
+            return False
 
         for recommendation in recommendations:
             self.add(requester=0, track=recommendation)
