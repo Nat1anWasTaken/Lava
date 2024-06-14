@@ -31,6 +31,7 @@
     "command.skip.option.move": "Whether to remove ALL queues before target, if target isn't provided, this parameter will be ignored",
     "error.nothing_playing": "Nothing is playing *sadface*",
     "error.invalid_track_number": "Invalid track number",
+    "error.autoplay_failed": "我找不到任何推薦的歌曲，所以我停止了自動播放",
     "command.skip.success": "Skipped current song",
     "command.remove.name": "remove",
     "command.remove.description": "Remove a song from queue",
