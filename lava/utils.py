@@ -5,8 +5,6 @@ from typing import Iterable, Optional, TYPE_CHECKING, Tuple
 
 import aiohttp
 import imageio
-import youtube_related
-import youtube_search
 from disnake import Interaction
 from disnake.utils import get
 from lavalink import AudioTrack
@@ -114,27 +112,34 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     :param track: The seed tracks to get recommended tracks from.
     :param max_results: The max amount of tracks to get.
     """
-    try:
-        results_from_youtube = await youtube_related.async_fetch(track.uri)
-    except ValueError:  # The track is not a YouTube track
-        search_results = youtube_search.YoutubeSearch(f"{track.title} by {track.author}", 1).to_dict()
+    track = await player.bot.lavalink.decode_track(track.track)  # Gets the original track. Usually from YouTube.
 
-        results_from_youtube = await youtube_related.async_fetch(
-            f"https://youtube.com/watch?v={search_results[0]['id']}"
-        )
+    if track.source_name != "youtube":
+        return []
+
+    results_from_yt = await player.node.get_tracks(
+        f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}"
+    )
 
     results: list[AudioTrack] = []
 
-    for result in results_from_youtube:
-        if result['id'] in [song.identifier for song in player.queue]:  # Don't add duplicate songs
+    skip_first = True
+
+    for result_track in results_from_yt.tracks:
+        if skip_first:
+            skip_first = False
+            continue
+
+        if result_track.identifier in [t.identifier for t in results]:  # Don't add duplicate songs
             continue
 
         if len(results) >= max_results:
             break
 
-        track = (await player.node.get_tracks(f"https://youtube.com/watch?v={result['id']}")).tracks[0]
+        if result_track.identifier in [t.identifier for t in player.queue]:
+            continue
 
-        results.append(track)
+        results.append(result_track)
 
     return results
 

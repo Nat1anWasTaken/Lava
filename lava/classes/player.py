@@ -1,5 +1,4 @@
 import asyncio
-from asyncio import Task
 from typing import TYPE_CHECKING, Optional, Union
 
 import pylrc
@@ -10,6 +9,7 @@ from disnake.ui import ActionRow, Button
 from lavalink import DefaultPlayer, Node, parse_time
 from pylrc.classes import Lyrics, LyricLine
 
+from lava.embeds import ErrorEmbed
 from lava.utils import get_recommended_tracks, get_image_size, find_lyrics_within_range
 
 if TYPE_CHECKING:
@@ -27,6 +27,7 @@ class LavaPlayer(DefaultPlayer):
         self._guild: Optional[Guild] = None
 
         self.autoplay: bool = False
+        self.is_adding_song: bool = False
         self.show_lyrics: bool = True
 
         self.last_update: int = 0
@@ -37,8 +38,6 @@ class LavaPlayer(DefaultPlayer):
         self.__last_image_url: str = ""
 
         self._lyrics: Union[Lyrics[LyricLine], None] = None
-
-        self.timeout_task: Optional[Task] = None
 
     @property
     def lyrics(self) -> Union[Lyrics[LyricLine], None]:
@@ -74,16 +73,38 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay or len(self.queue) >= 5:
+        if not self.autoplay or self.is_adding_song or len(self.queue) >= 30:
             return False
+
+        self.is_adding_song = True
+
         self.bot.logger.info(
             "Queue is empty, adding recommended track for guild %s...", self.guild
         )
 
-        recommendations = await get_recommended_tracks(self, self.current, 5 - len(self.queue))
+        recommendations = await get_recommended_tracks(self, self.current, 30 - len(self.queue))
+
+        if not recommendations:
+            self.is_adding_song = False
+            self.autoplay = False
+
+            if self.message:
+                message = await self.message.channel.send(
+                    embed=ErrorEmbed(
+                        self.bot.get_text(
+                            'error.autoplay_failed', self.locale, '我找不到任何推薦的歌曲，所以我停止了自動播放'
+                        ),
+                    )
+                )
+
+                await self.update_display(message, delay=5)
+
+            return False
 
         for recommendation in recommendations:
             self.add(requester=0, track=recommendation)
+
+        self.is_adding_song = False
 
     async def toggle_autoplay(self):
         """
@@ -258,9 +279,7 @@ class LavaPlayer(DefaultPlayer):
         )
 
     async def __generate_lyrics_embed(self) -> Embed:
-        """
-        Generate the lyrics embed for the player.
-        """
+        """Generate the lyrics embed for the player."""
         if self.lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
@@ -433,9 +452,7 @@ class LavaPlayer(DefaultPlayer):
                f"{self.bot.get_icon('progress.end', 'ED|') if percentage != 1 else self.bot.get_icon('progress.end_point', 'EP')}"
 
     async def is_current_artwork_wide(self) -> bool:
-        """
-        Check if the current playing track's artwork is wide.
-        """
+        """Check if the current playing track's artwork is wide."""
         if not self.current:
             return False
 
