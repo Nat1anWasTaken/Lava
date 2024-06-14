@@ -61,8 +61,10 @@ class Events(Cog):
         self.bot.logger.info("Received track end event for guild %s", player.guild)
 
         try:
-            await player.update_display()
+            await player.update_display(new_message=await player.message.channel.send("..."))
         except ValueError:
+            pass
+        except AttributeError:
             pass
 
     async def on_queue_end(self, event: QueueEndEvent):
