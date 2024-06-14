@@ -7,9 +7,8 @@ import aiohttp
 import imageio
 from disnake import Interaction
 from disnake.utils import get
-from lavalink import AudioTrack, LoadResult
+from lavalink import AudioTrack
 from pylrc.classes import LyricLine
-from youtubesearchpython import VideosSearch
 
 from lava.classes.voice_client import LavalinkVoiceClient
 from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
@@ -113,13 +112,14 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     :param track: The seed tracks to get recommended tracks from.
     :param max_results: The max amount of tracks to get.
     """
-    results_from_yt: LoadResult = None
+    track = await player.bot.lavalink.decode_track(track.track)  # Gets the original track. Usually from YouTube.
 
     if track.source_name != "youtube":
-        videos_Search = VideosSearch(f"{track.title} by {track.author}", limit=1)
-        track.identifier = videos_Search.result()['result'][0]['id']
+        return []
 
-    results_from_yt = await player.node.get_tracks(f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}")
+    results_from_yt = await player.node.get_tracks(
+        f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}"
+    )
 
     results: list[AudioTrack] = []
 
@@ -135,6 +135,9 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
 
         if len(results) >= max_results:
             break
+
+        if result_track.identifier in [t.identifier for t in player.queue]:
+            continue
 
         results.append(result_track)
 
