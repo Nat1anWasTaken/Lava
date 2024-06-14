@@ -31,6 +31,7 @@
     "command.skip.option.move": "是否移除目标以前的所有歌曲，如果没有提供 target，这个参数会被忽略",
     "error.nothing_playing": "没有正在播放的音乐",
     "error.invalid_track_number": "无效的歌曲编号",
+    "error.autoplay_failed": "我找不到任何推薦的歌曲，所以我停止了自動播放",
     "command.skip.success": "已跳过歌曲",
     "command.remove.name": "remove",
     "command.remove.description": "移除歌曲",
