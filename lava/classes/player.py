@@ -264,14 +264,14 @@ class LavaPlayer(DefaultPlayer):
 
         if interaction:
             await interaction.response.edit_message(
-                content=None,
+                content="",
                 embeds=embeds,
                 components=components
             )
 
         else:
             await self.message.edit(
-                content=None,
+                content="",
                 embeds=embeds,
                 components=components
             )
