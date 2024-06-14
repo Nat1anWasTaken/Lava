@@ -124,5 +124,6 @@
     "display.disable": "關閉",
     "display.footer": "如果你覺得音樂怪怪的，可以試著檢查看看效果器設定或是切換語音頻道地區",
     "display.lyrics.title": "🎤 | 歌詞",
-    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*"
+    "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*",
+    "error.autoplay_failed": "我找不到任何推薦的歌曲，所以我停止了自動播放"
 }
