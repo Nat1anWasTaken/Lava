@@ -5,7 +5,7 @@ beautifulsoup4==4.12.3
 psutil==5.9.8
 disnake==2.9.2
 python-dotenv==1.0.1
-yt-dlp==2024.7.7
+yt-dlp==2024.7.9
 aiohttp==3.9.5
 imageio==2.34.1
 syncedlyrics==1.0.0
