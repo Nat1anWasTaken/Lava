@@ -40,7 +40,16 @@ class LavaPlayer(DefaultPlayer):
         self._lyrics: Union[Lyrics[LyricLine], None] = None
 
     @property
-    def lyrics(self) -> Union[Lyrics[LyricLine], None]:
+    def guild(self) -> Optional[Guild]:
+        if not self._guild:
+            self._guild = self.bot.get_guild(self.guild_id)
+
+        return self._guild
+
+    async def fetch_and_update_lyrics(self) -> Union[Lyrics[LyricLine], None]:
+        """
+        Fetch and update the lyrics to the cache for the current playing track.
+        """
         if self._lyrics == MISSING:
             return MISSING
 
@@ -59,13 +68,6 @@ class LavaPlayer(DefaultPlayer):
         self._lyrics = pylrc.parse(lrc)
 
         return self._lyrics
-
-    @property
-    def guild(self) -> Optional[Guild]:
-        if not self._guild:
-            self._guild = self.bot.get_guild(self.guild_id)
-
-        return self._guild
 
     async def check_autoplay(self) -> bool:
         """
@@ -260,6 +262,9 @@ class LavaPlayer(DefaultPlayer):
         embeds = [await self.__generate_display_embed()]
 
         if self.is_playing and self.show_lyrics:
+            if self._lyrics is None:
+                _ = self.bot.loop.create_task(self.fetch_and_update_lyrics())
+
             embeds.append(await self.__generate_lyrics_embed())
 
         if interaction:
@@ -281,15 +286,25 @@ class LavaPlayer(DefaultPlayer):
         )
 
     async def __generate_lyrics_embed(self) -> Embed:
-        """Generate the lyrics embed for the player."""
-        if self.lyrics is MISSING:
+        """
+        Generate the lyrics embed for the player based on the cached lyrics.
+        Use fetch_and_update_lyrics to update.
+        """
+        if self._lyrics is None:
+            return Embed(
+                title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
+                description=self.bot.get_text('displa .lyrics.loading', self.locale, '正在載入歌詞...'),
+                color=Colour.blurple()
+            )
+
+        if self.fetch_and_update_lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
                 description=self.bot.get_text('display.lyrics.not_found', self.locale, '*你得自己唱出這首歌的歌詞*'),
                 color=Colour.red()
             )
 
-        lyrics_in_range = find_lyrics_within_range(self.lyrics, (self.position / 1000), 5.0)
+        lyrics_in_range = find_lyrics_within_range(self._lyrics, (self.position / 1000), 5.0)
 
         lyrics_text = '\n'.join(
             [
