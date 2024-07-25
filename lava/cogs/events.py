@@ -48,7 +48,6 @@ class Events(Cog):
         self.bot.logger.info("Received track start event for guild %s", player.guild)
 
         player.reset_lyrics()
-        _ = player.lyrics  # Fetch the lyrics
 
         try:
             await player.update_display()

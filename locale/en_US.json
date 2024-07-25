@@ -127,6 +127,7 @@
     "display.footer": "If you felt the quality of the music is kinda awful, maybe checking filters or switching region in voice channel setting will help",
     "display.lyrics.title": "🎤 | Lyrics",
     "display.lyrics.not_found": "*You need to sing the lyrics of this song yourself*",
+    "display.lyrics.loading": "Loading lyrics...",
     "display.control.pause": "Pause",
     "display.control.resume": "Resume",
     "display.control.previous": "Restart",
