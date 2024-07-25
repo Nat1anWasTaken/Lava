@@ -127,6 +127,7 @@
     "display.footer": "如果你觉得音乐怪怪的，可以试着检查看看效果器设定或是切换语音频道地区",
     "display.lyrics.title": "🎤 | 歌詞",
     "display.lyrics.not_found": "*你得自己唱出這首歌的歌詞*",
+    "display.lyrics.loading": "正在載入歌詞...",
     "display.control.pause": "暫停",
     "display.control.resume": "繼續",
     "display.control.previous": "重新開始",
