@@ -283,11 +283,14 @@ class LavaPlayer(DefaultPlayer):
         )
 
     async def __generate_lyrics_embed(self) -> Embed:
-        """Generate the lyrics embed for the player based on the cached lyrics, use fetch_and_update_lyrics to update."""
+        """
+        Generate the lyrics embed for the player based on the cached lyrics.
+        Use fetch_and_update_lyrics to update.
+        """
         if self._lyrics is None:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
-                description=self.bot.get_text('display.lyrics.loading', self.locale, '正在載入歌詞...'),
+                description=self.bot.get_text('displa .lyrics.loading', self.locale, '正在載入歌詞...'),
                 color=Colour.blurple()
             )
 
