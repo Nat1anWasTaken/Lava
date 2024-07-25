@@ -39,7 +39,17 @@ class LavaPlayer(DefaultPlayer):
 
         self._lyrics: Union[Lyrics[LyricLine], None] = None
 
+    @property
+    def guild(self) -> Optional[Guild]:
+        if not self._guild:
+            self._guild = self.bot.get_guild(self.guild_id)
+
+        return self._guild
+
     async def fetch_and_update_lyrics(self) -> Union[Lyrics[LyricLine], None]:
+        """
+        Fetch and update the lyrics to the cache for the current playing track.
+        """
         if self._lyrics == MISSING:
             return MISSING
 
@@ -58,13 +68,6 @@ class LavaPlayer(DefaultPlayer):
         self._lyrics = pylrc.parse(lrc)
 
         return self._lyrics
-
-    @property
-    def guild(self) -> Optional[Guild]:
-        if not self._guild:
-            self._guild = self.bot.get_guild(self.guild_id)
-
-        return self._guild
 
     async def check_autoplay(self) -> bool:
         """
