@@ -297,7 +297,7 @@ class LavaPlayer(DefaultPlayer):
                 color=Colour.blurple()
             )
 
-        if self.fetch_and_update_lyrics is MISSING:
+        if self._lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
                 description=self.bot.get_text('display.lyrics.not_found', self.locale, '*你得自己唱出這首歌的歌詞*'),
