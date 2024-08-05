@@ -293,7 +293,7 @@ class LavaPlayer(DefaultPlayer):
         if self._lyrics is None:
             return Embed(
                 title=self.bot.get_text('display.lyrics.title', self.locale, '🎤 | 歌詞'),
-                description=self.bot.get_text('displa .lyrics.loading', self.locale, '正在載入歌詞...'),
+                description=self.bot.get_text('display.lyrics.loading', self.locale, '正在載入歌詞...'),
                 color=Colour.blurple()
             )
 
