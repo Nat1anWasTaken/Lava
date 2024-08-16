@@ -1,74 +1,79 @@
-server: # REST and WS server
-  port: 2333
-  address: 0.0.0.0
 lavalink:
-  server:
-    password: "youshallnotpass"
-    sources:
-      youtube: false
-      bandcamp: true
-      soundcloud: true
-      twitch: true
-      vimeo: true
-      http: true
-      local: false
-    filters:
-      volume: true
-      equalizer: true
-      karaoke: true
-      timescale: true
-      tremolo: true
-      vibrato: true
-      distortion: true
-      rotation: true
-      channelMix: true
-      lowPass: true
-    bufferDurationMs: 400
-    frameBufferDurationMs: 5000
-    opusEncodingQuality: 10
-    resamplingQuality: HIGH
-    trackStuckThresholdMs: 10000
-    useSeekGhosting: true
-    youtubePlaylistLoadLimit: 6
-    playerUpdateInterval: 5
-    youtubeSearchEnabled: true
-    soundcloudSearchEnabled: true
-    gc-warnings: true
-  plugins:
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.5.2"
-      snapshot: false
-
-plugins:
-  youtube:
-    enabled: true
-    allowSearch: true
-    allowDirectVideoIds: true
-    allowDirectPlaylistIds: true
-    clients: [ "MUSIC", "ANDROID", "WEB" ]
-
-metrics:
-  prometheus:
-    enabled: false
-    endpoint: /metrics
-
+    plugins:
+        - dependency: dev.lavalink.youtube:youtube-plugin:136b585f7798b3c9e77e17a30b2bfa93dabc087f
+          snapshot: true
+    server:
+        bufferDurationMs: 400
+        filters:
+            channelMix: true
+            distortion: true
+            equalizer: true
+            karaoke: true
+            lowPass: true
+            rotation: true
+            timescale: true
+            tremolo: true
+            vibrato: true
+            volume: true
+        frameBufferDurationMs: 5000
+        gc-warnings: true
+        opusEncodingQuality: 10
+        password: youshallnotpass
+        playerUpdateInterval: 5
+        resamplingQuality: HIGH
+        soundcloudSearchEnabled: true
+        sources:
+            bandcamp: true
+            http: true
+            local: false
+            soundcloud: true
+            twitch: true
+            vimeo: true
+            youtube: false
+        trackStuckThresholdMs: 10000
+        useSeekGhosting: true
+        youtubePlaylistLoadLimit: 6
+        youtubeSearchEnabled: true
 logging:
-  file:
-    path: ./logs/
-
-  level:
-    root: INFO
-    lavalink: INFO
-
-  request:
-    enabled: true
-    includeClientInfo: true
-    includeHeaders: false
-    includeQueryString: true
-    includePayload: true
-    maxPayloadLength: 10000
-
-
-  logback:
-    rollingpolicy:
-      max-file-size: 1GB
-      max-history: 30
+    file:
+        path: ./logs/
+    level:
+        lavalink: INFO
+        root: INFO
+    logback:
+        rollingpolicy:
+            max-file-size: 1GB
+            max-history: 30
+    request:
+        enabled: true
+        includeClientInfo: true
+        includeHeaders: false
+        includePayload: true
+        includeQueryString: true
+        maxPayloadLength: 10000
+metrics:
+    prometheus:
+        enabled: false
+        endpoint: /metrics
+plugins:
+    youtube:
+        TVHTML5EMBEDDED:
+            playlistLoading: false
+            searching: false
+        WEB:
+            playback: false
+            videoLoading: false
+        allowDirectPlaylistIds: true
+        allowDirectVideoIds: true
+        allowSearch: true
+        clients:
+            - MUSIC
+            - ANDROID_TESTSUITE
+            - WEB
+            - TVHTML5EMBEDDED
+        enabled: true
+        oauthConfig:
+            enabled: true
+server:
+    address: 0.0.0.0
+    port: 2333
