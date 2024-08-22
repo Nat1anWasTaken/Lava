@@ -52,9 +52,11 @@
         <li><a href="#requirements">Requirements</a></li>
       </ul>
     </li>
-    <li><a href="#how-to-use">How to use</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#configs">Configs</a></li>
     <li><a href="todo">ToDo</a></li>
     <li><a href="#license">License</a></li>
+    <li><a href="#contributing">Contributing</a><li>
   </ol>
 </details>
 
@@ -72,19 +74,78 @@
 
 If you just want to experiment what the bot is like, you can join [Yeecord(Chinese)][yeecord] and use `Lava#8364` there
 
-Or
+### One click setup
 
-You can [click here][LavaLauncher] to get the instructions on how to setup **Lavalink** and **Discord bot**
+You can use this one click script [LavaLauncher][LavaLauncher], and follow the steps to setup Lavalink and the Discord bot
+### Docker
 
-### Spotify Support
+<details>
+<summary>Docker compose</summary>
 
-To use `Spotify` and `Autoplay` support, you need to fill in those ecorresponding environment variable explained aboved at step one.
+Make sure that Docker is installed on your computer or server already then:
 
-### Requirements
+1. Clone this Repository
+```bash
+git clone https://github.com/Nat1anWasTaken/Lava.git
+```
 
-* [Python 3.10+][python]
+2. cd to project directory
+```bash
+cd Lava
+```
 
-<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+3. Rename `example.stack.env` to `stack.env`
+```bash
+mv example.stack.env stack.env
+```
+Fill out `stack.env` 
+
+4. Launch
+```bash
+docker compose up
+```
+</details>
+
+<details>
+<summary>Docker CLI</summary>
+
+Make sure that Docker is installed on your computer or server already then:
+
+1. Pull the image
+```bash
+docker pull ghcr.io/nat1anwastaken/lava:latest
+```
+
+2. Setup Lavalink, then fill IP and Port into `configs/lavalink.json`, if you're lazy to setup Lavalink, please use Docker Compose instead
+```json
+{
+    "host": "Lavalink IP",
+    "port": "Lavalink Port"
+}
+```
+
+3. Create `stac.env` file, and fill in the following
+```env
+TOKEN=Bot Token
+SPOTIFY_CLIENT_ID=Spotify client id
+SPOTIFY_CLIENT_SECRET=Spotify client secret
+``` 
+
+4. Start to bot
+```bash
+docker run -it \
+  --name ghcr.io/nat1anwastaken/lava:latest \
+  --restart unless-stopped \
+  lava
+```
+
+
+</details>
+
+> If you need to skip Spotify auto setup (`Go to the following url: ...`), you can set `SKIP_SPOTIFY_SETUP` to `1`
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- USAGE EXAMPLES -->
@@ -98,21 +159,57 @@ Every command usage is explained in command description, you can learn how to us
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
 
+<!-- CONFIGURATION -->
+
+## Configs
+Lava provided a few simple customizble configs for you to custom your bot to your likings such as:
+
+### Progress bar
+You can modify `configs/icons.json` to set custom emoji for progress bar
+```json
+{
+    "empty": "⬛",
+    "progress": {
+        "start_point": "⬜",
+        "start_fill": "⬜",
+        "mid_point": "⬜",
+        "end_fill": "⬛",
+        "end_point": "⬛",
+        "end": "⬛"
+    },
+    "control": {
+        "rewind": "⏪",
+        "forward": "⏩",
+        "pause": "⏸️",
+        "resume": "▶️",
+        "stop": "⏹️",
+        "previous": "⏮️",
+        "next": "⏭️",
+        "shuffle": "🔀",
+        "repeat": "🔁",
+        "autoplay": "🔥"
+    }
+}
+```
+
+### Status
+You can modify `configs/activity.json` to set custom status
+```json
+{
+    "type": 0, // 0: Playing, 1: Streaming, 2: Listing, 3: Watching
+    "name": "Music", // Status text
+    "url": "" // Stream link (Only when using streaming staus)
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+
 <!-- ROADMAP -->
 
 ## ToDo
 
-- [ ] Add more platform
-  - [x] YouTube
-  - [x] Spotify
-  - [x] SoundCloud
-  - [x] Bilibili
-  - [x] YouTube-DL
-  - [ ] Apple Music
-    ...
-- [ ] Enhance stability
-
-If you find any issues, you're more then welcome to mention it in [Issues][issues]
+ToDo has been moved to [Projects][projects]
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
@@ -124,6 +221,13 @@ If you find any issues, you're more then welcome to mention it in [Issues][issue
 This project is licensed under MIT License, check `LICENSE.txt` for more information
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+<!-- CONTRIBUTE -->
+
+## Contributing
+
+Head to [CONTRUBUTING.md](CONTRIBUTING.md) for detail
+
 
 <!-- SHIELDS -->
 
@@ -154,6 +258,8 @@ This project is licensed under MIT License, check `LICENSE.txt` for more informa
 [python]: https://python.org
 
 [lavalink]: https://github.com/freyacodes/Lavalink
+
+[projects]: https://github.com/users/Nat1anWasTaken/projects/3
 
 [LavaLauncher]: https://github.com/Nat1anWasTaken/LavaLauncher
 
