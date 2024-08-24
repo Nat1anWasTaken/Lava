@@ -78,6 +78,11 @@
 
 你可以透過 [LavaLauncher][LavaLauncher] 這個一鍵式腳本，你可以在裡面按照教學一步一步創建 Lavalink 節點 和 Discord 機器人
 
+### Pterodactyl (翼手龍)
+為了方便使用，我們提供 Pterodactyl Egg 並整合了 Lavalink 來方便架設 Lava 機器人
+
+你可以透過 [這裡](https://github.com/Mantouisyummy/Lava-egg/blob/main/egg-lava.json) 來下載Lava的Egg檔案並匯入.
+
 ### Docker
 
 <details>
@@ -159,6 +164,29 @@ docker run -it \
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
 <!-- CONFIGURATION -->
+
+## Lavalink 配置
+> [!WARNING]  
+> 由於 Youtube 的種種限制，必須填入一些驗證資訊才能使音樂服務正常工作，具體方式請詳閱下方教學。  
+
+首先，請先到Lava的資料夾運行 `poToken_generator.py`，運行後你會看到終端輸出以下內容
+
+```
+visitor_data: your visitor_data
+po_token: your po_token
+```
+
+並打開 `configs/application.yml` 後找到以下配置資訊
+```yml
+plugins:
+  youtube:
+    pot:
+      token: "paste your po_token here"
+      visitorData: "paste your visitor_data here"
+```
+隨後將你獲得的 `po_token` 和 `visitor_data` 分別填入 `token` 和 `visitorData` 中即可完成配置
+
+<p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
 ## 設定
 Lava 提供了一些簡單的設定讓你能夠輕鬆地自定義你的音樂機器人，像是：
