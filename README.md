@@ -32,6 +32,8 @@
     <br />
     <a href="https://discord.gg/acgmcity">試用</a>
     ·
+    <a href="https://discord.com/invite/3y7mN82NQa">支援群組</a>
+    ·
     <a href="https://github.com/Nat1anWasTaken/Lava/issues">回報問題</a>
     ·
     <a href="https://github.com/Nat1anWasTaken/Lava/issues">請求功能</a>
@@ -167,16 +169,18 @@ docker run -it \
 
 ## Lavalink 配置
 > [!WARNING]  
-> 由於 Youtube 的種種限制，必須填入一些驗證資訊才能使音樂服務正常工作，具體方式請詳閱下方教學。  
+> 由於 YouTube 的種種限制，必須填入一些驗證資訊才能使音樂服務正常工作，具體方式請詳閱下方教學。  
 
-首先，請先到Lava的資料夾運行 `poToken_generator.py`，運行後你會看到終端輸出以下內容
+首先，請先使用 `pip install -r requirements.txt` 安裝所有必要的套件   
+安裝完後進入到Lava的資料夾運行 `python poToken_generator.py`  
+運行後你會看到終端輸出以下內容：
 
 ```
 visitor_data: your visitor_data
 po_token: your po_token
 ```
 
-並打開 `configs/application.yml` 後找到以下配置資訊
+打開 `configs/application.yml` 後找到以下配置資訊
 ```yml
 plugins:
   youtube:
