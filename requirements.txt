@@ -9,7 +9,7 @@ yt-dlp==2024.7.9
 aiohttp==3.10.2
 imageio==2.35.1
 pylrc==0.1.2
-syncedlyrics==1.0.0
+syncedlyrics==1.0.1
 nodriver==0.36
 undetected-chromedriver==3.5.5
 colorlog
