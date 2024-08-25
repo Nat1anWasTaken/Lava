@@ -10,7 +10,7 @@ aiohttp==3.9.5
 imageio==2.35.0
 pylrc==0.1.2
 syncedlyrics==1.0.0
-nodriver==0.32
+nodriver==0.36
 undetected-chromedriver==3.5.5
 colorlog
 git+https://github.com/Nat1anWasTaken/Lavalink.py.git
