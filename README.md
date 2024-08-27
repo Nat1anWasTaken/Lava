@@ -149,8 +149,6 @@ docker run -it \
 
 </details>
 
-> 如果你有需要跳過 Spotify 自動設定 (`Go to the following url: ...`)，你可以將 `SKIP_SPOTIFY_SETUP` 設定為 `1`
-
 
 <p align="right">(<a href="#readme-top">回到頂部</a>)</p>
 
