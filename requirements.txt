@@ -12,6 +12,6 @@ pylrc==0.1.2
 syncedlyrics==1.0.1
 nodriver==0.36
 undetected-chromedriver==3.5.5
+lavalink==5.7.1
 colorlog
-git+https://github.com/Nat1anWasTaken/Lavalink.py.git
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
