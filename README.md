@@ -172,7 +172,7 @@ docker run -it \
 > 由於 YouTube 的種種限制，必須填入一些驗證資訊才能使音樂服務正常工作，具體方式請詳閱下方教學。  
 
 首先，請先使用 `pip install -r requirements.txt` 安裝所有必要的套件   
-安裝完後進入到Lava的資料夾運行 `python poToken_generator.py`  
+安裝完後進入到 Lava 的資料夾運行 `docker run quay.io/invidious/youtube-trusted-session-generator`  
 運行後你會看到終端輸出以下內容：
 
 ```
