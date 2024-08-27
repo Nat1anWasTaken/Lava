@@ -83,7 +83,7 @@
 ### Pterodactyl (翼手龍)
 為了方便使用，我們提供 Pterodactyl Egg 並整合了 Lavalink 來方便架設 Lava 機器人
 
-你可以透過 [這裡](https://github.com/Mantouisyummy/Lava-egg/blob/main/egg-lava.json) 來下載Lava的Egg檔案並匯入.
+你可以透過 [這裡](https://github.com/Mantouisyummy/Lava-egg/blob/main/egg-lava.json) 來下載 Lava 的 Egg 檔案並匯入.
 
 ### Docker
 
