@@ -124,7 +124,7 @@ docker pull ghcr.io/nat1anwastaken/lava:latest
 }
 ```
 
-3. Create `stac.env` file, and fill in the following
+3. Create `stack.env` file, and fill in the following
 ```env
 TOKEN=Bot Token
 SPOTIFY_CLIENT_ID=Spotify client id
@@ -134,9 +134,11 @@ SPOTIFY_CLIENT_SECRET=Spotify client secret
 4. Start to bot
 ```bash
 docker run -it \
-  --name ghcr.io/nat1anwastaken/lava:latest \
+  --name lava \
+  --volume "./configs:/app/configs" \
+  --env-file stack.env \
   --restart unless-stopped \
-  lava
+  ghcr.io/nat1anwastaken/lava:latest
 ```
 
 
