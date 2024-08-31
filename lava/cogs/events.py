@@ -1,16 +1,38 @@
 from logging import getLogger
 
-from disnake import InteractionResponded, ApplicationCommandInteraction, \
-    MessageInteraction
+from disnake import (
+    InteractionResponded,
+    ApplicationCommandInteraction,
+    MessageInteraction,
+)
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
-from lavalink import TrackEndEvent, TrackLoadFailedEvent, QueueEndEvent, TrackStartEvent, PlayerUpdateEvent
+from lavalink import (
+    TrackEndEvent,
+    TrackLoadFailedEvent,
+    QueueEndEvent,
+    TrackStartEvent,
+    PlayerUpdateEvent,
+)
 
 from lava.bot import Bot
 from lava.classes.player import LavaPlayer
+from lava.cogs.commands import Commands
 from lava.embeds import ErrorEmbed
-from lava.errors import MissingVoicePermissions, BotNotInVoice, UserNotInVoice, UserInDifferentChannel
+from lava.errors import (
+    MissingVoicePermissions,
+    BotNotInVoice,
+    UserNotInVoice,
+    UserInDifferentChannel,
+)
 from lava.utils import ensure_voice
+
+default_filters = {
+    "rotation": {"rotation_hz": 0.5},
+    "tremolo": {"depth": 0.3, "frequency": 14},
+    "vibrato": {"depth": 0.3, "frequency": 14},
+    "lowpass": {"smoothing": 3},
+}
 
 
 class Events(Cog):
@@ -28,7 +50,9 @@ class Events(Cog):
         self.bot.lavalink.add_event_hook(self.on_track_start, event=TrackStartEvent)
         self.bot.lavalink.add_event_hook(self.on_track_end, event=TrackEndEvent)
         self.bot.lavalink.add_event_hook(self.on_queue_end, event=QueueEndEvent)
-        self.bot.lavalink.add_event_hook(self.on_track_load_failed, event=TrackLoadFailedEvent)
+        self.bot.lavalink.add_event_hook(
+            self.on_track_load_failed, event=TrackLoadFailedEvent
+        )
 
     async def on_player_update(self, event: PlayerUpdateEvent):
         player: LavaPlayer = event.player
@@ -60,7 +84,9 @@ class Events(Cog):
         self.bot.logger.info("Received track end event for guild %s", player.guild)
 
         try:
-            await player.update_display(new_message=await player.message.channel.send("..."))
+            await player.update_display(
+                new_message=await player.message.channel.send("...")
+            )
         except ValueError:
             pass
         except AttributeError:
@@ -81,43 +107,65 @@ class Events(Cog):
     async def on_track_load_failed(self, event: TrackLoadFailedEvent):
         player: LavaPlayer = event.player
 
-        self.bot.logger.info("Received track load failed event for guild %s", player.guild)
+        self.bot.logger.info(
+            "Received track load failed event for guild %s", player.guild
+        )
 
         message = await player.message.channel.send(
             embed=ErrorEmbed(
                 f"{player.bot.get_text('error.play_failed', player.locale, '無法播放歌曲')}: {event.track['title']}",
-                f"{player.bot.get_text('reason', player.locale, '原因')}: `{event.original or 'Unknown'}`"
+                f"{player.bot.get_text('reason', player.locale, '原因')}: `{event.original or 'Unknown'}`",
             )
         )
         await player.skip()
         await player.update_display(message, delay=5)
 
     @commands.Cog.listener(name="on_slash_command_error")
-    async def on_slash_command_error(self, interaction: ApplicationCommandInteraction, error: CommandInvokeError):
+    async def on_slash_command_error(
+        self, interaction: ApplicationCommandInteraction, error: CommandInvokeError
+    ):
         if isinstance(error.original, MissingVoicePermissions):
             embed = ErrorEmbed(
-                self.bot.get_text('error.command.title', interaction.locale, '指令錯誤'),
                 self.bot.get_text(
-                    'error.no_play_perms', interaction.locale, "我需要 `連接` 和 `說話` 權限才能夠播放音樂"
-                )
+                    "error.command.title", interaction.locale, "指令錯誤"
+                ),
+                self.bot.get_text(
+                    "error.no_play_perms",
+                    interaction.locale,
+                    "我需要 `連接` 和 `說話` 權限才能夠播放音樂",
+                ),
             )
 
         elif isinstance(error.original, BotNotInVoice):
             embed = ErrorEmbed(
-                self.bot.get_text('error.command.title', interaction.locale, '指令錯誤'),
-                self.bot.get_text('error.bot_not_in_voice', interaction.locale, "我沒有連接到一個語音頻道")
+                self.bot.get_text(
+                    "error.command.title", interaction.locale, "指令錯誤"
+                ),
+                self.bot.get_text(
+                    "error.bot_not_in_voice",
+                    interaction.locale,
+                    "我沒有連接到一個語音頻道",
+                ),
             )
 
         elif isinstance(error.original, UserNotInVoice):
             embed = ErrorEmbed(
-                self.bot.get_text('error.command.title', interaction.locale, '指令錯誤'),
-                self.bot.get_text('error.user_not_in_voice', interaction.locale, "你沒有連接到一個語音頻道")
+                self.bot.get_text(
+                    "error.command.title", interaction.locale, "指令錯誤"
+                ),
+                self.bot.get_text(
+                    "error.user_not_in_voice",
+                    interaction.locale,
+                    "你沒有連接到一個語音頻道",
+                ),
             )
 
         elif isinstance(error.original, UserInDifferentChannel):
             embed = ErrorEmbed(
-                self.bot.get_text('error.command.title', interaction.locale, '指令錯誤'),
-                f"{self.bot.get_text('error.must_in_same_voice', interaction.locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>"
+                self.bot.get_text(
+                    "error.command.title", interaction.locale, "指令錯誤"
+                ),
+                f"{self.bot.get_text('error.must_in_same_voice', interaction.locale, '你必須與我在同一個語音頻道')} <#{error.original.voice.id}>",
             )
 
         else:
@@ -131,9 +179,9 @@ class Events(Cog):
     @commands.Cog.listener(name="on_voice_state_update")
     async def on_voice_state_update(self, member, before, after):
         if (
-                before.channel is not None
-                and after.channel is None
-                and member.id == self.bot.user.id
+            before.channel is not None
+            and after.channel is None
+            and member.id == self.bot.user.id
         ):
             player = self.bot.lavalink.player_manager.get(member.guild.id)
 
@@ -156,7 +204,12 @@ class Events(Cog):
 
             try:
                 await ensure_voice(interaction, should_connect=False)
-            except (UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel):
+            except (
+                UserNotInVoice,
+                BotNotInVoice,
+                MissingVoicePermissions,
+                UserInDifferentChannel,
+            ):
                 return
 
             player = self.bot.lavalink.player_manager.get(interaction.guild_id)
@@ -196,6 +249,20 @@ class Events(Cog):
 
                 case "control.lyrics":
                     await player.toggle_lyrics()
+
+                case "control.filters":
+                    filter_names = interaction.data.values
+                    cog: Commands = self.bot.get_cog("Commands")
+                    await interaction.response.defer()
+                    await cog.update_filters(
+                        interaction,
+                        filter_names,
+                        **{
+                            k: v
+                            for filter_name in filter_names
+                            for k, v in default_filters[filter_name].items()
+                        },
+                    )
 
             await player.update_display(interaction=interaction)
 

@@ -138,5 +138,10 @@
     "display.control.shuffle": "隨機播放",
     "display.control.repeat": "重複播放",
     "display.control.autoplay": "自動播放",
-    "display.control.lyrics": "歌詞顯示"
+    "display.control.lyrics": "歌詞顯示",
+    "display.control.filters": "套用效果器",
+    "filters.vibrato": "震音效果",
+    "filters.lowpass": "低音增強 (削弱高音)",
+    "filters.rotation": "8D 環繞效果",
+    "filters.tremolo": "顫音效果"
 }
