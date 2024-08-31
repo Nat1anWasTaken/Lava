@@ -15,17 +15,7 @@ from disnake import (
 )
 from disnake.abc import MISSING
 from disnake.ui import ActionRow, Button, StringSelect
-from lavalink import (
-    DefaultPlayer,
-    Node,
-    parse_time,
-    Rotation,
-    Equalizer,
-    LowPass,
-    Vibrato,
-    Tremolo,
-    Timescale,
-)
+from lavalink import DefaultPlayer, Node, parse_time
 from pylrc.classes import Lyrics, LyricLine
 
 from lava.embeds import ErrorEmbed
