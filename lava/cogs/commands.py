@@ -251,7 +251,7 @@ class Commands(Cog):
 
         player.set_shuffle(shuffle=shuffle)
 
-        await player.update_display(await interaction.original_response(), delay=5, locale=interaction.locale)
+        await player.update_display(await interaction.original_response(), locale=interaction.locale)
 
     @commands.slash_command(
         name=Localized("skip", key="command.skip.name"),
@@ -673,7 +673,7 @@ class Commands(Cog):
 
         choices = []
 
-        result = await self.bot.lavalink.get_tracks(f"ytmsearch:{query}")
+        result = await self.bot.lavalink.get_tracks(f"ytsearch:{query}")
 
         for track in result.tracks:
             choices.append(
