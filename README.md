@@ -132,7 +132,7 @@ docker pull ghcr.io/nat1anwastaken/lava:latest
 }
 ```
 
-3. 創建一個 `stac.env` 檔案，並填入以下內容
+3. 創建一個 `stack.env` 檔案，並填入以下內容
 ```env
 TOKEN=機器人 Token
 SPOTIFY_CLIENT_ID=Spotify client id
@@ -142,9 +142,11 @@ SPOTIFY_CLIENT_SECRET=Spotify client secret
 4. 啟動機器人
 ```bash
 docker run -it \
-  --name ghcr.io/nat1anwastaken/lava:latest \
+  --name lava \
+  --volume "./configs:/app/configs" \
+  --env-file stack.env \
   --restart unless-stopped \
-  lava
+  ghcr.io/nat1anwastaken/lava:latest
 ```
 
 </details>
