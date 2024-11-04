@@ -197,7 +197,7 @@ class Events(Cog):
                 case "control.lyrics":
                     await player.toggle_lyrics()
 
-            await player.update_display(interaction=interaction)
+            await player.update_display(interaction=interaction, delay=1)
 
 
 def setup(bot):

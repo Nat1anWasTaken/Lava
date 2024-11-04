@@ -4,7 +4,7 @@ from io import BytesIO
 from typing import Iterable, Optional, TYPE_CHECKING, Tuple
 
 import aiohttp
-import imageio
+import imageio.v3 as iio
 from disnake import Interaction
 from disnake.utils import get
 from lavalink import AudioTrack
@@ -115,7 +115,7 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     track = await player.bot.lavalink.decode_track(track.track)  # Gets the original track. Usually from YouTube.
 
     if track.source_name != "youtube":
-        return []
+        track = await player.node.get_tracks(f"{track.title[:80]} by {track.author[:16]}")[0]
 
     results_from_yt = await player.node.get_tracks(
         f"https://music.youtube.com/watch?v={track.identifier}8&list=RD{track.identifier}"
@@ -156,7 +156,7 @@ async def get_image_size(url: str) -> Optional[Tuple[int, int]]:
             return None
 
         data = await response.read()
-        img = imageio.imread(BytesIO(data))
+        img = iio.imread(BytesIO(data))
 
         return img.shape[1], img.shape[0]
 
