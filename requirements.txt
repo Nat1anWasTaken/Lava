@@ -3,7 +3,7 @@ spotipy==2.24.0
 requests==2.32.3
 beautifulsoup4==4.12.3
 psutil==6.1.1
-disnake==2.10.1
+disnake==2.9.3
 python-dotenv==1.0.1
 yt-dlp==2024.12.23
 aiohttp==3.11.11
