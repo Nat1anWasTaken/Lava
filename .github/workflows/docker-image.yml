@@ -31,7 +31,7 @@ jobs:
 
       # Build and push Docker image
       - name: Build and push
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
           push: true
           files: |
