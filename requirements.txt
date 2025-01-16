@@ -9,7 +9,7 @@ yt-dlp==2024.12.23
 aiohttp==3.11.11
 imageio==2.36.1
 pylrc==0.1.2
-syncedlyrics==1.0.1
 colorlog
+git+https://github.com/Mantouisyummy/asyncedlyrics.git
 git+https://github.com/Mantouisyummy/Lavalink.py.git
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
