@@ -7,7 +7,7 @@ disnake==2.10.1
 python-dotenv==1.0.1
 yt-dlp==2024.12.23
 aiohttp==3.11.11
-imageio==2.36.1
+imageio==2.37.0
 pylrc==0.1.2
 syncedlyrics==1.0.1
 colorlog
