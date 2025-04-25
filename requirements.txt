@@ -6,7 +6,7 @@ psutil==6.1.1
 disnake==2.10.1
 python-dotenv==1.0.1
 yt-dlp==2025.3.31
-aiohttp==3.11.11
+aiohttp==3.11.18
 imageio==2.37.0
 pylrc==0.1.2
 syncedlyrics==1.0.1
