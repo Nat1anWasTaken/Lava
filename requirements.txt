@@ -4,7 +4,7 @@ requests==2.32.4
 beautifulsoup4==4.13.4
 psutil==6.1.1
 disnake==2.10.1
-python-dotenv==1.0.1
+python-dotenv==1.1.0
 yt-dlp==2025.3.31
 aiohttp==3.12.13
 imageio==2.37.0
