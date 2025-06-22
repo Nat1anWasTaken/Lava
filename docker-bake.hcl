@@ -1,5 +1,5 @@
 group "default" {
-  targets = ["main", "amd64", "arm64", "armv7"]
+  targets = ["main"]
 }
 
 function "getTag" {
@@ -15,22 +15,4 @@ target "main" {
   platforms = ["linux/amd64", "linux/arm64/v8", "linux/arm/v7"]
   dockerfile = "./Dockerfile"
   tags = getTag("latest")
-}
-
-target "amd64" {
-  inherits = ["main"]
-  platforms = ["linux/amd64"]
-  tags = getTag("amd64")
-}
-
-target "arm64" {
-  inherits = ["main"]
-  platforms = ["linux/arm64/v8"]
-  tags = getTag("arm64")
-}
-
-target "armv7" {
-  inherits = ["main"]
-  platforms = ["linux/arm/v7"]
-  tags = getTag("armv7")
 }
