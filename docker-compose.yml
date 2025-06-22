@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   lava:
     image: ghcr.io/nat1anwastaken/lava:latest
