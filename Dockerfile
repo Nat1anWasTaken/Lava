@@ -73,11 +73,12 @@ COPY --from=builder /app/.venv /app/.venv
 # Copy application code
 COPY --from=builder /app /app
 
-# Add virtual environment to PATH
+# Make sure the virtual environment is activated by using the venv's python directly
 ENV PATH="/app/.venv/bin:$PATH"
 
 RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["python", "main.py"]
+# Use the virtual environment's python executable directly
+CMD ["/app/.venv/bin/python", "main.py"]
