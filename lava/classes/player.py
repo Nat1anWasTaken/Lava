@@ -2,7 +2,7 @@ import asyncio
 from typing import TYPE_CHECKING, Optional, Union
 
 import pylrc
-import syncedlyrics
+import asyncedlyrics
 from disnake import Message, Locale, ButtonStyle, Embed, Colour, Guild, Interaction
 from disnake.abc import MISSING
 from disnake.ui import ActionRow, Button
@@ -57,7 +57,7 @@ class LavaPlayer(DefaultPlayer):
             return self._lyrics
 
         try:
-            lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+            lrc = await asyncedlyrics.search(f"{self.current.title} {self.current.author}")
         except Exception:
             return MISSING
 
@@ -75,7 +75,7 @@ class LavaPlayer(DefaultPlayer):
 
         :return: True if tracks were added, False otherwise.
         """
-        if not self.autoplay or self.is_adding_song or len(self.queue) >= 30:
+        if not self.autoplay or self.is_adding_song or len(self.queue) >= 15:
             return False
 
         self.is_adding_song = True
@@ -84,8 +84,7 @@ class LavaPlayer(DefaultPlayer):
             "Queue is empty, adding recommended track for guild %s...", self.guild
         )
 
-        recommendations = await get_recommended_tracks(self, self.current, 30 - len(self.queue))
-
+        recommendations = await get_recommended_tracks(self, self.current, 15 - len(self.queue))
         if not recommendations:
             self.is_adding_song = False
             self.autoplay = False
@@ -304,7 +303,7 @@ class LavaPlayer(DefaultPlayer):
                 color=Colour.red()
             )
 
-        lyrics_in_range = find_lyrics_within_range(self._lyrics, (self.position / 1000), 5.0)
+        lyrics_in_range = find_lyrics_within_range(self._lyrics, float((self.position / 1000)), 5.0)
 
         lyrics_text = '\n'.join(
             [
