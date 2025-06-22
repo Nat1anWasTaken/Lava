@@ -2,8 +2,25 @@ FROM python:3.13.1-alpine as base
 
 FROM base AS builder
 
-# Copy uv from the official image
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# Install system dependencies needed for building
+RUN apk update && apk add --no-cache \
+    curl \
+    ca-certificates \
+    git \
+    gcc \
+    g++ \
+    zlib-dev \
+    libffi-dev \
+    build-base \
+    cmake \
+    jpeg-dev
+
+# Install uv using the installer script (works on all platforms including ARMv7)
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure uv is in PATH
+ENV PATH="/root/.local/bin:$PATH"
 
 # Set environment variables for uv
 ENV UV_COMPILE_BYTECODE=1 \
@@ -14,17 +31,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-
-# Install system dependencies needed for building
-RUN apk update && apk add --no-cache \
-    git \
-    gcc \
-    g++ \
-    zlib-dev \
-    libffi-dev \
-    build-base \
-    cmake \
-    jpeg-dev
 
 # Install dependencies first (better layer caching)
 RUN --mount=type=cache,target=/root/.cache/uv \
