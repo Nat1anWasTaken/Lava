@@ -831,7 +831,8 @@ class Commands(Cog):
                 OptionChoice(
                     name=self.bot.get_text(
                         "command.play.option.query.link", interaction.locale, "連結："
-                    ),
+                    )
+                    + query,
                     value=query,
                 )
             ]
