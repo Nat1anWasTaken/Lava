@@ -1,0 +1,21 @@
+[project]
+name = ""
+version = "0.0.1"
+dependencies = [
+    "pynacl==1.5.0",
+    "spotipy==2.25.1",
+    "requests==2.32.4",
+    "beautifulsoup4==4.13.4",
+    "psutil==7.0.0",
+    "disnake==2.10.1",
+    "python-dotenv==1.1.0",
+    "yt-dlp==2025.6.9",
+    "aiohttp==3.12.13",
+    "imageio==2.37.0",
+    "pylrc==0.1.2",
+    "syncedlyrics==1.0.1",
+    "colorlog",
+]
+
+[tool.uv]
+package = false
