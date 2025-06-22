@@ -57,9 +57,20 @@ metrics:
     endpoint: /metrics
 plugins:
   youtube:
-    pot:
-      token: "Paste your po_token here"
-      visitorData: "paste your visitor_data here"
+    enabled: true
+    allowSearch: true
+    allowDirectVideoIds: true
+    allowDirectPlaylistIds: true
+    clients:
+      - MUSIC
+      - WEB
+      - MWEB
+      - WEBEMBEDDED
+      - ANDROID_MUSIC
+      - ANDROID_VR
+      - IOS
+      - TVHTML5EMBEDDED
+
 server:
   address: 0.0.0.0
   port: 2333
