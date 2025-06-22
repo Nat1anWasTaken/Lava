@@ -12,6 +12,7 @@ dependencies = [
     { name = "colorlog" },
     { name = "disnake" },
     { name = "imageio" },
+    { name = "lavalink" },
     { name = "psutil" },
     { name = "pylrc" },
     { name = "pynacl" },
@@ -29,6 +30,7 @@ requires-dist = [
     { name = "colorlog" },
     { name = "disnake", specifier = "==2.10.1" },
     { name = "imageio", specifier = "==2.37.0" },
+    { name = "lavalink" },
     { name = "psutil", specifier = "==7.0.0" },
     { name = "pylrc", specifier = "==0.1.2" },
     { name = "pynacl", specifier = "==1.5.0" },
@@ -266,6 +268,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/0c/47/57e897fb7094afb2d
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cb/bd/b394387b598ed84d8d0fa90611a90bee0adc2021820ad5729f7ced74a8e2/imageio-2.37.0-py3-none-any.whl", hash = "sha256:11efa15b87bc7871b61590326b2d635439acc321cf7f8ce996f812543ce10eed", size = 315796, upload_time = "2025-01-20T02:42:34.931Z" },
 ]
+
+[[package]]
+name = "lavalink"
+version = "5.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiohttp" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/51/da/6be2f013a2c63d7b139b2bfa9de4cbf715cbb68f74cf9ed76c85a87aece2/lavalink-5.9.0.tar.gz", hash = "sha256:a01aff4bdf25a51387d2d7729e110a8ced442c21da558dccdceffbc1e0f3861d", size = 52091, upload_time = "2024-09-22T14:06:49.059Z" }
 
 [[package]]
 name = "multidict"
