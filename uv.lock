@@ -3,45 +3,6 @@ revision = 2
 requires-python = ">=3.13"
 
 [[package]]
-name = ""
-version = "0.0.1"
-source = { virtual = "." }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "beautifulsoup4" },
-    { name = "colorlog" },
-    { name = "disnake" },
-    { name = "imageio" },
-    { name = "lavalink" },
-    { name = "psutil" },
-    { name = "pylrc" },
-    { name = "pynacl" },
-    { name = "python-dotenv" },
-    { name = "requests" },
-    { name = "spotipy" },
-    { name = "syncedlyrics" },
-    { name = "yt-dlp" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aiohttp", specifier = "==3.12.13" },
-    { name = "beautifulsoup4", specifier = "==4.13.4" },
-    { name = "colorlog" },
-    { name = "disnake", specifier = "==2.10.1" },
-    { name = "imageio", specifier = "==2.37.0" },
-    { name = "lavalink" },
-    { name = "psutil", specifier = "==7.0.0" },
-    { name = "pylrc", specifier = "==0.1.2" },
-    { name = "pynacl", specifier = "==1.5.0" },
-    { name = "python-dotenv", specifier = "==1.1.0" },
-    { name = "requests", specifier = "==2.32.4" },
-    { name = "spotipy", specifier = "==2.25.1" },
-    { name = "syncedlyrics", specifier = "==1.0.1" },
-    { name = "yt-dlp", specifier = "==2025.6.9" },
-]
-
-[[package]]
 name = "aiohappyeyeballs"
 version = "2.6.1"
 source = { registry = "https://pypi.org/simple" }
@@ -205,6 +166,14 @@ wheels = [
 ]
 
 [[package]]
+name = "disnake-ext-paginator"
+version = "0.0.6"
+source = { git = "https://github.com/Snipy7374/disnake-ext-paginator.git#94431b8b1a5b873e81e9e4f43f67f4868f94fc01" }
+dependencies = [
+    { name = "disnake" },
+]
+
+[[package]]
 name = "frozenlist"
 version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -270,13 +239,53 @@ wheels = [
 ]
 
 [[package]]
+name = "lava-discord-bot"
+version = "0.0.1"
+source = { virtual = "." }
+dependencies = [
+    { name = "aiohttp" },
+    { name = "beautifulsoup4" },
+    { name = "colorlog" },
+    { name = "disnake" },
+    { name = "disnake-ext-paginator" },
+    { name = "imageio" },
+    { name = "lavalink" },
+    { name = "psutil" },
+    { name = "pylrc" },
+    { name = "pynacl" },
+    { name = "python-dotenv" },
+    { name = "requests" },
+    { name = "spotipy" },
+    { name = "syncedlyrics" },
+    { name = "yt-dlp" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aiohttp", specifier = "==3.12.13" },
+    { name = "beautifulsoup4", specifier = "==4.13.4" },
+    { name = "colorlog" },
+    { name = "disnake", specifier = "==2.10.1" },
+    { name = "disnake-ext-paginator", git = "https://github.com/Snipy7374/disnake-ext-paginator.git" },
+    { name = "imageio", specifier = "==2.37.0" },
+    { name = "lavalink", git = "https://github.com/Mantouisyummy/Lavalink.py.git" },
+    { name = "psutil", specifier = "==7.0.0" },
+    { name = "pylrc", specifier = "==0.1.2" },
+    { name = "pynacl", specifier = "==1.5.0" },
+    { name = "python-dotenv", specifier = "==1.1.0" },
+    { name = "requests", specifier = "==2.32.4" },
+    { name = "spotipy", specifier = "==2.25.1" },
+    { name = "syncedlyrics", specifier = "==1.0.1" },
+    { name = "yt-dlp", specifier = "==2025.6.9" },
+]
+
+[[package]]
 name = "lavalink"
-version = "5.9.0"
-source = { registry = "https://pypi.org/simple" }
+version = "5.9.1"
+source = { git = "https://github.com/Mantouisyummy/Lavalink.py.git#d77e1053382e2e1ebf52306fb0058d9efa1fd72c" }
 dependencies = [
     { name = "aiohttp" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/51/da/6be2f013a2c63d7b139b2bfa9de4cbf715cbb68f74cf9ed76c85a87aece2/lavalink-5.9.0.tar.gz", hash = "sha256:a01aff4bdf25a51387d2d7729e110a8ced442c21da558dccdceffbc1e0f3861d", size = 52091, upload_time = "2024-09-22T14:06:49.059Z" }
 
 [[package]]
 name = "multidict"
