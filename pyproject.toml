@@ -13,7 +13,7 @@ dependencies = [
   "pylrc==0.1.2",
   "syncedlyrics==1.0.1",
   "colorlog",
-  "lavalink @ git+https://github.com/Mantouisyummy/Lavalink.py.git",
+  "lavalink==5.9.0",
   "disnake-ext-paginator @ git+https://github.com/Snipy7374/disnake-ext-paginator.git",
 ]
 name = "lava-discord-bot"
