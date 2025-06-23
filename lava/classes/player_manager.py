@@ -23,12 +23,14 @@ class LavaPlayerManager(PlayerManager):
         self.bot: "Bot" = bot
         self.players: Dict[int, LavaPlayer] = {}
 
-    def new(self,
-            guild_id: int,
-            *,
-            region: Optional[str] = None,
-            endpoint: Optional[str] = None,
-            node: Optional[Node] = None) -> LavaPlayer:
+    def new(
+        self,
+        guild_id: int,
+        *,
+        region: Optional[str] = None,
+        endpoint: Optional[str] = None,
+        node: Optional[Node] = None,
+    ) -> LavaPlayer:
         """
         Creates a new LavaPlayer for the given guild.
 
@@ -54,11 +56,13 @@ class LavaPlayerManager(PlayerManager):
         best_node = node or self.client.node_manager.find_ideal_node(region)
 
         if not best_node:
-            raise ClientError('No available nodes!')
+            raise ClientError("No available nodes!")
 
         self.players[guild_id] = player = LavaPlayer(self.bot, guild_id, best_node)
 
-        self.bot.logger.debug('Created player with GuildId %d on node \'%s\'', guild_id, best_node.name)
+        self.bot.logger.debug(
+            "Created player with GuildId %d on node '%s'", guild_id, best_node.name
+        )
 
         return player
 

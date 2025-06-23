@@ -23,34 +23,36 @@ class LavalinkVoiceClient(VoiceClient):
         super().__init__(bot, channel)
 
     async def on_voice_server_update(self, data):
-        lavalink_data = {
-            't': 'VOICE_SERVER_UPDATE',
-            'd': data
-        }
+        lavalink_data = {"t": "VOICE_SERVER_UPDATE", "d": data}
         await self.bot.lavalink.voice_update_handler(lavalink_data)
 
     async def on_voice_state_update(self, data):
-        lavalink_data = {
-            't': 'VOICE_STATE_UPDATE',
-            'd': data
-        }
+        lavalink_data = {"t": "VOICE_STATE_UPDATE", "d": data}
 
-        if data['channel_id']:
-            channel = get(self.channel.guild.voice_channels, id=int(data['channel_id']))
+        if data["channel_id"]:
+            channel = get(self.channel.guild.voice_channels, id=int(data["channel_id"]))
             self.channel = channel
             await self.lavalink.voice_update_handler(lavalink_data)
         else:
             await self.channel.guild.change_voice_state(channel=None)
             self.cleanup()
 
-    async def connect(self, *, timeout: float, reconnect: bool, self_deaf: bool = False,
-                      self_mute: bool = False) -> None:
+    async def connect(
+        self,
+        *,
+        timeout: float,
+        reconnect: bool,
+        self_deaf: bool = False,
+        self_mute: bool = False,
+    ) -> None:
         """
         Connect the bot to the voice channel and create a player_manager
         if it doesn't exist yet.
         """
         self.lavalink.player_manager.new(guild_id=self.channel.guild.id)
-        await self.channel.guild.change_voice_state(channel=self.channel, self_mute=self_mute, self_deaf=self_deaf)
+        await self.channel.guild.change_voice_state(
+            channel=self.channel, self_mute=self_mute, self_deaf=self_deaf
+        )
 
     async def disconnect(self, *, force: bool = False) -> None:
         """

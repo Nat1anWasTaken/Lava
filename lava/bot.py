@@ -49,8 +49,8 @@ class Bot(OriginalBot):
         with open("configs/lavalink.json", "r") as f:
             config = json.load(f)
 
-        for node in config['nodes']:
-            self.logger.debug("Adding lavalink node %s", node['host'])
+        for node in config["nodes"]:
+            self.logger.debug("Adding lavalink node %s", node["host"])
 
             self.lavalink.add_node(**node)
 

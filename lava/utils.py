@@ -11,7 +11,12 @@ from lavalink import AudioTrack
 from pylrc.classes import LyricLine
 
 from lava.classes.voice_client import LavalinkVoiceClient
-from lava.errors import UserNotInVoice, BotNotInVoice, MissingVoicePermissions, UserInDifferentChannel
+from lava.errors import (
+    UserNotInVoice,
+    BotNotInVoice,
+    MissingVoicePermissions,
+    UserInDifferentChannel,
+)
 
 if TYPE_CHECKING:
     from lava.classes.player import LavaPlayer
@@ -22,7 +27,7 @@ def get_current_branch() -> str:
     Get the current branch of the git repository
     :return: The current branch
     """
-    output = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    output = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
     return output.strip().decode()
 
 
@@ -33,13 +38,17 @@ def get_upstream_url(branch: str) -> Optional[str]:
     :return: The upstream url, or None if it doesn't exist
     """
     try:
-        output = subprocess.check_output(['git', 'config', '--get', f'branch.{branch}.remote'])
+        output = subprocess.check_output(
+            ["git", "config", "--get", f"branch.{branch}.remote"]
+        )
     except subprocess.CalledProcessError:
         return None
 
     remote_name = output.strip().decode()
 
-    output = subprocess.check_output(['git', 'config', '--get', f'remote.{remote_name}.url'])
+    output = subprocess.check_output(
+        ["git", "config", "--get", f"remote.{remote_name}.url"]
+    )
     return output.strip().decode()
 
 
@@ -48,7 +57,11 @@ def get_commit_hash() -> str:
     Get the commit hash of the current commit.
     :return: The commit hash
     """
-    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('utf-8').strip()
+    return (
+        subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+        .decode("utf-8")
+        .strip()
+    )
 
 
 def bytes_to_gb(bytes_: int) -> float:
@@ -57,7 +70,7 @@ def bytes_to_gb(bytes_: int) -> float:
 
     :param bytes_: The number of bytes.
     """
-    return bytes_ / 1024 ** 3
+    return bytes_ / 1024**3
 
 
 def split_list(input_list, chunk_size) -> Iterable[list]:
@@ -66,13 +79,15 @@ def split_list(input_list, chunk_size) -> Iterable[list]:
     num_sublists = length // chunk_size
 
     for i in range(num_sublists):
-        yield input_list[i * chunk_size:(i + 1) * chunk_size]
+        yield input_list[i * chunk_size : (i + 1) * chunk_size]
 
     if length % chunk_size != 0:
-        yield input_list[num_sublists * chunk_size:]
+        yield input_list[num_sublists * chunk_size :]
 
 
-async def ensure_voice(interaction: Interaction, should_connect: bool) -> LavalinkVoiceClient:
+async def ensure_voice(
+    interaction: Interaction, should_connect: bool
+) -> LavalinkVoiceClient:
     """
     This check ensures that the bot and command author are in the same voice channel.
 
@@ -80,20 +95,22 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
     :param should_connect: Should the bot connect to the channel if not connected.s
     """
     if not interaction.author.voice or not interaction.author.voice.channel:
-        raise UserNotInVoice('Please join a voice channel first')
+        raise UserNotInVoice("Please join a voice channel first")
 
     voice_client = get(interaction.bot.voice_clients, guild=interaction.author.guild)
 
     if not voice_client:
         if not should_connect:
-            raise BotNotInVoice('Bot is not in a voice channel.')
+            raise BotNotInVoice("Bot is not in a voice channel.")
 
         permissions = interaction.author.voice.channel.permissions_for(
             interaction.author.guild.get_member(interaction.bot.user.id)
         )
 
         if not permissions.connect or not permissions.speak:  # Check user limit too?
-            raise MissingVoicePermissions('Connect and Speak permissions is required in order to play music')
+            raise MissingVoicePermissions(
+                "Connect and Speak permissions is required in order to play music"
+            )
 
         # noinspection PyTypeChecker
         return await interaction.author.voice.channel.connect(cls=LavalinkVoiceClient)
@@ -104,7 +121,9 @@ async def ensure_voice(interaction: Interaction, should_connect: bool) -> Lavali
         )
 
 
-async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_results: int) -> list[AudioTrack]:
+async def get_recommended_tracks(
+    player: "LavaPlayer", track: AudioTrack, max_results: int
+) -> list[AudioTrack]:
     """
     Get recommended track from the given track.
 
@@ -112,7 +131,9 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
     :param track: The seed tracks to get recommended tracks from.
     :param max_results: The max amount of tracks to get.
     """
-    track = await player.bot.lavalink.decode_track(track.track)  # Gets the original track. Usually from YouTube.
+    track = await player.bot.lavalink.decode_track(
+        track.track
+    )  # Gets the original track. Usually from YouTube.
 
     if track.source_name != "youtube":
         return []
@@ -130,7 +151,9 @@ async def get_recommended_tracks(player: "LavaPlayer", track: AudioTrack, max_re
             skip_first = False
             continue
 
-        if result_track.identifier in [t.identifier for t in results]:  # Don't add duplicate songs
+        if result_track.identifier in [
+            t.identifier for t in results
+        ]:  # Don't add duplicate songs
             continue
 
         if len(results) >= max_results:
@@ -161,7 +184,9 @@ async def get_image_size(url: str) -> Optional[Tuple[int, int]]:
         return img.shape[1], img.shape[0]
 
 
-def find_lyrics_within_range(lyrics: list[LyricLine], target_seconds: float, range_seconds: float) -> list[LyricLine]:
+def find_lyrics_within_range(
+    lyrics: list[LyricLine], target_seconds: float, range_seconds: float
+) -> list[LyricLine]:
     """
     Find lyrics within a range of the target time.
     :param lyrics: The lyrics to search from.
