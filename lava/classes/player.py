@@ -37,7 +37,7 @@ class LavaPlayer(DefaultPlayer):
         self.__display_image_as_wide: Optional[bool] = None
         self.__last_image_url: str = ""
 
-        self._lyrics: Union[Lyrics[LyricLine], None] = None
+        self.lyrics: Union[Lyrics[LyricLine], None] = None
 
     @property
     def guild(self) -> Optional[Guild]:
@@ -50,11 +50,11 @@ class LavaPlayer(DefaultPlayer):
         """
         Fetch and update the lyrics to the cache for the current playing track.
         """
-        if self._lyrics == MISSING:
+        if self.lyrics == MISSING:
             return MISSING
 
-        if self._lyrics is not None:
-            return self._lyrics
+        if self.lyrics is not None:
+            return self.lyrics
 
         try:
             lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
@@ -62,12 +62,12 @@ class LavaPlayer(DefaultPlayer):
             return MISSING
 
         if not lrc:
-            self._lyrics = MISSING
-            return self._lyrics
+            self.lyrics = MISSING
+            return self.lyrics
 
-        self._lyrics = pylrc.parse(lrc)
+        self.lyrics = pylrc.parse(lrc)
 
-        return self._lyrics
+        return self.lyrics
 
     async def check_autoplay(self) -> bool:
         """
@@ -130,7 +130,7 @@ class LavaPlayer(DefaultPlayer):
         """
         Reset the lyrics cache.
         """
-        self._lyrics = None
+        self.lyrics = None
 
     async def toggle_lyrics(self):
         """
@@ -302,7 +302,7 @@ class LavaPlayer(DefaultPlayer):
         embeds = [await self.__generate_display_embed()]
 
         if self.is_playing and self.show_lyrics:
-            if self._lyrics is None:
+            if self.lyrics is None:
                 _ = self.bot.loop.create_task(self.fetch_and_update_lyrics())
 
             embeds.append(await self.__generate_lyrics_embed())
@@ -326,7 +326,7 @@ class LavaPlayer(DefaultPlayer):
         Generate the lyrics embed for the player based on the cached lyrics.
         Use fetch_and_update_lyrics to update.
         """
-        if self._lyrics is None:
+        if self.lyrics is None:
             return Embed(
                 title=self.bot.get_text(
                     "display.lyrics.title", self.locale, "🎤 | 歌詞"
@@ -337,7 +337,7 @@ class LavaPlayer(DefaultPlayer):
                 color=Colour.blurple(),
             )
 
-        if self._lyrics is MISSING:
+        if self.lyrics is MISSING:
             return Embed(
                 title=self.bot.get_text(
                     "display.lyrics.title", self.locale, "🎤 | 歌詞"
@@ -351,7 +351,7 @@ class LavaPlayer(DefaultPlayer):
             )
 
         lyrics_in_range = find_lyrics_within_range(
-            self._lyrics, (self.position / 1000), 5.0
+            self.lyrics, (self.position / 1000), 5.0
         )
 
         lyrics_text = (

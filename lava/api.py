@@ -4,7 +4,9 @@ from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
 import uvicorn
+from disnake.abc import MISSING
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from lavalink import LoadType
 from pydantic import BaseModel
@@ -42,8 +44,13 @@ class QueueInfo(BaseModel):
     total_count: int
 
 
+class LyricLineInfo(BaseModel):
+    text: str
+    timestamp: float  # Time in seconds
+
+
 class LyricsInfo(BaseModel):
-    lyrics: List[str]
+    lyrics: List[LyricLineInfo]
     has_lyrics: bool
 
 
@@ -76,6 +83,16 @@ class LavaAPI:
             description="REST API for controlling the Lava music bot",
             version="1.0.0",
         )
+
+        # Add CORS middleware to allow all origins
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],  # Allow all origins
+            allow_credentials=True,
+            allow_methods=["*"],  # Allow all methods
+            allow_headers=["*"],  # Allow all headers
+        )
+
         self._setup_routes()
 
     def _setup_routes(self):
@@ -141,18 +158,57 @@ class LavaAPI:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
             # Fetch lyrics if not cached
-            if player._lyrics is None:
+            if player.lyrics is None:
                 await player.fetch_and_update_lyrics()
 
-            if (
-                player._lyrics is None or player._lyrics == object()
-            ):  # MISSING equivalent
+            if player.lyrics is None or player.lyrics == MISSING:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
-            # Get all lyrics
-            all_lyrics = [line.text for line in player._lyrics]
+            # Get all lyrics with timestamps
+            all_lyrics = [
+                LyricLineInfo(text=line.text, timestamp=line.time)
+                for line in player.lyrics
+            ]
 
             return LyricsInfo(lyrics=all_lyrics, has_lyrics=True)
+
+        @self.app.get("/player/{guild_id}/lyrics/current", response_model=LyricsInfo)
+        async def get_current_lyrics(
+            guild_id: int,
+            range_seconds: float = Query(
+                5.0, description="Time range in seconds around current position"
+            ),
+        ):
+            """Get lyrics for currently playing track within time range of current position"""
+            player = self._get_player(guild_id)
+
+            if not player.current:
+                raise HTTPException(
+                    status_code=404, detail="No track currently playing"
+                )
+
+            if not player.show_lyrics:
+                return LyricsInfo(lyrics=[], has_lyrics=False)
+
+            # Fetch lyrics if not cached
+            if player.lyrics is None:
+                await player.fetch_and_update_lyrics()
+
+            if player.lyrics is None or player.lyrics == MISSING:
+                return LyricsInfo(lyrics=[], has_lyrics=False)
+
+            # Get lyrics within range of current position
+            current_position_seconds = player.position / 1000
+            lyrics_in_range = find_lyrics_within_range(
+                player.lyrics, current_position_seconds, range_seconds
+            )
+
+            ranged_lyrics = [
+                LyricLineInfo(text=line.text, timestamp=line.time)
+                for line in lyrics_in_range
+            ]
+
+            return LyricsInfo(lyrics=ranged_lyrics, has_lyrics=True)
 
         @self.app.post("/player/{guild_id}/play")
         async def play_track(guild_id: int, request: PlayRequest):
