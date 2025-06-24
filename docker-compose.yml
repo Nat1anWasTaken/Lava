@@ -11,6 +11,19 @@ services:
       - lavalink
     networks:
       - lava
+    ports:
+      - "8000:8000"
+    develop:
+      watch:
+        - action: restart
+          path: ./lava
+        - action: restart
+          path: ./main.py
+        - action: sync
+          path: ./requirements.txt
+          target: /app/requirements.txt
+        - action: rebuild
+          path: ./pyproject.toml
 
   lavalink:
     image: fredboat/lavalink:latest
