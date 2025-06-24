@@ -13,3 +13,5 @@ syncedlyrics==1.0.1
 colorlog
 git+https://github.com/Mantouisyummy/Lavalink.py.git
 git+https://github.com/Snipy7374/disnake-ext-paginator.git
+fastapi==0.115.0
+uvicorn[standard]==0.32.1

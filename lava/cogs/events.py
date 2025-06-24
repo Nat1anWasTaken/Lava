@@ -1,28 +1,28 @@
 from logging import getLogger
 
 from disnake import (
-    InteractionResponded,
     ApplicationCommandInteraction,
+    InteractionResponded,
     MessageInteraction,
 )
 from disnake.ext import commands
 from disnake.ext.commands import Cog, CommandInvokeError
 from lavalink import (
+    PlayerUpdateEvent,
+    QueueEndEvent,
     TrackEndEvent,
     TrackLoadFailedEvent,
-    QueueEndEvent,
     TrackStartEvent,
-    PlayerUpdateEvent,
 )
 
 from lava.bot import Bot
 from lava.classes.player import LavaPlayer
 from lava.embeds import ErrorEmbed
 from lava.errors import (
-    MissingVoicePermissions,
     BotNotInVoice,
-    UserNotInVoice,
+    MissingVoicePermissions,
     UserInDifferentChannel,
+    UserNotInVoice,
 )
 from lava.utils import ensure_voice
 
@@ -50,6 +50,11 @@ class Events(Cog):
         player: LavaPlayer = event.player
 
         self.bot.logger.info("Received player update event for guild %s", player.guild)
+
+        if hasattr(event, "position") and hasattr(event, "timestamp"):
+            player.last_update = event.timestamp
+            player.last_position = event.position
+            player.position_timestamp = event.timestamp
 
         _ = self.bot.loop.create_task(player.check_autoplay())
 

@@ -1,4 +1,7 @@
+import asyncio
 import json
+import logging
+import os
 from logging import Logger
 from typing import Optional
 
@@ -17,6 +20,11 @@ class Bot(OriginalBot):
 
         self._lavalink: Optional[LavalinkClient] = None
 
+        self.api = None
+        self.api_server_task = None
+        self.api_host = os.getenv("API_HOST", "0.0.0.0")
+        self.api_port = int(os.getenv("API_PORT", "8000"))
+
         with open("configs/icons.json", "r", encoding="utf-8") as f:
             self.icons = json.load(f)
 
@@ -24,6 +32,7 @@ class Bot(OriginalBot):
         self.logger.info("The bot is ready! Logged in as %s" % self.user)
 
         self.__setup_lavalink_client()
+        await self.__setup_api_server()
 
     @property
     def lavalink(self) -> LavalinkClient:
@@ -57,6 +66,46 @@ class Bot(OriginalBot):
         self.logger.info("Done loading lavalink nodes!")
 
         self.lavalink.register_source(SourceManager())
+
+    async def __setup_api_server(self):
+        """
+        Sets up and starts the API server
+        """
+        try:
+            from lava.api import setup_api
+
+            self.logger.info("Setting up API server...")
+
+            self.api = setup_api(self)
+
+            self.api_server_task = asyncio.create_task(
+                self.api.start_server(host=self.api_host, port=self.api_port)
+            )
+
+            self.logger.info(f"API server started on {self.api_host}:{self.api_port}")
+            self.logger.info(
+                f"API documentation available at http://{self.api_host}:{self.api_port}/docs"
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to start API server: {e}")
+
+    async def close(self):
+        """
+        Clean shutdown of the bot and API server
+        """
+        self.logger.info("Shutting down bot...")
+
+        if self.api_server_task:
+            self.logger.info("Stopping API server...")
+            self.api_server_task.cancel()
+            try:
+                await self.api_server_task
+            except asyncio.CancelledError:
+                pass
+            self.logger.info("API server stopped")
+
+        await super().close()
 
     def get_text(self, key: str, locale: Locale, default: str = None) -> str:
         """
