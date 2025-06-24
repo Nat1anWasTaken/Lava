@@ -15,8 +15,14 @@ services:
       - "8000:8000"
     develop:
       watch:
+        - action: sync
+          path: ./lava
+          target: /app/lava
         - action: restart
           path: ./lava
+        - action: sync
+          path: ./main.py
+          target: /app/main.py
         - action: restart
           path: ./main.py
         - action: sync
