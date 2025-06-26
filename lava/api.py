@@ -206,14 +206,11 @@ class LavaAPI:
                     status_code=404, detail="No track currently playing"
                 )
 
-            if not player.show_lyrics:
-                return LyricsInfo(lyrics=[], has_lyrics=False)
-
             # Fetch lyrics if not cached
             if player.lyrics is None:
                 await player.fetch_and_update_lyrics()
 
-            if player.lyrics == MISSING:
+            if player.lyrics is None or player.lyrics == MISSING:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
             # Get lyrics within range of current position
