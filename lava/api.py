@@ -213,7 +213,7 @@ class LavaAPI:
             if player.lyrics is None:
                 await player.fetch_and_update_lyrics()
 
-            if player.lyrics is None or player.lyrics == MISSING:
+            if player.lyrics == MISSING:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
             # Get lyrics within range of current position
