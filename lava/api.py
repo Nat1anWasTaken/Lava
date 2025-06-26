@@ -3,11 +3,12 @@ import logging
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
+import aiohttp
 import uvicorn
 from disnake.abc import MISSING
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from lavalink import LoadType
 from pydantic import BaseModel
 from pylrc.classes import LyricLine
@@ -133,6 +134,24 @@ class LavaAPI:
                 return None
 
             return self._serialize_player_state(player).current_track
+
+        @self.app.get("/player/{guild_id}/artwork")
+        async def get_current_artwork(guild_id: int):
+            """Get artwork image for currently playing track"""
+            player = self._get_player(guild_id)
+
+            if not player.current:
+                raise HTTPException(
+                    status_code=404, detail="No track currently playing"
+                )
+
+            artwork_url = getattr(player.current, "artwork_url", None)
+            if not artwork_url:
+                raise HTTPException(
+                    status_code=404, detail="No artwork available for current track"
+                )
+
+            return await self._fetch_artwork(artwork_url)
 
         @self.app.get("/player/{guild_id}/queue", response_model=QueueInfo)
         async def get_queue(
@@ -441,6 +460,39 @@ class LavaAPI:
             player = self._get_player(guild_id)
 
             return {"filters": list(player.filters.keys())}
+
+    async def _fetch_artwork(self, artwork_url: str) -> Response:
+        """Fetch artwork image from URL and return as Response"""
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(artwork_url) as response:
+                    if response.status != 200:
+                        raise HTTPException(
+                            status_code=404,
+                            detail="Artwork not found or unavailable",
+                        )
+
+                    image_data = await response.read()
+                    content_type = response.headers.get("content-type", "image/jpeg")
+
+                    return Response(
+                        content=image_data,
+                        media_type=content_type,
+                        headers={
+                            "Cache-Control": "public, max-age=3600",
+                            "Content-Length": str(len(image_data)),
+                        },
+                    )
+
+        except aiohttp.ClientError as e:
+            raise HTTPException(
+                status_code=503, detail=f"Failed to fetch artwork: {str(e)}"
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Internal error while fetching artwork: {str(e)}",
+            )
 
     def _get_player(self, guild_id: int) -> LavaPlayer:
         """Get player for guild, raise HTTP exception if not found"""
