@@ -13,7 +13,7 @@ from lava.bot import Bot
 
 
 def main():
-    if getenv("LOAD_ENV", "false").lower() == "true":
+    if getenv("LOAD_ENV", "true").lower() == "true":
         load_dotenv("stack.env")
 
     setup_logging()

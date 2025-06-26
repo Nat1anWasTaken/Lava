@@ -1,0 +1,89 @@
+[project]
+dependencies = [
+  "pynacl==1.5.0",
+  "spotipy==2.25.1",
+  "requests==2.32.4",
+  "beautifulsoup4==4.13.4",
+  "psutil==7.0.0",
+  "disnake==2.10.1",
+  "python-dotenv==1.1.0",
+  "yt-dlp==2025.6.9",
+  "aiohttp==3.12.13",
+  "imageio==2.37.0",
+  "pylrc==0.1.2",
+  "syncedlyrics==1.0.1",
+  "colorlog",
+  "lavalink==5.9.0",
+  "disnake-ext-paginator",
+  "asyncedlyrics",
+]
+name = "lava-discord-bot"
+version = "0.0.1"
+
+[tool.uv]
+dev-dependencies = [
+  "ruff",
+]
+package = false
+
+[tool.uv.sources]
+asyncedlyrics = { git = "https://github.com/Mantouisyummy/asyncedlyrics.git" }
+disnake-ext-paginator = { git = "https://github.com/Snipy7374/disnake-ext-paginator.git" }
+
+[tool.ruff]
+# Exclude commonly ignored directories
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+]
+
+# Set the line length to 88 (same as Black)
+indent-width = 4
+line-length = 88
+
+# Assume Python 3.8+
+target-version = "py38"
+
+[tool.ruff.lint]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default
+ignore = []
+select = ["E4", "E7", "E9", "F"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Use double quotes for strings
+quote-style = "double"
+
+# Indent with spaces, rather than tabs
+indent-style = "space"
+
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Automatically detect the appropriate line ending
+line-ending = "auto"
