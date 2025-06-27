@@ -35,6 +35,7 @@ class PlayerState(BaseModel):
     autoplay: bool
     position: int
     filters: List[str]
+    lyrics_loaded: bool
 
 
 class QueueInfo(BaseModel):
@@ -524,6 +525,7 @@ class LavaAPI:
             autoplay=player.autoplay,
             position=player.position,
             filters=list(player.filters.keys()),
+            lyrics_loaded=player.lyrics is not None,
         )
 
     async def start_server(self, host: str = "0.0.0.0", port: int = 8000):
