@@ -1,6 +1,4 @@
-import asyncio
 import logging
-from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
 import aiohttp
@@ -8,10 +6,9 @@ import uvicorn
 from disnake.abc import MISSING
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import Response
 from lavalink import LoadType
 from pydantic import BaseModel
-from pylrc.classes import LyricLine
 
 from lava.classes.player import LavaPlayer
 from lava.utils import find_lyrics_within_range
@@ -47,7 +44,7 @@ class QueueInfo(BaseModel):
 
 class LyricLineInfo(BaseModel):
     text: str
-    timestamp: float  # Time in seconds
+    timestamp: float
 
 
 class LyricsInfo(BaseModel):
@@ -85,13 +82,12 @@ class LavaAPI:
             version="1.0.0",
         )
 
-        # Add CORS middleware to allow all origins
         self.app.add_middleware(
             CORSMiddleware,
-            allow_origins=["*"],  # Allow all origins
+            allow_origins=["*"],
             allow_credentials=True,
-            allow_methods=["*"],  # Allow all methods
-            allow_headers=["*"],  # Allow all headers
+            allow_methods=["*"],
+            allow_headers=["*"],
         )
 
         self._setup_routes()
@@ -176,14 +172,12 @@ class LavaAPI:
             if not player.show_lyrics:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
-            # Fetch lyrics if not cached
             if player.lyrics is None:
                 await player.fetch_and_update_lyrics()
 
             if player.lyrics is None or player.lyrics == MISSING:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
-            # Get all lyrics with timestamps
             all_lyrics = [
                 LyricLineInfo(text=line.text, timestamp=line.time)
                 for line in player.lyrics
@@ -206,14 +200,12 @@ class LavaAPI:
                     status_code=404, detail="No track currently playing"
                 )
 
-            # Fetch lyrics if not cached
             if player.lyrics is None:
                 await player.fetch_and_update_lyrics()
 
             if player.lyrics is None or player.lyrics == MISSING:
                 return LyricsInfo(lyrics=[], has_lyrics=False)
 
-            # Get lyrics within range of current position
             current_position_seconds = player.position / 1000
             lyrics_in_range = find_lyrics_within_range(
                 player.lyrics, current_position_seconds, range_seconds
@@ -231,7 +223,6 @@ class LavaAPI:
             """Play a track or search query"""
             player = self._get_player(guild_id)
 
-            # Search for tracks
             results = await self.bot.lavalink.get_local_tracks(request.query)
 
             if not results or not results.tracks:
@@ -240,7 +231,6 @@ class LavaAPI:
             if not results or not results.tracks:
                 raise HTTPException(status_code=404, detail="No tracks found")
 
-            # Find index position
             index = (
                 request.index
                 if request.index is not None
@@ -258,11 +248,9 @@ class LavaAPI:
                     player.add(requester=0, track=track, index=index + iter_index)
                     added_tracks.append(self._serialize_track(track))
 
-            # Start playing if not already
             if not player.is_playing:
                 await player.play()
 
-            # Set shuffle if requested
             player.set_shuffle(shuffle=request.shuffle)
 
             return {
@@ -301,7 +289,6 @@ class LavaAPI:
             await player.stop()
             player.queue.clear()
 
-            # Disconnect from voice channel
             guild = self.bot.get_guild(guild_id)
             if guild and guild.voice_client:
                 await guild.voice_client.disconnect(force=False)
@@ -433,11 +420,9 @@ class LavaAPI:
                 )
 
             if not request.parameters:
-                # Remove filter
                 await player.remove_filter(request.filter_name)
                 return {"message": f"Filter {request.filter_name} removed"}
 
-            # Set filter
             filter_class = allowed_filters[request.filter_name]
             audio_filter = player.get_filter(request.filter_name) or filter_class()
 
@@ -552,7 +537,6 @@ class LavaAPI:
         await server.serve()
 
 
-# Global API instance
 api_instance: Optional[LavaAPI] = None
 
 
