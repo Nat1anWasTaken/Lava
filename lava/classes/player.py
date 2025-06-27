@@ -1,4 +1,5 @@
 import asyncio
+from re import S
 from typing import TYPE_CHECKING, Optional, Union
 
 import pylrc
@@ -56,8 +57,13 @@ class LavaPlayer(DefaultPlayer):
         if self.lyrics is not None:
             return self.lyrics
 
+        if not self.current:
+            return None
+
         try:
-            lrc = syncedlyrics.search(f"{self.current.title} {self.current.author}")
+            lrc = await self.bot.loop.run_in_executor(
+                None, syncedlyrics.search, f"{self.current.title} {self.current.author}"
+            )
         except Exception:
             return MISSING
 
