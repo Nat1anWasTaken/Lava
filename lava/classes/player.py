@@ -62,7 +62,13 @@ class LavaPlayer(DefaultPlayer):
 
         try:
             lrc = await self.bot.loop.run_in_executor(
-                None, syncedlyrics.search, f"{self.current.title} {self.current.author}"
+                None,
+                syncedlyrics.search,
+                f"{self.current.title} {self.current.author}",
+                False,
+                True,
+                None,
+                ["NetEase", "Lrclib"],
             )
         except Exception:
             return MISSING
