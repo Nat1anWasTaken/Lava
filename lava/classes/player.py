@@ -314,9 +314,6 @@ class LavaPlayer(DefaultPlayer):
         embeds = [await self.__generate_display_embed()]
 
         if self.is_playing and self.show_lyrics:
-            if self.lyrics is None:
-                _ = self.bot.loop.create_task(self.fetch_and_update_lyrics())
-
             embeds.append(await self.__generate_lyrics_embed())
 
         if interaction:
