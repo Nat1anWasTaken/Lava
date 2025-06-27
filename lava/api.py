@@ -136,6 +136,7 @@ class LavaAPI:
         async def get_current_artwork(guild_id: int):
             """Get artwork image for currently playing track"""
             player = self._get_player(guild_id)
+            self.bot.logger.info("Getting artwork for %s", player.current)
 
             if not player.current:
                 raise HTTPException(

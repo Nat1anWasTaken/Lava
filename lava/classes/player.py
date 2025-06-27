@@ -51,13 +51,18 @@ class LavaPlayer(DefaultPlayer):
         """
         Fetch and update the lyrics to the cache for the current playing track.
         """
+        self.bot.logger.info("Fetching lyrics for %s", self.current)
+
         if self.lyrics == MISSING:
+            self.bot.logger.info("Lyrics is missing")
             return MISSING
 
         if self.lyrics is not None:
+            self.bot.logger.info("Lyrics is not None")
             return self.lyrics
 
         if not self.current:
+            self.bot.logger.info("No current track")
             return None
 
         try:

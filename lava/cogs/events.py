@@ -58,6 +58,9 @@ class Events(Cog):
 
         _ = self.bot.loop.create_task(player.check_autoplay())
 
+        if player.lyrics is None:
+            _ = self.bot.loop.create_task(player.fetch_and_update_lyrics())
+
         try:
             await player.update_display()
         except ValueError:
@@ -69,6 +72,8 @@ class Events(Cog):
         self.bot.logger.info("Received track start event for guild %s", player.guild)
 
         player.reset_lyrics()
+
+        _ = self.bot.loop.create_task(player.fetch_and_update_lyrics())
 
         try:
             await player.update_display()
