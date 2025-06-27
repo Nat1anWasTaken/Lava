@@ -2,10 +2,11 @@ import asyncio
 import json
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
 from os import getenv
 
 from colorlog import ColoredFormatter
-from disnake import Intents, Activity, BaseActivity
+from disnake import Activity, BaseActivity, Intents
 from disnake.ext.commands import CommandSyncFlags
 from dotenv import load_dotenv
 
@@ -21,6 +22,7 @@ def main():
     main_logger = logging.getLogger("lava.main")
 
     loop = asyncio.new_event_loop()
+    loop.set_default_executor(ThreadPoolExecutor(max_workers=32))
 
     bot = Bot(
         logger=main_logger,
