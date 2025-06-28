@@ -16,7 +16,7 @@ dependencies = [
   "lavalink==5.9.0",
   "disnake-ext-paginator @ git+https://github.com/Snipy7374/disnake-ext-paginator.git",
   "fastapi==0.115.0",
-  "uvicorn[standard]==0.32.1",
+  "uvicorn[standard]==0.35.0",
 ]
 name = "lava-discord-bot"
 version = "0.0.1"
