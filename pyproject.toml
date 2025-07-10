@@ -8,7 +8,7 @@ dependencies = [
   "disnake==2.10.1",
   "python-dotenv==1.1.0",
   "yt-dlp==2025.6.9",
-  "aiohttp==3.12.13",
+  "aiohttp==3.12.14",
   "imageio==2.37.0",
   "pylrc==0.1.2",
   "syncedlyrics==1.0.1",
